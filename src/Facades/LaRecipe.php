@@ -4,7 +4,7 @@ namespace BinaryTorch\LaRecipe\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class LaRecipeFacade extends Facade
+class LaRecipe extends Facade
 {
     /**
      * @return string

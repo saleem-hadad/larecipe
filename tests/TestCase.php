@@ -2,7 +2,7 @@
 
 namespace BinaryTorch\LaRecipe\Tests;
 
-use BinaryTorch\LaRecipe\Facades\LaRecipeFacade;
+use BinaryTorch\LaRecipe\Facades\LaRecipe;
 use BinaryTorch\LaRecipe\LaRecipeServiceProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
@@ -42,7 +42,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     protected function getPackageAliases($app)
     {
         return [
-            'LaRecipe' => LaRecipeFacade::class,
+            'LaRecipe' => LaRecipe::class,
         ];
     }
 }
