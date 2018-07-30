@@ -2,20 +2,11 @@
 
 namespace BinaryTorch\LaRecipe\Models;
 
+use BinaryTorch\LaRecipe\Traits\MarkdownParseable;
+
 class Documentation
 {
-    /**
-     * @var ParsedownExtra
-     */
-    private $parser;
-    
-    /**
-     * Documentation constructor.
-     */
-    public function __construct(\ParsedownExtra $parser)
-    {
-        $this->parser = $parser;
-    }
+    use MarkdownParseable;
     
     /**
      * @param $version
