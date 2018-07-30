@@ -30,4 +30,10 @@ class DocumentationTest extends TestCase
     {
         $this->assertEquals('<p>hello</p>', $this->documentation->parse('hello'));
     }
+    
+    /** @test */
+    public function it_replace_version_placeholder_with_the_given_version()
+    {
+        $this->assertEquals('the current version is 1.1', $this->documentation->replaceLinks('1.1', 'the current version is {{version}}'));
+    }
 }

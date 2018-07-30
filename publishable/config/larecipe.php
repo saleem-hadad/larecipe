@@ -3,6 +3,7 @@
 return [
     'docs'      => [
         'route' => '/docs',
+        'path'  => '/resources/docs'
     ],
     'versions'      => [
         'default'   => '1.0',
