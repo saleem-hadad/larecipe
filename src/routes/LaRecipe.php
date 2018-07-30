@@ -1,5 +1,11 @@
 <?php
 
-Route::get(config('larecipe.docs.route'), function () {
-    return 'okay';
-})->name('docs.index');
+
+Route::group([
+    'prefix'    => config('larecipe.docs.route'),
+    'namespace' => 'BinaryTorch\LaRecipe\Http\Controllers',
+    'as'        => 'docs.'
+], function () {
+    Route::get('/', 'DocumentationController@index')->name('index');
+    Route::get('/{version}/{page?}', 'DocumentationController@show')->name('show');
+});
