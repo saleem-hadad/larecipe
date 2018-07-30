@@ -8,6 +8,8 @@ use BinaryTorch\LaRecipe\Models\Documentation;
 
 class DocumentationTest extends TestCase
 {
+    protected $documentation;
+    
     protected function setUp()
     {
         parent::setUp();
@@ -34,6 +36,9 @@ class DocumentationTest extends TestCase
     /** @test */
     public function it_replace_version_placeholder_with_the_given_version()
     {
-        $this->assertEquals('the current version is 1.1', $this->documentation->replaceLinks('1.1', 'the current version is {{version}}'));
+        $this->assertEquals(
+            'the current version is 1.1',
+            $this->documentation->replaceLinks('1.1', 'the current version is {{version}}')
+        );
     }
 }
