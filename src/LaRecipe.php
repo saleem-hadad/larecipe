@@ -4,5 +4,5 @@ namespace BinaryTorch\LaRecipe;
 
 class LaRecipe
 {
-
+    //
 }
