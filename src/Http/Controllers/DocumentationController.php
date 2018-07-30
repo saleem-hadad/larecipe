@@ -21,7 +21,7 @@ class DocumentationController extends Controller
     }
     
     /**
-     * Redirect the index page of docs to the current version.
+     * Redirect the index page of docs to the default version.
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
@@ -30,6 +30,12 @@ class DocumentationController extends Controller
         return redirect()->route('docs.show', config('larecipe.versions.default'));
     }
     
+    /**
+     * @param $version
+     * @param null $page
+     * @return null|string|string[]
+     * @throws \Exception
+     */
     public function show($version, $page = null)
     {
         return $this->documentation->parse('hello');

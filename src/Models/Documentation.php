@@ -9,16 +9,8 @@ class Documentation
     use MarkdownParseable;
     
     /**
-     * @param $version
-     * @param $page
-     * @return string
-     */
-    public function get($version, $page)
-    {
-        return '<p>hello</p>';
-    }
-    
-    /**
+     * Check if the given version in the available version inside (config.larecipe.versions.published).
+     *
      * @param $version
      * @return bool
      */

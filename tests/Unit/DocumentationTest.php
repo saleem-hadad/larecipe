@@ -2,26 +2,32 @@
 
 namespace BinaryTorch\LaRecipe\Tests\Unit;
 
+use Illuminate\Support\Facades\Config;
 use BinaryTorch\LaRecipe\Tests\TestCase;
 use BinaryTorch\LaRecipe\Models\Documentation;
 
 class DocumentationTest extends TestCase
 {
-    /** @test */
-    public function it_checks_if_the_given_version_published()
+    protected function setUp()
     {
-        $documentation = new Documentation();
+        parent::setUp();
         
-        $this->assertTrue($documentation->isPublishedVersion('1.0'));
-        $this->assertFalse($documentation->isPublishedVersion('1.1'));
+        $this->documentation = $this->app->make(Documentation::class);
     }
     
     /** @test */
-    public function it_return_the_correct_docs_page_and_parse_it()
+    public function it_checks_if_the_given_version_published()
     {
-        $documentation = new Documentation();
+        Config::set('larecipe.versions.published', ['1.0', '1.1']);
         
-        $this->assertEquals('<p>hello</p>', $documentation->parse('hello'));
-        $this->assertEquals('<p>hello</p>', $documentation->get('1.0', 'overview'));
+        $this->assertTrue($this->documentation->isPublishedVersion('1.0'));
+        $this->assertTrue($this->documentation->isPublishedVersion('1.1'));
+        $this->assertFalse($this->documentation->isPublishedVersion('1.2'));
+    }
+    
+    /** @test */
+    public function it_can_parse_content()
+    {
+        $this->assertEquals('<p>hello</p>', $this->documentation->parse('hello'));
     }
 }
