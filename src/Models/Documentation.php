@@ -7,7 +7,7 @@ use BinaryTorch\LaRecipe\Traits\MarkdownParseable;
 class Documentation
 {
     use MarkdownParseable;
-    
+
     /**
      * Replace the version place-holder in links.
      *
@@ -19,7 +19,7 @@ class Documentation
     {
         return str_replace('{{version}}', $version, $content);
     }
-    
+
     /**
      * Check if the given version in the available version inside (config.larecipe.versions.published).
      *
@@ -29,7 +29,7 @@ class Documentation
     public function isPublishedVersion($version)
     {
         $publishedVersions = config('larecipe.versions.published');
-        
+
         return in_array($version, $publishedVersions);
     }
 }

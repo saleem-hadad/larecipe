@@ -10,7 +10,7 @@ class DocumentationController extends Controller
      * @var Documentation
      */
     private $documentation;
-    
+
     /**
      * DocumentationController constructor.
      * @param Documentation $documentation
@@ -19,7 +19,7 @@ class DocumentationController extends Controller
     {
         $this->documentation = $documentation;
     }
-    
+
     /**
      * Redirect the index page of docs to the default version.
      *
@@ -29,7 +29,7 @@ class DocumentationController extends Controller
     {
         return redirect()->route('docs.show', config('larecipe.versions.default'));
     }
-    
+
     /**
      * @param $version
      * @param null $page

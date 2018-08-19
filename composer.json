@@ -1,5 +1,5 @@
 {
-    "name": "saleem/larecipe",
+    "name": "binarytorch/larecipe",
     "description": "Generate gorgeous recipes for your Laravel applications using MarkDown",
     "keywords": ["laravel", "markdown", "docs", "documentation", "api"],
     "license": "MIT",
