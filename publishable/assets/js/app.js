@@ -1088,7 +1088,7 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
             break;
         }
         $(this).html(str.replace(/\{(.*?)\}/, '<div class="flag"><span class="svg">' + icon + '</span></div>'));
-        $(this).parent().addClass('alert has-icon ' + word);
+        $(this).parent().addClass('alert has-icon alert-' + word);
       }
     });
   }
