@@ -16003,9 +16003,85 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
           box-sizing: border-box;
   border-right: 1px solid #dee2e6;
   overflow-y: auto;
+  padding: 2.1rem 0px !important;
+}
+
+.sidebar > ul {
+  list-style: none;
+  padding: 0rem;
+}
+
+.sidebar > ul > li > h2 {
+  padding: 1.1rem;
+  color: #525f7f;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.sidebar > ul > li > ul {
+  list-style: none;
+  padding: 0px;
+  line-height: 2.25;
+}
+
+.sidebar > ul > li > ul > li > a {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #8898aa;
+  padding: 0px 2rem;
 }
 
 .documentation > .article {
   padding-left: 20rem;
   margin: 100px 0 0 0;
+}
+
+.documentation > .article p {
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+.documentation > .article blockquote.has-icon {
+  position: relative;
+  margin: 2rem 0;
+}
+
+.documentation > .article blockquote.has-icon.info {
+  background: #11cdef;
+}
+
+.documentation > .article blockquote.has-icon.error {
+  background: #f5365c;
+}
+
+.documentation > .article blockquote.has-icon.success {
+  background: #2dce89;
+}
+
+.documentation > .article blockquote.has-icon.primary {
+  background: #5e72e4;
+}
+
+.documentation > .article blockquote.has-icon.warning {
+  background: #fb6340;
+}
+
+.documentation > .article blockquote.has-icon p {
+  padding-left: 50px;
+  padding-top: 12px;
+  color: #fff;
+}
+
+.documentation > .article blockquote.has-icon .flag {
+  position: absolute;
+  width: 30px;
+  left: 15px;
+  top: 10px;
+  font-weight: 600;
+}
+
+.documentation > .article blockquote.has-icon .flag svg {
+  width: 24px;
+  height: 24px;
 }

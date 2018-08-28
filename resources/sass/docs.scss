@@ -44,4 +44,52 @@
 .documentation > .article {
     padding-left: 20rem;
     margin: 100px 0 0 0;
+    
+    p {
+		font-size: 1rem;
+		line-height: 1.9;
+    }
+    
+    blockquote.has-icon {
+        position: relative;
+        margin: 2rem 0;
+    
+        &.info {
+            background: $info;
+        }
+
+        &.error {
+            background: $danger;
+        }
+
+        &.success {
+            background: $success;
+        }
+    
+        &.primary {
+            background: $primary;
+        }
+
+        &.warning {
+            background: $warning;
+        }
+
+        p { 
+            padding-left: 50px; 
+            padding-top: 12px;
+            color: $white
+        }
+    
+        .flag {
+            position: absolute;
+            width: 30px;
+            left: 15px;
+            top: 10px;
+            font-weight: $font-weight-bold;
+            svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
 }
