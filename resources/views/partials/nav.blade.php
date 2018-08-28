@@ -13,9 +13,9 @@
     </div>
 
     <base-dropdown class="navbar-nav ml-lg-auto">
-      <base-button slot="title" type="secondary" class="dropdown-toggle">
-        {{ auth()->user()->name }}
-      </base-button>
-      <a class="dropdown-item" href="#">Logout</a>
+        <base-button slot="title" type="secondary" class="dropdown-toggle btn-white">
+            {{ auth()->user()->name }}
+        </base-button>
+        <a class="dropdown-item" href="#">Logout</a>
     </base-dropdown>
  </base-nav>

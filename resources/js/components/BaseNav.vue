@@ -8,7 +8,7 @@
             {'rounded': round},
             {'fixed-top': fixed},
          ]">
-        <div :class="[expand ? 'container-fluid': 'container']">
+        <div :class="[expand ? 'container-fluid pl-0 pr-0 pt-1 pb-1': 'container']">
             <slot name="container-pre"></slot>
             <slot name="brand">
                 <a class="navbar-brand" href="#" @click.prevent="onTitleClick">
