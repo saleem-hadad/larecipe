@@ -31,6 +31,7 @@ class LaRecipeServiceProvider extends ServiceProvider
         $this->app->alias(LaRecipe::class, 'LaRecipe');
 
         $this->registerConfigs();
+        $this->loadHelpers();
 
         if ($this->app->runningInConsole()) {
             $this->registerPublishableResources();
@@ -48,10 +49,23 @@ class LaRecipeServiceProvider extends ServiceProvider
             'config' => [
                 "{$publishablePath}/config/LaRecipe.php" => config_path('larecipe.php'),
             ],
+            'assets' => [
+                "{$publishablePath}/assets/" => public_path('vendor/binarytorch/larecipe/assets'),
+            ],
         ];
 
         foreach ($publishable as $group => $paths) {
             $this->publishes($paths, $group);
+        }
+    }
+
+    /**
+     * Load helpers.
+     */
+    protected function loadHelpers()
+    {
+        foreach (glob(__DIR__ . '/Helpers/*.php') as $filename) {
+            require_once $filename;
         }
     }
 
