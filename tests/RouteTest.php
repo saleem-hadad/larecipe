@@ -11,11 +11,4 @@ class RouteTest extends TestCase
 
         $this->call('GET', '/docs')->assertRedirect($defaultVersionPath);
     }
-
-    /** @test */
-    public function docs_show_route_has_required_version_and_optional_page_parameters()
-    {
-        $this->call('GET', '/docs/1.0')->assertStatus(200);
-        $this->call('GET', '/docs/1.0/installation')->assertStatus(200);
-    }
 }

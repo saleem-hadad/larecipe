@@ -2,6 +2,7 @@
 
 namespace BinaryTorch\LaRecipe\Http\Controllers;
 
+use Symfony\Component\DomCrawler\Crawler;
 use BinaryTorch\LaRecipe\Models\Documentation;
 
 class DocumentationController extends Controller
@@ -31,13 +32,60 @@ class DocumentationController extends Controller
     }
 
     /**
-     * @param $version
-     * @param null $page
-     * @return null|string|string[]
-     * @throws \Exception
+     * Show a documentation page.
+     *
+     * @param  string $version
+     * @param  string|null $page
+     * @return Response
      */
     public function show($version, $page = null)
     {
-        return $this->documentation->parse('hello');
+        $defaultVersion    = config('larecipe.versions.default');
+        $publishedVersions = config('larecipe.versions.published');
+
+        if (!$this->documentation->isPublishedVersion($version)) {
+            return redirect('docs/' . $defaultVersion . '/' . $version, 301);
+        }
+
+        $sectionPage = $page ?: config('larecipe.docs.landing');
+        $content     = $this->documentation->get($version, $sectionPage);
+
+        if (is_null($content)) {
+            return response()->view('larecipe::docs', [
+                'title'          => 'Page not found',
+                'index'          => $this->documentation->getIndex($version),
+                // 'content'        => view('partials.doc-missing'),
+                'currentVersion' => $version,
+                'versions'       => $publishedVersions,
+                'currentSection' => '',
+                'canonical'      => null,
+            ], 404);
+        }
+
+        $title = (new Crawler($content))->filterXPath('//h1');
+
+        $section = '';
+
+        if ($this->documentation->sectionExists($version, $page)) {
+            $section .= '/' . $page;
+        } elseif (!is_null($page)) {
+            return redirect('/docs/' . $version);
+        }
+
+        $canonical = null;
+
+        if ($this->documentation->sectionExists($defaultVersion, $sectionPage)) {
+            $canonical = 'docs/' . $defaultVersion . '/' . $sectionPage;
+        }
+
+        return view('larecipe::docs', [
+            'title'          => count($title) ? $title->text() : null,
+            'index'          => $this->documentation->getIndex($version),
+            'content'        => $content,
+            'currentVersion' => $version,
+            'versions'       => $publishedVersions,
+            'currentSection' => $section,
+            'canonical'      => $canonical,
+        ]);
     }
 }
