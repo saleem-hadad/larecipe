@@ -46,10 +46,10 @@ class LaRecipeServiceProvider extends ServiceProvider
         $publishablePath = dirname(__DIR__) . '/publishable';
 
         $publishable = [
-            'config' => [
+            'larecipe_config' => [
                 "{$publishablePath}/config/LaRecipe.php" => config_path('larecipe.php'),
             ],
-            'assets' => [
+            'larecipe_assets' => [
                 "{$publishablePath}/assets/" => public_path('vendor/binarytorch/larecipe/assets'),
             ],
         ];

@@ -11,5 +11,8 @@ return [
         'published' => [
             '1.0'
         ]
+    ],
+    'settings' => [
+        'auth' => false
     ]
 ];

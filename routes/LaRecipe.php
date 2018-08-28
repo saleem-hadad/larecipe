@@ -1,11 +1,16 @@
 <?php
 
+$groupSettings = [
+    'prefix'     => config('larecipe.docs.route'),
+    'namespace'  => 'BinaryTorch\LaRecipe\Http\Controllers',
+    'as'         => 'docs.',
+];
 
-Route::group([
-    'prefix'    => config('larecipe.docs.route'),
-    'namespace' => 'BinaryTorch\LaRecipe\Http\Controllers',
-    'as'        => 'docs.'
-], function () {
+if (config('larecipe.settings.auth')) {
+    $groupSettings['middleware'] = 'auth';
+}
+
+Route::group($groupSettings, function () {
     Route::get('/', 'DocumentationController@index')->name('index');
     Route::get('/{version}/{page?}', 'DocumentationController@show')->name('show');
 });
