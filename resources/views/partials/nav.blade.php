@@ -3,8 +3,8 @@
 
     <div class="row" slot="content-header" slot-scope="{closeMenu}">
         <div class="col-6 collapse-brand">
-            <a href="https://demos.creative-tim.com/vue-argon-design-system/documentation/">
-                <img src="https://demos.creative-tim.com/vue-argon-design-system/img/brand/blue.png">
+            <a href="#">
+              {{ config('app.name') }}
             </a>
         </div>
         <div class="col-6 collapse-close">
