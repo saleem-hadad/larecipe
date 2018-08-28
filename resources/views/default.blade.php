@@ -13,6 +13,7 @@
         @endif
         <link href='https://fonts.googleapis.com/css?family=Miriam+Libre:400,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="{{ larecipe_assets('css/app.css') }}">
+        <script src="{{ larecipe_assets('js/app.js') }}" defer></script>
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css">
     </head>
     <body class="@yield('body-class', 'docs') language-php">
