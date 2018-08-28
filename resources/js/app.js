@@ -8,8 +8,8 @@ require('./vendor/typeahead.js');
 require('./vendor/scotchPanels.js');
 
 // Standalone vendor libraries
-const Hogan = require('./vendor/hogan.js');
 const Mousetrap = require('./vendor/mousetrap.js');
+import Vue from 'vue';
 
 new Vue({
   el: 'nav.main',
