@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary mt-4">
-    <div class="container">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary ct-navbar">
+    <div class="container-fluid">
       <a class="navbar-brand" href="#">{{ config('app.name') }}</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-primary" aria-controls="navbar-primary" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -9,7 +9,7 @@
           <div class="row">
             <div class="col-6 collapse-brand">
               <a href="index.html">
-                  HOLLA
+                  {{ config('app.name') }}
               </a>
             </div>
             <div class="col-6 collapse-close">

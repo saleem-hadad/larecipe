@@ -18,8 +18,7 @@
     </head>
     <body>
         @include('larecipe::partials.nav')
-
+        
         @yield('content')
-
     </body>
 </html>
