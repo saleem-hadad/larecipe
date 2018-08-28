@@ -7,7 +7,7 @@ $groupSettings = [
 ];
 
 if (config('larecipe.settings.auth')) {
-    $groupSettings['middleware'] = 'auth';
+    $groupSettings['middleware'] = ['web', 'auth'];
 }
 
 Route::group($groupSettings, function () {
