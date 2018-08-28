@@ -1,0 +1,42 @@
+$bottomColor: #E2E2E1;
+$topColor: lighten($bottomColor, 2%);
+
+.browser-window, .terminal-window {
+	text-align: left;
+	margin: 20px;
+	width: 602px;
+	height: 355px;
+	display: inline-block;
+	border-radius: 4px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	box-shadow: 0px 2px 8px rgba(0,0,0,.1);
+	overflow: overlay;
+	.top-bar {
+		height: 30px;
+		border-radius: 4px 4px 0 0;
+		border-top: thin solid lighten($topColor, 1%);
+		border-bottom: thin solid darken($bottomColor, 1%);
+		background: #ebebeb;
+	}
+	.circle {
+		height: 8px;
+		width: 8px;
+		display: inline-block;
+		border-radius: 50%;
+		background-color: lighten($topColor, 10%);
+	}
+	.circles { margin: 1px 10px; }
+	.window-content {
+		margin: 0;
+		width: 100%;
+		min-height: 90%;
+		display: inline-block;
+		border-radius: 0 0 4px 4px;
+	}
+}
+
+.browser-window .window-content pre[class*="language-"] {
+	background: #fff;
+	margin: 0;
+}

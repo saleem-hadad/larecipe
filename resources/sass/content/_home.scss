@@ -1,0 +1,63 @@
+.home .hero {
+    padding: 60px 0;
+
+    .content {
+        text-align: center;
+    }
+
+    .content p {
+        @include smooth;
+        color: #aeaeae;
+        font-family: $font_alt;
+        font-size: 21px;
+        margin-bottom: 60px;
+        letter-spacing: -.02em;
+    }
+
+    .macbook { position: relative; }
+
+    .macbook svg {
+        height: 425px;
+        width: 100%;
+        height: 425px;
+        position: relative;
+    }
+
+    .browser-window {
+        display: none;
+        width: auto;
+        overflow: hidden;
+        .window-content { overflow: hidden; width: 100%; height: 100%; }
+    }
+}
+
+.home .container {
+    padding: 0 20px;
+}
+
+.home .hero pre {
+    position: absolute;
+    z-index: 2;
+    height: 321px;
+    top: 46px;
+    width: 554px;
+    left: 50%;
+    margin-left: -278px;
+    padding-bottom: 0;
+    overflow: hidden;
+}
+
+@media all and (max-width: 805px) {
+    .home .hero .macbook { display: none; }
+    .home .hero .browser-window { display: block; }
+
+    .home .hero pre {
+        position: relative;
+        height: auto;
+        left: auto;
+        margin: 0 20px 30px;
+        padding-bottom: 0;
+        top: auto;
+        width: auto;
+    }
+}

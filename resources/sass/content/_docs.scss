@@ -1,0 +1,373 @@
+.docs article {
+	padding: 25px 125px 50px 50px;
+	margin-left: 300px;
+
+	ul {
+		font-size: 13px;
+	}
+
+	.content-list ul li {
+		margin: 8px;
+		line-height: 1.65;
+	}
+
+	p {
+		font-size: 13px;
+		line-height: 1.9;
+	}
+
+	h1 + ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		font-size: 14px;
+		font-weight: bold;
+		line-height: 1.8;
+		padding-bottom: 50px;
+		border-bottom: 1px solid $color__faint;
+		-webkit-font-smoothing: antialiased;
+		li {
+			&:before {
+				content: "# ";
+				margin-right: .25em;
+				color: $color__salmon;
+				opacity: .3;
+			}
+			a {
+				text-decoration: none;
+			}
+		}
+	}
+
+	li > ul {
+		font-size: 13px;
+		font-weight: 400;
+		list-style: none;
+		line-height: 1.7;
+	}
+
+	h2:first-of-type {
+		margin-top: 15px;
+	}
+
+	h2 {
+		font-size: 30px;
+		font-weight: 400;
+		margin-top: 55px;
+		margin-bottom: 15px;
+		position: relative;
+
+		a,
+		a:hover {
+			color: $color__gray;
+			text-decoration: none;
+		}
+		a:before {
+			content: "#";
+			margin-left: -25px;
+			position: absolute;
+			font-size: 28px;
+			color: $color__salmon;
+			opacity: .6;
+		}
+	}
+
+	h3 {
+		font-size: 24px;
+		font-weight: 400;
+		margin-top: 45px;
+		margin-bottom: 10px;
+	}
+
+	h4 {
+		font-size: 17px;
+		font-weight: 700;
+		margin-top: 35px;
+		margin-bottom: 10px;
+	}
+
+	a {
+		text-decoration: underline;
+		&:hover {
+			color: darken($color__salmon, 10%);
+		}
+	}
+
+	blockquote a:hover {
+		color: lighten($color__salmon, 25%);
+	}
+
+	table {
+		border-collapse: collapse;
+		width: 100%;
+		font-size: 14px;
+		th,
+		td {
+			border: 1px solid $color__lighter_gray;
+			padding: 10px;
+			text-align: left;
+		}
+		th {
+			font-size: 16px;
+		}
+	}
+
+    blockquote {}
+}
+
+.docs blockquote.has-icon {
+    position: relative;
+
+    &.video, &.laracast {
+        background: rgba(103, 58, 183, 0.62);
+    }
+
+    &.tip {
+        background: #64B5F6;
+    }
+
+	&.success {
+		background: #50b372;
+	}
+
+	&.example {
+		background: #B33771;
+	}
+
+    p { padding-left: 40px; }
+
+    .flag {
+        position: absolute;
+        width: 30px;
+        left: 15px;
+        top: 10px;
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+    }
+}
+
+.docs .svg svg {
+    width: 24px;
+}
+
+.autocomplete-wrapper .h1 {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.autocomplete-wrapper .h2 {
+	font-size: 16px;
+	display: inline-block;
+}
+
+.autocomplete-wrapper .h2 .hash {
+	color: #F8A2A9;
+}
+
+.autocomplete-wrapper .h3 {
+	font-size: 16px;
+	display: inline-block;
+}
+
+.autocomplete-wrapper .h4 {
+	font-size: 16px;
+	display: inline-block;
+}
+
+.autocomplete-wrapper .content {
+	font-size: 13px;
+	background-color: rgba(238, 238, 238, 0.35);
+	padding: 10px;
+	border-radius: 3px;
+	margin-left: 3px; // Needed to align the text with h. div text
+	margin-top: 14px;
+}
+
+.twitter-typeahead {
+	width: 100%;
+	position: relative;
+}
+
+.twitter-typeahead .tt-input, .twitter-typeahead .tt-hint {
+	width: 100%;
+	margin: 0;
+	padding: 8px 12px;
+	border: 2px solid #CCC;
+	outline: none;
+}
+
+.twitter-typeahead .tt-hint {
+	color: #999;
+}
+
+.twitter-typeahead .tt-dropdown-menu {
+	margin: 21px 0 0 0;
+	width: 100%;
+    left: -61px !important;
+	padding: 0;
+	background-color: #fff;
+	border: solid 1px $color__lighter_gray;
+	border-top: solid 1px $color__lighter_gray;
+	border-bottom: 0px;
+	border-radius: 0 0 2px 2px;
+}
+
+.twitter-typeahead .tt-dropdown-menu .tt-suggestion:first-child {
+	margin-top: 20px;
+}
+
+.twitter-typeahead .tt-dropdown-menu .footer {
+	border-bottom: solid 1px $color__lighter_gray !important;
+}
+
+.twitter-typeahead .tt-dropdown-menu .autocomplete-wrapper {
+	text-align: left;
+	padding: 12px 18px;
+	font-size: 16px;
+	line-height: 24px;
+	border-bottom: solid 1px #EEE;
+}
+
+.autocomplete-wrapper.empty {
+  padding-top: 30px !important;
+}
+
+.twitter-typeahead .tt-dropdown-menu .footer {
+	padding: 10px;
+	color: #777777;
+}
+
+.twitter-typeahead .tt-dropdown-menu .footer img {
+	float: right;
+}
+
+.twitter-typeahead .tt-dropdown-menu .tt-suggestion.tt-cursor .autocomplete-wrapper .content {
+	background-color: rgba(238, 238, 238, 0.70);
+}
+
+.twitter-typeahead .tt-dropdown-menu .tt-suggestion.tt-cursor .autocomplete-wrapper {
+	background-color: rgba(238, 238, 238, 0.30);
+	cursor: pointer;
+}
+
+.twitter-typeahead .tt-dropdown-menu .tt-suggestion p {
+	margin: 0;
+}
+
+.twitter-typeahead .tt-dropdown-menu .tt-suggestion a {
+	color: #000;
+	text-decoration: none;
+}
+
+.twitter-typeahead .tt-dropdown-menu .tt-suggestion .autocomplete-wrapper em {
+	background-color: rgba(255, 116, 116, 0.20);
+	font-style: normal;
+}
+
+.twitter-typeahead .tt-dropdown-menu .tt-suggestion.tt-cursor .autocomplete-wrapper em {
+	background-color: rgba(255, 116, 116, 0.40);
+	font-style: normal;
+}
+
+.twitter-typeahead .tt-dropdown-menu .tt-suggestion .autocomplete-wrapper .content em,
+.twitter-typeahead .tt-dropdown-menu .tt-suggestion.tt-cursor .autocomplete-wrapper .content em {
+	background-color: transparent;
+	font-weight: bold;
+}
+
+.twitter-typeahead .tt-dropdown-menu .category {
+	font-weight: bold;
+	font-size: 15px;
+	padding: 5px 20px;
+	background: #EEE;
+	margin-top: 4px;
+	margin-bottom: 3px;
+}
+
+.twitter-typeahead .tt-dropdown-menu .tt-dataset-all {
+	border-top: 1px solid #DDD;
+	background: #F7F7F7;
+	margin-top: 8px;
+}
+
+.twitter-typeahead .suggestion_typehead img {
+	display: inline-block;
+	float: left;
+	margin-right: 10px;
+}
+
+.twitter-typeahead .suggestion_typehead .infos {
+	display: inline-block;
+}
+
+.twitter-typeahead .brand {
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.twitter-typeahead .name {
+	font-size: 12px;
+	font-weight: normal;
+	max-width: 310px;
+	line-height: 1.2;
+}
+
+.twitter-typeahead .suggestion_typehead .price {
+	display: inline-block;
+	float: right;
+	font-size: 14px;
+	padding-top: 8px;
+}
+
+.twitter-typeahead .suggestion_typehead.brand_in {
+	font-size: 12px;
+}
+
+.twitter-typeahead .suggestion_typehead.brand_in .keyword_in {
+	color: #888;
+}
+
+.docs #search-input:focus {
+	box-shadow: none;
+	outline: 0;
+	border-color: #F4645F;
+}
+
+.docs-wrapper {
+	overflow: hidden;
+}
+
+@media (max-width:1080px) {
+
+	.docs article {
+		margin-left: 200px;
+		padding: 15px 30px 30px;
+		h2 a:before {
+			margin-left: -20px;
+		}
+	}
+}
+
+@media (max-width: 1050px) {
+    .twitter-typeahead .tt-dropdown-menu {
+        left: -36px !important;
+    }
+}
+
+@media (max-width:780px) {
+
+	.docs article {
+		margin-left: 0px;
+		h1 {
+			margin-top: 0;
+		}
+	}
+}
+
+@media (max-width: 660px) {
+    .twitter-typeahead .tt-dropdown-menu {
+        left: -16px !important;
+    }
+}

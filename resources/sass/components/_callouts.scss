@@ -1,0 +1,154 @@
+.callouts { @include items; }
+
+.callout { display: block; }
+
+.callout.rule {
+    border-bottom: 1px solid #dee0df;
+    color: $color__salmon;
+    text-align: center;
+    font-family: $font_alt;
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 2px;
+    position: relative;
+    margin: 60px 0;
+
+    .text {
+        position: relative;
+        top: 9px;
+        background: #fff;
+        padding: 0 20px;
+    }
+}
+
+.callout.minimal {
+    border: 2px solid #e5e5e5;
+    border-radius: 2px;
+    padding: 15px 30px 20px;
+    transition: all .2s ease;
+
+    &:hover {
+        border-color: transparent;
+        border-radius: 0;
+        box-shadow: 0 2px 7px rgba(0,0,0,.2);
+    }
+
+    .callout-head {
+        display: flex;
+    }
+
+    .callout-title {
+        color: #444;
+        font-weight: 300;
+        font-size: 26px;
+        margin: 0 0 30px;
+        padding-top: 10px;
+        flex: 1;
+        font-family: $font_headline;
+    }
+
+     p {
+         @include smooth;
+         color: #444;
+         font-size: 15px;
+         line-height: 1.8;
+         margin: 0;
+
+     }
+}
+
+.callout.pop {
+    background: $color__salmon;
+    transition: all .2s ease;
+
+    &:hover {
+        background: mix(#000, $color__salmon, 10%);
+        box-shadow: 0 2px 7px rgba(0,0,0,.2);
+    }
+
+    &.teal { background: $color__teal; }
+    &.teal:hover { background: mix(#000, $color__teal, 10%); }
+
+    .callout-head {
+        display: flex;
+        padding: 15px 30px;
+        height: 75px;
+        align-items: center;
+    }
+
+    .callout-title {
+        color: #fff;
+        font-weight: 300;
+        font-size: 24px;
+        flex: 1;
+    }
+
+    .callout-body {
+        background: rgba(255,255,255,.1);
+        padding: 15px 30px;
+        height: 100%;
+    }
+
+    p {
+        @include smooth;
+        color: #fff;
+        font-size: 15px;
+        line-height: 1.8;
+        margin: 0;
+    }
+}
+
+.callout.full {
+
+}
+
+.callout.forge {
+    background: url('/assets/img/forge-flames.jpg') no-repeat;
+    background-size: cover;
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    margin: 40px 0 60px;
+
+    &:hover { box-shadow: 0 2px 7px rgba(0,0,0,.2); }
+
+    svg { margin-bottom: 30px; }
+
+    .content {
+        padding: 30px;
+    }
+
+    p {
+        @include smooth;
+        color: #fff;
+        font-size: 17px;
+        line-height: 1.6;
+        margin: 0 0 20px;
+    }
+}
+
+@media all and (max-width: 900px) {
+    .callout.forge {
+        img { height: 250px; }
+    }
+}
+
+@media all and (max-width: 800px) {
+    .callouts {
+        flex-wrap: wrap;
+
+        .callout:not(:last-child) { margin-bottom: 30px; }
+    }
+
+    .callout.forge {
+        min-height: auto;
+        padding: 0 15px !important;
+        margin-bottom: 30px !important;
+        p:last-child { margin-bottom: 0; }
+        img { display: none;}
+
+        .content { padding: 50px 15px; }
+    }
+}

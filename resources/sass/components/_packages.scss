@@ -1,0 +1,50 @@
+.packages { @include items; }
+
+.packages .third:not(:last-child) {
+    border-right: 2px solid #f0f1f3;
+}
+
+.packages .package {
+    margin-bottom: 30px;
+    display: flex;
+
+    &:last-child { margin-bottom: 0; }
+
+    .package-title {
+        color: #444;
+        display: inline-block;
+        font-size: 21px;
+        margin-bottom: 5px;
+        &:hover { text-decoration: underline; }
+    }
+
+    .content {
+        flex: 1;
+        padding-right: 15px;
+    }
+
+    .icon {margin: 5px 10px 0 0 ;}
+
+    p {
+        color: #6d7986;
+        font-size: 14px;
+        line-height: 1.8;
+        margin: 0;
+    }
+}
+
+@media all and (max-width: 800px) {
+    .packages {
+        flex-wrap: wrap;
+        .third { border: none !important; }
+        .package {
+            border-bottom: 1px solid #f0f1f3;
+            padding-bottom: 15px;
+        }
+        .package:last-child { margin-bottom: 30px; }
+        .last {
+            border: none;
+            margin-bottom: 0 !important;
+        }
+    }
+}

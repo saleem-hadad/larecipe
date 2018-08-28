@@ -1,0 +1,16 @@
+.btn {
+	border: none;
+	border-radius: 3px;
+	background: $color__salmon;
+	color: #fff;
+	padding: 10px 15px;
+	font-size: 16px;
+	.faint {
+		color: rgba(255,255,255,.5);
+	}
+	&:hover,
+	&:active {
+		background: $color__darker_salmon;
+		color: #fff;
+	}
+}

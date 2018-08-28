@@ -1,0 +1,23 @@
+.the-404 .contain {
+	@include clearfix;
+	padding: 50px 0;
+	display: table;
+	height: 80vh;
+	img {
+		float: left;
+		max-width: 100%;
+	}
+	h1 {
+		font-size: 38px;
+		padding-left: 35px;
+	}
+	.content,
+	.media {
+		display: table-cell;
+		vertical-align: middle;
+	}
+}
+
+.pl-6 {
+    padding-left: 1.5rem;
+}

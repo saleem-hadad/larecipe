@@ -1,0 +1,259 @@
+.panel {
+	position: relative;
+	padding: 0 20px;
+
+	h1, p.intro {
+		text-align: center;
+	}
+	p {
+		font-size: 21px;
+		color: $color__light_gray;
+	}
+
+    p.intro {
+        @include smooth;
+        color: #aeaeae;
+        font-family: $font_alt;
+        font-size: 21px;
+        letter-spacing: -.02em;
+    }
+
+	&.dark {
+		background-color: $color__faint;
+	}
+
+    &.standout {
+        background-color: $color__salmon;
+        color: #fff;
+    }
+
+	&.statement {
+		display: table;
+		table-layout: fixed;
+		height: 100vh;
+		min-height: 900px;
+		margin: 0 0 -100px 0;
+		width: 100%;
+		text-align: center;
+
+		.content {
+			display: table-cell;
+			vertical-align: middle;
+			width: 100%;
+			padding-bottom: 150px;
+		}
+
+		h1 {
+			font-size: 56px;
+		}
+
+		h1 + p {
+			font-size: 28px;
+			font-weight: 100;
+			-webkit-font-smoothing: subpixel-antialiased;
+		}
+
+		p.caption {
+			color: $color__gray;
+			font-size: 18px;
+		}
+
+		.browser-window {
+			display: block;
+			margin: 8vh auto 15px;
+		}
+
+		.next-up {
+			bottom: 150px;
+		}
+	}
+
+    &.laracon {
+        background: $color__salmon url('/assets/img/laracon-bg.jpg') center center no-repeat;
+        padding: 60px 0;
+        text-align: center;
+        box-shadow: 0 0 35px rgba(0,0,0,.3);
+        position: relative;
+        z-index: 5;
+		> h1 {
+            color: #fff;
+			margin: 0 0 30px 0;
+			text-align: center;
+		}
+        h2 {
+            font-weight: 400;
+            margin: 40px 0;
+        }
+        .date {
+            font-size: 16px;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+        .btn {
+            background: rgba(255,255,255,.85);
+            border-radius: 60px;
+            color: $color__salmon;
+            margin: 10px;
+            width: 260px;
+            font-size: 18px;
+            &:hover {
+                background: #fff;
+            }
+            em {
+                font-size: 24px;
+                display: block;
+                font-style: normal;
+            }
+        }
+    }
+
+	&.features {
+		padding: 75px 0;
+		> h1,
+		> p {
+			margin: 0 0 20px 0;
+			text-align: center;
+		}
+		.blocks {
+			max-width: 900px;
+			background: #fff;
+			margin: 50px auto;
+			border-radius: 4px;
+			box-shadow: 0 1px 4px rgba(0,0,0,.2);
+
+			.block {
+				@include clearfix;
+				border-bottom: 1px solid #dbdcdb;
+				height: 225px;
+				overflow: hidden;
+				.text {
+					padding: 40px;
+					width: 60%;
+					float: left;
+					h2 {
+						font-size: 24px;
+						font-weight: 400;
+						color: $color__salmon;
+					}
+				}
+				.media {
+					float: right;
+					padding-top: 20px;
+					width: 40%;
+					overflow: hidden;
+					.browser-window {
+						width: 400px;
+					}
+
+				}
+
+				&.even {
+					.text {float: right;}
+					.media {
+						float: left;
+						.terminal-window {
+							float: left;
+							margin-left: -5px;
+							width: 360px;
+							pre[class*="language-"] {
+								border-radius: 0;
+								margin-top: 0;
+							}
+						}
+					}
+				}
+
+				p {
+					font-size: 14px;
+                    line-height: 1.8;
+					color: #80878c;
+				}
+			}
+		}
+	}
+
+    &.partners{
+        padding: 50px 0 25px 0;
+    }
+
+	&.ecosystem {
+		padding: 150px 0 50px;
+		background: url('/assets/img/laravel-tucked.png') center top no-repeat;
+		> h1 {
+			margin: 0 0 20px 0;
+			text-align: center;
+		}
+	}
+
+	.browser-window,
+	.terminal-window {
+		overflow: hidden;
+		pre[class*="language-"], .window-content {
+     	overflow: hidden;
+   	}
+	}
+
+}
+
+@media (max-width:980px) {
+	.panel.features {
+		padding: 75px 0;
+	}
+}
+
+@media (max-width:760px) {
+	.panel.statement h1 {
+		font-size: 42px;
+		line-height: 1.2;
+		+ p {
+			font-size: 21px;
+		}
+	}
+	.panel.ecosystem {
+		.forge {
+			text-align: center;
+			padding: 0 50px;
+			margin: 50px 0;
+			.screenshot {
+				@include clearfix;
+				float: none;
+				margin-bottom: 25px;
+				max-width: 100%;
+			}
+			.content {
+				@include clearfix;
+				max-width: 100%;
+			}
+		}
+	}
+	.panel.features .blocks .block .text {
+		padding: 15px;
+		p {
+			margin-bottom: 0;
+		}
+	}
+}
+
+@media (max-width: 580px) {
+	.panel.features .blocks .block {
+		height: 410px;
+		.text {
+			width: 100%;
+			float: none !important;
+			display: block;
+			padding: 5%;
+		}
+		.media {
+			float: none !important;
+			display: block;
+			width: 100%;
+			.terminal-window,
+			.browser-window {
+				width: 90% !important;
+				margin: 0 5% !important;
+				float: none !important;
+			}
+		}
+	}
+}
