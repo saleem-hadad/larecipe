@@ -16068,8 +16068,8 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 
 .documentation > .article blockquote.has-icon p {
-  padding-left: 50px;
-  padding-top: 12px;
+  padding-left: 30px;
+  margin-bottom: 0px;
   color: #fff;
 }
 

@@ -1072,7 +1072,7 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     $('.documentation blockquote p:first-child').each(function () {
       var str = $(this).html();
       var match = str.match(/\{(.*?)\}/);
-      console.log(str);
+
       if (match) {
         var icon = match[1] || false;
         var word = match[1] || false;
@@ -1088,7 +1088,7 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
             break;
         }
         $(this).html(str.replace(/\{(.*?)\}/, '<div class="flag"><span class="svg">' + icon + '</span></div>'));
-        $(this).parent().addClass('card has-icon ' + word);
+        $(this).parent().addClass('alert has-icon ' + word);
       }
     });
   }
