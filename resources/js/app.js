@@ -1,13 +1,5 @@
 // jQuery core
-window.jQuery = window.$ = require('./vendor/jquery.js');
-
-// These all require jQuery
-require('./vendor/prism.js');
-require('./vendor/bootstrap.js');
-require('./vendor/typeahead.js');
-
-// Standalone vendor libraries
-const Mousetrap = require('./vendor/mousetrap.js');
+window.jQuery = window.$ = require('jquery');
 import Vue from 'vue';
 
 new Vue({
@@ -22,10 +14,7 @@ new Vue({
   }
 })
 
-
 jQuery(function($) {
-
-  
 
   // gheading links
   $('.docs-wrapper').find('a[name]').each(function () {
@@ -89,140 +78,4 @@ jQuery(function($) {
       $(this).parent().addClass('has-icon ' + word);
     }
   });
-
-  Mousetrap.bind('/', function(e) {
-    e.preventDefault();
-    $('#search-input').focus();
-  });
-
-  Mousetrap.bind(["ctrl+b", "command+b"], function(e) {
-    e.preventDefault();
-    $(".sidebar").find( "h2" ).addClass('is-active');
-  });
-
-  // collapse and expand for the sidebar
-  var toggles = document.querySelectorAll('.sidebar h2'),
-      togglesList = document.querySelectorAll('.sidebar h2 + ul');
-
-  for (var i = 0; i < toggles.length; i++) {
-    toggles[i].addEventListener('click', expandItem);
-    toggles[i].addEventListener('keydown', expandItemKeyboard);
-    toggles[i].setAttribute('tabindex', '0');
-  }
-
-  // Via https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API#Testing_for_availability
-  function storageAvailable(type) {
-    try {
-      var storage = window[type],
-          x = '__storage_test__';
-      storage.setItem(x, x);
-      storage.removeItem(x);
-      return true;
-    } catch(e) {
-      return e instanceof DOMException && (
-          // everything except Firefox
-          e.code === 22 ||
-          // Firefox
-          e.code === 1014 ||
-          // test name field too, because code might not be present
-          // everything except Firefox
-          e.name === 'QuotaExceededError' ||
-          // Firefox
-          e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-          // acknowledge QuotaExceededError only if there's something already stored
-          storage.length !== 0;
-    }
-  }
-
-  // Track the state of the doc collapse
-  var docCollapsed = true;
-  function expandDocs(e) {
-    for (var i = 0; i < toggles.length; i++) {
-      if(docCollapsed) {
-        toggles[i].classList.add('is-active')
-      } else {
-        toggles[i].classList.remove('is-active')
-      }
-    }
-
-    // Modify states
-    docCollapsed = !docCollapsed;
-    document.getElementById('doc-expand').text = (docCollapsed ? 'Expand All' : 'Collapse All');
-
-    // Modify LS if we can
-    if (storageAvailable('localStorage')) {
-      localStorage.setItem('laravel_docCollapsed', docCollapsed);
-    }
-    // Cancel event
-    if(e) {
-      e.preventDefault();
-    }
-  }
-
-  if (document.getElementById('doc-expand')) {
-    // Load the users previous preference if available
-    if(storageAvailable('localStorage')) {
-      // Can't use if(var) since this is a boolean, LS returns null for unset keys
-      if(localStorage.getItem('laravel_docCollapsed') === null) {
-        localStorage.setItem('laravel_docCollapsed', true)
-      } else {
-        // Load previous state, and if it was false, then expand the doc
-        // LS will store booleans as strings, we will "cast" them back here
-        localStorage.getItem('laravel_docCollapsed') == 'false' ? expandDocs() : null
-      }
-    }
-
-    // Register event listener
-    document.getElementById('doc-expand').addEventListener('click', expandDocs);
-  }
-
-  if ($('.sidebar ul').length) {
-    var current = $('.sidebar ul').find('li a[href="' + window.location.pathname + '"]');
-
-    if (current.length) {
-      current.parent().css('font-weight', 'bold');
-
-      // Only toggle the state if the user has collapsed the documentation
-      if(docCollapsed) {
-        current.closest('ul').prev().toggleClass('is-active');
-      }
-    }
-  }
-
-  function expandItem(e) {
-    var elem = e.target;
-
-    if(elem.classList.contains('is-active')) {
-      elem.classList.remove('is-active');
-    } else {
-      clearItems();
-      elem.classList.add('is-active');
-    }
-  }
-
-  function expandItemKeyboard(e) {
-    var elem = e.target;
-
-    if ([13, 37, 39].includes(e.keyCode)) {
-      clearItems();
-    }
-
-    if (e.keyCode === 13) {
-      elem.classList.toggle('is-active');
-    }
-
-    if (e.keyCode === 39) {
-      elem.classList.add('is-active');
-    }
-
-    if (e.keyCode === 37) {
-      elem.classList.remove('is-active');
-    }
-  }
-
-  function clearItems() {
-    for (var i = 0; i < toggles.length; i++) {
-      toggles[i].classList.remove('is-active');
-    }
-  }
 });
