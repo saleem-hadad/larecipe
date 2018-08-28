@@ -1,7 +1,25 @@
+@at-root {
+     @-ms-viewport{
+        width: device-width;
+    }
+}
+html {
+    box-sizing: border-box;
+    -ms-overflow-style: scrollbar;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+body {
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $body-color;
+    background-color: $body-bg;
+}
+
 iframe {
     border: 0;
 }
-
 figcaption,
 figure,
 main {

@@ -5,7 +5,9 @@
         font-weight: $navbar-nav-link-font-weight;
         text-transform: $navbar-nav-link-text-transform;
         letter-spacing: $navbar-nav-link-letter-spacing;
-        @include transition($navbar-transition);
+        @if $enable-transitions {
+            transition: $navbar-transition;
+        }
 
         .nav-link-inner--text {
             margin-left: .25rem;
@@ -46,9 +48,9 @@
 }
 
 @include media-breakpoint-up(lg) {
-    // .navbar-main {
-    //     padding: 1rem 0;
-    // }
+    .navbar-main {
+        padding: 1rem 0;
+    }
 
     .navbar-nav {
         .nav-item {

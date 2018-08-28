@@ -14,7 +14,15 @@
     "bootstrap": "^4.0.0",
     "cross-env": "^5.1",
     "jquery": "^3.2",
-    "laravel-mix": "^2.0"
+    "laravel-mix": "^2.0",
+    "bootstrap-vue": "^2.0.0-rc.11",
+    "flatpickr": "^4.5.1",
+    "nouislider": "^11.1.0",
+    "vue": "^2.5.16",
+    "vue-flatpickr-component": "^7.0.4",
+    "vue-lazyload": "^1.2.6"
   },
-  "dependencies": {}
+  "dependencies": {
+    "vue2-transitions": "0.2.3"
+  }
 }

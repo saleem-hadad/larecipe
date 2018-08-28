@@ -22,13 +22,14 @@
 // Hero sections
 .section-hero {
     @include media-breakpoint-up(md) {
+        height: 100vh;
         min-height: 500px;
     }
 }
 
 // Circle sections
 .section-shaped {
-    //margin: 180px 0;
+    margin: 180px 0;
     position: relative;
 
     .stars-and-coded{
@@ -48,8 +49,8 @@
 
         +.container {
             position: relative;
-            // padding-top: 6rem;
-            // padding-bottom: 0rem;
+            padding-top: 6rem;
+            padding-bottom: 0rem;
             height: 100%;
         }
 
@@ -71,11 +72,11 @@
     }
 
     .shape-skew {
-        transform: skewY(-4deg);
+        transform: skewY(-8deg);
         transform-origin: 0;
 
         span {
-            transform: skew(4deg);
+            transform: skew(8deg);
         }
     }
 

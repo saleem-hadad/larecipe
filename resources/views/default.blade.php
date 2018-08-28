@@ -17,8 +17,10 @@
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css">
     </head>
     <body>
-        @include('larecipe::partials.nav')
-        
-        @yield('content')
+        <div id="app">
+            @include('larecipe::partials.nav')
+    
+            @yield('content')
+        </div>
     </body>
 </html>

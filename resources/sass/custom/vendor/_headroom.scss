@@ -1,8 +1,8 @@
 
 .headroom {
     will-change: transform;
+    transition: $transition-base;
     background-color: inherit;
-    @include transition($transition-base);
 }
 .headroom--pinned {
 	@extend .position-fixed;

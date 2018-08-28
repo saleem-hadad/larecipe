@@ -6,6 +6,10 @@
     }
 }
 
+.badge + .badge {
+    margin-left: 3px;
+}
+
 // Variations
 .badge-pill {
     padding-right: $badge-pill-padding-x;
@@ -35,7 +39,7 @@
 
 .badge-inline + span > a {
     text-decoration: underline;
-} 
+}
 
 // Sizes
 .badge-md {

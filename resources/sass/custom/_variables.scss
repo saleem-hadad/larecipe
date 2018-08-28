@@ -68,7 +68,7 @@ $colors: map-merge((
 ), $colors);
 
 $default:       #172b4d !default;
-$primary:       #ff60b4 !default;
+$primary:       #5e72e4 !default;
 $secondary:     #f4f5f7 !default;
 $success:       $green !default;
 $info:          $teal !default;
@@ -212,6 +212,7 @@ $section-colors: map-merge((
   "darker":       $darker
 ), $section-colors);
 
+
 // Links
 
 $link-color:                $primary !default;
@@ -337,7 +338,7 @@ $h6-font-size:                $font-size-base !default;
 $headings-margin-bottom:      ($spacer / 2);
 $headings-font-family:        inherit !default;
 $headings-font-weight:        $font-weight-normal !default;
-$headings-line-height:        1.5 !default;
+$headings-line-height:        1.3 !default;
 $headings-color:              $gray-800 !default;
 
 $heading-letter-spacing:      .025em !default;
@@ -644,7 +645,7 @@ $nav-pills-box-shadow:              $btn-box-shadow !default;
 // Navbar
 
 $navbar-transition:                 all .15s linear !default;
-$navbar-padding-y:                  1rem !default;
+$navbar-padding-y:                  .5rem !default;
 $navbar-padding-x:                  1rem !default;
 
 $navbar-nav-link-padding-x:         1rem !default;
