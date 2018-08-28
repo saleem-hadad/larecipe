@@ -15988,3 +15988,24 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   right: 10px;
   left: auto;
 }
+
+.sidebar {
+  font-size: 15px;
+  background-color: #f4f5f7;
+  width: 15rem;
+  position: fixed;
+  z-index: 10;
+  margin: 0;
+  top: 3.6rem;
+  left: 0;
+  bottom: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-right: 1px solid #dee2e6;
+  overflow-y: auto;
+}
+
+.documentation > .article {
+  padding-left: 20rem;
+  margin: 100px 0 0 0;
+}

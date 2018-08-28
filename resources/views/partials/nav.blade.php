@@ -1,4 +1,4 @@
-<base-nav type="primary" expand>
+<base-nav type="primary" expand fixed>
     <a class="navbar-brand" href="#">{{ config('app.name') }}</a>
 
     <div class="row" slot="content-header" slot-scope="{closeMenu}">

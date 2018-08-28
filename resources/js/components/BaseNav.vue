@@ -5,7 +5,8 @@
             {[`navbar-${effect}`]: effect},
             {'navbar-transparent': transparent},
             {[`bg-${type}`]: type},
-            {'rounded': round}
+            {'rounded': round},
+            {'fixed-top': fixed},
          ]">
         <div :class="[expand ? 'container-fluid': 'container']">
             <slot name="container-pre"></slot>
@@ -77,6 +78,11 @@ export default {
       type: Boolean,
       default: false,
       description: "Whether navbar should contain `navbar-expand-lg` class"
+    },
+    fixed: {
+      type: Boolean,
+      default: false,
+      description: "Whether navbar should fixed top"
     }
   },
   data() {
