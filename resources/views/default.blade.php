@@ -19,7 +19,7 @@
     <body class="@yield('body-class', 'docs') language-php">
         <nav class="main">
             <a href="/" class="brand nav-block">
-                <span>Docs</span>
+                <span>{{ config('app.name') }}</span>
             </a>
 
             <div class="search nav-block invisible"></div>
