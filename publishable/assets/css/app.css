@@ -16052,6 +16052,12 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   margin-bottom: 1.5rem;
 }
 
+.documentation .article h2 {
+  font-size: 1.5rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
 .documentation .article hr:first-of-type {
   border-top: 2px dashed #e9ecef;
 }
