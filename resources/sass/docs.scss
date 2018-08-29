@@ -1,3 +1,5 @@
+@import "prism";
+
 .documentation {
     .sidebar {
         font-size: 15px;
@@ -83,6 +85,12 @@
                 color: $primary;
                 opacity: .6;
             }
+        }
+
+        h3 {
+            font-size: $font-size-lg;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
         }
 
         hr:first-of-type {

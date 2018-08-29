@@ -26108,43 +26108,47 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "progress-wrapper" }, [
-    _c("div", { class: "progress-" + _vm.type }, [
-      _vm.label
-        ? _c(
-            "div",
-            { staticClass: "progress-label" },
-            [_vm._t("label", [_c("span", [_vm._v(_vm._s(_vm.label))])])],
-            2
-          )
-        : _vm._e(),
+  return _c(
+    "div",
+    { staticClass: "progress-wrapper", class: { "pt-0": !_vm.label } },
+    [
+      _c("div", { class: "progress-" + _vm.type }, [
+        _vm.label
+          ? _c(
+              "div",
+              { staticClass: "progress-label" },
+              [_vm._t("label", [_c("span", [_vm._v(_vm._s(_vm.label))])])],
+              2
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "progress-percentage" },
+          [_vm._t("default", [_c("span", [_vm._v(_vm._s(_vm.value) + "%")])])],
+          2
+        )
+      ]),
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "progress-percentage" },
-        [_vm._t("default", [_c("span", [_vm._v(_vm._s(_vm.value) + "%")])])],
-        2
+        { staticClass: "progress", style: "height: " + _vm.height + "px" },
+        [
+          _c("div", {
+            staticClass: "progress-bar",
+            class: _vm.computedClasses,
+            style: "width: " + _vm.value + "%;",
+            attrs: {
+              role: "progressbar",
+              "aria-valuenow": _vm.value,
+              "aria-valuemin": "0",
+              "aria-valuemax": "100"
+            }
+          })
+        ]
       )
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "progress", style: "height: " + _vm.height + "px" },
-      [
-        _c("div", {
-          staticClass: "progress-bar",
-          class: _vm.computedClasses,
-          style: "width: " + _vm.value + "%;",
-          attrs: {
-            role: "progressbar",
-            "aria-valuenow": _vm.value,
-            "aria-valuemin": "0",
-            "aria-valuemax": "100"
-          }
-        })
-      ]
-    )
-  ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

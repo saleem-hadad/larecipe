@@ -1,5 +1,5 @@
 <template>
-  <div class="progress-wrapper">
+  <div class="progress-wrapper" :class="{'pt-0': !label}">
     <div :class="`progress-${type}`">
       <div class="progress-label" v-if="label">
         <slot name="label">
