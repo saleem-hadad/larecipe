@@ -3,6 +3,7 @@
 namespace BinaryTorch\LaRecipe;
 
 use Illuminate\Support\ServiceProvider;
+use BinaryTorch\LaRecipe\Commands\GenerateDocumentationCommand;
 
 class LaRecipeServiceProvider extends ServiceProvider
 {
@@ -35,13 +36,14 @@ class LaRecipeServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->registerPublishableResources();
+            $this->registerConsoleCommands();
         }
     }
 
     /**
      * Register the publishable files.
      */
-    private function registerPublishableResources()
+    protected function registerPublishableResources()
     {
         $publishablePath = dirname(__DIR__) . '/publishable';
 
@@ -70,9 +72,17 @@ class LaRecipeServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the commands accessible from the Console.
+     */
+    protected function registerConsoleCommands()
+    {
+        $this->commands(GenerateDocumentationCommand::class);
+    }
+
+    /**
      * Register the package configs.
      */
-    public function registerConfigs()
+    protected function registerConfigs()
     {
         $this->mergeConfigFrom(
             dirname(__DIR__) . '/publishable/config/larecipe.php',
