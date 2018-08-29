@@ -1,5 +1,7 @@
 <larecipe-nav type="primary" expand fixed style="height: 4rem">
-    <a class="navbar-brand" href="{{ url('/') }}">{{ config('app.name') }}</a>
+    <a class="navbar-brand" href="{{ url('/') }}">
+        {{ config('app.name') }}
+    </a>
 
     <div class="row" slot="content-header" slot-scope="{closeMenu}">
         <div class="col-6 collapse-brand">
