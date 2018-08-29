@@ -1,7 +1,7 @@
 <template>
   <div class="progress-wrapper">
     <div :class="`progress-${type}`">
-      <div class="progress-label">
+      <div class="progress-label" v-if="label">
         <slot name="label">
           <span>{{label}}</span>
         </slot>

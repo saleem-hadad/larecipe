@@ -1,5 +1,5 @@
 <template>
-    <div class="card"
+    <div class="card mt-4"
          :class="[
          {'card-lift--hover': hover},
          {'shadow': shadow},

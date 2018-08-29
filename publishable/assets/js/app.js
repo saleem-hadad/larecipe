@@ -24689,12 +24689,14 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "progress-wrapper" }, [
     _c("div", { class: "progress-" + _vm.type }, [
-      _c(
-        "div",
-        { staticClass: "progress-label" },
-        [_vm._t("label", [_c("span", [_vm._v(_vm._s(_vm.label))])])],
-        2
-      ),
+      _vm.label
+        ? _c(
+            "div",
+            { staticClass: "progress-label" },
+            [_vm._t("label", [_c("span", [_vm._v(_vm._s(_vm.label))])])],
+            2
+          )
+        : _vm._e(),
       _vm._v(" "),
       _c(
         "div",
@@ -27811,7 +27813,7 @@ var render = function() {
   return _c(
     "div",
     {
-      staticClass: "card",
+      staticClass: "card mt-4",
       class: [
         { "card-lift--hover": _vm.hover },
         { shadow: _vm.shadow },
