@@ -23795,7 +23795,7 @@ var render = function() {
   return _c(
     "div",
     {
-      staticClass: "card mt-4",
+      staticClass: "card mt-2",
       class: [
         { "card-lift--hover": _vm.hover },
         { shadow: _vm.shadow },

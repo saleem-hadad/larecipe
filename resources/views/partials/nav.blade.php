@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <larecipe-input class="navbar-nav ml-lg-auto" alternative :rounded="true" placeholder="Search..."></larecipe-input>
+    {{-- <larecipe-input class="navbar-nav ml-lg-auto" alternative :rounded="true" placeholder="Search..."></larecipe-input> --}}
 
     @auth
         <larecipe-dropdown class="navbar-nav ml-lg-auto">
