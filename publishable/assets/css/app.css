@@ -16069,10 +16069,17 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   padding: 1rem;
   list-style: none;
   width: 200px;
+  padding: 0rem;
 }
 
 .documentation .article ul:first-of-type li {
   border-bottom: 1px dashed #dee2e6;
+  padding: 10px;
+}
+
+.documentation .article ul:first-of-type li a {
+  font-size: 0.875rem;
+  color: #8898aa;
 }
 
 .documentation .article p {

@@ -71,8 +71,16 @@
             list-style: none;
             width: 200px;
 
+            padding: 0rem;
+    
             li {
                 border-bottom: 1px dashed $gray-300;
+                padding: 10px;
+                
+                a {
+                    font-size: $font-size-sm;
+                    color: $gray-600;
+                }
             }
         }
     
