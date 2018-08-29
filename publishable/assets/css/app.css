@@ -15997,7 +15997,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   left: auto;
 }
 
-.sidebar {
+.documentation .sidebar {
   font-size: 15px;
   background-color: #f4f5f7;
   width: 15rem;
@@ -16014,12 +16014,12 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   padding: 2.1rem 0px !important;
 }
 
-.sidebar > ul {
+.documentation .sidebar > ul {
   list-style: none;
   padding: 0rem;
 }
 
-.sidebar > ul > li > h2 {
+.documentation .sidebar > ul > li > h2 {
   padding: 1.1rem;
   color: #525f7f;
   font-size: 1rem;
@@ -16027,13 +16027,13 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   margin-bottom: 0px;
 }
 
-.sidebar > ul > li > ul {
+.documentation .sidebar > ul > li > ul {
   list-style: none;
   padding: 0px;
   line-height: 2.25;
 }
 
-.sidebar > ul > li > ul > li > a {
+.documentation .sidebar > ul > li > ul > li > a {
   font-size: 1rem;
   font-weight: 600;
   color: #8898aa;
@@ -16044,6 +16044,12 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   position: static;
   padding-left: 20rem;
   margin: 100px 0 0 0;
+}
+
+.documentation .article h1:first-of-type {
+  border-left: 2px solid #5e72e4;
+  padding-left: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .documentation .article hr:first-of-type {
@@ -16088,6 +16094,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 
 .documentation .article blockquote.has-icon .flag svg {
+  fill: #fff;
   width: 24px;
   height: 24px;
 }
