@@ -16033,7 +16033,11 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   line-height: 2.25;
 }
 
-.documentation .sidebar > ul > li > ul > li > a {
+.documentation .sidebar > ul > li > ul > li.is-active {
+  border-left: 2px solid #5e72e4;
+}
+
+.documentation .sidebar > ul > li > ul > li a {
   font-size: 1rem;
   font-weight: 600;
   color: #8898aa;
@@ -16056,6 +16060,22 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   font-size: 1.5rem;
   margin-top: 2.5rem;
   margin-bottom: 1rem;
+}
+
+.documentation .article h2 a,
+.documentation .article h2 a:hover {
+  color: #525f7f;
+  text-decoration: none;
+}
+
+.documentation .article h2 a:before {
+  content: "#";
+  margin-left: -15px;
+  margin-top: 5px;
+  position: absolute;
+  font-size: 15px;
+  color: #5e72e4;
+  opacity: .6;
 }
 
 .documentation .article hr:first-of-type {
@@ -16090,6 +16110,11 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 .documentation .article blockquote.has-icon {
   position: relative;
   margin: 2rem 0;
+}
+
+.documentation .article blockquote.has-icon:hover {
+  -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+          box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08) !important;
 }
 
 .documentation .article blockquote.has-icon p {

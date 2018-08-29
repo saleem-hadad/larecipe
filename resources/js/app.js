@@ -18,10 +18,20 @@ const app = new Vue({
   },
   mounted() {
     // gheading links
-    $('.docs-wrapper').find('a[name]').each(function () {
+    $('.documentation').find('a[name]').each(function () {
       var anchor = $('<a href="#' + this.name + '"/>');
       $(this).parent().next('h2').wrapInner(anchor);
     });
+
+
+    if ($('.sidebar ul').length) {
+      var current = $('.sidebar ul').find('li a[href="' + window.location.pathname + '"]');
+
+      if (current.length) {
+        current.parent().css('font-weight', 'bold').addClass('is-active');
+      }
+    }
+
 
     $('.documentation blockquote p:first-child').each(function() {
       var str = $(this).html();

@@ -31,11 +31,16 @@
                     list-style: none;
                     padding: 0px;
                     line-height: $line-height-lg * 1.5;
-                    > li > a {
-                        font-size: $font-size-base;
-                        font-weight: $font-weight-bold;
-                        color: $gray-600;
-                        padding: 0px 2rem;
+                    > li {
+                        &.is-active {
+                            border-left: 2px solid $primary;
+                        }
+                        a {
+                            font-size: $font-size-base;
+                            font-weight: $font-weight-bold;
+                            color: $gray-600;
+                            padding: 0px 2rem;
+                        }
                     }
                 }
             }
@@ -57,6 +62,21 @@
             font-size: $font-size-xl;
             margin-top: 2.5rem;
             margin-bottom: 1rem;
+
+            a,
+            a:hover {
+                color: $gray-700;
+                text-decoration: none;
+            }
+            a:before {
+                content: "#";
+                margin-left: -15px;
+                margin-top: 5px;
+                position: absolute;
+                font-size: 15px;
+                color: $primary;
+                opacity: .6;
+            }
         }
 
         hr:first-of-type {
@@ -76,7 +96,7 @@
             li {
                 border-bottom: 1px dashed $gray-300;
                 padding: 10px;
-                
+
                 a {
                     font-size: $font-size-sm;
                     color: $gray-600;
@@ -92,6 +112,10 @@
         blockquote.has-icon {
             position: relative;
             margin: 2rem 0;
+
+            &:hover {
+                box-shadow: $input-focus-alternative-box-shadow !important;
+            }
     
             p { 
                 padding-left: 30px; 
