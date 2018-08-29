@@ -23,6 +23,9 @@ const app = new Vue({
       $(this).parent().next('h2').wrapInner(anchor);
     });
 
+    $('.documentation').find('table').each(function () {
+      $(this).addClass('table table-bordered table-hover shadow shadow-sm--hover');
+    });
 
     if ($('.sidebar ul').length) {
       var current = $('.sidebar ul').find('li a[href="' + window.location.pathname + '"]');

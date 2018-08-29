@@ -54,7 +54,7 @@ class DocumentationController extends Controller
             return response()->view('larecipe::docs', [
                 'title'          => 'Page not found',
                 'index'          => $this->documentation->getIndex($version),
-                // 'content'        => view('partials.doc-missing'),
+                'content'        => view('larecipe::partials.404'),
                 'currentVersion' => $version,
                 'versions'       => $publishedVersions,
                 'currentSection' => '',
