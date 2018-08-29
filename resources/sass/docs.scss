@@ -32,12 +32,18 @@
                     padding: 0px;
                     line-height: $line-height-lg * 1.5;
                     > li {
+                        padding-left: 2px;
                         &.is-active {
+                            padding-left: 0px;
                             border-left: 2px solid $primary;
+
+                            a {
+                                font-weight: $font-weight-bold;
+                            }
                         }
                         a {
                             font-size: $font-size-base;
-                            font-weight: $font-weight-bold;
+                            font-weight: $font-weight-normal;
                             color: $gray-600;
                             padding: 0px 2rem;
                         }

@@ -16033,13 +16033,22 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   line-height: 2.25;
 }
 
+.documentation .sidebar > ul > li > ul > li {
+  padding-left: 2px;
+}
+
 .documentation .sidebar > ul > li > ul > li.is-active {
+  padding-left: 0px;
   border-left: 2px solid #5e72e4;
+}
+
+.documentation .sidebar > ul > li > ul > li.is-active a {
+  font-weight: 600;
 }
 
 .documentation .sidebar > ul > li > ul > li a {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 400;
   color: #8898aa;
   padding: 0px 2rem;
 }
