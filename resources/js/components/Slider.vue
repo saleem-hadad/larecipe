@@ -11,7 +11,7 @@
 import noUiSlider from "nouislider";
 
 export default {
-  name: "base-slider",
+  name: "slider",
   props: {
     value: {
       type: [String, Array, Number],
