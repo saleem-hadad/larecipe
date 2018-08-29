@@ -15,7 +15,7 @@
 </template>
 <script>
 export default {
-  name: "base-checkbox",
+  name: "larecipe-checkbox",
   model: {
     prop: "checked"
   },

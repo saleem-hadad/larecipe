@@ -13,7 +13,7 @@
 </template>
 <script>
 export default {
-  name: "badge",
+  name: "larecipe-badge",
   props: {
     tag: {
       type: String,
@@ -43,5 +43,3 @@ export default {
   }
 };
 </script>
-<style>
-</style>

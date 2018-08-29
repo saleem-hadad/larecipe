@@ -23,7 +23,7 @@
 </template>
 <script>
 export default {
-  name: "base-dropdown",
+  name: "larecipe-dropdown",
   props: {
     direction: {
       type: String,

@@ -43,7 +43,7 @@
 import { SlideYUpTransition } from "vue2-transitions";
 
 export default {
-  name: "modal",
+  name: "larecipe-modal",
   components: {
     SlideYUpTransition
   },

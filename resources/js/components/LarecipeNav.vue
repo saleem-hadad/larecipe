@@ -15,14 +15,14 @@
                     {{title}}
                 </a>
             </slot>
-            <navbar-toggle-button :toggled="toggled"
+            <larecipe-navbar-toggle-button :toggled="toggled"
                                   :target="contentId"
                                   @click.native.stop="toggled = !toggled">
-            </navbar-toggle-button>
+            </larecipe-navbar-toggle-button>
 
             <slot name="container-after"></slot>
 
-            <div class="collapse navbar-collapse" :class="{show: toggled}" :id="contentId" v-click-outside="closeMenu">
+            <div class="collapse navbar-collapse" :class="{show: toggled}" :id="contentId">
                 <div class="navbar-collapse-header">
                     <slot name="content-header" :close-menu="closeMenu"></slot>
                 </div>
@@ -34,13 +34,13 @@
 
 <script>
 import { FadeTransition } from "vue2-transitions";
-import NavbarToggleButton from "./NavbarToggleButton";
+import LarecipeNavbarToggleButton from "./LarecipeNavbarToggleButton";
 
 export default {
-  name: "base-nav",
+  name: "larecipe-nav",
   components: {
     FadeTransition,
-    NavbarToggleButton
+    LarecipeNavbarToggleButton
   },
   props: {
     type: {

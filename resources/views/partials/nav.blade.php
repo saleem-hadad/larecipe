@@ -1,4 +1,4 @@
-<base-nav type="primary" expand fixed style="height: 4rem">
+<larecipe-nav type="primary" expand fixed style="height: 4rem">
     <a class="navbar-brand" href="{{ url('/') }}">{{ config('app.name') }}</a>
 
     <div class="row" slot="content-header" slot-scope="{closeMenu}">
@@ -8,22 +8,22 @@
             </a>
         </div>
         <div class="col-6 collapse-close">
-            <close-button @click="closeMenu"></close-button>
+            <larecipe-close-button @click="closeMenu"></larecipe-close-button>
         </div>
     </div>
 
-    <base-input class="navbar-nav ml-lg-auto" alternative :rounded="true" placeholder="Search..."></base-input>
+    <larecipe-input class="navbar-nav ml-lg-auto" alternative :rounded="true" placeholder="Search..."></larecipe-input>
 
     @auth
-        <base-dropdown class="navbar-nav ml-lg-auto">
-            <base-button slot="title" type="secondary" class="dropdown-toggle btn-white">
+        <larecipe-dropdown class="navbar-nav ml-lg-auto">
+            <larecipe-button slot="title" type="secondary" class="dropdown-toggle btn-white">
                 {{ auth()->user()->name }}
-            </base-button>
+            </larecipe-button>
             <form action="/logout" method="POST">
                 {{ csrf_field() }}
 
                 <button class="dropdown-item" type="submit">Logout</button>
             </form>
-        </base-dropdown>
+        </larecipe-dropdown>
     @endauth
- </base-nav>
+ </larecipe-nav>

@@ -10,6 +10,7 @@
 </template>
 <script>
 export default {
+  name: "larecipe-navbar-toggle-button",
   props: {
     target: {
       type: [String, Number],
@@ -23,5 +24,3 @@ export default {
   }
 };
 </script>
-<style>
-</style>

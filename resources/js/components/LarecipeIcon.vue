@@ -15,7 +15,7 @@
 </template>
 <script>
 export default {
-  name: "icon",
+  name: "larecipe-icon",
   props: {
     name: {
       type: String,

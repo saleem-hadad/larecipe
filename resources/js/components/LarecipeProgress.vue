@@ -26,7 +26,7 @@
 </template>
 <script>
 export default {
-  name: "base-progress",
+  name: "larecipe-progress",
   props: {
     striped: {
       type: Boolean,

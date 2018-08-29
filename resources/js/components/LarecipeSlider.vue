@@ -11,7 +11,7 @@
 import noUiSlider from "nouislider";
 
 export default {
-  name: "slider",
+  name: "larecipe-slider",
   props: {
     value: {
       type: [String, Array, Number],

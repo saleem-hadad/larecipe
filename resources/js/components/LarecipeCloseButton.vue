@@ -12,7 +12,7 @@
 </template>
 <script>
 export default {
-  name: "close-button",
+  name: "larecipe-close-button",
   props: {
     target: {
       type: [String, Number],

@@ -9,7 +9,7 @@
 </template>
 <script>
 export default {
-  name: "base-switch",
+  name: "larecipe-switch",
   inheritAttrs: false,
   props: {
     value: {

@@ -20,7 +20,7 @@
 </template>
 <script>
 export default {
-  name: "base-button",
+  name: "larecipe-button",
   props: {
     tag: {
       type: String,

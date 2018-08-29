@@ -19,7 +19,7 @@
 </template>
 <script>
 export default {
-  name: "base-pagination",
+  name: "larecipe-pagination",
   props: {
     pageCount: {
       type: Number,

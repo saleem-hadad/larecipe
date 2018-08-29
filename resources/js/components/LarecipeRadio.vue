@@ -13,7 +13,7 @@
 </template>
 <script>
 export default {
-  name: "base-radio",
+  name: "larecipe-radio",
   props: {
     name: {
       type: [String, Number],
