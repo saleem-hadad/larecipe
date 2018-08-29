@@ -112,6 +112,10 @@ textarea[resize="horizontal"] {
     }
 }
 
+.rounded {
+    border-radius: 2rem !important;
+}
+
 .has-danger {
     &:after {
         content: "\ea53";

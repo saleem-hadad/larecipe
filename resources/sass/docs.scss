@@ -41,54 +41,55 @@
     }
 }
 
-.documentation > .article {
-    padding-left: 20rem;
-    margin: 100px 0 0 0;
-    
-    p {
-		font-size: 1rem;
-		line-height: 1.9;
-    }
-    
-    blockquote.has-icon {
-        position: relative;
-        margin: 2rem 0;
-    
-        &.info {
-            background: $info;
+.documentation {
+
+    .article {
+        position: static;
+        padding-left: 20rem;
+        margin: 100px 0 0 0;
+        
+        hr:first-of-type {
+            border-top: 2px dashed $gray-200;
         }
 
-        &.error {
-            background: $danger;
-        }
+        ul:first-of-type {
+            position: fixed;
+            top: 100px;
+            right: 30px;
+            padding: 1rem;
+            list-style: none;
+            width: 200px;
 
-        &.success {
-            background: $success;
+            li {
+                border-bottom: 1px dashed $gray-300;
+            }
         }
     
-        &.primary {
-            background: $primary;
+        p {
+            font-size: 1rem;
+            line-height: 1.9;
         }
-
-        &.warning {
-            background: $warning;
-        }
-
-        p { 
-            padding-left: 30px; 
-            margin-bottom: 0px;
-            color: $white
-        }
+        
+        blockquote.has-icon {
+            position: relative;
+            margin: 2rem 0;
     
-        .flag {
-            position: absolute;
-            width: 30px;
-            left: 15px;
-            top: 10px;
-            font-weight: $font-weight-bold;
-            svg {
-                width: 24px;
-                height: 24px;
+            p { 
+                padding-left: 30px; 
+                margin-bottom: 0px;
+                color: $white
+            }
+        
+            .flag {
+                position: absolute;
+                width: 30px;
+                left: 15px;
+                top: 10px;
+                font-weight: $font-weight-bold;
+                svg {
+                    width: 24px;
+                    height: 24px;
+                }
             }
         }
     }

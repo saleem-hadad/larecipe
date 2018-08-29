@@ -1,14 +1,14 @@
 @extends('larecipe::default')
 
 @section('content')
-<div class="container-fluid pl-0 ">
-	<nav class="row flex-xl-nowrap documentation">
-		<div class="col-12 col-md-3 col-xl-2 sidebar">
+<div class="container-fluid pl-0 documentation">
+	<nav class="row">
+		<div class="col-12 col-md-3 sidebar">
 			{!! $index !!}
 		</div>
 		
-		<main class="col-12 col-md-9 col-xl-8  article" role="main">
+		<div class="col-12 col-md-9 article">
 			{!! $content !!}
-		</main>
+		</div>
 	</div>
 @endsection

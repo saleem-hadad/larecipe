@@ -1,4 +1,4 @@
-<base-nav type="primary" expand fixed>
+<base-nav type="primary" expand fixed style="height: 4rem">
     <a class="navbar-brand" href="#">{{ config('app.name') }}</a>
 
     <div class="row" slot="content-header" slot-scope="{closeMenu}">
@@ -12,10 +12,18 @@
         </div>
     </div>
 
-    <base-dropdown class="navbar-nav ml-lg-auto">
-        <base-button slot="title" type="secondary" class="dropdown-toggle btn-white">
-            {{ auth()->user()->name }}
-        </base-button>
-        <a class="dropdown-item" href="#">Logout</a>
-    </base-dropdown>
+    <base-input class="navbar-nav ml-lg-auto" alternative :rounded="true" placeholder="Search..."></base-input>
+
+    @auth
+        <base-dropdown class="navbar-nav ml-lg-auto">
+            <base-button slot="title" type="secondary" class="dropdown-toggle btn-white">
+                {{ auth()->user()->name }}
+            </base-button>
+            <form action="/logout" method="POST">
+                {{ csrf_field() }}
+
+                <button class="dropdown-item" type="submit">Logout</button>
+            </form>
+        </base-dropdown>
+    @endauth
  </base-nav>

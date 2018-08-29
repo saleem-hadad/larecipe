@@ -13272,6 +13272,10 @@ textarea[resize="horizontal"] {
   color: #2dce89;
 }
 
+.rounded {
+  border-radius: 2rem !important;
+}
+
 .has-danger:after {
   content: "\EA53";
   color: #db2d05;
@@ -13927,6 +13931,10 @@ textarea[resize="horizontal"] {
 
 .navbar-nav .nav-link .nav-link-inner--text {
   margin-left: .25rem;
+}
+
+.navbar-nav input {
+  height: 2.1rem;
 }
 
 .navbar-brand {
@@ -16032,48 +16040,46 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   padding: 0px 2rem;
 }
 
-.documentation > .article {
+.documentation .article {
+  position: static;
   padding-left: 20rem;
   margin: 100px 0 0 0;
 }
 
-.documentation > .article p {
+.documentation .article hr:first-of-type {
+  border-top: 2px dashed #e9ecef;
+}
+
+.documentation .article ul:first-of-type {
+  position: fixed;
+  top: 100px;
+  right: 30px;
+  padding: 1rem;
+  list-style: none;
+  width: 200px;
+}
+
+.documentation .article ul:first-of-type li {
+  border-bottom: 1px dashed #dee2e6;
+}
+
+.documentation .article p {
   font-size: 1rem;
   line-height: 1.9;
 }
 
-.documentation > .article blockquote.has-icon {
+.documentation .article blockquote.has-icon {
   position: relative;
   margin: 2rem 0;
 }
 
-.documentation > .article blockquote.has-icon.info {
-  background: #11cdef;
-}
-
-.documentation > .article blockquote.has-icon.error {
-  background: #f5365c;
-}
-
-.documentation > .article blockquote.has-icon.success {
-  background: #2dce89;
-}
-
-.documentation > .article blockquote.has-icon.primary {
-  background: #5e72e4;
-}
-
-.documentation > .article blockquote.has-icon.warning {
-  background: #fb6340;
-}
-
-.documentation > .article blockquote.has-icon p {
+.documentation .article blockquote.has-icon p {
   padding-left: 30px;
   margin-bottom: 0px;
   color: #fff;
 }
 
-.documentation > .article blockquote.has-icon .flag {
+.documentation .article blockquote.has-icon .flag {
   position: absolute;
   width: 30px;
   left: 15px;
@@ -16081,7 +16087,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   font-weight: 600;
 }
 
-.documentation > .article blockquote.has-icon .flag svg {
+.documentation .article blockquote.has-icon .flag svg {
   width: 24px;
   height: 24px;
 }
