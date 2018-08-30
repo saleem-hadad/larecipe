@@ -28,7 +28,7 @@ class DocumentationController extends Controller
      */
     public function index()
     {
-        return redirect()->route('docs.show', config('larecipe.versions.default'));
+        return redirect()->route('docs.show', config('larecipe.versions.default') . '/' . config('larecipe.docs.landing'));
     }
 
     /**
