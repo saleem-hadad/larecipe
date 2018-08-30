@@ -80,6 +80,7 @@ return [
     | where you can limit the access to only authenticated users in your
     | system, change the default theme and colors of the docs layout.
     |
+    | Supported Themes: 'light'
     |
     */
 
