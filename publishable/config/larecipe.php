@@ -54,8 +54,39 @@ return [
         'auth' => false
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Documentation Settings
+    |--------------------------------------------------------------------------
+    |
+    | These options configure the additional behaviors of your documentation
+    | where you can limit the access to only authenticated users in your
+    | system, change the default theme and colors of the docs layout.
+    |
+    |
+    */
+
     'repository'   => [
         'provider' => 'github',
         'url'      => ''
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Documentation Settings
+    |--------------------------------------------------------------------------
+    |
+    | These options configure the additional behaviors of your documentation
+    | where you can limit the access to only authenticated users in your
+    | system, change the default theme and colors of the docs layout.
+    |
+    |
+    */
+
+    'ui'              => [
+        'logo'        => '',
+        'colors'      => [
+            'primary' => '#787AF6'
+        ]
+    ]
 ];
