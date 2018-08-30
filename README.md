@@ -23,7 +23,7 @@
 
 # LaRecipe 🍪
 
-Made with ❤️ by [Binary Torch](binary-torch.com)
+Made with ❤️ by [Binary Torch](http://binary-torch.com/)
 
 ![LaRecipe Screenshot](https://larecipe.binarytorch.com.my/images/ss.png)
 
