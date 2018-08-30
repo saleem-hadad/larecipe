@@ -56,12 +56,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Documentation Settings
+    | Documentation Repository
     |--------------------------------------------------------------------------
     |
-    | These options configure the additional behaviors of your documentation
-    | where you can limit the access to only authenticated users in your
-    | system, change the default theme and colors of the docs layout.
+    | This is an optional config you can set in order to show an external link
+    | to your documentation's repository if you have one. Once you set the
+    | value of the url, LaRecipe automatically will show the nav button.
     |
     |
     */
@@ -73,19 +73,36 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Documentation Settings
+    | User Interface
     |--------------------------------------------------------------------------
     |
-    | These options configure the additional behaviors of your documentation
-    | where you can limit the access to only authenticated users in your
-    | system, change the default theme and colors of the docs layout.
+    | Here you can add configure the appearance of your docs. For example
+    | you can change the default logo to custom one that match your Id
+    | Also, you can change the theme of your docs if you prefer that
     |
-    | Supported Themes: 'light'
+    | Currently Supported Themes: 'light'
     |
     */
 
     'ui'        => [
         'logo'  => '',
         'theme' => 'light'
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | SEO
+    |--------------------------------------------------------------------------
+    |
+    | These options configure the SEO settings of your docs. You can set the
+    | author, the description and the keywords. Also, LaRecipe by default
+    | sets the canonical link to the viewed page's link automatically.
+    |
+    */
+
+    'seo'             => [
+        'author'      => 'Binary Torch Sdn. Bhd.',
+        'description' => 'Write gorgeous docs for your products using Markdown inside your Laravel app',
+        'keywords'    => 'Laravel, docs, api-docs, vue docs'
     ]
 ];
