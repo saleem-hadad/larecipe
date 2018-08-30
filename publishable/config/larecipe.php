@@ -68,7 +68,7 @@ return [
 
     'repository'   => [
         'provider' => 'github',
-        'url'      => ''
+        'url'      => 'https://github.com/saleem-hadad/LaRecipe'
     ],
 
     /*
@@ -83,10 +83,8 @@ return [
     |
     */
 
-    'ui'              => [
-        'logo'        => '',
-        'colors'      => [
-            'primary' => '#787AF6'
-        ]
+    'ui'        => [
+        'logo'  => '',
+        'theme' => 'light'
     ]
 ];
