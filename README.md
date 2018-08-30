@@ -1,7 +1,7 @@
 
 
 <h6 align="center">
-    <img src="https://raw.githubusercontent.com/saleem-hadad/LaRecipe/master/publishable/assets/images/larecipe.png"/>
+    <img src="https://larecipe.binarytorch.com.my/images/logo.png"/>
 </h6>
 
 <h2 align="center">
@@ -25,7 +25,7 @@
 
 Made with ❤️ by [Binary Torch](binary-torch.com)
 
-![LaRecipe Screenshot](#)
+![LaRecipe Screenshot](https://larecipe.binarytorch.com.my/images/ss.png)
 
 ## Getting Started
 
