@@ -2,6 +2,9 @@
 
 <h6 align="center">
     <img src="#"/>
+    LaRecipe
+    <br/>
+    Write gorgeous docs for your products using MarkDown inside your Laravel app.
 </h6>
 
 <p align="center">
@@ -13,7 +16,9 @@
 
 # LaRecipe 🍪
 
-Write gorgeous docs for your products using MarkDown inside your Laravel app.
+Made with ❤️ by [Binary Torch](binary-torch.com)
+
+![LaRecipe Screenshot](#)
 
 ## Getting Started
 
