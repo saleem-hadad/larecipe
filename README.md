@@ -15,7 +15,7 @@
     
 
 <p align="center">
-<a href="https://travis-ci.org/saleem-hadad/LaRecipe"><img src="https://travis-ci.org/saleem-hadad/LaRecipe.svg" alt="Build Status"></a>
+<a href="https://travis-ci.com/saleem-hadad/LaRecipe"><img src="https://travis-ci.com/saleem-hadad/LaRecipe.svg" alt="Build Status"></a>
 <a href="https://github.com/saleem-hadad/LaRecipe"><img src="https://img.shields.io/github/release/saleem-hadad/LaRecipe.svg" alt="Release"></a>
 <a href="https://github.com/saleem-hadad/LaRecipe"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
