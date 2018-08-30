@@ -1,7 +1,8 @@
 > (Under development) Don't install it
 
 <h6 align="center">
-    <img src="#"/>
+    <img src="https://raw.githubusercontent.com/saleem-hadad/LaRecipe/master/publishable/assets/images/larecipe.png"/>
+    <br/>
     LaRecipe
     <br/>
     Write gorgeous docs for your products using MarkDown inside your Laravel app.
