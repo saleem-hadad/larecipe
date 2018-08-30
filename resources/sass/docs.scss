@@ -33,6 +33,12 @@
                     line-height: $line-height-lg * 1.5;
                     > li {
                         padding-left: 2px;
+                        transition: padding-left 0.3s;
+
+                        &:hover {
+                            padding-left: 5px;
+                        }
+
                         &.is-active {
                             padding-left: 0px;
                             border-left: 2px solid $primary;
