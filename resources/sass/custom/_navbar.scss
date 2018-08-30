@@ -1,3 +1,9 @@
+.navbar {
+    &.has-bottom-border {
+        border-bottom: 1px solid $gray-300;
+    }
+}
+
 .navbar-nav {
     .nav-link {
         font-size: $navbar-nav-link-font-size;
