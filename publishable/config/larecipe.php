@@ -86,6 +86,7 @@ return [
 
     'ui'        => [
         'logo'  => '',
+        'fav'   => 'https://larecipe.binarytorch.com.my/images/logo.png',
         'theme' => 'light'
     ],
 

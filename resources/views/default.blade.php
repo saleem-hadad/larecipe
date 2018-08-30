@@ -18,6 +18,9 @@
         {{-- CSS --}}
         <link rel="stylesheet" href="{{ larecipe_assets('css/light.css') }}">
         <script src="{{ larecipe_assets('js/app.js') }}" defer></script>
+
+        <link rel="apple-touch-icon" href="{{ config('larecipe.ui.fav') }}">
+        <link rel="shortcut icon" type="image/png" href="{{ config('larecipe.ui.fav') }}"/>
     </head>
     <body>
         <div id="app">
