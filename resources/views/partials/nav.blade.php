@@ -14,24 +14,34 @@
         </div>
     </div>
 
-    @guest
-        <div class="navbar-nav ml-lg-auto">
-            <larecipe-button slot="title" type="natural">
-                Download
-            </larecipe-button>
-        </div>
-    @endguest
 
-    @auth
-        <larecipe-dropdown class="navbar-nav ml-lg-auto">
-            <larecipe-button slot="title" type="secondary" class="dropdown-toggle btn-white">
-                {{ auth()->user()->name }}
-            </larecipe-button>
-            <form action="/logout" method="POST">
-                {{ csrf_field() }}
+    <div class="navbar-nav ml-lg-auto">
+        <larecipe-button slot="title" type="outline-white">
+            <i class="fa fa-github"></i>
+        </larecipe-button>
 
-                <button class="dropdown-item" type="submit">Logout</button>
-            </form>
+        <larecipe-dropdown>
+            <larecipe-button slot="title" type="secondary" class="dropdown-toggle btn-white" >
+                {{ $currentVersion }}
+            </larecipe-button>
+
+            @foreach ($versions as $version)
+				<li role="presentation">
+					<a class="dropdown-item" href="{{ url(config('larecipe.docs.route').'/'.$version.$currentSection) }}">{{ $version }}</a>
+				</li>
+			@endforeach
         </larecipe-dropdown>
-    @endauth
+        @auth
+            <larecipe-dropdown>
+                <larecipe-button slot="title" type="secondary" class="dropdown-toggle btn-white">
+                    {{ auth()->user()->name }}
+                </larecipe-button>
+                <form action="/logout" method="POST">
+                    {{ csrf_field() }}
+
+                    <button class="dropdown-item" type="submit">Logout</button>
+                </form>
+            </larecipe-dropdown>
+        @endauth
+    </div>
  </larecipe-nav>
