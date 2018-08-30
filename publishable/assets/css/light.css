@@ -12378,7 +12378,7 @@ article h5 + figure {
   margin-bottom: 1rem;
 }
 
-.documentation .article hr:first-of-type {
+.documentation .article hr {
   border-top: 2px dashed #e9ecef;
 }
 
