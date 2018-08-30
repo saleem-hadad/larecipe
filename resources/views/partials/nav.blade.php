@@ -30,9 +30,12 @@
 
 
     <div class="navbar-nav ml-lg-auto">
-        <larecipe-button slot="title" type="outline-primary">
-            <i class="fa fa-github"></i>
-        </larecipe-button>
+        @if (config('larecipe.repository.url'))
+            <larecipe-button tag="a" target="__blank" href="{{ config('larecipe.repository.url') }}" slot="title" type="outline-primary">
+                <i class="fa fa-{{ config('larecipe.repository.provider') }}"></i>
+            </larecipe-button>
+        @endif
+        
 
         <larecipe-dropdown>
             <larecipe-button slot="title" type="primary" class="dropdown-toggle" >

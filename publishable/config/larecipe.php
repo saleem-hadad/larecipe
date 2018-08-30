@@ -7,16 +7,16 @@ return [
     |--------------------------------------------------------------------------
     |
     | These options configure the behavior of the Larecipe docs basic routes
-    | where you can speicify the url of your documentations, the location
+    | where you can specify the url of your documentations, the location
     | of your docs and the landing page when a user visits /docs route.
     |
     |
     */
 
-    'docs'      => [
+    'docs'        => [
         'route'   => '/docs',
         'path'    => '/resources/docs',
-        'landing' => 'overview'
+        'landing' => 'overview',
     ],
 
     /*
@@ -44,7 +44,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | These options configure the additional behaviors of your documentation
-    | where you can limit the access to only authinticated users in your
+    | where you can limit the access to only authenticated users in your
     | system, change the default theme and colors of the docs layout.
     |
     |
@@ -52,5 +52,10 @@ return [
 
     'settings' => [
         'auth' => false
-    ]
+    ],
+
+    'repository'   => [
+        'provider' => 'github',
+        'url'      => ''
+    ],
 ];
