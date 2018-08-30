@@ -10,7 +10,7 @@
 
 
 <h6 align="center">
-    Write gorgeous docs for your products using MarkDown inside your Laravel app.
+    Write gorgeous documentations for your products using Markdown inside your Laravel app.
 </h6>
     
 
