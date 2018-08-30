@@ -73,11 +73,11 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | User Interface
+    | Appearance
     |--------------------------------------------------------------------------
     |
-    | Here you can add configure the appearance of your docs. For example
-    | you can change the default logo to custom one that match your Id
+    | Here you can add configure the appearance of your docs. For example,
+    | you can swap the default logo to custom one that matches your Id
     | Also, you can change the theme of your docs if you prefer that
     |
     | Currently Supported Themes: 'light'

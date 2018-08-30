@@ -12419,6 +12419,13 @@ article h5 + figure {
           box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08) !important;
 }
 
+.documentation .article blockquote.has-icon code {
+  background-color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  color: #787AF6;
+}
+
 .documentation .article blockquote.has-icon p {
   padding-left: 30px;
   margin-bottom: 0px;

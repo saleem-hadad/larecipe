@@ -130,6 +130,13 @@
             &:hover {
                 box-shadow: $input-focus-alternative-box-shadow !important;
             }
+
+            code {
+                background-color: #fff;
+                padding: 5px;
+                border-radius: 5px;
+                color: $primary;
+            }
     
             p { 
                 padding-left: 30px; 
