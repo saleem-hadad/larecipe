@@ -29,3 +29,8 @@ main {
 main {
 	overflow: hidden;
 }
+
+b,
+strong {
+  font-weight: $font-weight-extra-bold;
+}

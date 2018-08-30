@@ -11024,6 +11024,11 @@ main {
   overflow: hidden;
 }
 
+b,
+strong {
+  font-weight: 700;
+}
+
 .section-nucleo-icons .icons-container {
   position: relative;
   max-width: 100%;

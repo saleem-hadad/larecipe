@@ -5,3 +5,4 @@
 build
 .lock
 composer.lock
+/fonts
