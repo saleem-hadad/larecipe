@@ -9,7 +9,7 @@ Vue.config.productionTip = false;
 const app = new Vue({
   data() {
     return {
-      sidebar: true
+      sidebar: false
     }
   },
   el: '#app',
