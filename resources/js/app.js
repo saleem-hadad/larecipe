@@ -14,16 +14,18 @@ const app = new Vue({
   },
   el: '#app',
   mounted() {
-    // gheading links
+    // heading links
     $('.documentation').find('a[name]').each(function () {
       var anchor = $('<a href="#' + this.name + '"/>');
       $(this).parent().next('h2').wrapInner(anchor);
     });
-
+      
+    // table styling
     $('.documentation').find('table').each(function () {
       $(this).addClass('table table-bordered table-hover shadow shadow-sm--hover');
     });
 
+    // active sidebar element
     if ($('.sidebar ul').length) {
       var current = $('.sidebar ul').find('li a[href="' + window.location.pathname + '"]');
 
@@ -32,7 +34,7 @@ const app = new Vue({
       }
     }
 
-
+    // custom blockquote icons
     $('.documentation blockquote p:first-child').each(function() {
       var str = $(this).html();
       var match = str.match(/\{(.*?)\}/);
@@ -63,6 +65,12 @@ const app = new Vue({
         $(this).html(str.replace(/\{(.*?)\}/, '<div class="flag"><span class="svg">'+ icon +'</span></div>'));
         $(this).parent().addClass('alert shadow has-icon alert-' + word);
       }
+    });
+
+    const Mousetrap = require('./vendor/mousetrap.js');
+    Mousetrap.bind('/', (e) => {
+      e.preventDefault();
+      this.sidebar = ! this.sidebar;
     });
   }
 });
