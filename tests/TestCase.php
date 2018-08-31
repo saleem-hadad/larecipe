@@ -15,7 +15,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     {
         return [LaRecipeServiceProvider::class];
     }
-    
+
     /**
      * Define environment setup.
      *
@@ -33,7 +33,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
             'prefix'   => '',
         ]);
     }
-    
+
     /**
      * Load package alias
      * @param  \Illuminate\Foundation\Application $app

@@ -19,6 +19,10 @@ class DocumentationController extends Controller
     public function __construct(Documentation $documentation)
     {
         $this->documentation = $documentation;
+
+        if (config('larecipe.settings.auth')) {
+            $this->middleware('auth');
+        }
     }
 
     /**

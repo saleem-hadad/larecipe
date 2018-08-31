@@ -35,7 +35,7 @@ class Documentation
      */
     public function getIndex($version)
     {
-        $path = base_path('resources/docs/' . $version . '/documentation.md');
+        $path = base_path(config('larecipe.docs.path') . '/' . $version . '/documentation.md');
 
         if ($this->files->exists($path)) {
             return $this->replaceLinks($version, $this->parse($this->files->get($path)));
@@ -53,7 +53,7 @@ class Documentation
      */
     public function get($version, $page)
     {
-        $path = base_path('resources/docs/' . $version . '/' . $page . '.md');
+        $path = base_path(config('larecipe.docs.path') . '/' . $version . '/' . $page . '.md');
 
         if ($this->files->exists($path)) {
             return $this->replaceLinks($version, $this->parse($this->files->get($path)));
@@ -97,7 +97,7 @@ class Documentation
     public function sectionExists($version, $page)
     {
         return $this->files->exists(
-            base_path('resources/docs/' . $version . '/' . $page . '.md')
+            base_path(config('larecipe.docs.path') . '/' . $version . '/' . $page . '.md')
         );
     }
 }
