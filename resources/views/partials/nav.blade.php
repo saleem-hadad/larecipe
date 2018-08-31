@@ -21,7 +21,8 @@
 
         <span class="ml-2"> {{ config('app.name') }} </span>
     </a>
-    <larecipe-switch class="mt-2" @toggle="toggleSidebar"></larecipe-switch>
+    
+    <larecipe-switch class="mt-2" v-model="sidebar"></larecipe-switch>
 
     <div class="row" slot="content-header" slot-scope="{closeMenu}">
         <div class="col-6 collapse-brand">

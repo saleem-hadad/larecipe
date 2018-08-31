@@ -1439,11 +1439,6 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   },
 
   el: '#app',
-  methods: {
-    toggleSidebar: function toggleSidebar() {
-      this.sidebar = !this.sidebar;
-    }
-  },
   mounted: function mounted() {
     // gheading links
     $('.documentation').find('a[name]').each(function () {
@@ -27422,9 +27417,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "larecipe-switch"
+  name: "larecipe-switch",
+  props: {
+    value: {
+      type: Boolean,
+      default: false,
+      description: "Switch value"
+    }
+  },
+  computed: {
+    model: {
+      get: function get() {
+        return this.value;
+      },
+      set: function set(value) {
+        this.$emit("input", value);
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -27436,14 +27449,52 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("label", { staticClass: "custom-toggle" }, [
-    _c("input", {
-      attrs: { type: "checkbox", checked: "true" },
-      on: {
-        change: function($event) {
-          _vm.$emit("toggle")
-        }
-      }
-    }),
+    _c(
+      "input",
+      _vm._g(
+        _vm._b(
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.model,
+                expression: "model"
+              }
+            ],
+            attrs: { type: "checkbox" },
+            domProps: {
+              checked: Array.isArray(_vm.model)
+                ? _vm._i(_vm.model, null) > -1
+                : _vm.model
+            },
+            on: {
+              change: function($event) {
+                var $$a = _vm.model,
+                  $$el = $event.target,
+                  $$c = $$el.checked ? true : false
+                if (Array.isArray($$a)) {
+                  var $$v = null,
+                    $$i = _vm._i($$a, $$v)
+                  if ($$el.checked) {
+                    $$i < 0 && (_vm.model = $$a.concat([$$v]))
+                  } else {
+                    $$i > -1 &&
+                      (_vm.model = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+                  }
+                } else {
+                  _vm.model = $$c
+                }
+              }
+            }
+          },
+          "input",
+          _vm.$attrs,
+          false
+        ),
+        _vm.$listeners
+      )
+    ),
     _vm._v(" "),
     _c("span", { staticClass: "custom-toggle-slider rounded-circle" })
   ])

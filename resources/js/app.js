@@ -13,11 +13,6 @@ const app = new Vue({
     }
   },
   el: '#app',
-  methods: {
-    toggleSidebar() {
-      this.sidebar = ! this.sidebar;
-    }
-  },
   mounted() {
     // gheading links
     $('.documentation').find('a[name]').each(function () {
