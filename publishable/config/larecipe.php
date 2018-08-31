@@ -84,10 +84,16 @@ return [
     |
     */
 
-    'ui'        => [
-        'logo'  => '',
-        'fav'   => 'https://larecipe.binarytorch.com.my/images/logo.png',
-        'theme' => 'light'
+    'ui'                 => [
+        'logo'           => '',
+        'fav'            => 'https://larecipe.binarytorch.com.my/images/logo.png',
+        'theme'          => 'light',
+        'additional_css' => [
+            //'css/custom.css',
+        ],
+        'additional_js'  => [
+            //'js/custom.js',
+        ],
     ],
 
     /*
