@@ -45,19 +45,25 @@ class Documentation
     public function getIndex($version)
     {
         $cacheKey = 'larecipe.docs.' . $version . '.index';
-        $cachePeriod = config('larecipe.settings.cache_period');
-        
-        return $this->cache->remember($cacheKey, $cachePeriod, function () use ($version) {
+        $cachePeriod = config('larecipe.settings.cache.period');
+
+        $closure = function () use ($version) {
             $path = base_path(config('larecipe.docs.path') . '/' . $version . '/index.md');
             
             if ($this->files->exists($path)) {
                 $parsedContent = $this->parse($this->files->get($path));
-                
+
                 return $this->replaceLinks($version, $parsedContent);
             }
 
             return null;
-        });
+        };
+
+        if(! config('larecipe.settings.cache.enabled')) {
+            return $closure();
+        }
+
+        return $this->cache->remember($cacheKey, $cachePeriod, $closure);
     }
 
     /**
@@ -70,17 +76,25 @@ class Documentation
     public function get($version, $page)
     {
         $cacheKey = 'larecipe.docs.' . $version . '.' . $page;
-        $cachePeriod = config('larecipe.settings.cache_period');
+        $cachePeriod = config('larecipe.settings.cache.period');
 
-        return $this->cache->remember($cacheKey, $cachePeriod, function () use ($version, $page) {
+        $closure = function () use ($version, $page) {
             $path = base_path(config('larecipe.docs.path') . '/' . $version . '/' . $page . '.md');
             
             if ($this->files->exists($path)) {
-                return $this->replaceLinks($version, $this->parse($this->files->get($path)));
+                $parsedContent = $this->parse($this->files->get($path));
+
+                return $this->replaceLinks($version, $parsedContent);
             }
     
             return null;
-        });
+        };
+
+        if(! config('larecipe.settings.cache.enabled')) {
+            return $closure();
+        }
+
+        return $this->cache->remember($cacheKey, $cachePeriod, $closure);
     }
 
     /**
