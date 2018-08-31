@@ -7,7 +7,17 @@ Vue.use(Argon);
 Vue.config.productionTip = false;
 
 const app = new Vue({
+  data() {
+    return {
+      sidebar: true
+    }
+  },
   el: '#app',
+  methods: {
+    toggleSidebar() {
+      this.sidebar = ! this.sidebar;
+    }
+  },
   mounted() {
     // gheading links
     $('.documentation').find('a[name]').each(function () {

@@ -13,6 +13,11 @@
         border-right: 1px solid $gray-300;
         overflow-y: auto;
         padding: 2.1rem 0px !important;
+        transition: all 0.2s;
+
+        &.hidden {
+            left: -15rem;
+        }
     
         > ul {
             list-style: none;
@@ -63,6 +68,11 @@
         position: static;
         padding-left: 20rem;
         margin: 100px 0;
+        transition: all 0.2s;
+
+        &.expanded {
+            padding-left: 5rem;
+        }
         
         h1:first-of-type {
             border-left: 2px solid $primary;
