@@ -6,7 +6,7 @@ return [
     | Documentation Routes
     |--------------------------------------------------------------------------
     |
-    | These options configure the behavior of the Larecipe docs basic routes
+    | These options configure the behavior of the LaRecipe docs basic routes
     | where you can specify the url of your documentations, the location
     | of your docs and the landing page when a user visits /docs route.
     |
