@@ -36,7 +36,7 @@
 
     <div class="navbar-nav ml-lg-auto">
         @if (config('larecipe.repository.url'))
-            <larecipe-button tag="a" target="__blank" href="{{ config('larecipe.repository.url') }}" slot="title" type="outline-primary">
+            <larecipe-button tag="a" id="repository_button" target="__blank" href="{{ config('larecipe.repository.url') }}" slot="title" type="outline-primary">
                 <i class="fa fa-{{ config('larecipe.repository.provider') }}"></i>
             </larecipe-button>
         @endif
