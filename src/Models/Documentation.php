@@ -45,7 +45,7 @@ class Documentation
     public function getIndex($version)
     {
         $cacheKey = 'larecipe.docs.' . $version . '.index';
-        $cachePeriod = config('larecipe.settings.cache.period');
+        $cachePeriod = config('larecipe.cache.period');
 
         $closure = function () use ($version) {
             $path = base_path(config('larecipe.docs.path') . '/' . $version . '/index.md');
@@ -59,7 +59,7 @@ class Documentation
             return null;
         };
 
-        if(! config('larecipe.settings.cache.enabled')) {
+        if(! config('larecipe.cache.enabled')) {
             return $closure();
         }
 
@@ -76,7 +76,7 @@ class Documentation
     public function get($version, $page)
     {
         $cacheKey = 'larecipe.docs.' . $version . '.' . $page;
-        $cachePeriod = config('larecipe.settings.cache.period');
+        $cachePeriod = config('larecipe.cache.period');
 
         $closure = function () use ($version, $page) {
             $path = base_path(config('larecipe.docs.path') . '/' . $version . '/' . $page . '.md');
@@ -90,7 +90,7 @@ class Documentation
             return null;
         };
 
-        if(! config('larecipe.settings.cache.enabled')) {
+        if(! config('larecipe.cache.enabled')) {
             return $closure();
         }
 

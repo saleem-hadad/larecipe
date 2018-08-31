@@ -50,12 +50,13 @@ return [
     |
     */
 
-    'settings'        => [
-        'auth'        => false,
-        'cache'       => [
-            'enabled' => true,
-            'period'  => 5
-        ]
+    'settings' => [
+        'auth' => false
+    ],
+
+    'cache'       => [
+        'enabled' => true,
+        'period'  => 5
     ],
 
     /*
