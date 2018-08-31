@@ -12437,6 +12437,10 @@ article h5 + figure {
   transition: all 0.2s;
 }
 
+.documentation .sidebar.is-dark {
+  background-color: #344258;
+}
+
 .documentation .sidebar.hidden {
   left: -15rem;
 }

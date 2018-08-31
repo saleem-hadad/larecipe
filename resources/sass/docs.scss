@@ -15,6 +15,11 @@
         padding: 2.1rem 0px !important;
         transition: all 0.2s;
 
+        // dark sidebar
+        &.is-dark {
+            background-color: #344258;
+        }
+        
         &.hidden {
             left: -15rem;
         }

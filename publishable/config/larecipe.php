@@ -85,7 +85,7 @@ return [
     | you can swap the default logo to custom one that matches your Id
     | Also, you can change the theme of your docs if you prefer that
     |
-    | Currently Supported Themes: 'light'
+    | Supported Themes: 'light', 'dark'
     |
     */
 
