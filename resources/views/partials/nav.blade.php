@@ -2,7 +2,7 @@
 <larecipe-nav type="white" effect="light" expand fixed style="height: 4rem; top: 3px;">
     <a class="navbar-brand" href="{{ url('/') }}">
         @if (config('larecipe.ui.logo'))
-        <img src="{{ config('larecipe.ui.logo') }}" alt="{{ config('app.name')}} logo"/>
+            <img src="{{ asset(config('larecipe.ui.logo')) }}" alt="{{ config('app.name')}} logo"/>
         @else
             <svg height="30px" viewBox="0 0 46 46" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <defs></defs>

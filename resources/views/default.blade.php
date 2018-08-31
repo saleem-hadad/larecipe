@@ -20,8 +20,8 @@
         <script src="{{ larecipe_assets('js/app.js') }}" defer></script>
 
         {{-- Icon --}}
-        <link rel="apple-touch-icon" href="{{ config('larecipe.ui.fav') }}">
-        <link rel="shortcut icon" type="image/png" href="{{ config('larecipe.ui.fav') }}"/>
+        <link rel="apple-touch-icon" href="{{ asset(config('larecipe.ui.fav')) }}">
+        <link rel="shortcut icon" type="image/png" href="{{ asset(config('larecipe.ui.fav')) }}"/>
 
         {{-- Custom CSS --}}
         @if(!empty(config('larecipe.ui.additional_css')))

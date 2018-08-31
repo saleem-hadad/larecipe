@@ -85,8 +85,8 @@ return [
     */
 
     'ui'                 => [
-        'logo'           => '',
-        'fav'            => 'https://larecipe.binarytorch.com.my/images/logo.png',
+        'logo'           => '/images/logo.svg',
+        'fav'            => '/fav.png',
         'theme'          => 'light',
         'additional_css' => [
             //'css/custom.css',
