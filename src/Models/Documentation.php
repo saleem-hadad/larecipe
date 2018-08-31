@@ -3,11 +3,12 @@
 namespace BinaryTorch\LaRecipe\Models;
 
 use Illuminate\Filesystem\Filesystem;
-use BinaryTorch\LaRecipe\Traits\MarkdownParseable;
+use BinaryTorch\LaRecipe\Traits\HasMarkdownParser;
+use Illuminate\Contracts\Cache\Repository as Cache;
 
 class Documentation
 {
-    use MarkdownParseable;
+    use HasMarkdownParser;
 
     /**
      * The filesystem implementation.
@@ -17,14 +18,22 @@ class Documentation
     protected $files;
 
     /**
+     * The cache implementation.
+     *
+     * @var Cache
+     */
+    protected $cache;
+
+    /**
      * Create a new documentation instance.
      *
      * @param  Filesystem  $files
      * @return void
      */
-    public function __construct(Filesystem $files)
+    public function __construct(Filesystem $files, Cache $cache)
     {
         $this->files = $files;
+        $this->cache = $cache;
     }
 
     /**
@@ -35,13 +44,20 @@ class Documentation
      */
     public function getIndex($version)
     {
-        $path = base_path(config('larecipe.docs.path') . '/' . $version . '/documentation.md');
+        $cacheKey = 'larecipe.docs.' . $version . '.index';
+        $cachePeriod = config('larecipe.settings.cache_period');
+        
+        return $this->cache->remember($cacheKey, $cachePeriod, function () use ($version) {
+            $path = base_path(config('larecipe.docs.path') . '/' . $version . '/index.md');
+            
+            if ($this->files->exists($path)) {
+                $parsedContent = $this->parse($this->files->get($path));
+                
+                return $this->replaceLinks($version, $parsedContent);
+            }
 
-        if ($this->files->exists($path)) {
-            return $this->replaceLinks($version, $this->parse($this->files->get($path)));
-        }
-
-        return null;
+            return null;
+        });
     }
 
     /**
@@ -53,13 +69,18 @@ class Documentation
      */
     public function get($version, $page)
     {
-        $path = base_path(config('larecipe.docs.path') . '/' . $version . '/' . $page . '.md');
+        $cacheKey = 'larecipe.docs.' . $version . '.' . $page;
+        $cachePeriod = config('larecipe.settings.cache_period');
 
-        if ($this->files->exists($path)) {
-            return $this->replaceLinks($version, $this->parse($this->files->get($path)));
-        }
-
-        return null;
+        return $this->cache->remember($cacheKey, $cachePeriod, function () use ($version, $page) {
+            $path = base_path(config('larecipe.docs.path') . '/' . $version . '/' . $page . '.md');
+            
+            if ($this->files->exists($path)) {
+                return $this->replaceLinks($version, $this->parse($this->files->get($path)));
+            }
+    
+            return null;
+        });
     }
 
     /**

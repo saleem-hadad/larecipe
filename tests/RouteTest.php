@@ -5,13 +5,18 @@ namespace BinaryTorch\LaRecipe\Tests;
 class RouteTest extends TestCase
 {
     /** @test */
-    public function docs_index_route_will_redirect_to_docs_show_with_default_version()
+    public function a_user_will_be_redirected_to_default_version_and_landing_page_when_visit_the_root_route()
     {
-        $defaultRoute   = config('larecipe.docs.route');
-        $defaultLanding = config('larecipe.docs.landing');
-        $defaultVersion = config('larecipe.versions.default');
-        $redirectPath   = "$defaultRoute/$defaultVersion/$defaultLanding";
+        $this->call('GET', '/docs')->assertRedirect(
+            config('larecipe.docs.route') . '/' . config('larecipe.versions.default') . '/' . config('larecipe.docs.landing')
+        );
+    }
 
-        $this->call('GET', '/docs')->assertRedirect($redirectPath);
+    /** @test */
+    public function a_user_may_not_visit_doc_page_if_not_exists()
+    {
+        $this->call('GET', '/docs/1.0/bar')
+            ->assertSee('Not Found')
+            ->assertStatus(404);
     }
 }

@@ -45,13 +45,14 @@ return [
     |
     | These options configure the additional behaviors of your documentation
     | where you can limit the access to only authenticated users in your
-    | system, change the default theme and colors of the docs layout.
+    | system and change the cache period, by default is set to 5 mins.
     |
     |
     */
 
-    'settings' => [
-        'auth' => false
+    'settings'         => [
+        'auth'         => false,
+        'cache_period' => 5
     ],
 
     /*

@@ -4,7 +4,7 @@ namespace BinaryTorch\LaRecipe\Traits;
 
 use ParsedownExtra;
 
-trait MarkdownParseable
+trait HasMarkdownParser
 {
     /**
      * @param $text

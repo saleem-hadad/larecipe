@@ -7,22 +7,8 @@ use BinaryTorch\LaRecipe\Tests\TestCase;
 
 class ConfigurationTest extends TestCase
 {
-    public function setup()
-    {
-        parent::setup();
-
-        $this->app->setBasePath(__DIR__ . '/../..');
-
-        $this->app['router']->get('login', function () {
-            return 'login';
-        })->name('login');
-
-        Config::set('larecipe.docs.path', 'tests/views/docs');
-        Config::set('larecipe.docs.landing', 'foo');
-    }
-
     /** @test */
-    public function it_display_the_repository_button_only_if_the_url_is_set()
+    public function repository_button_is_visible_only_if_the_repository_url_is_given()
     {
         Config::set('larecipe.repository.url', '');
 
@@ -34,14 +20,21 @@ class ConfigurationTest extends TestCase
     }
 
     /** @test */
-    public function it_allows_guest_access_if_auth_not_enabled()
+    public function a_guest_can_access_any_documentation_if_auth_is_not_enabled()
     {
-        config()->set('larecipe.settings.auth', false);
+        // set the docs path and landing
+        Config::set('larecipe.docs.path', 'tests/views/docs');
+        Config::set('larecipe.docs.landing', 'foo');
+
+        // set auth to false
+        Config::set('larecipe.settings.auth', false);
+        
+        // guest can view foo page
         $this->get('/docs/1.0')->assertStatus(200);
     }
 
     /** @test */
-    public function it_prevent_access_docs_for_guests_if_auth_is_enabled()
+    public function only_auth_user_can_visit_docs_if_auth_option_is_enabled()
     {
         config()->set('larecipe.settings.auth', true);
         $this->get('/docs/1.0')->assertRedirect('login');
