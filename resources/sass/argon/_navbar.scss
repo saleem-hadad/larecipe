@@ -47,6 +47,15 @@
     .navbar-brand {
         color: $gray-800;
     }
+
+    .navbar-toggler {
+        background-color: $primary;
+      }
+    
+    .navbar-toggler-icon {
+        color: $white;
+        padding-top: 5px !important;
+    }
 }
 
 .navbar-nav {

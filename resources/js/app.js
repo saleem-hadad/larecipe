@@ -34,6 +34,12 @@ const app = new Vue({
       }
     }
 
+    $('.documentation .article').click(() => {
+      if (window.matchMedia("(max-width: 960px)").matches) {
+        this.sidebar = false;
+      }
+    });
+
     // custom blockquote icons
     $('.documentation blockquote p:first-child').each(function() {
       var str = $(this).html();

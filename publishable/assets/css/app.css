@@ -11225,6 +11225,15 @@ a.btn-icon-only {
   color: #32325d;
 }
 
+.navbar-light .navbar-toggler {
+  background-color: #787AF6;
+}
+
+.navbar-light .navbar-toggler-icon {
+  color: #fff;
+  padding-top: 5px !important;
+}
+
 .navbar-nav .nav-item .media:not(:last-child) {
   margin-bottom: 1.5rem;
 }

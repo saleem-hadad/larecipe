@@ -1,11 +1,11 @@
 <template>
-    <button class="navbar-toggler" type="button"
+    <button class="navbar-toggler btn-primary" type="button"
             data-toggle="collapse"
             :data-target="target"
             :aria-controls="target"
             :aria-expanded="toggled"
             aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+        <i class="fa fa-bars navbar-toggler-icon"></i>
     </button>
 </template>
 <script>
