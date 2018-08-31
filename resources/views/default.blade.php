@@ -16,7 +16,7 @@
         @endif
 
         {{-- CSS --}}
-        <link rel="stylesheet" href="{{ larecipe_assets('css/light.css') }}">
+        <link rel="stylesheet" href="{{ larecipe_assets('css/app.css') }}">
         <script src="{{ larecipe_assets('js/app.js') }}" defer></script>
 
         {{-- Icon --}}
