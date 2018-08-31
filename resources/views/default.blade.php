@@ -35,6 +35,8 @@
             @include('larecipe::partials.nav')
     
             @yield('content')
+
+            <larecipe-back-to-top></larecipe-back-to-top>
         </div>
 
         {{-- Custom JS --}}

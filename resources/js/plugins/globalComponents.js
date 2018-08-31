@@ -1,4 +1,5 @@
 import LarecipeAlert from "../components/LarecipeAlert";
+import LarecipeBackToTop from "../components/LarecipeBackToTop";
 import LarecipeBadge from "../components/LarecipeBadge";
 import LarecipeButton from "../components/LarecipeButton";
 import LarecipeCard from "../components/LarecipeCard";
@@ -18,6 +19,7 @@ import LarecipeSwitch from "../components/LarecipeSwitch";
 export default {
   install(Vue) {
     Vue.component(LarecipeAlert.name, LarecipeAlert);
+    Vue.component(LarecipeBackToTop.name, LarecipeBackToTop);
     Vue.component(LarecipeBadge.name, LarecipeBadge);
     Vue.component(LarecipeButton.name, LarecipeButton);
     Vue.component(LarecipeCard.name, LarecipeCard);
