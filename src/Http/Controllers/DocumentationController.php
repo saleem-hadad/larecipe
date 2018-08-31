@@ -21,7 +21,7 @@ class DocumentationController extends Controller
         $this->documentation = $documentation;
 
         if (config('larecipe.settings.auth')) {
-            $this->middleware('auth');
+            $this->middleware(['web', 'auth']);
         }
     }
 
