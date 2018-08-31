@@ -177,3 +177,20 @@
         }
     }
 }
+
+@media (max-width:780px) {
+
+	.documentation .article  {
+        padding: 0 40px !important;
+
+        > ul:first-of-type {
+            position: inherit;
+            top: 10px;
+            right: 30px;
+            padding: 1rem;
+            list-style: none;
+            width: auto;
+            padding: 0rem;
+        }
+	}
+}

@@ -12601,3 +12601,18 @@ article h5 + figure {
   width: 24px;
   height: 24px;
 }
+
+@media (max-width: 780px) {
+  .documentation .article {
+    padding: 0 40px !important;
+  }
+  .documentation .article > ul:first-of-type {
+    position: inherit;
+    top: 10px;
+    right: 30px;
+    padding: 1rem;
+    list-style: none;
+    width: auto;
+    padding: 0rem;
+  }
+}
