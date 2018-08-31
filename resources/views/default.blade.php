@@ -8,9 +8,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         {{-- SEO --}}
-        <meta name="author" content="{{ config('larecipe.seo.author') }}">
-        <meta name="description" content="{{ config('larecipe.seo.description') }}">
-        <meta name="keywords" content="{{ config('larecipe.seo.keywords') }}">
+        <meta name="author" content="{{ config('larecipe.seo.author', 'Binary Torch Sdn. Bhd.') }}">
+        <meta name="description" content="{{ config('larecipe.seo.description', 'Write gorgeous docs for your products using Markdown inside your Laravel app') }}">
+        <meta name="keywords" content="{{ config('larecipe.seo.keywords', 'Laravel, docs, api-docs, vue docs, LaRecipe') }}">
         @if (isset($canonical))
             <link rel="canonical" href="{{ url($canonical) }}" />
         @endif
@@ -36,7 +36,9 @@
             
             @yield('content')
 
-            <larecipe-back-to-top></larecipe-back-to-top>
+            @if(config('larecipe.ui.back_to_top'))
+                <larecipe-back-to-top></larecipe-back-to-top>
+            @endif
         </div>
 
         {{-- Custom JS --}}

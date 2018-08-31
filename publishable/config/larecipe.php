@@ -93,6 +93,7 @@ return [
         'logo'           => '/images/logo.svg',
         'fav'            => '/fav.png',
         'theme'          => 'light',
+        'back_to_top'    => true,
         'additional_css' => [
             //'css/custom.css',
         ],
@@ -113,8 +114,8 @@ return [
     */
 
     'seo'             => [
-        'author'      => 'Binary Torch Sdn. Bhd.',
-        'description' => 'Write gorgeous docs for your products using Markdown inside your Laravel app',
-        'keywords'    => 'Laravel, docs, api-docs, vue docs'
+        'author'      => '',
+        'description' => '',
+        'keywords'    => ''
     ]
 ];
