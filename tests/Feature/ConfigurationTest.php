@@ -39,4 +39,14 @@ class ConfigurationTest extends TestCase
         config()->set('larecipe.settings.auth', true);
         $this->get('/docs/1.0')->assertRedirect('login');
     }
+
+    /** @test */
+    public function back_to_top_button_is_visible_only_if_enabled()
+    {
+        Config::set('larecipe.ui.back_to_top', false);
+        $this->get('/docs/1.0')->assertDontSee('<larecipe-back-to-top></larecipe-back-to-top>');
+
+        Config::set('larecipe.ui.back_to_top', true);
+        $this->get('/docs/1.0')->assertSee('<larecipe-back-to-top></larecipe-back-to-top>');
+    }
 }
