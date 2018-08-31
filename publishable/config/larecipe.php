@@ -45,7 +45,7 @@ return [
     |
     | These options configure the additional behaviors of your documentation
     | where you can limit the access to only authenticated users in your
-    | system and change the cache period, by default is set to 5 mins.
+    | system. It is false initially so that guests can view your docs.
     |
     |
     */
@@ -54,8 +54,21 @@ return [
         'auth' => false
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Cache
+    |--------------------------------------------------------------------------
+    |
+    | Obviously rendering markdown at the back-end is costly especially if
+    | the rendered files are massive. Thankfully, caching is considered
+    | as a good option to speed up your app when having high traffic.
+    |
+    | Caching period unit: minutes
+    |
+    */
+
     'cache'       => [
-        'enabled' => true,
+        'enabled' => false,
         'period'  => 5
     ],
 
@@ -110,6 +123,7 @@ return [
     | These options configure the SEO settings of your docs. You can set the
     | author, the description and the keywords. Also, LaRecipe by default
     | sets the canonical link to the viewed page's link automatically.
+    |
     |
     */
 
