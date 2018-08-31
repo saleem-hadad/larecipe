@@ -12450,7 +12450,7 @@ article h5 + figure {
   background-color: #344258;
 }
 
-.documentation .sidebar.hidden {
+.documentation .sidebar.is-hidden {
   left: -15rem;
 }
 

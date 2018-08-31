@@ -9,7 +9,8 @@ Vue.config.productionTip = false;
 const app = new Vue({
   data() {
     return {
-      sidebar: false
+      sidebar: false,
+      forceDarkSidebar: false
     }
   },
   el: '#app',
@@ -18,6 +19,17 @@ const app = new Vue({
     $('.documentation').find('a[name]').each(function () {
       var anchor = $('<a href="#' + this.name + '"/>');
       $(this).parent().next('h2').wrapInner(anchor);
+    });
+
+    // smooth scrolling to target
+    $('.article > ul:first > li > a[href*="#"]:not([href="#"])').click(function() {
+      var target = $(this.hash);
+        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+        if (target.length) {
+          $('html,body').animate({
+            scrollTop: target.offset().top - 70
+          }, 500);
+        }
     });
       
     // table styling
@@ -34,6 +46,7 @@ const app = new Vue({
       }
     }
 
+    // hide the sidebar if clicked on the page on mobile screens
     $('.documentation .article').click(() => {
       if (window.matchMedia("(max-width: 960px)").matches) {
         this.sidebar = false;
@@ -73,10 +86,41 @@ const app = new Vue({
       }
     });
 
+    // keyboard magic 🎹
     const Mousetrap = require('./vendor/mousetrap.js');
+
+    // toggle the sidebar
     Mousetrap.bind('/', (e) => {
       e.preventDefault();
       this.sidebar = ! this.sidebar;
+    });
+
+    // force dark sidebar theme
+    Mousetrap.bind('d', (e) => {
+      e.preventDefault();
+      this.forceDarkSidebar = true;
+    });
+
+    // unforce dark sidebar theme
+    Mousetrap.bind('l', (e) => {
+      e.preventDefault();
+      this.forceDarkSidebar = false;
+    });
+
+    // scroll to the top of the page
+    Mousetrap.bind('t', (e) => {
+      e.preventDefault();
+      $('html,body').animate({
+        scrollTop: 0
+      }, 500);
+    });
+
+    // scroll to the bottom of the page
+    Mousetrap.bind('b', (e) => {
+      e.preventDefault();
+      $('html,body').animate({
+        scrollTop: $(document).height()
+      }, 500);
     });
   }
 });
