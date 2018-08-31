@@ -121,7 +121,14 @@
                 }
             }
         }
-    
+
+        :not(pre) > code {
+            background-color: $gray-100;
+            padding: 5px;
+            border-radius: 5px;
+            color: $primary;
+        }
+
         p {
             font-size: 1rem;
             line-height: 1.9;
@@ -135,13 +142,6 @@
 
             &:hover {
                 box-shadow: $input-focus-alternative-box-shadow !important;
-            }
-
-            code {
-                background-color: #fff;
-                padding: 5px;
-                border-radius: 5px;
-                color: $primary;
             }
     
             p { 
