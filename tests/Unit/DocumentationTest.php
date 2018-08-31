@@ -52,6 +52,7 @@ class DocumentationTest extends TestCase
         Config::set('larecipe.docs.path', 'tests/views/docs');
         Config::set('larecipe.docs.landing', 'foo');
         Config::set('larecipe.versions.default', '1.0');
+        Config::set('larecipe.cache.enabled', '1.0');
 
         $this->documentation->getIndex('1.0');
         $this->assertNotEmpty(cache('larecipe.docs.1.0.index'));
