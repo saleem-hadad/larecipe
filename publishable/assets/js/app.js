@@ -1435,7 +1435,8 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   data: function data() {
     return {
       sidebar: false,
-      forceDarkSidebar: false
+      forceDarkSidebar: false,
+      forceLightSidebar: false
     };
   },
 
@@ -1527,12 +1528,14 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     Mousetrap.bind('d', function (e) {
       e.preventDefault();
       _this.forceDarkSidebar = true;
+      _this.forceLightSidebar = false;
     });
 
     // unforce dark sidebar theme
     Mousetrap.bind('l', function (e) {
       e.preventDefault();
       _this.forceDarkSidebar = false;
+      _this.forceLightSidebar = true;
     });
 
     // scroll to the top of the page

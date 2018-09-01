@@ -10,7 +10,8 @@ const app = new Vue({
   data() {
     return {
       sidebar: false,
-      forceDarkSidebar: false
+      forceDarkSidebar: false,
+      forceLightSidebar: false
     }
   },
   el: '#app',
@@ -99,12 +100,14 @@ const app = new Vue({
     Mousetrap.bind('d', (e) => {
       e.preventDefault();
       this.forceDarkSidebar = true;
+      this.forceLightSidebar = false;
     });
 
     // unforce dark sidebar theme
     Mousetrap.bind('l', (e) => {
       e.preventDefault();
       this.forceDarkSidebar = false;
+      this.forceLightSidebar = true;
     });
 
     // scroll to the top of the page

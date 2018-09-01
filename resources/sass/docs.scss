@@ -19,6 +19,10 @@
         &.is-dark {
             background-color: #344258;
         }
+
+        &.is-light {
+            background-color: $secondary;
+        }
         
         &.is-hidden {
             left: -15rem;

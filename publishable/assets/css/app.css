@@ -12450,6 +12450,10 @@ article h5 + figure {
   background-color: #344258;
 }
 
+.documentation .sidebar.is-light {
+  background-color: #f4f5f7;
+}
+
 .documentation .sidebar.is-hidden {
   left: -15rem;
 }
