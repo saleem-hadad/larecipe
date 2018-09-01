@@ -15,8 +15,8 @@ class LaRecipeServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadRoutesFrom(__DIR__ . '/../routes/LaRecipe.php');
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'larecipe');
+        $this->loadRoutesFrom(__DIR__.'/../routes/LaRecipe.php');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'larecipe');
     }
 
     /**
@@ -46,7 +46,7 @@ class LaRecipeServiceProvider extends ServiceProvider
      */
     protected function registerPublishableResources()
     {
-        $publishablePath = dirname(__DIR__) . '/publishable';
+        $publishablePath = dirname(__DIR__).'/publishable';
 
         $publishable = [
             'larecipe_config' => [
@@ -68,7 +68,7 @@ class LaRecipeServiceProvider extends ServiceProvider
      */
     protected function loadHelpers()
     {
-        foreach (glob(__DIR__ . '/Helpers/*.php') as $filename) {
+        foreach (glob(__DIR__.'/Helpers/*.php') as $filename) {
             require_once $filename;
         }
     }
@@ -88,7 +88,7 @@ class LaRecipeServiceProvider extends ServiceProvider
     protected function registerConfigs()
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/publishable/config/larecipe.php',
+            dirname(__DIR__).'/publishable/config/larecipe.php',
             'larecipe'
         );
     }
