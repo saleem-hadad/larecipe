@@ -29,8 +29,6 @@ Made with ❤️ by [Binary Torch](http://binary-torch.com/)
 
 ## Getting Started
 
-> (Under development) Don't install it
-
 
 ## License
 
