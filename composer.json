@@ -4,8 +4,8 @@
     "keywords": ["laravel", "markdown", "docs", "documentation", "api"],
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/saleem-hadad/larecipe/issues",
-        "source": "https://github.com/saleem-hadad/larecipe"
+        "issues": "https://github.com/binarytorch/larecipe/issues",
+        "source": "https://github.com/binarytorch/larecipe"
     },
     "authors": [
         {
