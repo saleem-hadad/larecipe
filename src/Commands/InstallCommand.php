@@ -3,6 +3,8 @@
 namespace BinaryTorch\LaRecipe\Commands;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Process\Process;
+use BinaryTorch\LaRecipe\LaRecipeServiceProvider;
 
 class InstallCommand extends Command
 {
@@ -27,9 +29,30 @@ class InstallCommand extends Command
      */
     public function handle()
     {
-        $this->info('Assets Published.. 🍪');
-        $this->info('Config Published.. 🍪');
-        $this->info('Reading published versions.. 🍪');
-        $this->info('resources/docs Folder Created.. 🍪');
+        $this->line('Publishing assets and congigurations.. 🍪');
+        $this->call('vendor:publish', ['--provider' => LaRecipeServiceProvider::class, '--tag' => ['larecipe_assets', 'larecipe_config']]);
+
+        $this->line('Dumping the autoloaded files and reloading all new files.. 🍪');
+        $composer  = $this->findComposer();
+        $process   = new Process($composer . ' dump-autoload');
+        $process->setTimeout(null);
+        $process->setWorkingDirectory(base_path())->run();
+
+        $this->info('LaRecipe successfully installed! Enjoy 😍');
+        $this->info('Visit /docs in your browser 👻');
+    }
+
+    /**
+     * Get the composer command for the environment.
+     *
+     * @return string
+     */
+    protected function findComposer()
+    {
+        if (file_exists(getcwd() . '/composer.phar')) {
+            return '"' . PHP_BINARY . '" ' . getcwd() . '/composer.phar';
+        }
+
+        return 'composer';
     }
 }

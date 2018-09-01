@@ -3,6 +3,7 @@
 namespace BinaryTorch\LaRecipe;
 
 use Illuminate\Support\ServiceProvider;
+use BinaryTorch\LaRecipe\Commands\InstallCommand;
 use BinaryTorch\LaRecipe\Commands\GenerateDocumentationCommand;
 
 class LaRecipeServiceProvider extends ServiceProvider
@@ -53,7 +54,7 @@ class LaRecipeServiceProvider extends ServiceProvider
             ],
             'larecipe_assets' => [
                 "{$publishablePath}/assets/" => public_path('vendor/binarytorch/larecipe/assets'),
-                "{$publishablePath}/fonts/" => public_path('fonts'),
+                "{$publishablePath}/fonts/"  => public_path('fonts'),
             ],
         ];
 
@@ -77,6 +78,7 @@ class LaRecipeServiceProvider extends ServiceProvider
      */
     protected function registerConsoleCommands()
     {
+        $this->commands(InstallCommand::class);
         $this->commands(GenerateDocumentationCommand::class);
     }
 
