@@ -111,7 +111,7 @@ class GenerateDocumentationCommand extends Command
     protected function createVersionDirectory($versionDirectory)
     {
         if (!$this->filesystem->isDirectory($versionDirectory)) {
-            $this->filesystem->makeDirectory($versionDirectory);
+            $this->filesystem->makeDirectory($versionDirectory, 0755, true);
 
             return true;
         }
