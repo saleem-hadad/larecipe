@@ -38,7 +38,7 @@ Run the install command.
 
     php artisan larceipe:install
 
-That's it!
+That's it.
 
 #### See full documentation: [https://larecipe.binarytorch.com.my/](https://larecipe.binarytorch.com.my/)
 
