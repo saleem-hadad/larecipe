@@ -12507,6 +12507,10 @@ article h5 + figure {
   transition: all 0.2s;
 }
 
+.documentation .article img {
+  max-width: 100%;
+}
+
 .documentation .article.expanded {
   padding-left: 5rem;
 }

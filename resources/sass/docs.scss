@@ -75,6 +75,10 @@
         margin: 100px 0;
         transition: all 0.2s;
 
+        img {
+            max-width: 100%;
+        }
+
         &.expanded {
             padding-left: 5rem;
         }
