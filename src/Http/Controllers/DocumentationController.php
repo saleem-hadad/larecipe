@@ -32,7 +32,7 @@ class DocumentationController extends Controller
      */
     public function index()
     {
-        return redirect()->route('docs.show', config('larecipe.versions.default') . '/' . config('larecipe.docs.landing'));
+        return redirect()->route('docs.show', config('larecipe.versions.default').'/'.config('larecipe.docs.landing'));
     }
 
     /**
@@ -44,16 +44,16 @@ class DocumentationController extends Controller
      */
     public function show($version, $page = null)
     {
-        $docsRoute         = config('larecipe.docs.route');
-        $defaultVersion    = config('larecipe.versions.default');
+        $docsRoute = config('larecipe.docs.route');
+        $defaultVersion = config('larecipe.versions.default');
         $publishedVersions = config('larecipe.versions.published');
 
-        if (!$this->documentation->isPublishedVersion($version)) {
-            return redirect($docsRoute . '/' . $defaultVersion . '/' . $version, 301);
+        if (! $this->documentation->isPublishedVersion($version)) {
+            return redirect($docsRoute.'/'.$defaultVersion.'/'.$version, 301);
         }
 
         $sectionPage = $page ?: config('larecipe.docs.landing');
-        $content     = $this->documentation->get($version, $sectionPage);
+        $content = $this->documentation->get($version, $sectionPage);
 
         if (is_null($content)) {
             return response()->view('larecipe::docs', [
@@ -67,17 +67,17 @@ class DocumentationController extends Controller
             ], 404);
         }
 
-        $title   = (new Crawler($content))->filterXPath('//h1');
+        $title = (new Crawler($content))->filterXPath('//h1');
         $section = '';
         if ($this->documentation->sectionExists($version, $page)) {
-            $section .= '/' . $page;
-        } elseif (!is_null($page)) {
-            return redirect($docsRoute . '/' . $version);
+            $section .= '/'.$page;
+        } elseif (! is_null($page)) {
+            return redirect($docsRoute.'/'.$version);
         }
 
         $canonical = null;
         if ($this->documentation->sectionExists($defaultVersion, $sectionPage)) {
-            $canonical = $docsRoute . '/' . $defaultVersion . '/' . $sectionPage;
+            $canonical = $docsRoute.'/'.$defaultVersion.'/'.$sectionPage;
         }
 
         return view('larecipe::docs', [
