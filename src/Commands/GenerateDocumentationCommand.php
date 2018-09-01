@@ -19,7 +19,7 @@ class GenerateDocumentationCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Generate docs structre with indexes for all your documentation\'s versions';
+    protected $description = 'Generate docs structure with indexes for all your documentation\'s versions';
 
     /**
      * The Filesystem instance.
@@ -82,12 +82,10 @@ class GenerateDocumentationCommand extends Command
         $this->info('Done. Enjoy 🦊');
     }
 
-    protected function createVersionLanding($versionDirectory) { 
-        $landingPath = $versionDirectory . '/' . config('larecipe.docs.landing') . '.md';
-
-        if (!$this->filesystem->exists($landingPath)) {
-            $content = $this->generateLandingContent($this->getStub('landing'));
-            $this->filesystem->put($landingPath, $content);
+    protected function createVersionDirectory($versionDirectory)
+    {
+        if (!$this->filesystem->isDirectory($versionDirectory)) {
+            $this->filesystem->makeDirectory($versionDirectory, 0755, true);
 
             return true;
         }
@@ -95,6 +93,11 @@ class GenerateDocumentationCommand extends Command
         return false;
     }
 
+     /**
+     * Create index.md for the given version if it's not exists.
+     *
+     * @return bool
+     */
     protected function createVersionIndex($versionDirectory) {
         $indexPath = $versionDirectory . '/index.md';
 
@@ -108,10 +111,17 @@ class GenerateDocumentationCommand extends Command
         return false;
     }
 
-    protected function createVersionDirectory($versionDirectory)
-    {
-        if (!$this->filesystem->isDirectory($versionDirectory)) {
-            $this->filesystem->makeDirectory($versionDirectory, 0755, true);
+    /**
+     * Create {landing}.md for the given version if it's not exists.
+     *
+     * @return bool
+     */
+    protected function createVersionLanding($versionDirectory) { 
+        $landingPath = $versionDirectory . '/' . config('larecipe.docs.landing') . '.md';
+
+        if (!$this->filesystem->exists($landingPath)) {
+            $content = $this->generateLandingContent($this->getStub('landing'));
+            $this->filesystem->put($landingPath, $content);
 
             return true;
         }
@@ -119,15 +129,11 @@ class GenerateDocumentationCommand extends Command
         return false;
     }
 
-    protected function generateLandingContent($stub)
-    {
-        return str_replace(
-            '{{TITLE}}',
-            ucwords(config('larecipe.docs.landing')),
-            $stub
-        );
-    }
-
+    /**
+     * replace stub placeholders.
+     *
+     * @return string
+     */
     protected function generateIndexContent($stub) 
     {
         $content = str_replace(
@@ -149,6 +155,20 @@ class GenerateDocumentationCommand extends Command
         );
 
         return $content;
+    }
+
+    /**
+     * replace stub placeholders.
+     *
+     * @return string
+     */
+    protected function generateLandingContent($stub)
+    {
+        return str_replace(
+            '{{TITLE}}',
+            ucwords(config('larecipe.docs.landing')),
+            $stub
+        );
     }
 
     /**
