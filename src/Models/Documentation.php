@@ -45,8 +45,8 @@ class Documentation
     public function getIndex($version)
     {
         $closure = function () use ($version) {
-            $path = base_path(config('larecipe.docs.path') . '/' . $version . '/index.md');
-            
+            $path = base_path(config('larecipe.docs.path').'/'.$version.'/index.md');
+
             if ($this->files->exists($path)) {
                 $parsedContent = $this->parse($this->files->get($path));
 
@@ -56,11 +56,11 @@ class Documentation
             return null;
         };
 
-        if(! config('larecipe.cache.enabled')) {
+        if (! config('larecipe.cache.enabled')) {
             return $closure();
         }
 
-        $cacheKey = 'larecipe.docs.' . $version . '.index';
+        $cacheKey = 'larecipe.docs.'.$version.'.index';
         $cachePeriod = config('larecipe.cache.period');
 
         return $this->cache->remember($cacheKey, $cachePeriod, $closure);
@@ -76,22 +76,22 @@ class Documentation
     public function get($version, $page)
     {
         $closure = function () use ($version, $page) {
-            $path = base_path(config('larecipe.docs.path') . '/' . $version . '/' . $page . '.md');
-            
+            $path = base_path(config('larecipe.docs.path').'/'.$version.'/'.$page.'.md');
+
             if ($this->files->exists($path)) {
                 $parsedContent = $this->parse($this->files->get($path));
 
                 return $this->replaceLinks($version, $parsedContent);
             }
-    
+
             return null;
         };
 
-        if(! config('larecipe.cache.enabled')) {
+        if (! config('larecipe.cache.enabled')) {
             return $closure();
         }
 
-        $cacheKey = 'larecipe.docs.' . $version . '.' . $page;
+        $cacheKey = 'larecipe.docs.'.$version.'.'.$page;
         $cachePeriod = config('larecipe.cache.period');
 
         return $this->cache->remember($cacheKey, $cachePeriod, $closure);
@@ -127,12 +127,12 @@ class Documentation
      *
      * @param  string  $version
      * @param  string  $page
-     * @return boolean
+     * @return bool
      */
     public function sectionExists($version, $page)
     {
         return $this->files->exists(
-            base_path(config('larecipe.docs.path') . '/' . $version . '/' . $page . '.md')
+            base_path(config('larecipe.docs.path').'/'.$version.'/'.$page.'.md')
         );
     }
 }

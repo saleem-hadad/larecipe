@@ -32,12 +32,12 @@ class InstallCommand extends Command
         $this->line('Publishing assets and congigurations.. 🍪');
         $this->call('vendor:publish', ['--provider' => LaRecipeServiceProvider::class, '--tag' => ['larecipe_assets', 'larecipe_config']]);
 
-        $this->line('Setup initial documentations structure under ' . config('larecipe.docs.path') . '.. 🍪');
+        $this->line('Setup initial documentations structure under '.config('larecipe.docs.path').'.. 🍪');
         $this->call('larecipe:docs');
 
         $this->line('Dumping the autoloaded files and reloading all new files.. 🍪');
-        $composer  = $this->findComposer();
-        $process   = new Process($composer . ' dump-autoload');
+        $composer = $this->findComposer();
+        $process = new Process($composer.' dump-autoload');
         $process->setTimeout(null);
         $process->setWorkingDirectory(base_path())->run();
 
@@ -52,8 +52,8 @@ class InstallCommand extends Command
      */
     protected function findComposer()
     {
-        if (file_exists(getcwd() . '/composer.phar')) {
-            return '"' . PHP_BINARY . '" ' . getcwd() . '/composer.phar';
+        if (file_exists(getcwd().'/composer.phar')) {
+            return '"'.PHP_BINARY.'" '.getcwd().'/composer.phar';
         }
 
         return 'composer';
