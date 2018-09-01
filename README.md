@@ -24,7 +24,7 @@
 
 Made with ❤️ by [Binary Torch](http://binary-torch.com/)
 
-![LaRecipe Screenshot](https://larecipe.binarytorch.com.my/images/screenshot.png)
+![LaRecipe Screenshot](https://larecipe.binarytorch.com.my/images/screenshot.png#)
 
 ## Getting Started
 
