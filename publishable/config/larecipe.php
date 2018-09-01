@@ -6,7 +6,7 @@ return [
     | Documentation Routes
     |--------------------------------------------------------------------------
     |
-    | These options configure the behavior of the LaRecipe docs basic routes
+    | These options configure the behavior of the LaRecipe docs basic route
     | where you can specify the url of your documentations, the location
     | of your docs and the landing page when a user visits /docs route.
     |
@@ -25,7 +25,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Here you may specify and set the versions and the default (latest) one
-    | of your documentation's versions where you can redirect the user to
+    | of your documentation's versions where you can redirect the user to.
     | Just make sure that the default version is in the published list.
     |
     |
