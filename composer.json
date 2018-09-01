@@ -33,7 +33,7 @@
             "BinaryTorch\\LaRecipe\\Tests\\": "tests/"
       }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "extra": {
         "laravel": {
             "providers": [
