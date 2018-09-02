@@ -14,8 +14,20 @@ const app = new Vue({
       forceLightSidebar: false
     }
   },
+  watch: {
+    // listen to the sidebar value if changed => if so, cache it.
+    sidebar: function (newValue, oldValue) {
+      localStorage.setItem('larecipeSidebar', this.sidebar);
+    }
+  },
   el: '#app',
   mounted() {
+    // check if the user already save some sidebar's visiblity preferenece
+    // if yes, load it from the cache.
+    if(typeof(Storage) !== "undefined" && localStorage.getItem('larecipeSidebar') !== null) {
+      this.sidebar = localStorage.getItem('larecipeSidebar') == 'true';
+    }
+
     // heading links
     $('.documentation').find('a[name]').each(function () {
       var anchor = $('<a href="#' + this.name + '"/>');
