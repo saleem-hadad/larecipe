@@ -36,7 +36,7 @@ Install the package via composer.
 
 Run the install command.
 
-    php artisan larceipe:install
+    php artisan larecipe:install
 
 Visit your app domain with `/docs` endpoint. That's it.
 
