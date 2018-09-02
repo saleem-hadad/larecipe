@@ -3,6 +3,7 @@
     "description": "Generate gorgeous recipes for your Laravel applications using MarkDown",
     "keywords": ["laravel", "markdown", "docs", "documentation", "api"],
     "license": "MIT",
+    "type": "library",
     "support": {
         "issues": "https://github.com/saleem-hadad/larecipe/issues",
         "source": "https://github.com/saleem-hadad/larecipe"
@@ -40,7 +41,7 @@
                 "BinaryTorch\\LaRecipe\\LaRecipeServiceProvider"
             ],
             "branch-alias": {
-                "dev-master": "1.0.x-dev"
+                "dev-master": "1.x-dev"
             }
         }
     }
