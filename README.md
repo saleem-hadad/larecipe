@@ -31,7 +31,7 @@ Made with ❤️ by [Binary Torch](http://binary-torch.com/)
 
 Install the package via composer.
 
-    composer require binarytorch/larecipe
+    composer require saleem-hadad/larecipe
 
 Run the install command.
 
