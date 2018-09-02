@@ -181,6 +181,6 @@ class GenerateDocumentationCommand extends Command
      */
     protected function getStub($stub)
     {
-        return $this->filesystem->get(base_path('/vendor/binarytorch/larecipe/stubs/'.$stub.'.stub'));
+        return $this->filesystem->get(base_path('/vendor/saleem-hadad/larecipe/stubs/'.$stub.'.stub'));
     }
 }
