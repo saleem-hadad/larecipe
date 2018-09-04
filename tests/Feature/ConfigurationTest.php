@@ -49,4 +49,17 @@ class ConfigurationTest extends TestCase
         Config::set('larecipe.ui.back_to_top', true);
         $this->get('/docs/1.0')->assertSee('<larecipe-back-to-top></larecipe-back-to-top>');
     }
+
+    /** @test */
+    public function ga_script_is_visible_only_if_ga_id_is_set()
+    {
+        Config::set('larecipe.settings.ga_id', '');
+        $this->get('/docs/1.0')
+            ->assertDontSee('googletagmanager');
+
+        Config::set('larecipe.settings.ga_id', 'ga_code_id');
+        $this->get('/docs/1.0')
+            ->assertSee('googletagmanager')
+                ->assertSee('ga_code_id');
+    }
 }

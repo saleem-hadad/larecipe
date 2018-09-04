@@ -51,7 +51,8 @@ return [
     */
 
     'settings' => [
-        'auth' => false
+        'auth'  => false,
+        'ga_id' => ''
     ],
 
     /*
