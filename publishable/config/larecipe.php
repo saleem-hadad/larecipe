@@ -103,7 +103,7 @@ return [
     */
 
     'ui'                 => [
-        'show_app_name'  => false,
+        'show_app_name'  => true,
         'logo'           => '/images/logo.svg',
         'fav'            => '/fav.png',
         'theme'          => 'light',
