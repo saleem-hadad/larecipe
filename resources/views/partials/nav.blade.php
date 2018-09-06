@@ -27,7 +27,9 @@
             {{-- /app logo --}}
     
             {{-- app name --}}
-            <span>{{ config('app.name') }}</span>
+            @if (config('larecipe.ui.show_app_name'))
+                <span>{{ config('app.name') }}</span>
+            @endif
             {{-- /app name --}}
         </a>
         
