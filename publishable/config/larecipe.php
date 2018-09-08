@@ -105,8 +105,8 @@ return [
 
     'ui'                 => [
         'show_app_name'  => true,
-        'logo'           => '/images/logo.svg',
-        'fav'            => '/fav.png',
+        'logo'           => '', // e.g.: /images/logo.svg
+        'fav'            => '', // e.g.: /fav.png
         'theme'          => 'light',
         'back_to_top'    => true,
         'additional_css' => [
