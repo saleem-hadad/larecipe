@@ -79,7 +79,7 @@ class GenerateDocumentationCommand extends Command
             $this->info('--------------- /Version '.$version.' ----------------');
             $this->line('');
         }
-        $this->info('Done. Enjoy 🦊');
+        $this->info('Done.');
     }
 
     /**
