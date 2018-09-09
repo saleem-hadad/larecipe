@@ -2,6 +2,7 @@
 
 namespace BinaryTorch\LaRecipe\Http\Controllers;
 
+use Illuminate\Support\Facades\Gate;
 use BinaryTorch\LaRecipe\DocumentationRepository;
 
 class DocumentationController extends Controller
@@ -19,7 +20,7 @@ class DocumentationController extends Controller
         $this->documentationRepository = $documentationRepository;
 
         if (config('larecipe.settings.auth')) {
-            $this->middleware(['web', 'auth']);
+            $this->middleware(['auth']);
         }
     }
 
@@ -45,6 +46,10 @@ class DocumentationController extends Controller
     public function show($version, $page = null)
     {
         $documentation = $this->documentationRepository->get($version, $page);
+
+        if (Gate::has('viewLarecipe')) { 
+            $this->authorize('viewLarecipe', $documentation);
+        }
 
         if ($this->documentationRepository->isNotPublishedVersion($version)) {
             return redirect($documentation->defaultVersionUrl.'/'.$page, 301);

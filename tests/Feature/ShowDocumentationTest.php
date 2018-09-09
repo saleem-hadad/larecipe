@@ -2,6 +2,7 @@
 
 namespace BinaryTorch\LaRecipe\Tests\Feature;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Config;
 use BinaryTorch\LaRecipe\Tests\TestCase;
 
@@ -77,5 +78,15 @@ class ShowDocumentationTest extends TestCase
         Config::set('larecipe.settings.auth', true);
 
         $this->get('/docs/1.0')->assertRedirect('login');
+    }
+
+    /** @test */
+    public function only_authorized_users_can_access_viewLarecipe_gate_is_defined()
+    {
+        Gate::define('viewLarecipe', function($user, $documentation) {
+            return false;
+        });
+
+        $this->get('/docs/1.0')->assertStatus(403);
     }
 }
