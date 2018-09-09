@@ -115,14 +115,25 @@ class DocumentationRepository
     }
 
     /**
-     * Check if the given version in the published version.
+     * Check if the given version is in the published versions.
+     *
+     * @param $version
+     * @return bool
+     */
+    public function isPublishedVersion($version)
+    {
+        return in_array($version, $this->publishedVersions);
+    }
+
+    /**
+     * Check if the given version is not in the published versions.
      *
      * @param $version
      * @return bool
      */
     public function isNotPublishedVersion($version)
     {
-        return ! in_array($version, $this->publishedVersions);
+        return ! $this->isPublishedVersion($version);
     }
 
     /**
