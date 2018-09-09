@@ -13,14 +13,14 @@ class DocumentationRepository
 
     /**
      * The documentation model.
-     * 
+     *
      * @var Documentation
      */
     private $documentation;
 
     /**
      * DocumentationController constructor.
-     * 
+     *
      * @param Documentation $documentation
      */
     public function __construct(Documentation $documentation)
@@ -36,14 +36,14 @@ class DocumentationRepository
     /**
      * @param $version
      * @param $page
-     * 
+     *
      * @return $this
      */
     public function get($version, $page = null)
     {
         $this->sectionPage = $page ?: config('larecipe.docs.landing');
         $this->index = $this->documentation->getIndex($version);
-        
+
         $this->content = $this->documentation->get($version, $this->sectionPage);
 
         if (is_null($this->content)) {
@@ -78,7 +78,8 @@ class DocumentationRepository
      *
      * @return $this
      */
-    protected function prepareTitle(){
+    protected function prepareTitle()
+    {
         $this->title = (new Crawler($this->content))->filterXPath('//h1');
         $this->title = count($this->title) ? $this->title->text() : null;
 
@@ -90,7 +91,8 @@ class DocumentationRepository
      *
      * @return $this
      */
-    protected function prepareSection($version, $page){
+    protected function prepareSection($version, $page)
+    {
         if ($this->documentation->sectionExists($version, $page)) {
             $this->currentSection = '/'.$page;
         }
@@ -103,7 +105,8 @@ class DocumentationRepository
      *
      * @return $this
      */
-    protected function prepareCanonical(){
+    protected function prepareCanonical()
+    {
         if ($this->documentation->sectionExists($this->defaultVersion, $this->sectionPage)) {
             $this->canonical = $this->docsRoute.'/'.$this->defaultVersion.'/'.$this->sectionPage;
         }
