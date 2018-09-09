@@ -23,7 +23,7 @@ class DocumentationRepositoryTest extends TestCase
         Config::set('larecipe.docs.path', 'tests/views/docs');
 
         $documentation = $this->documentationRepository->get('1.0', 'foo');
-        
+
         $this->assertEquals('Foo', $documentation->title);
     }
 
@@ -31,7 +31,7 @@ class DocumentationRepositoryTest extends TestCase
     public function it_has_index_for_a_given_version()
     {
         Config::set('larecipe.docs.path', 'tests/views/docs');
-        
+
         $documentation = $this->documentationRepository->get('1.0', 'foo');
 
         $this->assertContains('Get Started', $documentation->index);
@@ -41,7 +41,7 @@ class DocumentationRepositoryTest extends TestCase
     public function it_has_content()
     {
         Config::set('larecipe.docs.path', 'tests/views/docs');
-        
+
         $documentation = $this->documentationRepository->get('1.0', 'foo');
 
         $this->assertContains('Section 1', $documentation->content);
@@ -51,7 +51,7 @@ class DocumentationRepositoryTest extends TestCase
     public function it_has_canonical()
     {
         Config::set('larecipe.docs.path', 'tests/views/docs');
-        
+
         $documentation = $this->documentationRepository->get('1.0', 'foo');
         $this->assertEquals('/docs/1.0/foo', $documentation->canonical);
 
@@ -63,7 +63,7 @@ class DocumentationRepositoryTest extends TestCase
     public function it_has_default_version_url()
     {
         Config::set('larecipe.docs.path', 'tests/views/docs');
-        
+
         $documentation = $this->documentationRepository->get('1.0', 'foo');
 
         $this->assertEquals('/docs/1.0', $documentation->defaultVersionUrl);
@@ -85,7 +85,7 @@ class DocumentationRepositoryTest extends TestCase
     public function it_has_status_code_and_by_default_200()
     {
         $this->assertEquals(200, $this->documentationRepository->statusCode);
-        
+
         // if a user requested not exists file => 404
         $documentation = $this->documentationRepository->get('1.0', 'bar');
         $this->assertEquals(404, $this->documentationRepository->statusCode);
