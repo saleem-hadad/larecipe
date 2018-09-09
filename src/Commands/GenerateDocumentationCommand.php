@@ -82,6 +82,11 @@ class GenerateDocumentationCommand extends Command
         $this->info('Done. Enjoy 🦊');
     }
 
+    /**
+     * Create a new directory for the given version if not exists.
+     *
+     * @return bool
+     */
     protected function createVersionDirectory($versionDirectory)
     {
         if (! $this->filesystem->isDirectory($versionDirectory)) {
