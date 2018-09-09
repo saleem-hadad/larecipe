@@ -22,13 +22,13 @@
 
 # LaRecipe 🍪
 
+**LaRecipe** is simply a code driven package provides an easy way to create beautiful documentation for your product or application inside your Laravel app.
+
 Made with ❤️ by [Binary Torch](http://binary-torch.com/)
 
 ![LaRecipe Screenshot](https://larecipe.binarytorch.com.my/images/screenshot.png#)
 
 ## Getting Started 👻
-
-**LaRecipe** is simply a code driven package provides an easy way to create beautiful documentation for your product or application inside your Laravel app.
 
 ☝️ Install the package via composer.
 
