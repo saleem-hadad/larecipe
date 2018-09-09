@@ -71,7 +71,7 @@ trait HasDocumentationAttributes
     {
         return $this->statusCode;
     }
-    
+
     /**
      * @return string
      */
