@@ -19,14 +19,15 @@
 <a href="https://github.com/saleem-hadad/larecipe"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
+<br/><br/>
 
 # LaRecipe 🍪
 
 **LaRecipe** is simply a code driven package provides an easy way to create beautiful documentation for your product or application inside your Laravel app.
 
-Made with ❤️ by [Binary Torch](http://binary-torch.com/)
-
 ![LaRecipe Screenshot](https://larecipe.binarytorch.com.my/images/screenshot.png#)
+
+Made with ❤️ by [Binary Torch](http://binary-torch.com/)
 
 ## Getting Started 👻
 
