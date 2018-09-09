@@ -2,23 +2,21 @@
 
 namespace BinaryTorch\LaRecipe\Http\Controllers;
 
-use Symfony\Component\DomCrawler\Crawler;
-use BinaryTorch\LaRecipe\Models\Documentation;
+use BinaryTorch\LaRecipe\DocumentationRepository;
 
 class DocumentationController extends Controller
 {
     /**
-     * @var Documentation
+     * @var DocumentationRepository
      */
-    private $documentation;
+    protected $documentationRepository;
 
     /**
      * DocumentationController constructor.
-     * @param Documentation $documentation
      */
-    public function __construct(Documentation $documentation)
+    public function __construct(DocumentationRepository $documentationRepository)
     {
-        $this->documentation = $documentation;
+        $this->documentationRepository = $documentationRepository;
 
         if (config('larecipe.settings.auth')) {
             $this->middleware(['web', 'auth']);
@@ -32,7 +30,9 @@ class DocumentationController extends Controller
      */
     public function index()
     {
-        return redirect()->route('larecipe.show', config('larecipe.versions.default').'/'.config('larecipe.docs.landing'));
+        $redirectURL = config('larecipe.versions.default').'/'.config('larecipe.docs.landing');
+
+        return redirect()->route('larecipe.show', $redirectURL);
     }
 
     /**
@@ -44,50 +44,20 @@ class DocumentationController extends Controller
      */
     public function show($version, $page = null)
     {
-        $docsRoute = config('larecipe.docs.route');
-        $defaultVersion = config('larecipe.versions.default');
-        $publishedVersions = config('larecipe.versions.published');
+        $documentation = $this->documentationRepository->get($version, $page);
 
-        if (! $this->documentation->isPublishedVersion($version)) {
-            return redirect($docsRoute.'/'.$defaultVersion.'/'.$version, 301);
+        if ($this->documentationRepository->isNotPublishedVersion($version)) {
+            return redirect($documentation->defaultVersionUrl.'/'.$page, 301);
         }
 
-        $sectionPage = $page ?: config('larecipe.docs.landing');
-        $content = $this->documentation->get($version, $sectionPage);
-
-        if (is_null($content)) {
-            return response()->view('larecipe::docs', [
-                'title'          => 'Page not found',
-                'index'          => $this->documentation->getIndex($version),
-                'content'        => view('larecipe::partials.404'),
-                'currentVersion' => $version,
-                'versions'       => $publishedVersions,
-                'currentSection' => '',
-                'canonical'      => null,
-            ], 404);
-        }
-
-        $title = (new Crawler($content))->filterXPath('//h1');
-        $section = '';
-        if ($this->documentation->sectionExists($version, $page)) {
-            $section .= '/'.$page;
-        } elseif (! is_null($page)) {
-            return redirect($docsRoute.'/'.$version);
-        }
-
-        $canonical = null;
-        if ($this->documentation->sectionExists($defaultVersion, $sectionPage)) {
-            $canonical = $docsRoute.'/'.$defaultVersion.'/'.$sectionPage;
-        }
-
-        return view('larecipe::docs', [
-            'title'          => count($title) ? $title->text() : null,
-            'index'          => $this->documentation->getIndex($version),
-            'content'        => $content,
+        return response()->view('larecipe::docs', [
+            'title'          => $documentation->title,
+            'index'          => $documentation->index,
+            'content'        => $documentation->content,
             'currentVersion' => $version,
-            'versions'       => $publishedVersions,
-            'currentSection' => $section,
-            'canonical'      => $canonical,
-        ]);
+            'versions'       => $documentation->publishedVersions,
+            'currentSection' => $documentation->currentSection,
+            'canonical'      => $documentation->canonical,
+        ], $documentation->statusCode);
     }
 }

@@ -8,10 +8,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         {{-- SEO --}}
-        <meta name="author" content="{{ config('larecipe.seo.author', 'Binary Torch Sdn. Bhd.') }}">
-        <meta name="description" content="{{ config('larecipe.seo.description', 'Write gorgeous docs for your products using Markdown inside your Laravel app') }}">
-        <meta name="keywords" content="{{ config('larecipe.seo.keywords', 'Laravel, docs, api-docs, vue docs, LaRecipe') }}">
-        @if (isset($canonical))
+        <meta name="author" content="{{ config('larecipe.seo.author') }}">
+        <meta name="description" content="{{ config('larecipe.seo.description') }}">
+        <meta name="keywords" content="{{ config('larecipe.seo.keywords') }}">
+        @if (isset($canonical) && $canonical)
             <link rel="canonical" href="{{ url($canonical) }}" />
         @endif
 

@@ -1,3 +1,5 @@
 # Foo
 
 ---
+
+## Section 1

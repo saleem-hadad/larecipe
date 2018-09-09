@@ -20,27 +20,6 @@ class ConfigurationTest extends TestCase
     }
 
     /** @test */
-    public function a_guest_can_access_any_documentation_if_auth_is_not_enabled()
-    {
-        // set the docs path and landing
-        Config::set('larecipe.docs.path', 'tests/views/docs');
-        Config::set('larecipe.docs.landing', 'foo');
-
-        // set auth to false
-        Config::set('larecipe.settings.auth', false);
-        
-        // guest can view foo page
-        $this->get('/docs/1.0')->assertStatus(200);
-    }
-
-    /** @test */
-    public function only_auth_user_can_visit_docs_if_auth_option_is_enabled()
-    {
-        config()->set('larecipe.settings.auth', true);
-        $this->get('/docs/1.0')->assertRedirect('login');
-    }
-
-    /** @test */
     public function back_to_top_button_is_visible_only_if_enabled()
     {
         Config::set('larecipe.ui.back_to_top', false);
