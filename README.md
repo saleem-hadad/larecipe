@@ -29,7 +29,7 @@
 
 Made with ❤️ by [Binary Torch](http://binary-torch.com/)
 
-## Getting Started 👻
+## Getting Started
 
 ☝️ Install the package via composer.
 
@@ -41,7 +41,7 @@ Made with ❤️ by [Binary Torch](http://binary-torch.com/)
 
 Visit your app domain with `/docs` endpoint. That's it.
 
-#### See [full documentation](https://larecipe.binarytorch.com.my/) 🔥
+#### See [full documentation](https://larecipe.binarytorch.com.my/)
 
 
 ## License
