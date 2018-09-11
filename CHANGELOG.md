@@ -4,7 +4,7 @@ All notable changes to `larecipe` will be documented in this file
 
 
 <a name="1.1.0"></a>
-# [1.1.0](https://github.com/saleem-hadad/larecipe/releases/tag/v1.1.0) (2018-09-10)
+# [1.1.0](https://github.com/saleem-hadad/larecipe/releases/tag/v1.1.0) (2018-09-11)
 
 ### Features
 
