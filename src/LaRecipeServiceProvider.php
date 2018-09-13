@@ -54,7 +54,6 @@ class LaRecipeServiceProvider extends ServiceProvider
             ],
             'larecipe_assets' => [
                 "{$publishablePath}/assets/" => public_path('vendor/binarytorch/larecipe/assets'),
-                "{$publishablePath}/fonts/"  => public_path('fonts'),
             ],
         ];
 
