@@ -44,6 +44,11 @@ Visit your app domain with `/docs` endpoint. That's it.
 #### See [full documentation](https://larecipe.binarytorch.com.my/)
 
 
+## Examples
+
+* [Zino](https://zino.saleemhadad.me/docs/1.0/installation) - 🤖 Custom Arduino library made for humans.
+* Put your docs here 😍👌
+
 ## License
 
 This library is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details.
