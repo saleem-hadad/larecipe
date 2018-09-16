@@ -55,4 +55,12 @@ class ConfigurationTest extends TestCase
         $this->get('/docs/1.0')
             ->assertSee('<span>hoolla</span>');
     }
+
+    /** @test */
+    public function dynamic_color_palette()
+    {
+        Config::set('larecipe.ui.colors.primary', '#custom_color');
+        $this->get('/docs/1.0')
+            ->assertSee('#custom_color');
+    }
 }
