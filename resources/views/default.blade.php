@@ -59,9 +59,6 @@
             ::selection {
                 background: {{ config('larecipe.ui.colors.selection') }};
             }
-            ::-moz-selection {
-                background: {{ config('larecipe.ui.colors.selection') }};
-            }
         </style>
         @if(!empty(config('larecipe.ui.additional_css')))
             @foreach(config('larecipe.ui.additional_css') as $css)
