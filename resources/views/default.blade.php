@@ -25,7 +25,7 @@
 
         {{-- Custom CSS --}}
         <style>
-            .btn-primary, .bg-primary, .badge-primary, .btn-primary:hover, .btn-outline-primary:hover, .btn-outline-primary:active {
+            .btn-primary, .bg-primary, .badge-primary, .btn-primary:hover, .btn-outline-primary:hover, .btn-outline-primary:active, .dropdown-item:active {
                 background-color: {{ config('larecipe.ui.colors.primary') }} !important;
                 border-color: {{ config('larecipe.ui.colors.primary') }} !important;
             }
@@ -52,6 +52,15 @@
             }
             .bg-gradient-primary {
                 background: linear-gradient(87deg, {{ config('larecipe.ui.colors.primary') }} 0, {{ config('larecipe.ui.colors.secondary') }} 100%) !important;
+            }
+            ::-moz-selection {
+                background: {{ config('larecipe.ui.colors.selection') }};
+            }
+            ::selection {
+                background: {{ config('larecipe.ui.colors.selection') }};
+            }
+            ::-moz-selection {
+                background: {{ config('larecipe.ui.colors.selection') }};
             }
         </style>
         @if(!empty(config('larecipe.ui.additional_css')))

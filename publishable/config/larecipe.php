@@ -111,7 +111,8 @@ return [
         'back_to_top'    => true,
         'colors'         => [
             'primary'    => '#787AF6',
-            'secondary'  => '#f4f5f7'
+            'secondary'  => '#f4f5f7',
+            'selection'  => '#f4f5f7'
         ],
         'additional_css' => [
             //'css/custom.css',
