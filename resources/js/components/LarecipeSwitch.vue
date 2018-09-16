@@ -12,7 +12,6 @@ export default {
   name: "larecipe-switch",
   props: {
     value: {
-      type: Boolean,
       default: false,
       description: "Switch value"
     }

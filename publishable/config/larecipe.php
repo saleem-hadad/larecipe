@@ -109,6 +109,7 @@ return [
         'fav'            => '', // e.g.: /fav.png
         'theme'          => 'light',
         'back_to_top'    => true,
+        'show_side_bar'  => true,
         'colors'         => [
             'primary'    => '#787AF6',
             'secondary'  => '#f4f5f7',

@@ -17,6 +17,13 @@
 
         {{-- CSS --}}
         <link rel="stylesheet" href="{{ larecipe_assets('css/app.css') }}">
+
+        {{-- JS --}}
+        <script type="text/javascript">
+            if(localStorage.getItem('larecipeSidebar') == null) {
+                localStorage.setItem('larecipeSidebar', !! {{ config('larecipe.ui.show_side_bar') ?: 0 }});
+            }
+        </script>
         <script src="{{ larecipe_assets('js/app.js') }}" defer></script>
 
         {{-- Icon --}}
