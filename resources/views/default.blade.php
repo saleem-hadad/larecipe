@@ -2,7 +2,7 @@
 <html>
     <head>
         {{-- Meta --}}
-        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>{{ isset($title) ? $title . ' - ' : null }}{{ config('app.name') }}</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,44 +22,11 @@
         {{-- Icon --}}
         <link rel="apple-touch-icon" href="{{ asset(config('larecipe.ui.fav')) }}">
         <link rel="shortcut icon" type="image/png" href="{{ asset(config('larecipe.ui.fav')) }}"/>
+        
+        {{-- Dynamic color --}}
+        @include('larecipe::partials.style')
 
         {{-- Custom CSS --}}
-        <style>
-            .btn-primary, .bg-primary, .badge-primary, .btn-primary:hover, .btn-outline-primary:hover, .btn-outline-primary:active, .dropdown-item:active {
-                background-color: {{ config('larecipe.ui.colors.primary') }} !important;
-                border-color: {{ config('larecipe.ui.colors.primary') }} !important;
-            }
-            .btn-outline-primary {
-                border-color: {{ config('larecipe.ui.colors.primary') }};
-            }
-            .documentation h1 {
-                border-left: 2px solid {{ config('larecipe.ui.colors.primary') }} !important;
-            }
-            .btn-outline-primary, .documentation .article h2 a:before, .documentation .article :not(pre)>code, a {
-                color: {{ config('larecipe.ui.colors.primary') }};
-            }
-            .documentation .sidebar>ul>li>ul>li.is-active {
-                border-left: 2px solid {{ config('larecipe.ui.colors.primary') }};
-            }
-            .custom-toggle input:checked+.custom-toggle-slider {
-                border: 1px solid {{ config('larecipe.ui.colors.primary') }};
-            }
-            .custom-toggle input:checked + .custom-toggle-slider::before, .alert-primary, .badge-primary {
-                background: {{ config('larecipe.ui.colors.primary') }};
-            }
-            :not(pre)>code[class*=language-], pre[class*=language-] {
-                border-top: 3px solid {{ config('larecipe.ui.colors.primary') }};
-            }
-            .bg-gradient-primary {
-                background: linear-gradient(87deg, {{ config('larecipe.ui.colors.primary') }} 0, {{ config('larecipe.ui.colors.secondary') }} 100%) !important;
-            }
-            ::-moz-selection {
-                background: {{ config('larecipe.ui.colors.selection') }};
-            }
-            ::selection {
-                background: {{ config('larecipe.ui.colors.selection') }};
-            }
-        </style>
         @if(!empty(config('larecipe.ui.additional_css')))
             @foreach(config('larecipe.ui.additional_css') as $css)
                 <link rel="stylesheet" type="text/css" href="{{ asset($css) }}">
