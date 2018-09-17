@@ -135,9 +135,16 @@ return [
     |
     */
 
-    'seo'             => [
-        'author'      => '',
-        'description' => '',
-        'keywords'    => ''
+    'seo'                 => [
+        'author'          => '',
+        'description'     => '',
+        'keywords'        => '',
+        'og'              => [
+            'title'       => '',
+            'type'        => 'article',
+            'url'         => '',
+            'image'       => '',
+            'description' => '',
+        ]
     ]
 ];

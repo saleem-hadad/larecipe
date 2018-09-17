@@ -62,11 +62,21 @@ class ConfigurationTest extends TestCase
         Config::set('larecipe.seo.author', 'Binary Torch Author');
         Config::set('larecipe.seo.description', 'seo description is here');
         Config::set('larecipe.seo.keywords', 'key1, key2, key3');
+        Config::set('larecipe.seo.og.title', 'open graph title');
+        Config::set('larecipe.seo.og.type', 'open graph type');
+        Config::set('larecipe.seo.og.url', 'open graph url');
+        Config::set('larecipe.seo.og.image', 'open graph image');
+        Config::set('larecipe.seo.og.description', 'open graph description');
 
         $this->get('/docs/1.0')
             ->assertSee('Binary Torch Author')
             ->assertSee('seo description is here')
-            ->assertSee('key1, key2, key3');
+            ->assertSee('key1, key2, key3')
+            ->assertSee('open graph title')
+            ->assertSee('open graph type')
+            ->assertSee('open graph url')
+            ->assertSee('open graph image')
+            ->assertSee('open graph description');
     }
 
     /** @test */

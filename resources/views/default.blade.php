@@ -14,6 +14,9 @@
         @if (isset($canonical) && $canonical)
             <link rel="canonical" href="{{ url($canonical) }}" />
         @endif
+        @foreach (config('larecipe.seo.og') as $openGraphKey => $openGraphValue)
+            <meta property="og:{{ $openGraphKey }}" content="{{ $openGraphValue }}" />
+        @endforeach
 
         {{-- CSS --}}
         <link rel="stylesheet" href="{{ larecipe_assets('css/app.css') }}">
