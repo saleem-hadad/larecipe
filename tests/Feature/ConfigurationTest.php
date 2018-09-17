@@ -57,6 +57,19 @@ class ConfigurationTest extends TestCase
     }
 
     /** @test */
+    public function seo_support()
+    {
+        Config::set('larecipe.seo.author', 'Binary Torch Author');
+        Config::set('larecipe.seo.description', 'seo description is here');
+        Config::set('larecipe.seo.keywords', 'key1, key2, key3');
+
+        $this->get('/docs/1.0')
+            ->assertSee('Binary Torch Author')
+            ->assertSee('seo description is here')
+            ->assertSee('key1, key2, key3');
+    }
+
+    /** @test */
     public function dynamic_color_palette()
     {
         Config::set('larecipe.ui.colors.primary', '#custom_color');
