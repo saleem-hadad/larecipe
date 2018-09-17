@@ -11,11 +11,14 @@
         <meta name="author" content="{{ config('larecipe.seo.author') }}">
         <meta name="description" content="{{ config('larecipe.seo.description') }}">
         <meta name="keywords" content="{{ config('larecipe.seo.keywords') }}">
+        <meta name="twitter:card" value="summary">
         @if (isset($canonical) && $canonical)
             <link rel="canonical" href="{{ url($canonical) }}" />
         @endif
         @foreach (config('larecipe.seo.og') as $openGraphKey => $openGraphValue)
-            <meta property="og:{{ $openGraphKey }}" content="{{ $openGraphValue }}" />
+            @if($openGraphValue)
+                <meta property="og:{{ $openGraphKey }}" content="{{ $openGraphValue }}" />
+            @endif
         @endforeach
 
         {{-- CSS --}}
