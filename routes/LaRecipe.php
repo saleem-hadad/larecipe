@@ -7,5 +7,5 @@ Route::group([
     'middleware' => 'web'
 ], function () {
     Route::get('/', 'DocumentationController@index')->name('index');
-    Route::get('/{version}/{page?}', 'DocumentationController@show')->name('show');
+    Route::get('/{version}/{page?}', 'DocumentationController@show')->where('page', '(.*)')->name('show');
 });
