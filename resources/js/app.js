@@ -67,14 +67,6 @@ const app = new Vue({
         var current = $('.sidebar ul').find('li a[href="' + window.location.pathname + '"]');
         
         if (current.length) {
-          if(current.position().top > $('.sidebar').height()) {
-            setTimeout(() => {
-              $('.sidebar').animate({
-                scrollTop: current.offset().top - 100
-              }, 500);
-            }, 200)
-          }
-          
           current.parent().css('font-weight', 'bold').addClass('is-active');
         }
       }
