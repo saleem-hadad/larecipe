@@ -65,8 +65,13 @@ const app = new Vue({
       // active sidebar element
       if ($('.sidebar ul').length) {
         var current = $('.sidebar ul').find('li a[href="' + window.location.pathname + '"]');
-
+        
         if (current.length) {
+          setTimeout(() => {
+            $('.sidebar').animate({
+              scrollTop: current.offset().top - 70
+            }, 500);
+          }, 100)
           current.parent().css('font-weight', 'bold').addClass('is-active');
         }
       }
