@@ -78,7 +78,7 @@
         @auth
             {{-- account --}}
             <larecipe-dropdown>
-                <larecipe-button slot="title" type="secondary" class="dropdown-toggle btn-white">
+                <larecipe-button slot="title" type="secondary" class="dropdown-toggle btn-white ml-2">
                     {{ auth()->user()->name ?? 'Account' }}
                 </larecipe-button>
                 <form action="/logout" method="POST">
