@@ -108,6 +108,7 @@ return [
         'logo'           => '', // e.g.: /images/logo.svg
         'fav'            => '', // e.g.: /fav.png
         'theme'          => 'light',
+        'code'           => 'dark',
         'back_to_top'    => true,
         'show_side_bar'  => true,
         'colors'         => [
