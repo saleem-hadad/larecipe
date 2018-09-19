@@ -2,8 +2,9 @@
 
 namespace BinaryTorch\LaRecipe\Http\Controllers;
 
-use Illuminate\Support\Facades\Gate;
 use BinaryTorch\LaRecipe\DocumentationRepository;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 
 class DocumentationController extends Controller
 {
@@ -64,5 +65,19 @@ class DocumentationController extends Controller
             'currentSection' => $documentation->currentSection,
             'canonical'      => $documentation->canonical,
         ], $documentation->statusCode);
+    }
+
+    /**
+     * Show a documentation page. within a
+     * folder eg. /docs/1.0/api/overview
+     *
+     * @param string $version
+     * @param string $folder
+     * @param null $page
+     * @return Response
+     */
+    public function showFolder($version, $folder, $page = null)
+    {
+        return $this->show($version, $folder . DIRECTORY_SEPARATOR . $page);
     }
 }

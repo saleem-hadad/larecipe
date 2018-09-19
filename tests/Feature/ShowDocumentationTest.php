@@ -89,4 +89,31 @@ class ShowDocumentationTest extends TestCase
 
         $this->get('/docs/1.0')->assertStatus(403);
     }
+
+
+    /** @test */
+    public function users_can_view_documents_within_a_folder()
+    {
+        // set the docs path and landing
+        Config::set('larecipe.docs.path', 'tests/views/docs');
+
+        // set auth to false
+        Config::set('larecipe.settings.auth', false);
+
+        // guest can view foo page within a folder
+        $this->get('/docs/1.0/folder/foo')
+            ->assertViewHasAll([
+                'title',
+                'index',
+                'content',
+                'currentVersion',
+                'versions',
+                'currentSection',
+                'canonical'
+            ])
+            ->assertSee('<h1>Foo</h1>')
+            ->assertSee('Get Started')
+            ->assertSee('Section 1')
+            ->assertStatus(200);
+    }
 }

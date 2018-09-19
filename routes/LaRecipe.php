@@ -8,4 +8,5 @@ Route::group([
 ], function () {
     Route::get('/', 'DocumentationController@index')->name('index');
     Route::get('/{version}/{page?}', 'DocumentationController@show')->where('page', '(.*)')->name('show');
+    Route::get('/{version}/{folder}/{page?}', 'DocumentationController@showFolder')->where('page', '(.*)')->name('showFolder');
 });
