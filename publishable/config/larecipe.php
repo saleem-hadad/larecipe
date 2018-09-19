@@ -77,6 +77,13 @@ return [
     |--------------------------------------------------------------------------
     | Search
     |--------------------------------------------------------------------------
+    |
+    | Here you can add configure the search functionality of your docs.
+    | You can choose the default engine of your search from the list
+    | However, you can also enable/disable the search's visibility 
+    |
+    | Supported Search Engines: 'algolia'
+    |
     */
 
     'search'            => [
