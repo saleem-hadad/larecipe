@@ -130,7 +130,7 @@ return [
         'show_side_bar'  => true,
         'colors'         => [
             'primary'    => '#787AF6',
-            'secondary'  => '#f4f5f7',
+            'secondary'  => '#2b9cf2',
             'selection'  => '#f4f5f7'
         ],
         'additional_css' => [
