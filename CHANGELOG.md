@@ -11,7 +11,7 @@ All notable changes to `larecipe` will be documented in this file
 
 ### Enhancement
 
-- Dynamic color palette - ([#55678fc](https://github.com/saleem-hadad/larecipe/commit/55678fc54e3e721b897d536845d4c2a12119aaf4))
+- Dynamic color palette - ([#73a1c83](https://github.com/saleem-hadad/larecipe/commit/73a1c838f025986010ef28d4ece3dceaae0f4fbd)) ([#55678fc](https://github.com/saleem-hadad/larecipe/commit/55678fc54e3e721b897d536845d4c2a12119aaf4))
 - Dark/Light code theme - ([#c577ac5](https://github.com/saleem-hadad/larecipe/commit/c577ac509906736800d58db3d3ed738dc138b0cb))
 - Organize doc files in subfolders - ([#27](https://github.com/saleem-hadad/larecipe/pull/27))
 - Sidebar visibility can be configured - ([#1bb3fc4](https://github.com/saleem-hadad/larecipe/commit/1bb3fc4b8f9dd6e75fd8cff21a3a9b8f41974784)) ([#18](https://github.com/saleem-hadad/larecipe/issues/18))
