@@ -3,7 +3,11 @@
 {{-- /top linebar --}}
 
 {{-- navbar --}}
-<larecipe-nav type="white" effect="light" expand fixed title="{{ config('app.name')}}" style="height: 4rem; top: 3px;">
+<larecipe-nav type="white" 
+    effect="light" expand fixed 
+    title="{{ config('app.name')}}"
+    style="height: 4rem; top: 3px;">
+    
     <div slot="brand" style="display: flex; align-items: center;">
         <a class="navbar-brand"  href="{{ url('/') }}" >
             {{-- app logo --}}
@@ -37,6 +41,7 @@
         <larecipe-switch class="mt-2" v-model="sidebar"></larecipe-switch>
         {{-- /sidebar toggle button --}}
     </div>
+    
 
     {{-- presented when toggle pressed --}}
     <div class="row" slot="content-header" slot-scope="{closeMenu}">
@@ -53,9 +58,25 @@
 
     {{-- right navbar --}}
     <div class="navbar-nav ml-lg-auto">
+        @if(config('larecipe.search.enabled'))
+            {{-- search button --}}
+            <larecipe-button id="search-button" 
+                :class="{'btn-primary': searchBox}" 
+                @click="searchBox = ! searchBox" 
+                type="link" 
+                style="width: 100%;">
+                <i class="fa fa-search"></i>
+            </larecipe-button>
+            {{-- /search button --}}
+        @endif
+
         {{-- repository link --}}
         @if (config('larecipe.repository.url'))
-            <larecipe-button tag="a" id="repository_button" target="__blank" href="{{ config('larecipe.repository.url') }}" slot="title" type="outline-primary" style="width: 100%">
+            <larecipe-button tag="a" id="repository_button" 
+                target="__blank" href="{{ config('larecipe.repository.url') }}" 
+                slot="title" 
+                type="outline-primary" 
+                style="width: 100%">
                 <i class="fa fa-{{ config('larecipe.repository.provider') }}"></i>
             </larecipe-button>
         @endif

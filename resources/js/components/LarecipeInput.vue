@@ -26,12 +26,12 @@
         </div>
         <slot v-bind="slotData">
             <input
-                    :value="value"
-                    v-on="listeners"
-                    v-bind="$attrs"
-                    class="form-control"
-                    :class="[{'is-valid': valid === true}, {'is-invalid': valid === false}, {'rounded': rounded === true}, inputClasses]"
-                    aria-describedby="addon-right addon-left">
+                :value="value"
+                v-on="listeners"
+                v-bind="$attrs"
+                class="form-control"
+                :class="[{'is-valid': valid === true}, {'is-invalid': valid === false}, inputClasses]"
+                aria-describedby="addon-right addon-left">
         </slot>
         <div v-if="addonRightIcon || $slots.addonRight" class="input-group-append">
           <span class="input-group-text">
@@ -61,11 +61,6 @@ export default {
       type: Boolean,
       description: "Whether is valid",
       default: undefined
-    },
-    rounded: {
-      type: Boolean,
-      description: "Whether is rounded borders",
-      default: false
     },
     alternative: {
       type: Boolean,
@@ -146,5 +141,3 @@ export default {
   }
 };
 </script>
-<style>
-</style>

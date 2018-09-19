@@ -52,6 +52,12 @@
         <div id="app">
             @include('larecipe::partials.nav')
             
+            @if(config('larecipe.search.enabled') && config('larecipe.search.default') == 'algolia')
+                <algolia-search-box v-if="searchBox" @close="searchBox = false"
+                algolia-key="{{ config('larecipe.search.engines.algolia.key') }}"
+                algolia-index="{{ config('larecipe.search.engines.algolia.index') }}"></algolia-search-box>
+            @endif
+            
             @yield('content')
 
             @if(config('larecipe.ui.back_to_top'))

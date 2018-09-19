@@ -19,7 +19,7 @@
                                   :target="contentId"
                                   @click.native.stop="toggled = !toggled">
             </larecipe-navbar-toggle-button>
-
+            
             <slot name="container-after"></slot>
 
             <div class="collapse navbar-collapse" :class="{show: toggled}" :id="contentId">
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { FadeTransition } from "vue2-transitions";
+import { FadeTransition } from "vue2-transitions"
 import LarecipeNavbarToggleButton from "./LarecipeNavbarToggleButton";
 
 export default {

@@ -11,6 +11,7 @@ const app = new Vue({
   data() {
     return {
       sidebar: false,
+      searchBox: false,
       forceDarkSidebar: false,
       forceLightSidebar: false
     }
@@ -118,6 +119,12 @@ const app = new Vue({
       Mousetrap.bind('/', (e) => {
         e.preventDefault();
         this.sidebar = ! this.sidebar;
+      });
+
+      // open the search box
+      Mousetrap.bind('s', (e) => {
+        e.preventDefault();
+        this.searchBox = true;
       });
 
       // force dark sidebar theme

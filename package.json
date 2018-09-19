@@ -21,6 +21,7 @@
     "vue-lazyload": "^1.2.6"
   },
   "dependencies": {
+    "docsearch.js": "^2.5.2",
     "smoothscroll-for-websites": "1.4.6",
     "vue2-transitions": "0.2.3"
   }

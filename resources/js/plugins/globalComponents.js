@@ -1,3 +1,4 @@
+import AlgoliaSearchBox from "../components/AlgoliaSearchBox";
 import LarecipeAlert from "../components/LarecipeAlert";
 import LarecipeBackToTop from "../components/LarecipeBackToTop";
 import LarecipeBadge from "../components/LarecipeBadge";
@@ -14,6 +15,7 @@ import LarecipeSwitch from "../components/LarecipeSwitch";
 
 export default {
   install(Vue) {
+    Vue.component(AlgoliaSearchBox.name, AlgoliaSearchBox);
     Vue.component(LarecipeAlert.name, LarecipeAlert);
     Vue.component(LarecipeBackToTop.name, LarecipeBackToTop);
     Vue.component(LarecipeBadge.name, LarecipeBadge);
