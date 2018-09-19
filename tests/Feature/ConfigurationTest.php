@@ -86,4 +86,30 @@ class ConfigurationTest extends TestCase
         $this->get('/docs/1.0')
             ->assertSee('#custom_color');
     }
+
+    /** @test */
+    public function search_button_will_be_visible_when_search_is_enabled()
+    {
+        Config::set('larecipe.search.enabled', false);
+        $this->get('/docs/1.0')
+            ->assertDontSee('search-button');
+
+        Config::set('larecipe.search.enabled', true);
+        $this->get('/docs/1.0')
+            ->assertSee('search-button');
+    }
+
+    /** @test */
+    public function algolia_search_will_be_visible_only_if_selected_and_enabled()
+    {
+        Config::set('larecipe.search.default', '');
+        Config::set('larecipe.search.enabled', false);
+        $this->get('/docs/1.0')
+            ->assertDontSee('algolia-search-box');
+
+        Config::set('larecipe.search.default', 'algolia');
+        Config::set('larecipe.search.enabled', true);
+        $this->get('/docs/1.0')
+            ->assertSee('algolia-search-box');
+    }
 }
