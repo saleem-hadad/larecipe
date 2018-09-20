@@ -29,6 +29,10 @@
 
 Made with ❤️ by [Binary Torch](http://binary-torch.com/)
 
+## Requirements
+
+* PHP 7.1 or higher
+
 ## Getting Started
 
 ☝️ Install the package via composer.
