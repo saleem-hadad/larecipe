@@ -10,7 +10,7 @@ import docsearch from 'docsearch.js/dist/cdn/docsearch.min.js'
 
 export default {
     name: "algolia-search-box",
-    props: ['algoliaKey', 'algoliaIndex'],
+    props: ['algoliaKey', 'algoliaIndex', 'version'],
     methods: {
         close() {
             this.$emit('close')
@@ -21,6 +21,7 @@ export default {
             apiKey: this.algoliaKey,
             indexName: this.algoliaIndex,
             inputSelector: '.algolia-search-input',
+            algoliaOptions: { 'facetFilters': ["version:" + this.version] },
             debug: false
         })
 
