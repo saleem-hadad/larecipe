@@ -2,6 +2,13 @@
 
 All notable changes to `larecipe` will be documented in this file
 
+<a name="1.2.1"></a>
+# [1.2.1](https://github.com/saleem-hadad/larecipe/releases/tag/v1.2.1) (2018-09-20)
+
+### Enhancement
+
+- Add version number in the search - ([#791ca9c](https://github.com/saleem-hadad/larecipe/commit/791ca9c326bf3441d01d4e39acee99cad2898a23))
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/saleem-hadad/larecipe/releases/tag/v1.2.0) (2018-09-20)
 
