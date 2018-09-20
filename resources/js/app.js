@@ -5,9 +5,11 @@ import Argon from "./plugins/argon-kit";
 
 Vue.use(Argon);
 Vue.config.productionTip = false;
+const noDelimiter = {replace: () => '(?!x)x'};
 
 const app = new Vue({
   el: '#app',
+  delimiters: [noDelimiter, noDelimiter],
   data() {
     return {
       sidebar: false,
