@@ -31,7 +31,8 @@ Made with ❤️ by [Binary Torch](http://binary-torch.com/)
 
 ## Requirements
 
-* PHP 7.1 or higher
+* Laravel v5.4 or higher 
+* PHP v7.1 or higher
 
 ## Getting Started
 
