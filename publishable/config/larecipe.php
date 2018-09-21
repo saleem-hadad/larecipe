@@ -185,7 +185,7 @@ return [
    | Supported Services: 'disqus'
    |
    */
-  
+
   'forum'                 => [
         'enabled'           => false,
         'default'           => 'disqus',
