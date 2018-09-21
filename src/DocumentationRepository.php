@@ -39,12 +39,12 @@ class DocumentationRepository
      *
      * @return $this
      */
-    public function get($version, $page = null)
+    public function get($version, $page = null, $data = [])
     {
         $this->sectionPage = $page ?: config('larecipe.docs.landing');
         $this->index = $this->documentation->getIndex($version);
 
-        $this->content = $this->documentation->get($version, $this->sectionPage);
+        $this->content = $this->documentation->get($version, $this->sectionPage, $data);
 
         if (is_null($this->content)) {
             return $this->prepareNotFound();
