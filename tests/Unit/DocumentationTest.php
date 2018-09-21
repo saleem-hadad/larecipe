@@ -27,11 +27,11 @@ class DocumentationTest extends TestCase
     }
 
     /** @test */
-    public function it_replace_version_placeholder_with_the_given_version()
+    public function it_replace_placeholders_with_the_given_version_and_route()
     {
         $this->assertEquals(
-            'the current version is 1.1',
-            $this->documentation->replaceLinks('1.1', 'the current version is {{version}}')
+            'the current version is 1.1 and the route is /docs',
+            $this->documentation->replaceLinks('1.1', 'the current version is {{version}} and the route is /{{route}}')
         );
     }
     

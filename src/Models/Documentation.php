@@ -98,7 +98,7 @@ class Documentation
     }
 
     /**
-     * Replace the version place-holder in links.
+     * Replace the version and route placeholders.
      *
      * @param  string  $version
      * @param  string  $content
@@ -106,7 +106,11 @@ class Documentation
      */
     public static function replaceLinks($version, $content)
     {
-        return str_replace('{{version}}', $version, $content);
+        $content = str_replace('{{version}}', $version, $content);
+
+        $content = str_replace('{{route}}', trim(config('larecipe.docs.route'), '/'), $content);
+
+        return $content;
     }
 
     /**
