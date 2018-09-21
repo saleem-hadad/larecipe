@@ -173,20 +173,20 @@ return [
         ]
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Fourm
-    |--------------------------------------------------------------------------
-    |
-    | Giving a chance to your users to post thier questions or feedback
-    | directly on your docs, is pretty nice way to engage them more.
-    | However, you can also enable/disable the fourm's visibility.
-    |
-    | Supported Services: 'disqus'
-    |
-    */
-
-    'fourm'                 => [
+   /*
+   |--------------------------------------------------------------------------
+   | Forum
+   |--------------------------------------------------------------------------
+   |
+   | Giving a chance to your users to post thier questions or feedback
+   | directly on your docs, is pretty nice way to engage them more.
+   | However, you can also enable/disable the forum's visibility.
+   |
+   | Supported Services: 'disqus'
+   |
+   */
+  
+  'forum'                 => [
         'enabled'           => false,
         'default'           => 'disqus',
         'services'          => [
@@ -194,5 +194,5 @@ return [
                 'site_name' => '', // yoursite.disqus.com
             ]
         ]
-    ],
+    ]
 ];

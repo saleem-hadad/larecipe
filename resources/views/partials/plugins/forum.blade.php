@@ -1,5 +1,5 @@
-@if(config('larecipe.fourm.enabled'))
-    @if(config('larecipe.fourm.default') == 'disqus' && config('larecipe.fourm.services.disqus.site_name'))
+@if(config('larecipe.forum.enabled'))
+    @if(config('larecipe.forum.default') == 'disqus' && config('larecipe.forum.services.disqus.site_name'))
     <hr>
     <div id="disqus_thread"></div>
     <script async>
@@ -10,7 +10,7 @@
 
         (function() {
         var d = document, s = d.createElement('script');
-        s.src = "https://{{ config('larecipe.fourm.services.disqus.site_name') }}.disqus.com/embed.js";
+        s.src = "https://{{ config('larecipe.forum.services.disqus.site_name') }}.disqus.com/embed.js";
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
         })();

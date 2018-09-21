@@ -114,16 +114,16 @@ class ConfigurationTest extends TestCase
     }
 
     /** @test */
-    public function disqus_fourm_will_be_visible_only_if_selected_and_enabled()
+    public function disqus_forum_will_be_visible_only_if_selected_and_enabled()
     {
-        Config::set('larecipe.fourm.default', '');
-        Config::set('larecipe.fourm.enabled', false);
+        Config::set('larecipe.forum.default', '');
+        Config::set('larecipe.forum.enabled', false);
         $this->get('/docs/1.0')
             ->assertDontSee('disqus_thread');
             
-        Config::set('larecipe.fourm.default', 'disqus');
-        Config::set('larecipe.fourm.enabled', true);
-        Config::set('larecipe.fourm.services.disqus.site_name', 'larecipe');
+        Config::set('larecipe.forum.default', 'disqus');
+        Config::set('larecipe.forum.enabled', true);
+        Config::set('larecipe.forum.services.disqus.site_name', 'larecipe');
         $this->get('/docs/1.0')
             ->assertSee('disqus_thread');
     }
