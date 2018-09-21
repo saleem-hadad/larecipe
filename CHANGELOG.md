@@ -2,6 +2,19 @@
 
 All notable changes to `larecipe` will be documented in this file
 
+
+<a name="1.2.2"></a>
+# [1.2.2](https://github.com/saleem-hadad/larecipe/releases/tag/v1.2.2) (2018-09-21)
+
+### Features
+
+- Add disqus fourm support - ([#8b4111e](https://github.com/saleem-hadad/larecipe/commit/8b4111e56638be601d118a63f67089688098e434))
+
+### Minor
+
+- Add php7.1+ version requirement in readme - ([#33](https://github.com/saleem-hadad/larecipe/pull/33))
+
+
 <a name="1.2.1"></a>
 # [1.2.1](https://github.com/saleem-hadad/larecipe/releases/tag/v1.2.1) (2018-09-20)
 
