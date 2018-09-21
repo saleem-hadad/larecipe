@@ -112,4 +112,19 @@ class ConfigurationTest extends TestCase
         $this->get('/docs/1.0')
             ->assertSee('algolia-search-box');
     }
+
+    /** @test */
+    public function disqus_fourm_will_be_visible_only_if_selected_and_enabled()
+    {
+        Config::set('larecipe.fourm.default', '');
+        Config::set('larecipe.fourm.enabled', false);
+        $this->get('/docs/1.0')
+            ->assertDontSee('disqus_thread');
+            
+        Config::set('larecipe.fourm.default', 'disqus');
+        Config::set('larecipe.fourm.enabled', true);
+        Config::set('larecipe.fourm.services.disqus.site_name', 'larecipe');
+        $this->get('/docs/1.0')
+            ->assertSee('disqus_thread');
+    }
 }

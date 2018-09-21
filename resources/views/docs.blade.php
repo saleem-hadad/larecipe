@@ -10,6 +10,7 @@
 		
 		<div class="col-12 col-md-9 article" :class="{'expanded': ! sidebar}">
 			{!! $content !!}
+			@include('larecipe::partials.plugins.fourm')
 		</div>
 	</div>
 </div>
