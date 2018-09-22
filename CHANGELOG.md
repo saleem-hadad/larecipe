@@ -3,6 +3,13 @@
 All notable changes to `larecipe` will be documented in this file
 
 
+<a name="1.2.3"></a>
+# [1.2.3](https://github.com/saleem-hadad/larecipe/releases/tag/v1.2.3) (2018-09-22)
+
+### Enhancement
+
+- Add support for dynamic route placeholder - ([#fd21ce2](https://github.com/saleem-hadad/larecipe/commit/fd21ce228a5934976c8f8d20230c60097891746c))
+
 <a name="1.2.2"></a>
 # [1.2.2](https://github.com/saleem-hadad/larecipe/releases/tag/v1.2.2) (2018-09-21)
 
