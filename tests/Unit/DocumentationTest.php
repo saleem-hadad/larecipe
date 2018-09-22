@@ -53,4 +53,18 @@ class DocumentationTest extends TestCase
         $this->documentation->get('1.0', 'bar');
         $this->assertNull(cache('larecipe.docs.1.0.bar'));
     }
+
+    /** @test */
+    public function it_can_compile_blade_content()
+    {
+        $bladeContent = "{{ csrf_field() }}";
+        $this->assertEquals('<?php echo e(csrf_field()); ?>', $this->documentation->compileBlade($bladeContent));
+    }
+
+    /** @test */
+    public function it_can_render_blade_content()
+    {
+        $content = "{{ count(['foo', 'bar']) }}";
+        $this->assertEquals(2, $this->documentation->renderBlade($content));
+    }
 }

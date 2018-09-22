@@ -3,12 +3,13 @@
 namespace BinaryTorch\LaRecipe\Models;
 
 use Illuminate\Filesystem\Filesystem;
+use BinaryTorch\LaRecipe\Traits\HasBladeParser;
 use BinaryTorch\LaRecipe\Traits\HasMarkdownParser;
 use Illuminate\Contracts\Cache\Repository as Cache;
 
 class Documentation
 {
-    use HasMarkdownParser;
+    use HasMarkdownParser, HasBladeParser;
 
     /**
      * The filesystem implementation.
@@ -73,13 +74,14 @@ class Documentation
      * @param  string  $page
      * @return string
      */
-    public function get($version, $page)
+    public function get($version, $page, $data = [])
     {
-        $closure = function () use ($version, $page) {
+        $closure = function () use ($version, $page, $data) {
             $path = base_path(config('larecipe.docs.path').'/'.$version.'/'.$page.'.md');
 
             if ($this->files->exists($path)) {
-                $parsedContent = $this->parse($this->files->get($path));
+                $content = $this->parse($this->files->get($path));
+                $parsedContent = $this->renderBlade($content, $data);
 
                 return $this->replaceLinks($version, $parsedContent);
             }
