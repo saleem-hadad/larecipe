@@ -4,29 +4,33 @@ namespace BinaryTorch\LaRecipe\Traits;
 
 use Illuminate\Support\Facades\Blade;
 
-trait HasBladeParser 
+trait HasBladeParser
 {
-	/**
-	 * Render markdown contain blade syntax
-	 * 
-	 * @param  $content
-	 * @param  $data
-	 * @return string
-	 */
-	public function renderBlade($content, $data = [])
+    /**
+     * Render markdown contain blade syntax.
+     *
+     * @param  $content
+     * @param  $data
+     * @return string
+     */
+    public function renderBlade($content, $data = [])
     {
-    	$content = $this->compileBlade($content);
+        $content = $this->compileBlade($content);
         $obLevel = ob_get_level();
         ob_start();
         extract($data, EXTR_SKIP);
 
         try {
-            eval('?' . '>' . $content);
+            eval('?'.'>'.$content);
         } catch (\Exception $e) {
-            while (ob_get_level() > $obLevel) ob_end_clean();
+            while (ob_get_level() > $obLevel) {
+                ob_end_clean();
+            }
             throw $e;
         } catch (\Throwable $e) {
-            while (ob_get_level() > $obLevel) ob_end_clean();
+            while (ob_get_level() > $obLevel) {
+                ob_end_clean();
+            }
             throw new \Exception($e);
         }
 
@@ -36,13 +40,13 @@ trait HasBladeParser
     }
 
     /**
-     * Compile blade content
-     * 
+     * Compile blade content.
+     *
      * @param  $content
      * @return string
      */
     public function compileBlade($content)
     {
-    	return Blade::compileString($content);
+        return Blade::compileString($content);
     }
 }
