@@ -2,10 +2,10 @@
 
 namespace BinaryTorch\LaRecipe\Models;
 
+use Illuminate\Filesystem\Filesystem;
 use BinaryTorch\LaRecipe\Traits\HasBladeParser;
 use BinaryTorch\LaRecipe\Traits\HasMarkdownParser;
 use Illuminate\Contracts\Cache\Repository as Cache;
-use Illuminate\Filesystem\Filesystem;
 
 class Documentation
 {
