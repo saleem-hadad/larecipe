@@ -3,6 +3,15 @@
 All notable changes to `larecipe` will be documented in this file
 
 
+<a name="1.2.4"></a>
+# [1.2.4](https://github.com/saleem-hadad/larecipe/releases/tag/v1.2.4) (2018-09-23)
+
+### Enhancement
+
+- Add support for many Prism languages using autoloader 🔥 - ([#39](https://github.com/saleem-hadad/larecipe/pull/39)) ([#34](https://github.com/saleem-hadad/larecipe/issues/34)) ([#30](https://github.com/saleem-hadad/larecipe/issues/30))
+- Add support for Blade syntax inside amrkdown 🔥 - ([#35](https://github.com/saleem-hadad/larecipe/pull/35))([#29](https://github.com/saleem-hadad/larecipe/issues/29)) ([#28](https://github.com/saleem-hadad/larecipe/issues/28))
+
+
 <a name="1.2.3"></a>
 # [1.2.3](https://github.com/saleem-hadad/larecipe/releases/tag/v1.2.3) (2018-09-22)
 
