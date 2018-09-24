@@ -1,7 +1,8 @@
 require('./bootsrap');
 
 import Vue from "vue";
-import Argon from "./plugins/argon-kit";
+import mediumZoom from 'medium-zoom'
+import Argon from "./plugins/argon-kit"
 
 Vue.use(Argon);
 Vue.config.productionTip = false;
@@ -31,6 +32,7 @@ const app = new Vue({
     this.activateCurrentSection()
     this.parseDocsContent()
     this.setupKeyboardShortcuts()
+    mediumZoom('img')
   },
   methods: {
     handleSidebarVisibility() {
