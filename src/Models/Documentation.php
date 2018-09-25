@@ -81,9 +81,10 @@ class Documentation
 
             if ($this->files->exists($path)) {
                 $content = $this->parse($this->files->get($path));
-                $parsedContent = $this->renderBlade($content, $data);
 
-                return $this->replaceLinks($version, $parsedContent);
+                $parsedContent = $this->replaceLinks($version, $content);
+
+                return $this->renderBlade($parsedContent, $data);
             }
 
             return null;
