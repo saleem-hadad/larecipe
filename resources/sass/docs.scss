@@ -126,7 +126,7 @@
             border-top: 2px dashed $gray-200;
         }
 
-        ul:first-of-type {
+        & > ul:first-of-type {
             position: fixed;
             top: 100px;
             right: 30px;
