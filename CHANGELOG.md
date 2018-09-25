@@ -12,7 +12,7 @@ All notable changes to `larecipe` will be documented in this file
 
 ### Fix
 
-- Fix rendering blade before replacing version number - ([#43e1195](https://github.com/saleem-hadad/larecipe/commit/43e1195ac985519747dcb871daa39f40bc749f0a)) ([#44](https://github.com/saleem-hadad/larecipe/issues/4))
+- Fix rendering blade before replacing version number - ([#43e1195](https://github.com/saleem-hadad/larecipe/commit/43e1195ac985519747dcb871daa39f40bc749f0a)) ([#44](https://github.com/saleem-hadad/larecipe/issues/44))
 - Fixed multi-level lists - ([#43](https://github.com/saleem-hadad/larecipe/pull/43))
 
 ### Minor
