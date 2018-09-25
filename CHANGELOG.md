@@ -3,6 +3,22 @@
 All notable changes to `larecipe` will be documented in this file
 
 
+<a name="1.2.5"></a>
+# [1.2.5](https://github.com/saleem-hadad/larecipe/releases/tag/v1.2.5) (2018-09-26)
+
+### Enhancement
+
+- Add Medium-zoom like effect - ([#aa3dcce](https://github.com/saleem-hadad/larecipe/commit/aa3dcce082463e5e0dda834becec9eb6dee06e15))
+
+### Fix
+
+- Fix rendering blade before replacing version number - ([#43e1195](https://github.com/saleem-hadad/larecipe/commit/43e1195ac985519747dcb871daa39f40bc749f0a)) ([#44](https://github.com/saleem-hadad/larecipe/issues/4))
+- Fixed multi-level lists - ([#43](https://github.com/saleem-hadad/larecipe/pull/43))
+
+### Minor
+
+- Add laravel 5.4 and 5.7 in require-dev composer.json - ([#41](https://github.com/saleem-hadad/larecipe/pull/41))
+
 <a name="1.2.4"></a>
 # [1.2.4](https://github.com/saleem-hadad/larecipe/releases/tag/v1.2.4) (2018-09-23)
 
