@@ -80,9 +80,9 @@ class Documentation
             $path = base_path(config('larecipe.docs.path').'/'.$version.'/'.$page.'.md');
 
             if ($this->files->exists($path)) {
-                $content = $this->parse($this->files->get($path));
+                $parsedContent = $this->parse($this->files->get($path));
 
-                $parsedContent = $this->replaceLinks($version, $content);
+                $parsedContent = $this->replaceLinks($version, $parsedContent);
 
                 return $this->renderBlade($parsedContent, $data);
             }
