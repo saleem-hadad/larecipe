@@ -57,10 +57,10 @@
     {{-- /presented when toggle pressed --}}
 
     {{-- right navbar --}}
-    <div class="navbar-nav ml-lg-auto">
+    <div class="navbar-nav ml-lg-auto" slot-scope="{closeMenu}">
         @if(config('larecipe.search.enabled'))
             {{-- search button --}}
-            <larecipe-button id="search-button" 
+            <larecipe-button @click="closeMenu" id="search-button" 
                 :class="{'btn-primary': searchBox}" 
                 @click="searchBox = ! searchBox" 
                 type="link" 
