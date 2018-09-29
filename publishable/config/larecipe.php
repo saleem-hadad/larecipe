@@ -178,7 +178,7 @@ return [
    | Forum
    |--------------------------------------------------------------------------
    |
-   | Giving a chance to your users to post thier questions or feedback
+   | Giving a chance to your users to post their questions or feedback
    | directly on your docs, is pretty nice way to engage them more.
    | However, you can also enable/disable the forum's visibility.
    |
