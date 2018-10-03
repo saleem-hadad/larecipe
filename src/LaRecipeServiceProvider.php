@@ -2,6 +2,9 @@
 
 namespace BinaryTorch\LaRecipe;
 
+
+
+
 use Illuminate\Support\ServiceProvider;
 use BinaryTorch\LaRecipe\Commands\InstallCommand;
 use BinaryTorch\LaRecipe\Commands\GenerateDocumentationCommand;
