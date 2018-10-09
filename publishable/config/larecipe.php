@@ -47,11 +47,20 @@ return [
     | where you can limit the access to only authenticated users in your
     | system. It is false initially so that guests can view your docs.
     |
+    | You may also specify links to show under the auth dropdown menu.
+    | Logout link will show by default.
+    |
     |
     */
 
     'settings' => [
         'auth'  => false,
+        'auth_links' => [
+            [
+                'name' => '',
+                'url' => '',
+            ],
+        ],
         'ga_id' => ''
     ],
 
