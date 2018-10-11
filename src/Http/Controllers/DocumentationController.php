@@ -48,7 +48,7 @@ class DocumentationController extends Controller
         $documentation = $this->documentationRepository->get($version, $page);
 
         if (Gate::has('viewLarecipe')) {
-            $this->authorize('viewLarecipe', $documentation);
+            $this->authorize('viewLarecipe');
         }
 
         if ($this->documentationRepository->isNotPublishedVersion($version)) {
