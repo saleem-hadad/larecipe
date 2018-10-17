@@ -102,6 +102,17 @@
                 <larecipe-button slot="title" type="secondary" class="dropdown-toggle btn-white ml-2">
                     {{ auth()->user()->name ?? 'Account' }}
                 </larecipe-button>
+
+                @if(config('larecipe.settings.auth_links') !== null)
+                    @foreach(config('larecipe.settings.auth_links') as $link)
+                        @if($link['url'] !== '')
+                            <li>
+                                <a href="{{ $link['url'] }}" class="dropdown-item">{{ $link['name'] }}</a>
+                            </li>
+                        @endif
+                    @endforeach
+                @endif
+
                 <form action="/logout" method="POST">
                     {{ csrf_field() }}
 
