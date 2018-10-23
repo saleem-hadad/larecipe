@@ -4,6 +4,7 @@ namespace BinaryTorch\LaRecipe;
 
 use Illuminate\Support\ServiceProvider;
 use BinaryTorch\LaRecipe\Commands\InstallCommand;
+use BinaryTorch\LaRecipe\Commands\IndexDocumentationCommand;
 use BinaryTorch\LaRecipe\Commands\GenerateDocumentationCommand;
 
 class LaRecipeServiceProvider extends ServiceProvider
@@ -79,6 +80,7 @@ class LaRecipeServiceProvider extends ServiceProvider
     {
         $this->commands(InstallCommand::class);
         $this->commands(GenerateDocumentationCommand::class);
+        $this->commands(IndexDocumentationCommand::class);
     }
 
     /**
