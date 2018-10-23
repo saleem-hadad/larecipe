@@ -10,6 +10,7 @@ class BuiltInSearchTest extends TestCase
     public function a_consol_command_used_to_index_docs_in_cash()
     {
         $this->artisan('larecipe:index')
-            ->expectsOutput('Reading published versions..');
+            ->expectsOutput('Reading published versions..')
+            ->expectsOutput('Reading index.md for v1.0');
     }
 }

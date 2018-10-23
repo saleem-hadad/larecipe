@@ -30,5 +30,11 @@ class IndexDocumentationCommand extends Command
     public function handle()
     {
         $this->line('Reading published versions..');
+        $publishedVersions = config('larecipe.versions.published');
+
+        foreach ($publishedVersions as $version) {
+            $this->info('Reading index.md for v'.$version);
+            // $this->documentationIndex($version);
+        }
     }
 }
