@@ -3,8 +3,6 @@
 namespace BinaryTorch\LaRecipe\Commands;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Process\Process;
-use BinaryTorch\LaRecipe\LaRecipeServiceProvider;
 
 class IndexDocumentationCommand extends Command
 {
