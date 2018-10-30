@@ -27,12 +27,6 @@ class LaRecipeServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(LaRecipe::class, function () {
-            return new LaRecipe();
-        });
-
-        $this->app->alias(LaRecipe::class, 'LaRecipe');
-
         $this->registerConfigs();
         $this->loadHelpers();
 
