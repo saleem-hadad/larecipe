@@ -48,12 +48,12 @@ class DocumentationController extends Controller
         }
 
         $published_versions_config = collect($this->documentationRepository->publishedVersions)->keyBy('version');
-        if(
+        if (
             isset($published_versions_config[$version])
             && isset($published_versions_config[$version]['auth'])
             && $published_versions_config[$version]['auth']
-        ){
-            if( !auth()->guard($published_versions_config[$version]['guard'])->check() ){
+        ) {
+            if (! auth()->guard($published_versions_config[$version]['guard'])->check()) {
                 return redirect('login');
             }
         }
