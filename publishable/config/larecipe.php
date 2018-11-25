@@ -34,7 +34,17 @@ return [
     'versions'      => [
         'default'   => '1.0',
         'published' => [
-            '1.0'
+            [
+                'version' => '1.0',
+                'auth'  => false,
+                'guard'  => 'web',
+                'auth_links' => [
+                    [
+                        'name' => '',
+                        'url' => '',
+                    ],
+                ],
+            ]
         ]
     ],
 
@@ -54,13 +64,6 @@ return [
     */
 
     'settings' => [
-        'auth'  => false,
-        'auth_links' => [
-            [
-                'name' => '',
-                'url' => '',
-            ],
-        ],
         'ga_id' => ''
     ],
 

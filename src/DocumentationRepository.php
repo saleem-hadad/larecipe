@@ -122,7 +122,7 @@ class DocumentationRepository
      */
     public function isPublishedVersion($version)
     {
-        return in_array($version, $this->publishedVersions);
+        return in_array($version, collect($this->publishedVersions)->pluck('version')->toArray());
     }
 
     /**

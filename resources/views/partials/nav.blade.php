@@ -90,7 +90,7 @@
 
             @foreach ($versions as $version)
 				<li role="presentation">
-					<a class="dropdown-item" href="{{ url(config('larecipe.docs.route').'/'.$version.$currentSection) }}">{{ $version }}</a>
+					<a class="dropdown-item" href="{{ url(config('larecipe.docs.route').'/'.$version['version'].$currentSection) }}">{{ $version['version'] }}</a>
 				</li>
 			@endforeach
         </larecipe-dropdown>

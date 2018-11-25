@@ -18,10 +18,6 @@ class DocumentationController extends Controller
     public function __construct(DocumentationRepository $documentationRepository)
     {
         $this->documentationRepository = $documentationRepository;
-
-        if (config('larecipe.settings.auth')) {
-            $this->middleware(['auth']);
-        }
     }
 
     /**
@@ -49,6 +45,17 @@ class DocumentationController extends Controller
 
         if (Gate::has('viewLarecipe')) {
             $this->authorize('viewLarecipe', $documentation);
+        }
+
+        $published_versions_config = collect($this->documentationRepository->publishedVersions)->keyBy('version');
+        if(
+            isset($published_versions_config[$version])
+            && isset($published_versions_config[$version]['auth'])
+            && $published_versions_config[$version]['auth']
+        ){
+            if( !auth()->guard($published_versions_config[$version]['guard'])->check() ){
+                return redirect('login');
+            }
         }
 
         if ($this->documentationRepository->isNotPublishedVersion($version)) {

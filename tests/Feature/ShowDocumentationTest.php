@@ -25,7 +25,7 @@ class ShowDocumentationTest extends TestCase
         Config::set('larecipe.docs.landing', 'foo');
 
         // set auth to false
-        Config::set('larecipe.settings.auth', false);
+        Config::set('larecipe.versions.published.0.auth', false);
         
         // guest can view foo page
         $this->get('/docs/1.0')
@@ -50,7 +50,7 @@ class ShowDocumentationTest extends TestCase
         // set the docs path and landing
         Config::set('larecipe.docs.path', 'tests/views/docs');
         Config::set('larecipe.docs.landing', 'foo');
-        Config::set('larecipe.versions.published', ['1.0']);
+        Config::set('larecipe.versions.published', [ [ 'version' => '1.0' ] ]);
 
         
         // guest can view foo page
@@ -75,7 +75,11 @@ class ShowDocumentationTest extends TestCase
     /** @test */
     public function only_auth_user_can_visit_docs_if_auth_option_is_enabled()
     {
-        Config::set('larecipe.settings.auth', true);
+        Config::set('larecipe.versions.published.0', [
+            'version' => '1.0',
+            'auth' => true,
+            'guard' => 'web'
+        ]);
 
         $this->get('/docs/1.0')->assertRedirect('login');
     }
