@@ -1,1 +1,2 @@
 - ## Get Started
+    - [Foo](/docs/{{version}}/foo)
