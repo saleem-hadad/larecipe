@@ -41,6 +41,7 @@ class DocumentationRepository
      */
     public function get($version, $page = null, $data = [])
     {
+        $this->version = $version;
         $this->sectionPage = $page ?: config('larecipe.docs.landing');
         $this->index = $this->documentation->getIndex($version);
 

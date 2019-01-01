@@ -6,6 +6,7 @@ trait HasDocumentationAttributes
 {
     protected $title;
     protected $index;
+    protected $version;
     protected $content;
     protected $canonical;
     protected $docsRoute;
@@ -30,6 +31,14 @@ trait HasDocumentationAttributes
     public function getIndexAttribute()
     {
         return $this->index;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVersionAttribute()
+    {
+        return $this->version;
     }
 
     /**
