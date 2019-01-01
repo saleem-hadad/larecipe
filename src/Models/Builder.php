@@ -26,7 +26,7 @@ class Builder
      * @param AbstractRedisRawClient $redisClient
      * @return void
      */
-    public function __construct(AbstractRedisRawClient $redisClient, $indexName='myDocs')
+    public function __construct(AbstractRedisRawClient $redisClient, $indexName = 'myDocs')
     {
         $this->redisClient = $redisClient;
         $this->indexName = $indexName;
@@ -38,12 +38,12 @@ class Builder
      * @return mixed
      */
     public function index(Documentation $documentation)
-    {    
+    {
         $this->getIndex()
             ->addTextField('version')
             ->addTextField('title')
             ->create();
-            
+
         return $this->getIndex()->add([
             new TextField('version', $documentation->version),
             new TextField('title', $documentation->path),

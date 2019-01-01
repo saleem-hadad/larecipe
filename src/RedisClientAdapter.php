@@ -23,6 +23,7 @@ class RedisClientAdapter extends AbstractRedisRawClient
         } catch (Exception $exception) {
             $this->validateRawCommandResults($exception);
         }
+
         return $this->normalizeRawCommandResult($rawResult);
     }
 }
