@@ -4,6 +4,7 @@ namespace BinaryTorch\LaRecipe\Tests\Feature;
 
 use Illuminate\Support\Facades\Config;
 use BinaryTorch\LaRecipe\Tests\TestCase;
+use BinaryTorch\LaRecipe\Models\Documentation;
 
 class BuiltInSearchTest extends TestCase
 {
@@ -15,5 +16,7 @@ class BuiltInSearchTest extends TestCase
         $this->artisan('larecipe:index')
             ->expectsOutput('Reading published versions..')
             ->expectsOutput('Reading index.md for v1.0');
+
+        Documentation::search('Two');
     }
 }

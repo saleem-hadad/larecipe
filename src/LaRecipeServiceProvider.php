@@ -3,6 +3,8 @@
 namespace BinaryTorch\LaRecipe;
 
 use Illuminate\Support\ServiceProvider;
+use BinaryTorch\LaRecipe\Models\Builder;
+use Ehann\RedisRaw\AbstractRedisRawClient;
 use BinaryTorch\LaRecipe\Commands\InstallCommand;
 use BinaryTorch\LaRecipe\Commands\IndexDocumentationCommand;
 use BinaryTorch\LaRecipe\Commands\GenerateDocumentationCommand;
@@ -27,6 +29,12 @@ class LaRecipeServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->singleton(AbstractRedisRawClient::class, function ($app) {
+            $clientAdapter = new RedisClientAdapter();
+            $clientAdapter->redis = $app->make('redis');
+            return $clientAdapter;
+        });
+
         $this->registerConfigs();
         $this->loadHelpers();
 
