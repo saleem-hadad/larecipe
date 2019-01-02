@@ -1,2 +1,4 @@
 - ## Get Started
     - [Foo](/docs/{{version}}/foo)
+- ## Features
+    - [Blade](/docs/{{version}}/blade)

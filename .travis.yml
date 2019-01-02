@@ -8,6 +8,7 @@ php:
 
 services:
 - sqlite
+- redis
 
 before_script:
 - composer install

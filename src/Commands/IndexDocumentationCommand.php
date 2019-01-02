@@ -3,6 +3,7 @@
 namespace BinaryTorch\LaRecipe\Commands;
 
 use Illuminate\Console\Command;
+use Symfony\Component\DomCrawler\Crawler;
 use BinaryTorch\LaRecipe\Models\Documentation;
 
 class IndexDocumentationCommand extends Command
@@ -51,7 +52,30 @@ class IndexDocumentationCommand extends Command
         foreach ($publishedVersions as $version) {
             $this->info('Reading index.md for v'.$version);
 
-            $this->documentation->getIndex($version);
+            $this->indexVersion($version);
         }
+    }
+
+    protected function indexVersion($version)
+    {
+        $documnetationIndex = $this->documentation->getIndex($version);
+        
+        // this should go to a new class..
+        $dom = new \DOMDocument();
+        $dom->loadHTML($documnetationIndex);
+        
+        foreach ($dom->getElementsByTagName('a') as $node){
+            $link = $node->getAttribute('href');
+
+            $this->indexDocumentation($link, $version);
+        }
+    }
+
+    protected function indexDocumentation($link, $version)
+    {
+        // get the file content
+        // parse it
+        // get h1, h2, h3, first p
+        // process indexing
     }
 }
