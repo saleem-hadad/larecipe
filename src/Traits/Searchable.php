@@ -2,7 +2,7 @@
 
 namespace BinaryTorch\LaRecipe\Traits;
 
-use BinaryTorch\LaRecipe\Models\Builder;
+use BinaryTorch\LaRecipe\Indexer;
 
 trait Searchable
 {
@@ -12,6 +12,6 @@ trait Searchable
      */
     public static function search($query)
     {
-        return app(Builder::class)->getIndex()->search($query);
+        return app(Indexer::class)->getIndex()->search($query);
     }
 }

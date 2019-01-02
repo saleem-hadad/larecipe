@@ -8,7 +8,11 @@ php:
 
 services:
 - sqlite
-- redis
+- docker
+
+before_install:
+  - phpenv config-add travis-php.ini
+  - docker run -d -p 6379:6379 redislabs/redisearch:latest --protected-mode no --loadmodule /usr/lib/redis/modules/redisearch.so
 
 before_script:
 - composer install

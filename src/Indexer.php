@@ -1,12 +1,12 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Models;
+namespace BinaryTorch\LaRecipe;
 
 use Ehann\RediSearch\Index;
 use Ehann\RediSearch\Fields\TextField;
 use Ehann\RedisRaw\AbstractRedisRawClient;
 
-class Builder
+class Indexer
 {
     /**
      * Redis client.
