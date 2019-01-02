@@ -12,6 +12,14 @@ trait Searchable
      */
     public static function search($query)
     {
-        return app(Indexer::class)->getIndex()->search($query);
+        $result = '';
+        
+        try {
+            $result = app(Indexer::class)->getIndex()->search($query);
+        } catch(\Exception $e) {
+            $result = 'opps';
+        }
+
+        return $result;
     }
 }
