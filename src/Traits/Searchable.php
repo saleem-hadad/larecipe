@@ -2,8 +2,6 @@
 
 namespace BinaryTorch\LaRecipe\Traits;
 
-use BinaryTorch\LaRecipe\Indexer;
-
 trait Searchable
 {
     /**
@@ -14,12 +12,6 @@ trait Searchable
     {
         $result = '';
         
-        try {
-            $result = app(Indexer::class)->getIndex()->search($query);
-        } catch(\Exception $e) {
-            $result = 'opps';
-        }
-
         return $result;
     }
 }
