@@ -3,20 +3,21 @@
 namespace BinaryTorch\LaRecipe\Models;
 
 use Illuminate\Filesystem\Filesystem;
+use BinaryTorch\LaRecipe\Traits\Indexable;
 use BinaryTorch\LaRecipe\Traits\HasBladeParser;
 use BinaryTorch\LaRecipe\Traits\HasMarkdownParser;
 use Illuminate\Contracts\Cache\Repository as Cache;
 
 class Documentation
 {
-    use HasMarkdownParser, HasBladeParser;
+    use HasMarkdownParser, HasBladeParser, Indexable;
 
     /**
      * The filesystem implementation.
      *
      * @var Filesystem
      */
-    public $files;
+    protected $files;
 
     /**
      * The cache implementation.

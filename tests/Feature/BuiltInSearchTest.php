@@ -4,17 +4,17 @@ namespace BinaryTorch\LaRecipe\Tests\Feature;
 
 use Illuminate\Support\Facades\Config;
 use BinaryTorch\LaRecipe\Tests\TestCase;
-use BinaryTorch\LaRecipe\DocumentationRepository;
+use BinaryTorch\LaRecipe\Models\Documentation;
 
 class BuiltInSearchTest extends TestCase
 {
-    protected $documentationRepository;
+    protected $documentation;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->documentationRepository = $this->app->make(DocumentationRepository::class);
+        $this->documentation = $this->app->make(Documentation::class);
     }
 
     /** @test */
@@ -22,7 +22,7 @@ class BuiltInSearchTest extends TestCase
     {
         Config::set('larecipe.docs.path', 'tests/views/docs');
 
-        $this->documentationRepository->search('1.0', 'foo');
+        $this->documentation->index('1.0');
 
         $this->assertTrue(true);
     }
