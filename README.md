@@ -52,6 +52,7 @@ Visit your app domain with `/docs` endpoint. That's it.
 ## Examples
 
 * [Zino](https://zino.saleemhadad.me/docs/1.0/installation) - 🤖 Custom Arduino library made for humans.
+* [Blogged](https://blogged.binarytorch.com.my/docs/1.0/overview) - Blogged is a package provides an easy way to create beautiful blog inside your Laravel projects.
 * Put your docs here 😍👌
 
 ## License
