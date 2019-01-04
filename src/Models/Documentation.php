@@ -16,7 +16,7 @@ class Documentation
      *
      * @var Filesystem
      */
-    protected $files;
+    public $files;
 
     /**
      * The cache implementation.

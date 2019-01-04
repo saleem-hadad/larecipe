@@ -102,18 +102,4 @@ class DocumentationRepositoryTest extends TestCase
         $this->documentationRepository = $this->app->make(DocumentationRepository::class);
         $this->assertEquals(['1.0', '2.0', '2.1'], $this->documentationRepository->publishedVersions);
     }
-
-    /** @test */
-    public function it_can_has_blade_syntax_in_markdown()
-    {
-        Config::set('larecipe.docs.path', 'tests/views/docs');
-
-        // Simple data that will render in blade syntax inside markdown file
-        $data = [
-            "issues" => ["one", "two", "three"]
-        ];
-
-        $documentation = $this->documentationRepository->get('1.0', 'blade', $data);
-        $this->assertContains('issues: 3', $documentation->content);
-    }
 }

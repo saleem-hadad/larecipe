@@ -3,13 +3,14 @@
 namespace BinaryTorch\LaRecipe;
 
 use Symfony\Component\DomCrawler\Crawler;
+use BinaryTorch\LaRecipe\Traits\Searchable;
 use BinaryTorch\LaRecipe\Models\Documentation;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use BinaryTorch\LaRecipe\Traits\HasDocumentationAttributes;
 
 class DocumentationRepository
 {
-    use HasAttributes, HasDocumentationAttributes;
+    use HasAttributes, HasDocumentationAttributes, Searchable;
 
     /**
      * The documentation model.
