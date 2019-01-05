@@ -2,11 +2,11 @@
 
 namespace BinaryTorch\LaRecipe\Models;
 
+use BinaryTorch\LaRecipe\Cache;
 use Illuminate\Filesystem\Filesystem;
 use BinaryTorch\LaRecipe\Traits\Indexable;
 use BinaryTorch\LaRecipe\Traits\HasBladeParser;
 use BinaryTorch\LaRecipe\Traits\HasMarkdownParser;
-use Illuminate\Contracts\Cache\Repository as Cache;
 
 class Documentation
 {
@@ -46,7 +46,7 @@ class Documentation
      */
     public function getIndex($version)
     {
-        $closure = function () use ($version) {
+        return $this->cache->remember(function() use($version) {
             $path = base_path(config('larecipe.docs.path').'/'.$version.'/index.md');
 
             if ($this->files->exists($path)) {
@@ -56,16 +56,7 @@ class Documentation
             }
 
             return null;
-        };
-
-        if (! config('larecipe.cache.enabled')) {
-            return $closure();
-        }
-
-        $cacheKey = 'larecipe.docs.'.$version.'.index';
-        $cachePeriod = config('larecipe.cache.period');
-
-        return $this->cache->remember($cacheKey, $cachePeriod, $closure);
+        }, 'larecipe.docs.'.$version.'.index');
     }
 
     /**
@@ -77,7 +68,7 @@ class Documentation
      */
     public function get($version, $page, $data = [])
     {
-        $closure = function () use ($version, $page, $data) {
+        return $this->cache->remember(function() use($version, $page, $data) {
             $path = base_path(config('larecipe.docs.path').'/'.$version.'/'.$page.'.md');
 
             if ($this->files->exists($path)) {
@@ -89,16 +80,7 @@ class Documentation
             }
 
             return null;
-        };
-
-        if (! config('larecipe.cache.enabled')) {
-            return $closure();
-        }
-
-        $cacheKey = 'larecipe.docs.'.$version.'.'.$page;
-        $cachePeriod = config('larecipe.cache.period');
-
-        return $this->cache->remember($cacheKey, $cachePeriod, $closure);
+        }, 'larecipe.docs.'.$version.'.'.$page);
     }
 
     /**

@@ -12,7 +12,7 @@ trait Indexable
      */
     public function index($version)
     {
-        $closure = function () use ($version) {
+        return $this->cache->remember(function () use ($version) {
             $pages = $this->getPages($version);
 
             $result = [];
@@ -28,16 +28,7 @@ trait Indexable
             }
 
             return json_encode($result);
-        };
-
-        if (! config('larecipe.cache.enabled')) {
-            return $closure();
-        }
-
-        $cacheKey = 'larecipe.docs.'.$version.'.search';
-        $cachePeriod = config('larecipe.cache.period');
-
-        return $this->cache->remember($cacheKey, $cachePeriod, $closure);
+        }, 'larecipe.docs.'.$version.'.search');
     }
 
     /**
