@@ -29,18 +29,14 @@ class BuiltInSearchTest extends TestCase
         $this->get('/docs/search-index/1.0')
             ->assertStatus(200)
             ->assertJsonStructure([
-                '/foo' => [
-                    'h1',
-                    'h2',
-                    'h3',
-                ],
-                '/blade' => [
-                    'h1',
-                ],
-                '/subfolder/section' => [
-                    'h1',
-                    'h2',
-                ],
+                [
+                    'path',
+                    'headings' => [
+                        'h1',
+                        'h2',
+                        'h3',
+                    ]
+                ]
             ]);
 
         $this->assertTrue(true);

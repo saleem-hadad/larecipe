@@ -41,6 +41,9 @@
         {{-- Dynamic color --}}
         @include('larecipe::partials.style')
 
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
         {{-- Custom CSS --}}
         @if(!empty(config('larecipe.ui.additional_css')))
             @foreach(config('larecipe.ui.additional_css') as $css)

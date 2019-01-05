@@ -2,6 +2,7 @@
 
 namespace BinaryTorch\LaRecipe\Http\Controllers;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 use BinaryTorch\LaRecipe\DocumentationRepository;
 

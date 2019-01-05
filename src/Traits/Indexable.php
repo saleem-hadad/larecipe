@@ -29,7 +29,12 @@ trait Indexable
                             return [$node->nodeName() => [$node->text()]];
                         });
                 $nodes = array_merge_recursive(...$nodes);
-                $result[$page] = $nodes;
+                
+                $result[] = [
+                    'path'     => $page,
+                    'title'    => $nodes['h1'] ? $nodes['h1'][0] : '',
+                    'headings' => $nodes
+                ];
             }
 
             return $result;

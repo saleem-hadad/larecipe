@@ -1,5 +1,9 @@
 window.jQuery = window.$ = require('jquery');
 
+window.axios = require('axios');
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common['X-CSRF-TOKEN'] = document.head.querySelector('meta[name="csrf-token"]').content;
+
 require('./vendor/prism.js');
 // This enables all language support via CDN
 Prism.plugins.autoloader.use_minified = true;
