@@ -18,7 +18,12 @@ trait Indexable
             $result = [];
             foreach($pages as $page) {
                 $page = explode('{{version}}', $page)[1];
-                $nodes = (new Crawler($this->get($version, $page)))
+                $pageContent = $this->get($version, $page);
+
+                if(! $pageContent)
+                    continue;
+
+                $nodes = (new Crawler($pageContent))
                         ->filter('h1, h2, h3')
                         ->each(function (Crawler $node, $i) {
                             return [$node->nodeName() => [$node->text()]];
