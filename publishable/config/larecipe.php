@@ -91,7 +91,7 @@ return [
     | You can choose the default engine of your search from the list
     | However, you can also enable/disable the search's visibility
     |
-    | Supported Search Engines: 'algolia'
+    | Supported Search Engines: 'algolia', 'internal'
     |
     */
 
