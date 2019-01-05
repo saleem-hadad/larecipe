@@ -23,6 +23,7 @@ class BuiltInSearchTest extends TestCase
         Config::set('larecipe.docs.path', 'tests/views/docs');
 
         // activate built-in search..
+        Config::set('larecipe.search.enabled', true);
         Config::set('larecipe.search.default', 'internal');
 
         $this->get('/docs/search-index/1.0')

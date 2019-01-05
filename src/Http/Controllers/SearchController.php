@@ -49,6 +49,8 @@ class SearchController extends Controller
             $this->documentationRepository->isNotPublishedVersion($version)
             ||
             config('larecipe.search.default') != 'internal'
+            || 
+            ! config('larecipe.search.enabled')
         , 403);
     }
 }
