@@ -2,3 +2,4 @@
     - [Foo](/docs/{{version}}/foo)
 - ## Features
     - [Blade](/docs/{{version}}/blade)
+    - [Section](/docs/{{version}}/subfolder/section)

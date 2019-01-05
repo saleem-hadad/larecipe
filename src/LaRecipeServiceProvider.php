@@ -2,6 +2,7 @@
 
 namespace BinaryTorch\LaRecipe;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use BinaryTorch\LaRecipe\Commands\InstallCommand;
 use BinaryTorch\LaRecipe\Commands\GenerateDocumentationCommand;
@@ -15,8 +16,25 @@ class LaRecipeServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadRoutesFrom(__DIR__.'/../routes/LaRecipe.php');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'larecipe');
+
+        Route::group($this->routesConfig(), function () {
+            $this->loadRoutesFrom(__DIR__.'/../routes/LaRecipe.php');
+        });
+    }
+
+    /**
+     * @return array
+     */
+    protected function routesConfig()
+    {
+        return [
+            'prefix'     => config('larecipe.docs.route'),
+            'namespace'  => 'BinaryTorch\LaRecipe\Http\Controllers',
+            'domain'     => config('larecipe.domain', null),
+            'as'         => 'larecipe.',
+            'middleware' => 'web',
+        ];
     }
 
     /**

@@ -138,6 +138,16 @@ class DocumentationRepository
     }
 
     /**
+     * @param $version
+     *
+     * @return $this
+     */
+    public function search($version)
+    {
+        return $this->documentation->index($version);
+    }
+
+    /**
      * Dynamically retrieve attributes on the model.
      *
      * @param  string  $key

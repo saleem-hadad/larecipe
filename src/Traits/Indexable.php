@@ -27,7 +27,7 @@ trait Indexable
                 $result[$page] = $nodes;
             }
 
-            return json_encode($result);
+            return $result;
         }, 'larecipe.docs.'.$version.'.search');
     }
 

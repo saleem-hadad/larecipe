@@ -22,7 +22,25 @@ class BuiltInSearchTest extends TestCase
     {
         Config::set('larecipe.docs.path', 'tests/views/docs');
 
-        $this->documentation->index('1.0');
+        // activate built-in search..
+        Config::set('larecipe.search.default', 'internal');
+
+        $this->get('/docs/search-index/1.0')
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                '/foo' => [
+                    'h1',
+                    'h2',
+                    'h3',
+                ],
+                '/blade' => [
+                    'h1',
+                ],
+                '/subfolder/section' => [
+                    'h1',
+                    'h2',
+                ],
+            ]);
 
         $this->assertTrue(true);
     }
