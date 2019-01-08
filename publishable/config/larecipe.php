@@ -52,6 +52,8 @@ return [
 
     'settings' => [
         'auth'  => false,
+        'group_middleware' => 'web',
+        'middleware' => 'auth',
         'ga_id' => ''
     ],
 
