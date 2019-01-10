@@ -46,7 +46,7 @@ class Documentation
      */
     public function getIndex($version)
     {
-        return $this->cache->remember(function() use($version) {
+        return $this->cache->remember(function () use ($version) {
             $path = base_path(config('larecipe.docs.path').'/'.$version.'/index.md');
 
             if ($this->files->exists($path)) {
@@ -54,8 +54,6 @@ class Documentation
 
                 return $this->replaceLinks($version, $parsedContent);
             }
-
-            return null;
         }, 'larecipe.docs.'.$version.'.index');
     }
 
@@ -68,7 +66,7 @@ class Documentation
      */
     public function get($version, $page, $data = [])
     {
-        return $this->cache->remember(function() use($version, $page, $data) {
+        return $this->cache->remember(function () use ($version, $page, $data) {
             $path = base_path(config('larecipe.docs.path').'/'.$version.'/'.$page.'.md');
 
             if ($this->files->exists($path)) {
@@ -78,8 +76,6 @@ class Documentation
 
                 return $this->renderBlade($parsedContent, $data);
             }
-
-            return null;
         }, 'larecipe.docs.'.$version.'.'.$page);
     }
 

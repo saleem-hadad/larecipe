@@ -16,12 +16,13 @@ trait Indexable
             $pages = $this->getPages($version);
 
             $result = [];
-            foreach($pages as $page) {
+            foreach ($pages as $page) {
                 $page = explode('{{version}}', $page)[1];
                 $pageContent = $this->get($version, $page);
 
-                if(! $pageContent)
+                if (! $pageContent) {
                     continue;
+                }
 
                 $nodes = (new Crawler($pageContent))
                         ->filter('h1, h2, h3')
@@ -29,11 +30,11 @@ trait Indexable
                             return [$node->nodeName() => [$node->text()]];
                         });
                 $nodes = array_merge_recursive(...$nodes);
-                
+
                 $result[] = [
                     'path'     => $page,
                     'title'    => $nodes['h1'] ? $nodes['h1'][0] : '',
-                    'headings' => $nodes
+                    'headings' => $nodes,
                 ];
             }
 
