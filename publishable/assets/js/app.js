@@ -2305,7 +2305,7 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     this.activateCurrentSection();
     this.parseDocsContent();
     this.setupKeyboardShortcuts();
-    Object(__WEBPACK_IMPORTED_MODULE_1_medium_zoom__["a" /* default */])('img');
+    Object(__WEBPACK_IMPORTED_MODULE_1_medium_zoom__["a" /* default */])('.documentation .article img');
   },
 
   methods: {

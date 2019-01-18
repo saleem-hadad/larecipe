@@ -32,7 +32,7 @@ const app = new Vue({
     this.activateCurrentSection()
     this.parseDocsContent()
     this.setupKeyboardShortcuts()
-    mediumZoom('img')
+    mediumZoom('.documentation .article img')
   },
   methods: {
     handleSidebarVisibility() {
