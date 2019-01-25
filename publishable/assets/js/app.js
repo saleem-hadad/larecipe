@@ -2370,10 +2370,10 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
         if (icon) {
           var word = icon;
 
-          if (icon.startsWith('fa')) {
+          if (icon.indexOf('.') >= 0 && icon.split('.')[1].startsWith('fa')) {
             var match = icon.split('.');
-            var word = match[1];
-            icon = '<i class="fa ' + match[0] + ' fa-2x"></i>';
+            var word = match[0];
+            icon = '<i class="fa ' + match[1] + ' fa-2x"></i>';
           } else {
             var icons = {
               info: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/" version="1.1" x="0px" y="0px" width="90px" height="90px" viewBox="0 0 90 90" enable-background="new 0 0 90 90" xml:space="preserve"><path fill="#FFFFFF" d="M45 0C20.1 0 0 20.1 0 45s20.1 45 45 45 45-20.1 45-45S69.9 0 45 0zM45 74.5c-3.6 0-6.5-2.9-6.5-6.5s2.9-6.5 6.5-6.5 6.5 2.9 6.5 6.5S48.6 74.5 45 74.5zM52.1 23.9l-2.5 29.6c0 2.5-2.1 4.6-4.6 4.6 -2.5 0-4.6-2.1-4.6-4.6l-2.5-29.6c-0.1-0.4-0.1-0.7-0.1-1.1 0-4 3.2-7.2 7.2-7.2 4 0 7.2 3.2 7.2 7.2C52.2 23.1 52.2 23.5 52.1 23.9z"/></svg>',
