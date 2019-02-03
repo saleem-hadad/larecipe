@@ -4,7 +4,8 @@
         <div class="autocomplete-result">
             <ul>
                 <li v-for="page in filteredPages" :key="page.path">
-                    {{ page.title }}
+                    <span class="title">{{ page.title }}</span>
+                    <hr>
                 </li>
             </ul>
         </div>
@@ -34,7 +35,7 @@ export default {
     mounted() {
         $('.internal-search-input').focus()
         
-        axios.get('/docs/search-index/'+this.version)
+        axios.get('/docs/search-index/' + this.version)
             .then(res => {
                 this.pages = res.data
             })
@@ -81,21 +82,31 @@ export default {
 }
 
 .autocomplete-result {
-    width: 50% !important; 
-    margin-top: 16rem; 
+    width: 400px !important; 
+    border-radius: 10px;
+    margin-top: 16rem;
+    padding-top: 20px;
     transition: all 0.2s; 
-    background-color: #f4f5f7;
+    background-color: #ffffff;
     height: 400px; 
-    display: flex; 
-    align-items: center; 
     position: absolute; 
     right: 10px;
     z-index: 100;
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
     overflow: scroll;
 
-    ul > li {
-        border-bottom: 1px solid gray;
+    ul  {
+        list-style: none;
+        margin-left: -20px !important;
+
+        li {
+            background: #ffffff;
+            width: 100%;
+
+            hr {
+                margin-top: 0.5rem;
+            }
+        }
     }
 }
 </style>

@@ -18,7 +18,7 @@ class BuiltInSearchTest extends TestCase
     }
 
     /** @test */
-    public function it_can_search_within_givin_version_for_h1_h2_h3()
+    public function can_search_within_givin_version_for_h1_h2_h3()
     {
         Config::set('larecipe.docs.path', 'tests/views/docs');
 
@@ -31,6 +31,7 @@ class BuiltInSearchTest extends TestCase
             ->assertJsonStructure([
                 [
                     'path',
+                    'title',
                     'headings' => [
                         'h1',
                         'h2',
