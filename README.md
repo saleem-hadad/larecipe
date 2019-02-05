@@ -29,10 +29,14 @@
 
 Made with ❤️ by [Binary Torch](http://binary-torch.com/)
 
-## Requirements
+## Gold Sponsers
 
-* Laravel 5.4 or higher 
-* PHP 7.1 or higher
+<object type="image/svg+xml" data="https://opencollective.com/larecipe/tiers/gold-sponsors.svg?avatarHeight=100&width=600"></object>
+
+## Bronze Sponsers
+
+<object type="image/svg+xml" data="https://opencollective.com/larecipe/tiers/bronze-sponsors.svg?avatarHeight=36&width=600"></object>
+
 
 ## Getting Started
 
