@@ -27,14 +27,18 @@
 
 ![LaRecipe Screenshot](https://larecipe.binarytorch.com.my/images/screenshot.png#)
 
-Made with ❤️ by [Binary Torch](http://binary-torch.com/)
 
 ## Open Collective Sponsors
 
 Become a sponsor and get your logo on our README on Github with a link to your site. 
 
+### Gold Sponsors
+
 [![image](https://camo.githubusercontent.com/b84c5f308ebdad0ac9ec3dd312ec4532cf50ade8/68747470733a2f2f6f70656e636f6c6c6563746976652e636f6d2f7675656a732f74696572732f706c6174696e756d2d73706f6e736f72732f302f6176617461722e737667)](https://opencollective.com/larecipe)
 
+### Bronze Sponsors
+
+[![image](https://camo.githubusercontent.com/b84c5f308ebdad0ac9ec3dd312ec4532cf50ade8/68747470733a2f2f6f70656e636f6c6c6563746976652e636f6d2f7675656a732f74696572732f706c6174696e756d2d73706f6e736f72732f302f6176617461722e737667)](https://opencollective.com/larecipe)
 
 ## Getting Started
 
