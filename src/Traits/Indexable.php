@@ -23,8 +23,10 @@ trait Indexable
                 if(! $pageContent)
                     continue;
 
+                $indexableNodes = implode(',', config('larecipe.search.engines.internal.index'));
+                
                 $nodes = (new Crawler($pageContent))
-                        ->filter('h2, h3')
+                        ->filter($indexableNodes)
                         ->each(function (Crawler $node, $i) {
                             return $node->text();
                         });
