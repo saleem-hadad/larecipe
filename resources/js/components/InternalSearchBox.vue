@@ -3,11 +3,21 @@
         <larecipe-input @input="filterResults" :value="search" input-classes="internal-search-input has-text-centered" placeholder="Search"></larecipe-input>
 
         <div class="autocomplete-result">
-            <ul>
+            <ul v-if="filteredPages.length">
                 <li v-for="page in filteredPages" :key="page.path">
-                    <span class="title">{{ page.title }}</span>
+                    <a :href="'/docs/' + version + page.path"><span class="title">
+                        <b>
+                            {{ page.title }}
+                        </b>
+                    </span></a>
+
                     <hr>
-                    <p v-for="heading in page.headings" :key="heading">{{ heading }}</p>
+                    
+                    <p class="heading"  
+                        v-for="heading in page.headings" 
+                        :key="heading"
+                        @click="navigateToHeading(page, heading)"
+                    >{{ heading }}</p>
                 </li>
             </ul>
         </div>
@@ -30,12 +40,26 @@ export default {
         },
         filterResults(value) {
             this.search = value
+        },
+        navigateToHeading(page, heading) {
+            window.location = '/docs/' + this.version + page.path + '#' + this.slugify(heading)
+        },
+        slugify(heading) {
+            return heading.toString().toLowerCase().replace(/\s+/g, '-')
         }
     },
     computed: {
         filteredPages() {
             return this.pages.filter(page => {
-                return page.title.includes(this.search);
+                let foundInHeading = false;
+
+                page.headings.forEach(heading => {
+                    if(heading.toLowerCase().includes(this.search)){
+                        foundInHeading = true;
+                    }
+                });
+
+                return page.title.toLowerCase().includes(this.search) || foundInHeading;
             })
         }
     },
@@ -89,30 +113,42 @@ export default {
 }
 
 .autocomplete-result {
-    width: 400px !important; 
-    border-radius: 10px;
-    margin-top: 16rem;
-    padding-top: 20px;
-    transition: all 0.2s; 
     background-color: #ffffff;
-    height: 400px; 
+    box-shadow: 0 0.125rem 1rem rgba(0, 0, 0, 0.075) !important;
+    width: 400px !important; 
+    max-height: 400px; 
     position: absolute; 
+    top: 7rem;
     right: 10px;
+    border-radius: 10px;
+    transition: all 0.2s; 
     z-index: 100;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
     overflow: scroll;
 
     ul  {
         list-style: none;
         margin-left: -20px !important;
+        margin-right: 20px !important;
 
         li {
             background: #ffffff;
             width: 100%;
+            margin-top: 20px;
 
             hr {
                 margin-top: 0.5rem;
                 margin-bottom: 0.5rem;
+            }
+
+            .heading {
+                width: 100%;
+                padding: 5px 10px;
+                cursor: pointer;
+                margin-bottom: 0px;
+
+                &:hover {
+                    background: #f4f5f7;
+                }
             }
         }
     }

@@ -26655,7 +26655,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n#search-button {\n  color: gray;\n}\n#search-button.btn-primary {\n    color: #ffffff;\n}\n.search-box {\n  width: 100% !important;\n  margin-top: 4rem;\n  -webkit-transition: all 0.2s;\n  transition: all 0.2s;\n  height: 6rem;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  position: absolute;\n  z-index: 100;\n  -webkit-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n          box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n}\n.search-box .form-control {\n    font-size: 2rem;\n    text-transform: uppercase;\n}\n.search-box .form-control, .search-box .form-group {\n    border: none;\n    margin-bottom: 0px;\n    height: 100%;\n    text-align: center;\n    width: 100%;\n    background: #f4f5f7;\n    border-radius: 0px;\n    -webkit-transition: all 0.2s;\n    transition: all 0.2s;\n}\n.search-box .form-control:focus, .search-box .form-group:focus {\n      background: #ffffff;\n}\n.autocomplete-result {\n  width: 400px !important;\n  border-radius: 10px;\n  margin-top: 16rem;\n  padding-top: 20px;\n  -webkit-transition: all 0.2s;\n  transition: all 0.2s;\n  background-color: #ffffff;\n  height: 400px;\n  position: absolute;\n  right: 10px;\n  z-index: 100;\n  -webkit-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n          box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n  overflow: scroll;\n}\n.autocomplete-result ul {\n    list-style: none;\n    margin-left: -20px !important;\n}\n.autocomplete-result ul li {\n      background: #ffffff;\n      width: 100%;\n}\n.autocomplete-result ul li hr {\n        margin-top: 0.5rem;\n        margin-bottom: 0.5rem;\n}\n", ""]);
+exports.push([module.i, "\n#search-button {\n  color: gray;\n}\n#search-button.btn-primary {\n    color: #ffffff;\n}\n.search-box {\n  width: 100% !important;\n  margin-top: 4rem;\n  -webkit-transition: all 0.2s;\n  transition: all 0.2s;\n  height: 6rem;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  position: absolute;\n  z-index: 100;\n  -webkit-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n          box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n}\n.search-box .form-control {\n    font-size: 2rem;\n    text-transform: uppercase;\n}\n.search-box .form-control, .search-box .form-group {\n    border: none;\n    margin-bottom: 0px;\n    height: 100%;\n    text-align: center;\n    width: 100%;\n    background: #f4f5f7;\n    border-radius: 0px;\n    -webkit-transition: all 0.2s;\n    transition: all 0.2s;\n}\n.search-box .form-control:focus, .search-box .form-group:focus {\n      background: #ffffff;\n}\n.autocomplete-result {\n  background-color: #ffffff;\n  -webkit-box-shadow: 0 0.125rem 1rem rgba(0, 0, 0, 0.075) !important;\n          box-shadow: 0 0.125rem 1rem rgba(0, 0, 0, 0.075) !important;\n  width: 400px !important;\n  max-height: 400px;\n  position: absolute;\n  top: 7rem;\n  right: 10px;\n  border-radius: 10px;\n  -webkit-transition: all 0.2s;\n  transition: all 0.2s;\n  z-index: 100;\n  overflow: scroll;\n}\n.autocomplete-result ul {\n    list-style: none;\n    margin-left: -20px !important;\n    margin-right: 20px !important;\n}\n.autocomplete-result ul li {\n      background: #ffffff;\n      width: 100%;\n      margin-top: 20px;\n}\n.autocomplete-result ul li hr {\n        margin-top: 0.5rem;\n        margin-bottom: 0.5rem;\n}\n.autocomplete-result ul li .heading {\n        width: 100%;\n        padding: 5px 10px;\n        cursor: pointer;\n        margin-bottom: 0px;\n}\n.autocomplete-result ul li .heading:hover {\n          background: #f4f5f7;\n}\n", ""]);
 
 // exports
 
@@ -26666,6 +26666,16 @@ exports.push([module.i, "\n#search-button {\n  color: gray;\n}\n#search-button.b
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -26699,6 +26709,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         filterResults: function filterResults(value) {
             this.search = value;
+        },
+        navigateToHeading: function navigateToHeading(page, heading) {
+            window.location = '/docs/' + this.version + page.path + '#' + this.slugify(heading);
+        },
+        slugify: function slugify(heading) {
+            return heading.toString().toLowerCase().replace(/\s+/g, '-');
         }
     },
     computed: {
@@ -26706,7 +26722,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             return this.pages.filter(function (page) {
-                return page.title.includes(_this.search);
+                var foundInHeading = false;
+
+                page.headings.forEach(function (heading) {
+                    if (heading.toLowerCase().includes(_this.search)) {
+                        foundInHeading = true;
+                    }
+                });
+
+                return page.title.toLowerCase().includes(_this.search) || foundInHeading;
             });
         }
     },
@@ -26753,27 +26777,53 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("div", { staticClass: "autocomplete-result" }, [
-        _c(
-          "ul",
-          _vm._l(_vm.filteredPages, function(page) {
-            return _c(
-              "li",
-              { key: page.path },
-              [
-                _c("span", { staticClass: "title" }, [
-                  _vm._v(_vm._s(page.title))
-                ]),
-                _vm._v(" "),
-                _c("hr"),
-                _vm._v(" "),
-                _vm._l(page.headings, function(heading) {
-                  return _c("p", { key: heading }, [_vm._v(_vm._s(heading))])
-                })
-              ],
-              2
+        _vm.filteredPages.length
+          ? _c(
+              "ul",
+              _vm._l(_vm.filteredPages, function(page) {
+                return _c(
+                  "li",
+                  { key: page.path },
+                  [
+                    _c(
+                      "a",
+                      { attrs: { href: "/docs/" + _vm.version + page.path } },
+                      [
+                        _c("span", { staticClass: "title" }, [
+                          _c("b", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(page.title) +
+                                "\n                    "
+                            )
+                          ])
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("hr"),
+                    _vm._v(" "),
+                    _vm._l(page.headings, function(heading) {
+                      return _c(
+                        "p",
+                        {
+                          key: heading,
+                          staticClass: "heading",
+                          on: {
+                            click: function($event) {
+                              _vm.navigateToHeading(page, heading)
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(heading))]
+                      )
+                    })
+                  ],
+                  2
+                )
+              })
             )
-          })
-        )
+          : _vm._e()
       ])
     ],
     1
