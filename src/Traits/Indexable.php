@@ -24,15 +24,20 @@ trait Indexable
                     continue;
 
                 $nodes = (new Crawler($pageContent))
-                        ->filter('h1, h2, h3')
+                        ->filter('h2, h3')
                         ->each(function (Crawler $node, $i) {
-                            return [$node->nodeName() => [$node->text()]];
+                            return $node->text();
                         });
-                $nodes = array_merge_recursive(...$nodes);
+
+                $title = (new Crawler($pageContent))
+                        ->filter('h1')
+                        ->each(function (Crawler $node, $i) {
+                            return $node->text();
+                        });
                 
                 $result[] = [
                     'path'     => $page,
-                    'title'    => $nodes['h1'] ? $nodes['h1'][0] : '',
+                    'title'    => $title ? $title[0] : '',
                     'headings' => $nodes
                 ];
             }

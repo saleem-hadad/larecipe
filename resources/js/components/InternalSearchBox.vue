@@ -1,11 +1,13 @@
 <template>
     <div class="search-box" v-click-outside="close">
-        <larecipe-input input-classes="internal-search-input has-text-centered" placeholder="Search"></larecipe-input>
+        <larecipe-input @input="filterResults" :value="search" input-classes="internal-search-input has-text-centered" placeholder="Search"></larecipe-input>
+
         <div class="autocomplete-result">
             <ul>
                 <li v-for="page in filteredPages" :key="page.path">
                     <span class="title">{{ page.title }}</span>
                     <hr>
+                    <p v-for="heading in page.headings" :key="heading">{{ heading }}</p>
                 </li>
             </ul>
         </div>
@@ -18,18 +20,23 @@ export default {
     props: ['version'],
     data() {
         return {
-            input: '',
+            search: '',
             pages: [],
         };
     },
     methods: {
         close() {
             this.$emit('close')
+        },
+        filterResults(value) {
+            this.search = value
         }
     },
     computed: {
         filteredPages() {
-            return this.pages
+            return this.pages.filter(page => {
+                return page.title.includes(this.search);
+            })
         }
     },
     mounted() {
@@ -105,6 +112,7 @@ export default {
 
             hr {
                 margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
             }
         }
     }

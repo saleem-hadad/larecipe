@@ -32,11 +32,7 @@ class BuiltInSearchTest extends TestCase
                 [
                     'path',
                     'title',
-                    'headings' => [
-                        'h1',
-                        'h2',
-                        'h3',
-                    ]
+                    'headings'
                 ]
             ]);
 

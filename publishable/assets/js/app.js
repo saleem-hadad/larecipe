@@ -26655,7 +26655,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n#search-button {\n  color: gray;\n}\n#search-button.btn-primary {\n    color: #ffffff;\n}\n.search-box {\n  width: 100% !important;\n  margin-top: 4rem;\n  -webkit-transition: all 0.2s;\n  transition: all 0.2s;\n  height: 6rem;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  position: absolute;\n  z-index: 100;\n  -webkit-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n          box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n}\n.search-box .form-control {\n    font-size: 2rem;\n    text-transform: uppercase;\n}\n.search-box .form-control, .search-box .form-group {\n    border: none;\n    margin-bottom: 0px;\n    height: 100%;\n    text-align: center;\n    width: 100%;\n    background: #f4f5f7;\n    border-radius: 0px;\n    -webkit-transition: all 0.2s;\n    transition: all 0.2s;\n}\n.search-box .form-control:focus, .search-box .form-group:focus {\n      background: #ffffff;\n}\n.autocomplete-result {\n  width: 400px !important;\n  border-radius: 10px;\n  margin-top: 16rem;\n  padding-top: 20px;\n  -webkit-transition: all 0.2s;\n  transition: all 0.2s;\n  background-color: #ffffff;\n  height: 400px;\n  position: absolute;\n  right: 10px;\n  z-index: 100;\n  -webkit-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n          box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n  overflow: scroll;\n}\n.autocomplete-result ul {\n    list-style: none;\n    margin-left: -20px !important;\n}\n.autocomplete-result ul li {\n      background: #ffffff;\n      width: 100%;\n}\n.autocomplete-result ul li hr {\n        margin-top: 0.5rem;\n}\n", ""]);
+exports.push([module.i, "\n#search-button {\n  color: gray;\n}\n#search-button.btn-primary {\n    color: #ffffff;\n}\n.search-box {\n  width: 100% !important;\n  margin-top: 4rem;\n  -webkit-transition: all 0.2s;\n  transition: all 0.2s;\n  height: 6rem;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  position: absolute;\n  z-index: 100;\n  -webkit-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n          box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n}\n.search-box .form-control {\n    font-size: 2rem;\n    text-transform: uppercase;\n}\n.search-box .form-control, .search-box .form-group {\n    border: none;\n    margin-bottom: 0px;\n    height: 100%;\n    text-align: center;\n    width: 100%;\n    background: #f4f5f7;\n    border-radius: 0px;\n    -webkit-transition: all 0.2s;\n    transition: all 0.2s;\n}\n.search-box .form-control:focus, .search-box .form-group:focus {\n      background: #ffffff;\n}\n.autocomplete-result {\n  width: 400px !important;\n  border-radius: 10px;\n  margin-top: 16rem;\n  padding-top: 20px;\n  -webkit-transition: all 0.2s;\n  transition: all 0.2s;\n  background-color: #ffffff;\n  height: 400px;\n  position: absolute;\n  right: 10px;\n  z-index: 100;\n  -webkit-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n          box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n  overflow: scroll;\n}\n.autocomplete-result ul {\n    list-style: none;\n    margin-left: -20px !important;\n}\n.autocomplete-result ul li {\n      background: #ffffff;\n      width: 100%;\n}\n.autocomplete-result ul li hr {\n        margin-top: 0.5rem;\n        margin-bottom: 0.5rem;\n}\n", ""]);
 
 // exports
 
@@ -26680,13 +26680,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "internal-search-box",
     props: ['version'],
     data: function data() {
         return {
-            input: '',
+            search: '',
             pages: []
         };
     },
@@ -26694,20 +26696,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         close: function close() {
             this.$emit('close');
+        },
+        filterResults: function filterResults(value) {
+            this.search = value;
         }
     },
     computed: {
         filteredPages: function filteredPages() {
-            return this.pages;
+            var _this = this;
+
+            return this.pages.filter(function (page) {
+                return page.title.includes(_this.search);
+            });
         }
     },
     mounted: function mounted() {
-        var _this = this;
+        var _this2 = this;
 
         $('.internal-search-input').focus();
 
         axios.get('/docs/search-index/' + this.version).then(function (res) {
-            _this.pages = res.data;
+            _this2.pages = res.data;
         });
     }
 });
@@ -26736,22 +26745,33 @@ var render = function() {
     [
       _c("larecipe-input", {
         attrs: {
+          value: _vm.search,
           "input-classes": "internal-search-input has-text-centered",
           placeholder: "Search"
-        }
+        },
+        on: { input: _vm.filterResults }
       }),
       _vm._v(" "),
       _c("div", { staticClass: "autocomplete-result" }, [
         _c(
           "ul",
           _vm._l(_vm.filteredPages, function(page) {
-            return _c("li", { key: page.path }, [
-              _c("span", { staticClass: "title" }, [
-                _vm._v(_vm._s(page.title))
-              ]),
-              _vm._v(" "),
-              _c("hr")
-            ])
+            return _c(
+              "li",
+              { key: page.path },
+              [
+                _c("span", { staticClass: "title" }, [
+                  _vm._v(_vm._s(page.title))
+                ]),
+                _vm._v(" "),
+                _c("hr"),
+                _vm._v(" "),
+                _vm._l(page.headings, function(heading) {
+                  return _c("p", { key: heading }, [_vm._v(_vm._s(heading))])
+                })
+              ],
+              2
+            )
           })
         )
       ])
