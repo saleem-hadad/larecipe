@@ -3,6 +3,30 @@
 All notable changes to `larecipe` will be documented in this file
 
 
+
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/saleem-hadad/larecipe/releases/tag/v1.3.0) (2019-02-07)
+
+### Features
+
+- Add internal search functionality - ([#548f5ff](https://github.com/saleem-hadad/larecipe/commit/548f5ff918f85aa6512de7676a006505e9f9a9c7))
+- Add font-awesome icon selection to alarm markdown sugar - ([#78](https://github.com/saleem-hadad/larecipe/pull/78))
+
+### Enhancement
+
+- Make sidebar link display as block - ([#53](https://github.com/saleem-hadad/larecipe/pull/53))
+- Add option for users to add extra links to auth dropdown menu - ([#56](https://github.com/saleem-hadad/larecipe/pull/56))
+
+### Fix
+
+- Fix rendering blade before replacing version number - ([#43e1195](https://github.com/saleem-hadad/larecipe/commit/43e1195ac985519747dcb871daa39f40bc749f0a)) ([#44](https://github.com/saleem-hadad/larecipe/issues/44))
+- Fixed multi-level lists - ([#43](https://github.com/saleem-hadad/larecipe/pull/43))
+- Make the mediumZoom selector more specific - ([#77](https://github.com/saleem-hadad/larecipe/pull/77))
+
+### Minor
+
+- close nav menu when search button pressed on mobile viewport - ([#42d0a1f](https://github.com/saleem-hadad/larecipe/commit/42d0a1f6c19be9f0d70d9b97b980a6599b3d6e66))
+
 <a name="1.2.5"></a>
 # [1.2.5](https://github.com/saleem-hadad/larecipe/releases/tag/v1.2.5) (2018-09-26)
 
