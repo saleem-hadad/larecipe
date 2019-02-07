@@ -3,7 +3,7 @@
 {{-- /top linebar --}}
 
 {{-- navbar --}}
-<larecipe-nav type="white" 
+<larecipe-nav type="white"
     effect="light" expand fixed 
     title="{{ config('app.name')}}"
     style="height: 4rem; top: 3px;">
