@@ -33,4 +33,7 @@
     ::selection {
         background: {{ config('larecipe.ui.colors.selection') }};
     }
+    [v-cloak] {
+        display: none;
+    }
 </style>

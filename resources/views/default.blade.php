@@ -52,7 +52,7 @@
         @endif
     </head>
     <body>
-        <div id="app">
+        <div id="app" v-cloak>
             @include('larecipe::partials.nav')
             
             @include('larecipe::partials.plugins.search')
