@@ -2287,8 +2287,7 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     return {
       sidebar: false,
       searchBox: false,
-      forceDarkSidebar: false,
-      forceLightSidebar: false
+      theme: ''
     };
   },
 
@@ -2296,10 +2295,14 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     // listen to the sidebar value if changed => if so, cache it.
     sidebar: function sidebar(newValue, oldValue) {
       localStorage.setItem('larecipeSidebar', this.sidebar);
+    },
+    theme: function theme(newValue, oldValue) {
+      localStorage.setItem('larecipeTheme', newValue);
     }
   },
   mounted: function mounted() {
     this.handleSidebarVisibility();
+    this.handleSavedTheme();
     this.addLinksToHeaders();
     this.setupSmoothScrolling();
     this.activateCurrentSection();
@@ -2324,6 +2327,11 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
           _this.sidebar = false;
         }
       });
+    },
+    handleSavedTheme: function handleSavedTheme() {
+      if (typeof Storage !== "undefined" && localStorage.getItem('larecipeTheme') !== null) {
+        this.theme = localStorage.getItem('larecipeTheme');
+      }
     },
     addLinksToHeaders: function addLinksToHeaders() {
       $('.documentation').find('a[name]').each(function () {
@@ -2411,15 +2419,13 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       // force dark sidebar theme
       Mousetrap.bind('d', function (e) {
         e.preventDefault();
-        _this2.forceDarkSidebar = true;
-        _this2.forceLightSidebar = false;
+        _this2.theme = 'is-dark';
       });
 
       // unforce dark sidebar theme
       Mousetrap.bind('l', function (e) {
         e.preventDefault();
-        _this2.forceDarkSidebar = false;
-        _this2.forceLightSidebar = true;
+        _this2.theme = 'is-light';
       });
 
       // scroll to the top of the page

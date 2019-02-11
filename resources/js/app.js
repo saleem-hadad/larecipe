@@ -15,18 +15,21 @@ const app = new Vue({
     return {
       sidebar: false,
       searchBox: false,
-      forceDarkSidebar: false,
-      forceLightSidebar: false
+      theme: '',
     }
   },
   watch: {
     // listen to the sidebar value if changed => if so, cache it.
     sidebar: function (newValue, oldValue) {
       localStorage.setItem('larecipeSidebar', this.sidebar);
+    },
+    theme: function (newValue, oldValue) {
+      localStorage.setItem('larecipeTheme', newValue);
     }
   },
   mounted() {
     this.handleSidebarVisibility()
+    this.handleSavedTheme()
     this.addLinksToHeaders()
     this.setupSmoothScrolling()
     this.activateCurrentSection()
@@ -48,6 +51,11 @@ const app = new Vue({
           this.sidebar = false;
         }
       });
+    },
+    handleSavedTheme() {
+      if(typeof(Storage) !== "undefined" && localStorage.getItem('larecipeTheme') !== null) {
+        this.theme = localStorage.getItem('larecipeTheme');
+      }
     },
     addLinksToHeaders() {
       $('.documentation').find('a[name]').each(function () {
@@ -133,15 +141,13 @@ const app = new Vue({
       // force dark sidebar theme
       Mousetrap.bind('d', (e) => {
         e.preventDefault();
-        this.forceDarkSidebar = true;
-        this.forceLightSidebar = false;
+        this.theme = 'is-dark';
       });
 
       // unforce dark sidebar theme
       Mousetrap.bind('l', (e) => {
         e.preventDefault();
-        this.forceDarkSidebar = false;
-        this.forceLightSidebar = true;
+        this.theme = 'is-light';
       });
 
       // scroll to the top of the page
