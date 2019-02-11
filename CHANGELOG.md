@@ -3,6 +3,15 @@
 All notable changes to `larecipe` will be documented in this file
 
 
+<a name="1.3.4"></a>
+# [1.3.4](https://github.com/saleem-hadad/larecipe/releases/tag/v1.3.4) (2019-02-11)
+
+### Enhancement
+
+- Improve internal search UI - ([#
+c1b4a24](https://github.com/saleem-hadad/larecipe/commit/c1b4a24348d3690a0ce6afecb17bd304b3ac0b49))
+- Save theme once selected by a user in local storage - ([#
+8902a72](https://github.com/saleem-hadad/larecipe/commit/8902a7221e059f16cba38179794036cfc685372c))
 
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/saleem-hadad/larecipe/releases/tag/v1.3.0) (2019-02-07)
