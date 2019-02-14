@@ -97,6 +97,11 @@ export default {
     closeMenu() {
       this.toggled = false;
     }
+  },
+  mounted() {
+    $("#search-button").click(() => {
+      this.closeMenu()
+    })
   }
 };
 </script>
