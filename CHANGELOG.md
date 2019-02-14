@@ -3,6 +3,13 @@
 All notable changes to `larecipe` will be documented in this file
 
 
+
+<a name="1.3.5"></a>
+# [1.3.5](https://github.com/saleem-hadad/larecipe/releases/tag/v1.3.5) (2019-02-14)
+
+### Fix
+- Fix mobile search - ([#90](https://github.com/saleem-hadad/larecipe/pull/90))
+
 <a name="1.3.4"></a>
 # [1.3.4](https://github.com/saleem-hadad/larecipe/releases/tag/v1.3.4) (2019-02-11)
 
