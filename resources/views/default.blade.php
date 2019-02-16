@@ -47,7 +47,7 @@
         {{-- Custom CSS --}}
         @if(!empty(config('larecipe.ui.additional_css')))
             @foreach(config('larecipe.ui.additional_css') as $css)
-                <link rel="stylesheet" type="text/css" href="{{ asset($css) }}">
+                <link rel="stylesheet" type="text/css" href="{{ asset($css) . '?id=' . \Illuminate\Support\Str::random(8) }}">
             @endforeach
         @endif
     </head>
@@ -67,7 +67,7 @@
         {{-- Custom JS --}}
         @if(!empty(config('larecipe.ui.additional_js')))
             @foreach(config('larecipe.ui.additional_js') as $js)
-                <script type="text/javascript" src="{{ asset($js) }}"></script>
+                <script type="text/javascript" src="{{ asset($js) . '?id=' . \Illuminate\Support\Str::random(8) }}"></script>
             @endforeach
         @endif
 
