@@ -28,9 +28,5 @@ class BustCustomAssetsCacheTest extends TestCase
             ->assertStatus(200)
             ->assertSee("/js/{$customCssFile}?id=")
             ->assertSee("/js/{$customJsFile}?id=");
-
     }
-
-
-
 }
