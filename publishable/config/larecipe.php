@@ -79,7 +79,7 @@ return [
 
     'cache'       => [
         'enabled' => false,
-        'period'  => 5
+        'period'  => 300
     ],
 
     /*
