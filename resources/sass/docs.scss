@@ -23,15 +23,15 @@
         &.is-light {
             background-color: $secondary;
         }
-        
+
         &.is-hidden {
             left: -15rem;
         }
-    
+
         > ul {
             list-style: none;
             padding: 0rem;
-    
+
             > li {
                 > h2 {
                     padding: 1.1rem;
@@ -40,7 +40,7 @@
                     font-weight: $font-weight-bold;
                     margin-bottom: 0px;
                 }
-    
+
                 > ul {
                     list-style: none;
                     padding: 0px;
@@ -87,7 +87,7 @@
         &.expanded {
             padding-left: 5rem;
         }
-        
+
         h1:first-of-type {
             border-left: 2px solid $primary;
             padding-left: 1rem;
@@ -113,7 +113,7 @@
                 position: absolute;
                 font-size: 15px;
                 color: $primary;
-                opacity: .6;
+                opacity: 0.6;
             }
         }
 
@@ -121,6 +121,15 @@
             font-size: $h3-font-size * 0.9;
             margin-top: 2.5rem;
             margin-bottom: 1rem;
+            a:before {
+                content: "#";
+                margin-left: -15px;
+                margin-top: 5px;
+                position: absolute;
+                font-size: 15px;
+                color: $primary;
+                opacity: 0.6;
+            }
         }
 
         hr {
@@ -136,7 +145,7 @@
             width: 200px;
 
             padding: 0rem;
-    
+
             li {
                 border-bottom: 1px dashed $gray-300;
                 padding: 10px;
@@ -145,6 +154,15 @@
                     font-size: $font-size-sm;
                     color: $gray-600;
                 }
+
+                li:last-child {
+                    border-bottom: none;
+                }
+            }
+
+            ul {
+                list-style: none;
+                padding-left: 1rem;
             }
         }
 
@@ -169,13 +187,13 @@
             &:hover {
                 box-shadow: $input-focus-alternative-box-shadow !important;
             }
-    
-            p { 
-                padding-left: 30px; 
+
+            p {
+                padding-left: 30px;
                 margin-bottom: 0px;
-                color: $white
+                color: $white;
             }
-        
+
             .flag {
                 position: absolute;
                 width: 30px;
@@ -192,9 +210,8 @@
     }
 }
 
-@media (max-width:780px) {
-
-	.documentation .article  {
+@media (max-width: 780px) {
+    .documentation .article {
         padding: 0 40px !important;
 
         > ul:first-of-type {
@@ -206,5 +223,5 @@
             width: auto;
             padding: 0rem;
         }
-	}
+    }
 }
