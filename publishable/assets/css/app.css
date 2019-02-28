@@ -14010,12 +14010,6 @@ article h5 + figure {
 
 .documentation .sidebar > ul > li > ul > li {
   padding-left: 2px;
-  -webkit-transition: padding-left 0.3s;
-  transition: padding-left 0.3s;
-}
-
-.documentation .sidebar > ul > li > ul > li:hover {
-  padding-left: 5px;
 }
 
 .documentation .sidebar > ul > li > ul > li.is-active {
@@ -14033,6 +14027,17 @@ article h5 + figure {
   color: #8898aa;
   padding: 0px 2rem;
   display: block;
+  -webkit-transition: padding-left 0.3s;
+  transition: padding-left 0.3s;
+}
+
+.documentation .sidebar > ul > li > ul > li a:hover {
+  padding-left: 2.25rem;
+}
+
+.documentation .sidebar > ul > li > ul > li ul {
+  list-style: none;
+  padding-left: 1rem;
 }
 
 .documentation .article {
@@ -14085,16 +14090,6 @@ article h5 + figure {
   font-size: 1.575rem;
   margin-top: 2.5rem;
   margin-bottom: 1rem;
-}
-
-.documentation .article h3 a:before {
-  content: "#";
-  margin-left: -15px;
-  margin-top: 5px;
-  position: absolute;
-  font-size: 15px;
-  color: #787AF6;
-  opacity: 0.6;
 }
 
 .documentation .article hr {
