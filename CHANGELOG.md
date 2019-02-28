@@ -2,6 +2,17 @@
 
 All notable changes to `larecipe` will be documented in this file
 
+---
+
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/saleem-hadad/larecipe/releases/tag/v1.4.0) (2019-02-28)
+
+### Enhancement
+
+- Add support for Laravel 5.8 - ([#
+95](https://github.com/saleem-hadad/larecipe/pull/95))
+- Feat/bust cache custom assets - ([#
+93](https://github.com/saleem-hadad/larecipe/pull/93))
 
 
 <a name="1.3.5"></a>
