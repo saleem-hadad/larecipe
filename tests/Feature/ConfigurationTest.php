@@ -127,4 +127,29 @@ class ConfigurationTest extends TestCase
         $this->get('/docs/1.0')
             ->assertSee('disqus_thread');
     }
+
+    /** @test */
+    public function nav_link_configuration()
+    {
+        Config::set('larecipe.nav', []);
+        $this->get('/docs/1.0')
+            ->assertDontSee('NavLinkConfig')
+            ->assertDontSee('NavLinkIcon')
+            ->assertDontSee('NavLinkType')
+            ->assertDontSee('NavLinkUrl');
+
+        Config::set('larecipe.nav', [
+            [
+                'url' => 'NavLinkUrl',
+                'text' => 'NavLinkConfig',
+                'icon' => 'NavLinkIcon',
+                'type' => 'NavLinkType'
+            ]
+        ]);
+        $this->get('/docs/1.0')
+            ->assertSee('NavLinkConfig')
+            ->assertSee('NavLinkIcon')
+            ->assertSee('NavLinkType')
+            ->assertSee('NavLinkUrl');
+    }
 }

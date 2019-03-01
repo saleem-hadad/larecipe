@@ -1,7 +1,13 @@
 {
     "name": "binarytorch/larecipe",
     "description": "Generate gorgeous recipes for your Laravel applications using MarkDown",
-    "keywords": ["laravel", "markdown", "docs", "documentation", "api"],
+    "keywords": [
+        "laravel",
+        "markdown",
+        "docs",
+        "documentation",
+        "api"
+    ],
     "license": "MIT",
     "type": "library",
     "support": {
@@ -33,7 +39,7 @@
     "autoload-dev": {
         "psr-4": {
             "BinaryTorch\\LaRecipe\\Tests\\": "tests/"
-      }
+        }
     },
     "minimum-stability": "stable",
     "extra": {
@@ -42,5 +48,9 @@
                 "BinaryTorch\\LaRecipe\\LaRecipeServiceProvider"
             ]
         }
+    },
+    "scripts": {
+        "test": "\"vendor/bin/phpunit\"",
+        "test:coverage": "\"vendor/bin/phpunit\" --coverage-html coverage"
     }
 }

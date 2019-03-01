@@ -172,12 +172,12 @@ return [
     */
 
     'nav'                => [
-        // [
-        //     'url' => 'https://larecipe.binarytorch.com.my/docs/1.3/overview',
-        //     'text' => 'LaRecipe',
-        //     'icon' => 'heart',
-        //     'type' => 'outline-info'
-        // ],
+        [
+            'url'        => 'https://larecipe.binarytorch.com.my/docs/1.3/overview',
+            'text'       => 'LaRecipe',
+            'icon'       => 'heart',
+            'type'       => 'outline-info'
+        ],
     ],
 
     /*
