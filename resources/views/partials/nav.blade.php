@@ -70,6 +70,26 @@
             {{-- /search button --}}
         @endif
 
+        {{-- configurable links --}}
+        @foreach (config('larecipe.nav') as $nav)
+        <larecipe-button tag="a"
+            @isset($nav['url'])
+                href="{{ $nav['url'] }}"
+            @endisset 
+            slot="title" 
+            type="{{ isset($nav['type']) ? $nav['type'] : 'outline-primary' }}" 
+            style="width: 100%">
+            @isset($nav['icon'])
+                <i class="fa fa-{{ $nav['icon'] }}"></i> 
+            @endisset
+            
+            @isset($nav['text'])
+                {{ $nav['text'] }}
+            @endisset
+        </larecipe-button>
+        @endforeach
+        {{-- /configurable links --}}
+
         {{-- repository link --}}
         @if (config('larecipe.repository.url'))
             <larecipe-button tag="a" id="repository_button" 

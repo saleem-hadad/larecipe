@@ -157,7 +157,27 @@ return [
         ],
         'additional_js'  => [
             //'js/custom.js',
-        ],
+        ]
+    ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Navigation
+    |--------------------------------------------------------------------------
+    |
+    | Here you can add links to the navbar. 
+    | Link type defaults to "outline-primary". Icon and text are not required.
+    |
+    */
+
+    'nav'                => [
+        // [
+        //     'url' => 'https://larecipe.binarytorch.com.my/docs/1.3/overview',
+        //     'text' => 'LaRecipe',
+        //     'icon' => 'heart',
+        //     'type' => 'outline-info'
+        // ],
     ],
 
     /*
