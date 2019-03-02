@@ -592,6 +592,11 @@ pre code {
   opacity: 1;
 }
 
+.form-control:-ms-input-placeholder {
+  color: #adb5bd;
+  opacity: 1;
+}
+
 .form-control::-ms-input-placeholder {
   color: #adb5bd;
   opacity: 1;
@@ -12066,6 +12071,10 @@ label {
   color: #adb5bd;
 }
 
+.form-control:focus:-ms-input-placeholder {
+  color: #adb5bd;
+}
+
 .form-control:focus::-ms-input-placeholder {
   color: #adb5bd;
 }
@@ -12163,6 +12172,10 @@ textarea[resize="horizontal"] {
   color: #2dce89;
 }
 
+.has-success .form-control:-ms-input-placeholder {
+  color: #2dce89;
+}
+
 .has-success .form-control::-ms-input-placeholder {
   color: #2dce89;
 }
@@ -12186,6 +12199,10 @@ textarea[resize="horizontal"] {
 }
 
 .has-danger .form-control::-webkit-input-placeholder {
+  color: #fb6340;
+}
+
+.has-danger .form-control:-ms-input-placeholder {
   color: #fb6340;
 }
 
