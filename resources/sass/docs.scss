@@ -23,15 +23,15 @@
         &.is-light {
             background-color: $secondary;
         }
-        
+
         &.is-hidden {
             left: -15rem;
         }
-    
+
         > ul {
             list-style: none;
             padding: 0rem;
-    
+
             > li {
                 > h2 {
                     padding: 1.1rem;
@@ -40,18 +40,13 @@
                     font-weight: $font-weight-bold;
                     margin-bottom: 0px;
                 }
-    
+
                 > ul {
                     list-style: none;
                     padding: 0px;
                     line-height: $line-height-lg * 1.5;
                     > li {
                         padding-left: 2px;
-                        transition: padding-left 0.3s;
-
-                        &:hover {
-                            padding-left: 5px;
-                        }
 
                         &.is-active {
                             padding-left: 0px;
@@ -67,6 +62,16 @@
                             color: $gray-600;
                             padding: 0px 2rem;
                             display: block;
+                            transition: padding-left 0.3s;
+
+                            &:hover {
+                                padding-left: 2.25rem;
+                            }
+                        }
+
+                        ul {
+                            list-style: none;
+                            padding-left: 1rem;
                         }
                     }
                 }
@@ -87,7 +92,7 @@
         &.expanded {
             padding-left: 5rem;
         }
-        
+
         h1:first-of-type {
             border-left: 2px solid $primary;
             padding-left: 1rem;
@@ -113,7 +118,7 @@
                 position: absolute;
                 font-size: 15px;
                 color: $primary;
-                opacity: .6;
+                opacity: 0.6;
             }
         }
 
@@ -136,7 +141,7 @@
             width: 200px;
 
             padding: 0rem;
-    
+
             li {
                 border-bottom: 1px dashed $gray-300;
                 padding: 10px;
@@ -145,6 +150,15 @@
                     font-size: $font-size-sm;
                     color: $gray-600;
                 }
+
+                li:last-child {
+                    border-bottom: none;
+                }
+            }
+
+            ul {
+                list-style: none;
+                padding-left: 1rem;
             }
         }
 
@@ -169,13 +183,13 @@
             &:hover {
                 box-shadow: $input-focus-alternative-box-shadow !important;
             }
-    
-            p { 
-                padding-left: 30px; 
+
+            p {
+                padding-left: 30px;
                 margin-bottom: 0px;
-                color: $white
+                color: $white;
             }
-        
+
             .flag {
                 position: absolute;
                 width: 30px;
@@ -192,9 +206,8 @@
     }
 }
 
-@media (max-width:780px) {
-
-	.documentation .article  {
+@media (max-width: 780px) {
+    .documentation .article {
         padding: 0 40px !important;
 
         > ul:first-of-type {
@@ -206,5 +219,5 @@
             width: auto;
             padding: 0rem;
         }
-	}
+    }
 }
