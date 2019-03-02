@@ -28,5 +28,6 @@
 @import "./bootstrap/utilities";
 @import "./bootstrap/print";
 
-@import "./vendor/prism-light";
-@import "./vendor/prism-dark";
+@import "./vendor/prism/prism-light";
+@import "./vendor/prism/prism-dark";
+@import "./vendor/prism/code-toolbar";
