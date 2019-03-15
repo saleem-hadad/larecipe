@@ -1,107 +1,51 @@
 <template>
-    <nav class="navbar has-bottom-border"
-         :class="[
-            {'navbar-expand-lg': expand},
-            {[`navbar-${effect}`]: effect},
-            {'navbar-transparent': transparent},
-            {[`bg-${type}`]: type},
-            {'rounded': round},
-            {'fixed-top': fixed},
-         ]">
-        <div :class="[expand ? 'container-fluid pl-0 pr-0 pt-1 pb-1': 'container']">
-            <slot name="container-pre"></slot>
-            <slot name="brand">
-                <a class="navbar-brand" href="#" @click.prevent="onTitleClick">
-                    {{title}}
-                </a>
-            </slot>
-            <larecipe-navbar-toggle-button :toggled="toggled"
-                                  :target="contentId"
-                                  @click.native.stop="toggled = !toggled">
-            </larecipe-navbar-toggle-button>
-            
-            <slot name="container-after"></slot>
+  <nav class="flex items-center justify-between flex-wrap bg-white border-b border-grey-light p-6">
+    <div class="flex items-center flex-no-shrink text-black mr-6">
+      <span class="font-semibold text-xl tracking-tight">Tailwind CSS</span>
+    </div>
 
-            <div class="collapse navbar-collapse" :class="{show: toggled}" :id="contentId">
-                <div class="navbar-collapse-header">
-                    <slot name="content-header" :close-menu="closeMenu"></slot>
-                </div>
-                <slot :close-menu="closeMenu"></slot>
-            </div>
-        </div>
-    </nav>
+    <div class="block lg:hidden">
+      <button
+        class="flex items-center px-3 py-2 border rounded text-grey-darker border-grey-darker hover:text-white hover:border-white"
+      >
+        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <title>Menu</title>
+          <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+      <div class="text-sm lg:flex-grow">
+        <a
+          href="#responsive-header"
+          class="block mt-4 lg:inline-block lg:mt-0 text-grey-darker hover:text-black mr-4"
+        >Docs</a>
+        <a
+          href="#responsive-header"
+          class="block mt-4 lg:inline-block lg:mt-0 text-grey-darker hover:text-black mr-4"
+        >Examples</a>
+        <a
+          href="#responsive-header"
+          class="block mt-4 lg:inline-block lg:mt-0 text-grey-darker hover:text-black"
+        >Blog</a>
+      </div>
+      <div>
+        <a
+          href="#"
+          class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:bg-white mt-4 lg:mt-0"
+        >Download</a>
+      </div>
+    </div>
+  </nav>
 </template>
 
 <script>
-import { FadeTransition } from "vue2-transitions"
-import LarecipeNavbarToggleButton from "./LarecipeNavbarToggleButton";
-
 export default {
   name: "larecipe-nav",
-  components: {
-    FadeTransition,
-    LarecipeNavbarToggleButton
-  },
-  props: {
-    type: {
-      type: String,
-      default: "primary",
-      description: "Navbar type (e.g default, primary etc)"
-    },
-    title: {
-      type: String,
-      default: "",
-      description: "Title of navbar"
-    },
-    contentId: {
-      type: [String, Number],
-      default: Math.random().toString(),
-      description:
-        "Explicit id for the menu. By default it's a generated random number"
-    },
-    effect: {
-      type: String,
-      default: "dark",
-      description: "Effect of the navbar (light|dark)"
-    },
-    round: {
-      type: Boolean,
-      default: false,
-      description: "Whether nav has rounded corners"
-    },
-    transparent: {
-      type: Boolean,
-      default: false,
-      description: "Whether navbar is transparent"
-    },
-    expand: {
-      type: Boolean,
-      default: false,
-      description: "Whether navbar should contain `navbar-expand-lg` class"
-    },
-    fixed: {
-      type: Boolean,
-      default: false,
-      description: "Whether navbar should fixed top"
+  computed: {
+    hideLogoOnSmallScreens() {
+      return this.$slots["left-side"];
     }
-  },
-  data() {
-    return {
-      toggled: false
-    };
-  },
-  methods: {
-    onTitleClick(evt) {
-      this.$emit("title-click", evt);
-    },
-    closeMenu() {
-      this.toggled = false;
-    }
-  },
-  mounted() {
-    $("#search-button").click(() => {
-      this.closeMenu()
-    })
   }
 };
 </script>

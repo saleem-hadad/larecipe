@@ -1,4 +1,9 @@
-@import "./vendor";
-@import "./argon";
-@import "./prism";
-@import "./docs";
+// @import "./vendor";
+// @import "./argon";
+// @import "./prism";
+// @import "./docs";
+
+
+@tailwind preflight;
+@tailwind components;
+@tailwind utilities;

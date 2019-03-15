@@ -27419,7 +27419,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n#search-button {\n  color: gray;\n}\n#search-button.btn-primary {\n    color: #ffffff;\n}\n.search-box {\n  width: 100% !important;\n  margin-top: 4rem;\n  -webkit-transition: all 0.2s;\n  transition: all 0.2s;\n  height: 6rem;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  position: absolute;\n  z-index: 100;\n  -webkit-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n          box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n}\n.search-box .form-control {\n    font-size: 2rem;\n    text-transform: uppercase;\n}\n.search-box .form-control, .search-box .form-group {\n    border: none;\n    margin-bottom: 0px;\n    height: 100%;\n    text-align: center;\n    width: 100%;\n    background: #f4f5f7;\n    border-radius: 0px;\n    -webkit-transition: all 0.2s;\n    transition: all 0.2s;\n}\n.search-box .form-control:focus, .search-box .form-group:focus {\n      background: #ffffff;\n}\n.search-box .algolia-autocomplete {\n    width: 100%;\n    height: 100%;\n    -webkit-box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15), 0 1px 0 rgba(0, 0, 0, 0.02);\n            box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15), 0 1px 0 rgba(0, 0, 0, 0.02);\n}\n", ""]);
+exports.push([module.i, "\n#search-button {\n  color: gray;\n}\n#search-button.btn-primary {\n  color: #fff;\n}\n.search-box {\n  width: 100% !important;\n  margin-top: 4rem;\n  -webkit-transition: all .2s;\n  transition: all .2s;\n  height: 6rem;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  position: absolute;\n  z-index: 100;\n  -webkit-box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;\n          box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;\n}\n.search-box .form-control {\n  font-size: 2rem;\n  text-transform: uppercase;\n}\n.search-box .form-control,\n.search-box .form-group {\n  border: none;\n  margin-bottom: 0px;\n  height: 100%;\n  text-align: center;\n  width: 100%;\n  background: #f4f5f7;\n  border-radius: 0px;\n  -webkit-transition: all .2s;\n  transition: all .2s;\n}\n.search-box .form-control:focus,\n.search-box .form-group:focus {\n  background: #fff;\n}\n.search-box .algolia-autocomplete {\n  width: 100%;\n  height: 100%;\n  -webkit-box-shadow: 0 1px 3px rgba(50, 50, 93, .15), 0 1px 0 rgba(0, 0, 0, .02);\n          box-shadow: 0 1px 3px rgba(50, 50, 93, .15), 0 1px 0 rgba(0, 0, 0, .02);\n}\n", ""]);
 
 // exports
 
@@ -27676,7 +27676,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n#search-button {\n  color: gray;\n}\n#search-button.btn-primary {\n    color: #ffffff;\n}\n.search-box {\n  width: 100% !important;\n  margin-top: 4rem;\n  -webkit-transition: all 0.2s;\n  transition: all 0.2s;\n  height: 6rem;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  position: absolute;\n  z-index: 100;\n  -webkit-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n          box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;\n}\n.search-box .form-control {\n    font-size: 2rem;\n    text-transform: uppercase;\n}\n.search-box .form-control, .search-box .form-group {\n    border: none;\n    margin-bottom: 0px;\n    height: 100%;\n    text-align: center;\n    width: 100%;\n    background: #f4f5f7;\n    border-radius: 0px;\n    -webkit-transition: all 0.2s;\n    transition: all 0.2s;\n}\n.search-box .form-control:focus, .search-box .form-group:focus {\n      background: #ffffff;\n}\n.autocomplete-result {\n  background-color: #ffffff;\n  -webkit-box-shadow: 0 0.125rem 1rem rgba(0, 0, 0, 0.075) !important;\n          box-shadow: 0 0.125rem 1rem rgba(0, 0, 0, 0.075) !important;\n  width: 400px !important;\n  max-height: 400px;\n  position: absolute;\n  top: 7rem;\n  right: 10px;\n  border-radius: 10px;\n  -webkit-transition: all 0.2s;\n  transition: all 0.2s;\n  z-index: 100;\n  overflow: scroll;\n}\n.autocomplete-result ul {\n    list-style: none;\n    margin-left: -20px !important;\n    margin-right: 20px !important;\n}\n.autocomplete-result ul li {\n      background: #ffffff;\n      width: 100%;\n      margin-top: 20px;\n}\n.autocomplete-result ul li hr {\n        margin-top: 0.5rem;\n        margin-bottom: 0.5rem;\n}\n.autocomplete-result ul li .heading {\n        width: 100%;\n        padding: 5px 10px;\n        cursor: pointer;\n        margin-bottom: 0px;\n}\n.autocomplete-result ul li .heading:hover {\n          background: #f4f5f7;\n}\n", ""]);
+exports.push([module.i, "\n#search-button {\n  color: gray;\n}\n#search-button.btn-primary {\n  color: #fff;\n}\n.search-box {\n  width: 100% !important;\n  margin-top: 4rem;\n  -webkit-transition: all .2s;\n  transition: all .2s;\n  height: 6rem;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  position: absolute;\n  z-index: 100;\n  -webkit-box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;\n          box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;\n}\n.search-box .form-control {\n  font-size: 2rem;\n  text-transform: uppercase;\n}\n.search-box .form-control,\n.search-box .form-group {\n  border: none;\n  margin-bottom: 0px;\n  height: 100%;\n  text-align: center;\n  width: 100%;\n  background: #f4f5f7;\n  border-radius: 0px;\n  -webkit-transition: all .2s;\n  transition: all .2s;\n}\n.search-box .form-control:focus,\n.search-box .form-group:focus {\n  background: #fff;\n}\n.autocomplete-result {\n  background-color: #fff;\n  -webkit-box-shadow: 0 .125rem 1rem rgba(0, 0, 0, .075) !important;\n          box-shadow: 0 .125rem 1rem rgba(0, 0, 0, .075) !important;\n  width: 400px !important;\n  max-height: 400px;\n  position: absolute;\n  top: 7rem;\n  right: 10px;\n  border-radius: 10px;\n  -webkit-transition: all .2s;\n  transition: all .2s;\n  z-index: 100;\n  overflow: scroll;\n}\n.autocomplete-result ul {\n  list-style: none;\n  margin-left: -20px !important;\n  margin-right: 20px !important;\n}\n.autocomplete-result ul li {\n  background: #fff;\n  width: 100%;\n  margin-top: 20px;\n}\n.autocomplete-result ul li hr {\n  margin-top: .5rem;\n  margin-bottom: .5rem;\n}\n.autocomplete-result ul li .heading {\n  width: 100%;\n  padding: 5px 10px;\n  cursor: pointer;\n  margin-bottom: 0px;\n}\n.autocomplete-result ul li .heading:hover {\n  background: #f4f5f7;\n}\n", ""]);
 
 // exports
 
@@ -28209,7 +28209,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n#backtotop {\n    position: fixed;\n    right: 0;\n    opacity: 0;\n    visibility: hidden;\n    bottom: 25px;\n    margin: 0 25px 0 0;\n    z-index: 9999;\n    -webkit-transition: 0.35s;\n    transition: 0.35s;\n    -webkit-transform: scale(0.7);\n            transform: scale(0.7);\n    -webkit-transition: all 0.5s;\n    transition: all 0.5s;\n}\n#backtotop.visible {\n    opacity: 1;\n    visibility: visible;\n    -webkit-transform: scale(1);\n            transform: scale(1);\n}\n#backtotop.visible a:hover {\n    outline: none;\n    opacity: 0.9;\n    background: #34495e;\n}\n#backtotop a {\n    outline: none;\n    text-decoration: none;\n    border: 0 none;\n    display: block;\n    width: 46px;\n    height: 46px;\n    background-color: #95a5a6;\n    opacity: 1;\n    -webkit-transition: all 0.3s;\n    transition: all 0.3s;\n    border-radius: 50%;\n    text-align: center;\n    font-size: 26px\n}\nbody #backtotop a {\n    outline: none;\n    color: #fff;\n}\n#backtotop a:after {\n    outline: none;\n    content: \"\\F106\";\n    font-family: \"FontAwesome\";\n    position: relative;\n    display: block;\n    top: 50%;\n    -webkit-transform: translateY(-55%);\n    transform: translateY(-55%);\n}\n", ""]);
+exports.push([module.i, "\n#backtotop {\n  position: fixed;\n  right: 0;\n  opacity: 0;\n  visibility: hidden;\n  bottom: 25px;\n  margin: 0 25px 0 0;\n  z-index: 9999;\n  -webkit-transition: .35s;\n  transition: .35s;\n  -webkit-transform: scale(.7);\n          transform: scale(.7);\n  -webkit-transition: all .5s;\n  transition: all .5s;\n}\n#backtotop.visible {\n  opacity: 1;\n  visibility: visible;\n  -webkit-transform: scale(1);\n          transform: scale(1);\n}\n#backtotop.visible a:hover {\n  outline: none;\n  opacity: .9;\n  background: #34495e;\n}\n#backtotop a {\n  outline: none;\n  text-decoration: none;\n  border: 0 none;\n  display: block;\n  width: 46px;\n  height: 46px;\n  background-color: #95a5a6;\n  opacity: 1;\n  -webkit-transition: all .3s;\n  transition: all .3s;\n  border-radius: 50%;\n  text-align: center;\n  font-size: 26px;\n}\nbody #backtotop a {\n  outline: none;\n  color: #fff;\n}\n#backtotop a:after {\n  outline: none;\n  content: \"\\F106\";\n  font-family: \"FontAwesome\";\n  position: relative;\n  display: block;\n  top: 50%;\n  -webkit-transform: translateY(-55%);\n          transform: translateY(-55%);\n}\n", ""]);
 
 // exports
 
@@ -28490,7 +28490,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n", ""]);
 
 // exports
 
@@ -28742,7 +28742,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n", ""]);
 
 // exports
 
@@ -29952,9 +29952,6 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue2_transitions__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LarecipeNavbarToggleButton__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LarecipeNavbarToggleButton___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__LarecipeNavbarToggleButton__);
 //
 //
 //
@@ -29989,195 +29986,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
-
-
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "larecipe-nav",
-  components: {
-    FadeTransition: __WEBPACK_IMPORTED_MODULE_0_vue2_transitions__["a" /* FadeTransition */],
-    LarecipeNavbarToggleButton: __WEBPACK_IMPORTED_MODULE_1__LarecipeNavbarToggleButton___default.a
-  },
-  props: {
-    type: {
-      type: String,
-      default: "primary",
-      description: "Navbar type (e.g default, primary etc)"
-    },
-    title: {
-      type: String,
-      default: "",
-      description: "Title of navbar"
-    },
-    contentId: {
-      type: [String, Number],
-      default: Math.random().toString(),
-      description: "Explicit id for the menu. By default it's a generated random number"
-    },
-    effect: {
-      type: String,
-      default: "dark",
-      description: "Effect of the navbar (light|dark)"
-    },
-    round: {
-      type: Boolean,
-      default: false,
-      description: "Whether nav has rounded corners"
-    },
-    transparent: {
-      type: Boolean,
-      default: false,
-      description: "Whether navbar is transparent"
-    },
-    expand: {
-      type: Boolean,
-      default: false,
-      description: "Whether navbar should contain `navbar-expand-lg` class"
-    },
-    fixed: {
-      type: Boolean,
-      default: false,
-      description: "Whether navbar should fixed top"
-    }
-  },
-  data: function data() {
-    return {
-      toggled: false
-    };
-  },
-
-  methods: {
-    onTitleClick: function onTitleClick(evt) {
-      this.$emit("title-click", evt);
-    },
-    closeMenu: function closeMenu() {
-      this.toggled = false;
-    }
-  },
-  mounted: function mounted() {
-    var _this = this;
-
-    $("#search-button").click(function () {
-      _this.closeMenu();
-    });
-  }
-});
-
-/***/ }),
-/* 105 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(106)
-/* template */
-var __vue_template__ = __webpack_require__(107)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/LarecipeNavbarToggleButton.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0a1562a4", Component.options)
-  } else {
-    hotAPI.reload("data-v-0a1562a4", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 106 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "larecipe-navbar-toggle-button",
-  props: {
-    target: {
-      type: [String, Number],
-      description: "Button target element"
-    },
-    toggled: {
-      type: Boolean,
-      default: false,
-      description: "Whether button is toggled"
+  computed: {
+    hideLogoOnSmallScreens: function hideLogoOnSmallScreens() {
+      return this.$slots["left-side"];
     }
   }
 });
 
 /***/ }),
-/* 107 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "button",
-    {
-      staticClass: "navbar-toggler btn-primary",
-      attrs: {
-        type: "button",
-        "data-toggle": "collapse",
-        "data-target": _vm.target,
-        "aria-controls": _vm.target,
-        "aria-expanded": _vm.toggled,
-        "aria-label": "Toggle navigation"
-      }
-    },
-    [_c("i", { staticClass: "fa fa-bars navbar-toggler-icon" })]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0a1562a4", module.exports)
-  }
-}
-
-/***/ }),
+/* 105 */,
+/* 106 */,
+/* 107 */,
 /* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -30188,88 +30017,117 @@ var render = function() {
   return _c(
     "nav",
     {
-      staticClass: "navbar has-bottom-border",
-      class: [
-        { "navbar-expand-lg": _vm.expand },
-        ((_obj = {}), (_obj["navbar-" + _vm.effect] = _vm.effect), _obj),
-        { "navbar-transparent": _vm.transparent },
-        ((_obj$1 = {}), (_obj$1["bg-" + _vm.type] = _vm.type), _obj$1),
-        { rounded: _vm.round },
-        { "fixed-top": _vm.fixed }
-      ]
+      staticClass:
+        "flex items-center justify-between flex-wrap bg-white border-b border-grey-light p-6"
     },
     [
-      _c(
-        "div",
-        {
-          class: [
-            _vm.expand ? "container-fluid pl-0 pr-0 pt-1 pb-1" : "container"
-          ]
-        },
-        [
-          _vm._t("container-pre"),
-          _vm._v(" "),
-          _vm._t("brand", [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "block lg:hidden" }, [
+        _c(
+          "button",
+          {
+            staticClass:
+              "flex items-center px-3 py-2 border rounded text-grey-darker border-grey-darker hover:text-white hover:border-white"
+          },
+          [
             _c(
-              "a",
+              "svg",
               {
-                staticClass: "navbar-brand",
-                attrs: { href: "#" },
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.onTitleClick($event)
-                  }
+                staticClass: "fill-current h-3 w-3",
+                attrs: {
+                  viewBox: "0 0 20 20",
+                  xmlns: "http://www.w3.org/2000/svg"
                 }
               },
               [
-                _vm._v(
-                  "\n                " + _vm._s(_vm.title) + "\n            "
-                )
+                _c("title", [_vm._v("Menu")]),
+                _vm._v(" "),
+                _c("path", {
+                  attrs: { d: "M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" }
+                })
               ]
             )
-          ]),
-          _vm._v(" "),
-          _c("larecipe-navbar-toggle-button", {
-            attrs: { toggled: _vm.toggled, target: _vm.contentId },
-            nativeOn: {
-              click: function($event) {
-                $event.stopPropagation()
-                _vm.toggled = !_vm.toggled
-              }
-            }
-          }),
-          _vm._v(" "),
-          _vm._t("container-after"),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "collapse navbar-collapse",
-              class: { show: _vm.toggled },
-              attrs: { id: _vm.contentId }
-            },
-            [
-              _c(
-                "div",
-                { staticClass: "navbar-collapse-header" },
-                [_vm._t("content-header", null, { closeMenu: _vm.closeMenu })],
-                2
-              ),
-              _vm._v(" "),
-              _vm._t("default", null, { closeMenu: _vm.closeMenu })
-            ],
-            2
-          )
-        ],
-        2
-      )
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _vm._m(1)
     ]
   )
-  var _obj
-  var _obj$1
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "flex items-center flex-no-shrink text-black mr-6" },
+      [
+        _c("span", { staticClass: "font-semibold text-xl tracking-tight" }, [
+          _vm._v("Tailwind CSS")
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "w-full block flex-grow lg:flex lg:items-center lg:w-auto"
+      },
+      [
+        _c("div", { staticClass: "text-sm lg:flex-grow" }, [
+          _c(
+            "a",
+            {
+              staticClass:
+                "block mt-4 lg:inline-block lg:mt-0 text-grey-darker hover:text-black mr-4",
+              attrs: { href: "#responsive-header" }
+            },
+            [_vm._v("Docs")]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass:
+                "block mt-4 lg:inline-block lg:mt-0 text-grey-darker hover:text-black mr-4",
+              attrs: { href: "#responsive-header" }
+            },
+            [_vm._v("Examples")]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass:
+                "block mt-4 lg:inline-block lg:mt-0 text-grey-darker hover:text-black",
+              attrs: { href: "#responsive-header" }
+            },
+            [_vm._v("Blog")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c(
+            "a",
+            {
+              staticClass:
+                "inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:bg-white mt-4 lg:mt-0",
+              attrs: { href: "#" }
+            },
+            [_vm._v("Download")]
+          )
+        ])
+      ]
+    )
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

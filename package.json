@@ -17,6 +17,7 @@
     "jquery": "^3.2",
     "laravel-mix": "^2.0",
     "nouislider": "^11.1.0",
+    "tailwindcss": "^0.7.4",
     "vue": "^2.5.16",
     "vue-flatpickr-component": "^7.0.4",
     "vue-lazyload": "^1.2.6"
