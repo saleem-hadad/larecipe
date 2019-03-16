@@ -1,12 +1,11 @@
 // @import "./vendor";
 // @import "./argon";
 // @import "./prism";
-@import "./docs";
-
 
 @tailwind preflight;
 @tailwind components;
 
+@import "./docs";
 
 :root {
     --black: #22292f;
@@ -17,7 +16,7 @@
     --warning: #ffeb3b;
     --success: #21b978;
     --danger: #e74444;
-    
+
     --sidebar: #f8fafc;
 }
 
