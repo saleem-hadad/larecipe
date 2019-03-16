@@ -8,53 +8,43 @@
         }
 
         > ul {
-            list-style: none;
-            padding: 0rem;
+            @apply list-reset;
 
-            // > li {
-            //     > h2 {
-            //         padding: 1.1rem;
-            //         color: $gray-700;
-            //         font-size: $font-size-base;
-            //         font-weight: $font-weight-bold;
-            //         margin-bottom: 0px;
-            //     }
+            > li {
+                > h2 {
+                    @apply p-5 text-grey-darkest font-bold font-normal mb-0;
+                }
 
-            //     > ul {
-            //         list-style: none;
-            //         padding: 0px;
-            //         line-height: $line-height-lg * 1.5;
-            //         > li {
-            //             padding-left: 2px;
+                > ul {
+                    @apply list-reset leading-loose;
 
-            //             &.is-active {
-            //                 padding-left: 0px;
-            //                 border-left: 2px solid $primary;
+                    > li {
+                        @apply pl-1;
 
-            //                 a {
-            //                     font-weight: $font-weight-bold;
-            //                 }
-            //             }
-            //             a {
-            //                 font-size: $font-size-base;
-            //                 font-weight: $font-weight-normal;
-            //                 color: $gray-600;
-            //                 padding: 0px 2rem;
-            //                 display: block;
-            //                 transition: padding-left 0.3s;
+                        &.is-active {
+                            @apply pl-0 border-l-2 border-primary;
 
-            //                 &:hover {
-            //                     padding-left: 2.25rem;
-            //                 }
-            //             }
+                            a {
+                                @apply font-black;
+                            }
+                        }
 
-            //             ul {
-            //                 list-style: none;
-            //                 padding-left: 1rem;
-            //             }
-            //         }
-            //     }
-            // }
+                        a {
+                            @apply text-base font-normal text-grey-darker py-0 px-8 block;
+
+                            transition: padding-left 0.3s;
+
+                            &:hover {
+                                padding-left: 2.25rem;
+                            }
+                        }
+
+                        ul {
+                            @apply list-reset pl-1;
+                        }
+                    }
+                }
+            }
         }
     }
 

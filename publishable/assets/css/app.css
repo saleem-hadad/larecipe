@@ -560,7 +560,58 @@ table {
 
 .documentation .sidebar > ul {
   list-style: none;
-  padding: 0rem;
+  padding: 0;
+}
+
+.documentation .sidebar > ul > li > h2 {
+  padding: 1.25rem;
+  color: #3d4852;
+  font-weight: 700;
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+.documentation .sidebar > ul > li > ul {
+  list-style: none;
+  padding: 0;
+  line-height: 2;
+}
+
+.documentation .sidebar > ul > li > ul > li {
+  padding-left: .25rem;
+}
+
+.documentation .sidebar > ul > li > ul > li.is-active {
+  padding-left: 0;
+  border-left-width: 2px;
+  border-color: var(--primary);
+}
+
+.documentation .sidebar > ul > li > ul > li.is-active a {
+  font-weight: 900;
+}
+
+.documentation .sidebar > ul > li > ul > li a {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #606f7b;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  display: block;
+  -webkit-transition: padding-left .3s;
+  transition: padding-left .3s;
+}
+
+.documentation .sidebar > ul > li > ul > li a:hover {
+  padding-left: 2.25rem;
+}
+
+.documentation .sidebar > ul > li > ul > li ul {
+  list-style: none;
+  padding: 0;
+  padding-left: .25rem;
 }
 
 .documentation .article {
@@ -693,7 +744,7 @@ table {
   --warning: #ffeb3b;
   --success: #21b978;
   --danger: #e74444;
-  --sidebar: #f8fafc;
+  --sidebar: #f4f5f7;
 }
 
 a {
