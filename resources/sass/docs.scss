@@ -1,7 +1,7 @@
 .documentation {
     .sidebar {
         font-size: 15px;
-        background-color: $secondary;
+        @apply bg-sidebar border-r border-grey-light;
         width: 15rem;
         position: fixed;
         z-index: 10;
@@ -10,7 +10,6 @@
         left: 0;
         bottom: 0;
         box-sizing: border-box;
-        border-right: 1px solid $gray-300;
         overflow-y: auto;
         padding: 2.1rem 0px !important;
         transition: all 0.2s;
@@ -21,7 +20,8 @@
         }
 
         &.is-light {
-            background-color: $secondary;
+
+            // @apply bg-secondary;
         }
 
         &.is-hidden {
@@ -32,50 +32,50 @@
             list-style: none;
             padding: 0rem;
 
-            > li {
-                > h2 {
-                    padding: 1.1rem;
-                    color: $gray-700;
-                    font-size: $font-size-base;
-                    font-weight: $font-weight-bold;
-                    margin-bottom: 0px;
-                }
+            // > li {
+            //     > h2 {
+            //         padding: 1.1rem;
+            //         color: $gray-700;
+            //         font-size: $font-size-base;
+            //         font-weight: $font-weight-bold;
+            //         margin-bottom: 0px;
+            //     }
 
-                > ul {
-                    list-style: none;
-                    padding: 0px;
-                    line-height: $line-height-lg * 1.5;
-                    > li {
-                        padding-left: 2px;
+            //     > ul {
+            //         list-style: none;
+            //         padding: 0px;
+            //         line-height: $line-height-lg * 1.5;
+            //         > li {
+            //             padding-left: 2px;
 
-                        &.is-active {
-                            padding-left: 0px;
-                            border-left: 2px solid $primary;
+            //             &.is-active {
+            //                 padding-left: 0px;
+            //                 border-left: 2px solid $primary;
 
-                            a {
-                                font-weight: $font-weight-bold;
-                            }
-                        }
-                        a {
-                            font-size: $font-size-base;
-                            font-weight: $font-weight-normal;
-                            color: $gray-600;
-                            padding: 0px 2rem;
-                            display: block;
-                            transition: padding-left 0.3s;
+            //                 a {
+            //                     font-weight: $font-weight-bold;
+            //                 }
+            //             }
+            //             a {
+            //                 font-size: $font-size-base;
+            //                 font-weight: $font-weight-normal;
+            //                 color: $gray-600;
+            //                 padding: 0px 2rem;
+            //                 display: block;
+            //                 transition: padding-left 0.3s;
 
-                            &:hover {
-                                padding-left: 2.25rem;
-                            }
-                        }
+            //                 &:hover {
+            //                     padding-left: 2.25rem;
+            //                 }
+            //             }
 
-                        ul {
-                            list-style: none;
-                            padding-left: 1rem;
-                        }
-                    }
-                }
-            }
+            //             ul {
+            //                 list-style: none;
+            //                 padding-left: 1rem;
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
 
@@ -92,21 +92,21 @@
         }
 
         h1:first-of-type {
-            border-left: 2px solid $primary;
+            // border-left: 2px solid $primary;
             padding-left: 1rem;
             margin-bottom: 1.5rem;
-            font-weight: $font-weight-bold;
+            // font-weight: $font-weight-bold;
         }
 
         h2 {
-            font-size: $h2-font-size;
+            // font-size: $h2-font-size;
             margin-top: 2.5rem;
             margin-bottom: 1rem;
-            font-weight: $font-weight-bold;
+            // font-weight: $font-weight-bold;
 
             a,
             a:hover {
-                color: $gray-700;
+                // color: $gray-700;
                 text-decoration: none;
             }
             a:before {
@@ -115,19 +115,19 @@
                 margin-top: 5px;
                 position: absolute;
                 font-size: 15px;
-                color: $primary;
+                // color: $primary;
                 opacity: 0.6;
             }
         }
 
         h3 {
-            font-size: $h3-font-size * 0.9;
+            // font-size: $h3-font-size * 0.9;
             margin-top: 2.5rem;
             margin-bottom: 1rem;
         }
 
         hr {
-            border-top: 2px dashed $gray-200;
+            // border-top: 2px dashed $gray-200;
         }
 
         & > ul:first-of-type {
@@ -141,12 +141,12 @@
             padding: 0rem;
 
             li {
-                border-bottom: 1px dashed $gray-300;
+                // border-bottom: 1px dashed $gray-300;
                 padding: 10px;
 
                 a {
-                    font-size: $font-size-sm;
-                    color: $gray-600;
+                    // font-size: $font-size-sm;
+                    // color: $gray-600;
                 }
 
                 li:last-child {
@@ -161,10 +161,10 @@
         }
 
         :not(pre) > code {
-            background-color: $gray-100;
+            // background-color: $gray-100;
             padding: 5px;
             border-radius: 5px;
-            color: $primary;
+            // color: $primary;
         }
 
         p {
@@ -179,13 +179,13 @@
             margin: 2rem 0;
 
             &:hover {
-                box-shadow: $input-focus-alternative-box-shadow !important;
+                // box-shadow: $input-focus-alternative-box-shadow !important;
             }
 
             p {
                 padding-left: 30px;
                 margin-bottom: 0px;
-                color: $white;
+                color: white;
             }
 
             .flag {
@@ -193,9 +193,9 @@
                 width: 30px;
                 left: 15px;
                 top: 10px;
-                font-weight: $font-weight-bold;
+                // font-weight: $font-weight-bold;
                 svg {
-                    fill: $white;
+                    fill: white;
                     width: 24px;
                     height: 24px;
                 }

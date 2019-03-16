@@ -1,4 +1,4 @@
-@import "./vendor";
+// @import "./vendor";
 // @import "./argon";
 // @import "./prism";
 @import "./docs";
@@ -6,6 +6,20 @@
 
 @tailwind preflight;
 @tailwind components;
+
+
+:root {
+    --black: #22292f;
+    --white: white;
+    --primary: #787AF6;
+    --secondary: #2b9cf2;
+    --info: #03a9f4;
+    --warning: #ffeb3b;
+    --success: #21b978;
+    --danger: #e74444;
+    
+    --sidebar: #f8fafc;
+}
 
 a {
     @apply no-underline;
