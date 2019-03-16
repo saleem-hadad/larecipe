@@ -80,9 +80,7 @@
     }
 
     .article {
-        position: static;
-        padding-left: 20rem;
-        margin: 100px 0;
+        @apply static pl-32 my-32;
         transition: padding-left 0.2s;
 
         img {
@@ -90,7 +88,7 @@
         }
 
         &.expanded {
-            padding-left: 5rem;
+            @apply pl-20;
         }
 
         h1:first-of-type {

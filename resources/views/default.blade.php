@@ -51,13 +51,13 @@
             @endforeach
         @endif
     </head>
-    <body>
+    <body class="bg-white">
         <div id="app" v-cloak>
             @include('larecipe::partials.nav')
             
-            <!-- @include('larecipe::partials.plugins.search')
+            <!-- @include('larecipe::partials.plugins.search') -->
             
-            @yield('content') -->
+            @yield('content')
 
             @if(config('larecipe.ui.back_to_top'))
                 <larecipe-back-to-top></larecipe-back-to-top>
