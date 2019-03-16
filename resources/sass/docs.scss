@@ -1,91 +1,26 @@
 .documentation {
-    .sidebar {
-        @apply bg-sidebar border-r border-grey-light w-64 fixed z-10 text-base pin-y pin-l mt-16 overflow-y-auto py-8;
-        transition: all 0.2s;
-        
-        &.is-hidden {
-            left: -16rem;
-        }
-
-        > ul {
-            @apply list-reset;
-
-            > li {
-                > h2 {
-                    @apply p-5 text-grey-darkest font-bold font-normal mb-0;
-                }
-
-                > ul {
-                    @apply list-reset leading-loose;
-
-                    > li {
-                        @apply pl-1;
-
-                        &.is-active {
-                            @apply pl-0 border-l-2 border-primary;
-
-                            a {
-                                @apply font-black;
-                            }
-                        }
-
-                        a {
-                            @apply text-base font-normal text-grey-darker py-0 px-8 block;
-
-                            transition: padding-left 0.3s;
-
-                            &:hover {
-                                padding-left: 2.25rem;
-                            }
-                        }
-
-                        ul {
-                            @apply list-reset pl-1;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     .article {
-        @apply static pl-32 my-32;
+        @apply static my-32 pl-50 w-3/4;
         transition: padding-left 0.2s;
-
-        img {
-            max-width: 100%;
-        }
 
         &.expanded {
             @apply pl-20;
         }
 
         h1:first-of-type {
-            // border-left: 2px solid $primary;
-            padding-left: 1rem;
-            margin-bottom: 1.5rem;
-            // font-weight: $font-weight-bold;
+            @apply border-l-2 border-primary pl-4 mb-6 font-bold;
         }
 
         h2 {
-            // font-size: $h2-font-size;
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-            // font-weight: $font-weight-bold;
+            @apply mt-10 mb-4 font-bold;
 
-            a,
-            a:hover {
-                // color: $gray-700;
-                text-decoration: none;
+            a, a:hover {
+                @apply text-grey-darker no-underline;
             }
+            
             a:before {
                 content: "#";
-                margin-left: -15px;
-                margin-top: 5px;
-                position: absolute;
-                font-size: 15px;
-                // color: $primary;
-                opacity: 0.6;
+                @apply -ml-4 mt-1 absolute text-base text-primary opacity-75;
             }
         }
 
@@ -99,6 +34,10 @@
             // border-top: 2px dashed $gray-200;
         }
 
+        img {
+            max-width: 100%;
+        }
+
         & > ul:first-of-type {
             position: fixed;
             top: 100px;
@@ -110,16 +49,10 @@
             padding: 0rem;
 
             li {
-                // border-bottom: 1px dashed $gray-300;
-                padding: 10px;
+                @apply border-b border-dashed border-grey-light leading-normal p-3;
 
                 a {
-                    // font-size: $font-size-sm;
-                    // color: $gray-600;
-                }
-
-                li:last-child {
-                    border-bottom: none;
+                    @apply text-sm text-grey;
                 }
             }
 
@@ -130,15 +63,11 @@
         }
 
         :not(pre) > code {
-            // background-color: $gray-100;
-            padding: 5px;
-            border-radius: 5px;
-            // color: $primary;
+            @apply bg-grey-lighter p-1 rounded text-primary;
         }
 
         p {
-            font-size: 1rem;
-            line-height: 1.9;
+            @apply text-base font-thin leading-large;
             text-align: justify;
             text-justify: inter-word;
         }

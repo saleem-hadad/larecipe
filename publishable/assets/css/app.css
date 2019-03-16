@@ -535,7 +535,7 @@ table {
   }
 }
 
-.documentation .sidebar {
+.sidebar {
   background-color: var(--sidebar);
   border-right-width: 1px;
   border-color: #dae1e7;
@@ -554,47 +554,46 @@ table {
   transition: all .2s;
 }
 
-.documentation .sidebar.is-hidden {
+.sidebar.is-hidden {
   left: -16rem;
 }
 
-.documentation .sidebar > ul {
+.sidebar > ul {
   list-style: none;
   padding: 0;
 }
 
-.documentation .sidebar > ul > li > h2 {
+.sidebar > ul > li > h2 {
   padding: 1.25rem;
   color: #3d4852;
-  font-weight: 700;
-  font-weight: 400;
+  font-size: 1rem;
   margin-bottom: 0;
 }
 
-.documentation .sidebar > ul > li > ul {
+.sidebar > ul > li > ul {
   list-style: none;
   padding: 0;
-  line-height: 2;
+  line-height: 2.25;
 }
 
-.documentation .sidebar > ul > li > ul > li {
+.sidebar > ul > li > ul > li {
   padding-left: .25rem;
 }
 
-.documentation .sidebar > ul > li > ul > li.is-active {
+.sidebar > ul > li > ul > li.is-active {
   padding-left: 0;
   border-left-width: 2px;
   border-color: var(--primary);
 }
 
-.documentation .sidebar > ul > li > ul > li.is-active a {
-  font-weight: 900;
+.sidebar > ul > li > ul > li.is-active a {
+  font-weight: 700;
 }
 
-.documentation .sidebar > ul > li > ul > li a {
+.sidebar > ul > li > ul > li a {
   font-size: 1rem;
-  font-weight: 400;
-  color: #606f7b;
+  font-weight: 200;
+  color: #8795a1;
   padding-top: 0;
   padding-bottom: 0;
   padding-left: 2rem;
@@ -604,11 +603,11 @@ table {
   transition: padding-left .3s;
 }
 
-.documentation .sidebar > ul > li > ul > li a:hover {
+.sidebar > ul > li > ul > li a:hover {
   padding-left: 2.25rem;
 }
 
-.documentation .sidebar > ul > li > ul > li ul {
+.sidebar > ul > li > ul > li ul {
   list-style: none;
   padding: 0;
   padding-left: .25rem;
@@ -616,15 +615,12 @@ table {
 
 .documentation .article {
   position: static;
-  padding-left: 8rem;
   margin-top: 8rem;
   margin-bottom: 8rem;
+  padding-left: 20rem;
+  width: 75%;
   -webkit-transition: padding-left .2s;
   transition: padding-left .2s;
-}
-
-.documentation .article img {
-  max-width: 100%;
 }
 
 .documentation .article.expanded {
@@ -632,32 +628,42 @@ table {
 }
 
 .documentation .article h1:first-of-type {
+  border-left-width: 2px;
+  border-color: var(--primary);
   padding-left: 1rem;
   margin-bottom: 1.5rem;
+  font-weight: 700;
 }
 
 .documentation .article h2 {
   margin-top: 2.5rem;
   margin-bottom: 1rem;
+  font-weight: 700;
 }
 
 .documentation .article h2 a,
 .documentation .article h2 a:hover {
+  color: #606f7b;
   text-decoration: none;
 }
 
 .documentation .article h2 a:before {
   content: "#";
-  margin-left: -15px;
-  margin-top: 5px;
+  margin-left: -1rem;
+  margin-top: .25rem;
   position: absolute;
-  font-size: 15px;
-  opacity: .6;
+  font-size: 1rem;
+  color: var(--primary);
+  opacity: .75;
 }
 
 .documentation .article h3 {
   margin-top: 2.5rem;
   margin-bottom: 1rem;
+}
+
+.documentation .article img {
+  max-width: 100%;
 }
 
 .documentation .article > ul:first-of-type {
@@ -671,11 +677,16 @@ table {
 }
 
 .documentation .article > ul:first-of-type li {
-  padding: 10px;
+  border-bottom-width: 1px;
+  border-style: dashed;
+  border-color: #dae1e7;
+  line-height: 1.5;
+  padding: .75rem;
 }
 
-.documentation .article > ul:first-of-type li li:last-child {
-  border-bottom: none;
+.documentation .article > ul:first-of-type li a {
+  font-size: .875rem;
+  color: #b8c2cc;
 }
 
 .documentation .article > ul:first-of-type ul {
@@ -684,13 +695,16 @@ table {
 }
 
 .documentation .article :not(pre) > code {
-  padding: 5px;
-  border-radius: 5px;
+  background-color: #f1f5f8;
+  padding: .25rem;
+  border-radius: .25rem;
+  color: var(--primary);
 }
 
 .documentation .article p {
   font-size: 1rem;
-  line-height: 1.9;
+  font-weight: 200;
+  line-height: 2;
   text-align: justify;
   text-justify: inter-word;
 }
@@ -3566,8 +3580,12 @@ a {
   line-height: 1.5;
 }
 
-.leading-loose {
+.leading-large {
   line-height: 2;
+}
+
+.leading-loose {
+  line-height: 2.25;
 }
 
 .m-0 {
@@ -4708,6 +4726,10 @@ a {
   padding: 8rem;
 }
 
+.p-50 {
+  padding: 20rem;
+}
+
 .p-px {
   padding: 1px;
 }
@@ -4850,6 +4872,16 @@ a {
 .px-32 {
   padding-left: 8rem;
   padding-right: 8rem;
+}
+
+.py-50 {
+  padding-top: 20rem;
+  padding-bottom: 20rem;
+}
+
+.px-50 {
+  padding-left: 20rem;
+  padding-right: 20rem;
 }
 
 .py-px {
@@ -5084,6 +5116,22 @@ a {
 
 .pl-32 {
   padding-left: 8rem;
+}
+
+.pt-50 {
+  padding-top: 20rem;
+}
+
+.pr-50 {
+  padding-right: 20rem;
+}
+
+.pb-50 {
+  padding-bottom: 20rem;
+}
+
+.pl-50 {
+  padding-left: 20rem;
 }
 
 .pt-px {
@@ -9487,8 +9535,12 @@ a {
     line-height: 1.5;
   }
 
-  .sm\:leading-loose {
+  .sm\:leading-large {
     line-height: 2;
+  }
+
+  .sm\:leading-loose {
+    line-height: 2.25;
   }
 
   .sm\:m-0 {
@@ -10621,6 +10673,10 @@ a {
     padding: 8rem;
   }
 
+  .sm\:p-50 {
+    padding: 20rem;
+  }
+
   .sm\:p-px {
     padding: 1px;
   }
@@ -10763,6 +10819,16 @@ a {
   .sm\:px-32 {
     padding-left: 8rem;
     padding-right: 8rem;
+  }
+
+  .sm\:py-50 {
+    padding-top: 20rem;
+    padding-bottom: 20rem;
+  }
+
+  .sm\:px-50 {
+    padding-left: 20rem;
+    padding-right: 20rem;
   }
 
   .sm\:py-px {
@@ -10997,6 +11063,22 @@ a {
 
   .sm\:pl-32 {
     padding-left: 8rem;
+  }
+
+  .sm\:pt-50 {
+    padding-top: 20rem;
+  }
+
+  .sm\:pr-50 {
+    padding-right: 20rem;
+  }
+
+  .sm\:pb-50 {
+    padding-bottom: 20rem;
+  }
+
+  .sm\:pl-50 {
+    padding-left: 20rem;
   }
 
   .sm\:pt-px {
@@ -15393,8 +15475,12 @@ a {
     line-height: 1.5;
   }
 
-  .md\:leading-loose {
+  .md\:leading-large {
     line-height: 2;
+  }
+
+  .md\:leading-loose {
+    line-height: 2.25;
   }
 
   .md\:m-0 {
@@ -16527,6 +16613,10 @@ a {
     padding: 8rem;
   }
 
+  .md\:p-50 {
+    padding: 20rem;
+  }
+
   .md\:p-px {
     padding: 1px;
   }
@@ -16669,6 +16759,16 @@ a {
   .md\:px-32 {
     padding-left: 8rem;
     padding-right: 8rem;
+  }
+
+  .md\:py-50 {
+    padding-top: 20rem;
+    padding-bottom: 20rem;
+  }
+
+  .md\:px-50 {
+    padding-left: 20rem;
+    padding-right: 20rem;
   }
 
   .md\:py-px {
@@ -16903,6 +17003,22 @@ a {
 
   .md\:pl-32 {
     padding-left: 8rem;
+  }
+
+  .md\:pt-50 {
+    padding-top: 20rem;
+  }
+
+  .md\:pr-50 {
+    padding-right: 20rem;
+  }
+
+  .md\:pb-50 {
+    padding-bottom: 20rem;
+  }
+
+  .md\:pl-50 {
+    padding-left: 20rem;
   }
 
   .md\:pt-px {
@@ -21299,8 +21415,12 @@ a {
     line-height: 1.5;
   }
 
-  .lg\:leading-loose {
+  .lg\:leading-large {
     line-height: 2;
+  }
+
+  .lg\:leading-loose {
+    line-height: 2.25;
   }
 
   .lg\:m-0 {
@@ -22433,6 +22553,10 @@ a {
     padding: 8rem;
   }
 
+  .lg\:p-50 {
+    padding: 20rem;
+  }
+
   .lg\:p-px {
     padding: 1px;
   }
@@ -22575,6 +22699,16 @@ a {
   .lg\:px-32 {
     padding-left: 8rem;
     padding-right: 8rem;
+  }
+
+  .lg\:py-50 {
+    padding-top: 20rem;
+    padding-bottom: 20rem;
+  }
+
+  .lg\:px-50 {
+    padding-left: 20rem;
+    padding-right: 20rem;
   }
 
   .lg\:py-px {
@@ -22809,6 +22943,22 @@ a {
 
   .lg\:pl-32 {
     padding-left: 8rem;
+  }
+
+  .lg\:pt-50 {
+    padding-top: 20rem;
+  }
+
+  .lg\:pr-50 {
+    padding-right: 20rem;
+  }
+
+  .lg\:pb-50 {
+    padding-bottom: 20rem;
+  }
+
+  .lg\:pl-50 {
+    padding-left: 20rem;
   }
 
   .lg\:pt-px {
@@ -27205,8 +27355,12 @@ a {
     line-height: 1.5;
   }
 
-  .xl\:leading-loose {
+  .xl\:leading-large {
     line-height: 2;
+  }
+
+  .xl\:leading-loose {
+    line-height: 2.25;
   }
 
   .xl\:m-0 {
@@ -28339,6 +28493,10 @@ a {
     padding: 8rem;
   }
 
+  .xl\:p-50 {
+    padding: 20rem;
+  }
+
   .xl\:p-px {
     padding: 1px;
   }
@@ -28481,6 +28639,16 @@ a {
   .xl\:px-32 {
     padding-left: 8rem;
     padding-right: 8rem;
+  }
+
+  .xl\:py-50 {
+    padding-top: 20rem;
+    padding-bottom: 20rem;
+  }
+
+  .xl\:px-50 {
+    padding-left: 20rem;
+    padding-right: 20rem;
   }
 
   .xl\:py-px {
@@ -28715,6 +28883,22 @@ a {
 
   .xl\:pl-32 {
     padding-left: 8rem;
+  }
+
+  .xl\:pt-50 {
+    padding-top: 20rem;
+  }
+
+  .xl\:pr-50 {
+    padding-right: 20rem;
+  }
+
+  .xl\:pb-50 {
+    padding-bottom: 20rem;
+  }
+
+  .xl\:pl-50 {
+    padding-left: 20rem;
   }
 
   .xl\:pt-px {
