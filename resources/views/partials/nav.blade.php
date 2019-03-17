@@ -4,7 +4,7 @@
     <nav class="flex items-center justify-between text-black bg-white border-b border-grey-light h-16">
         <a href="{{ url('/') }}" class="flex items-center flex-no-shrink text-black mx-3">
             @if (config('larecipe.ui.logo'))
-                <img height="30px" src="{{ asset(config('larecipe.ui.logo')) }}" alt="{{ config('app.name')}} logo"/>
+                <img height="30px" src="{{ asset(config('larecipe.ui.logo')) }}"/>
             @else
                 <svg height="30px" viewBox="0 0 46 46" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                     <defs></defs>
@@ -22,7 +22,9 @@
             @endif
 
             @if (config('larecipe.ui.show_app_name'))
-                <p class="inline-block font-semibold ml-1 text-grey-darker hover:text-black">{{ config('app.name') }}</p>
+                <p id="app-name" class="inline-block font-semibold ml-1 text-grey-darker hover:text-black">
+                    {{ config('app.name') }}
+                </p>
             @endif
         </a>
 
@@ -40,7 +42,6 @@
 
 <!-- <larecipe-nav type="white"
     effect="light" expand fixed 
-    title="{{ config('app.name')}}"
     style="height: 4rem; top: 3px;">
     
     <div slot="brand" style="display: flex; align-items: center;">
@@ -54,11 +55,7 @@
 
     {{-- presented when toggle pressed --}}
     <div class="row" slot="content-header" slot-scope="{closeMenu}">
-        <div class="col-6 collapse-brand">
-            <a href="{{ url('/') }}">
-              {{ config('app.name') }}
-            </a>
-        </div>
+        <div class="col-6 collapse-brand"></div>
         <div class="col-6 collapse-close">
             <larecipe-close-button @click="closeMenu"></larecipe-close-button>
         </div>

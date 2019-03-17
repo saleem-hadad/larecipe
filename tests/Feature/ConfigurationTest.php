@@ -46,14 +46,12 @@ class ConfigurationTest extends TestCase
     public function app_name_is_visible_only_if_enabled()
     {
         Config::set('larecipe.ui.show_app_name', false);
-        Config::set('app.name', 'hoolla');
         $this->get('/docs/1.0')
-            ->assertDontSee('<span>hoolla</span>');
+            ->assertDontSee('app-name');
 
         Config::set('larecipe.ui.show_app_name', true);
-        Config::set('app.name', 'hoolla');
         $this->get('/docs/1.0')
-            ->assertSee('<span>hoolla</span>');
+            ->assertSee('app-name');
     }
 
     /** @test */
