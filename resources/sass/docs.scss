@@ -25,13 +25,11 @@
         }
 
         h3 {
-            // font-size: $h3-font-size * 0.9;
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
+            @apply mt-10 mb-4;
         }
 
         hr {
-            // border-top: 2px dashed $gray-200;
+            @apply border-t-2 border-dashed border-grey-lighter;
         }
 
         img {
@@ -39,14 +37,9 @@
         }
 
         & > ul:first-of-type {
-            position: fixed;
+            @apply fixed p-4 list-reset w-1/5;
             top: 100px;
             right: 30px;
-            padding: 1rem;
-            list-style: none;
-            width: 200px;
-
-            padding: 0rem;
 
             li {
                 @apply border-b border-dashed border-grey-light leading-normal p-3;
@@ -57,8 +50,7 @@
             }
 
             ul {
-                list-style: none;
-                padding-left: 1rem;
+                @apply list-reset pl-4;
             }
         }
 
@@ -71,49 +63,19 @@
             text-align: justify;
             text-justify: inter-word;
         }
-
-        blockquote.has-icon {
-            position: relative;
-            margin: 2rem 0;
-
-            &:hover {
-                // box-shadow: $input-focus-alternative-box-shadow !important;
-            }
-
-            p {
-                padding-left: 30px;
-                margin-bottom: 0px;
-                color: white;
-            }
-
-            .flag {
-                position: absolute;
-                width: 30px;
-                left: 15px;
-                top: 10px;
-                // font-weight: $font-weight-bold;
-                svg {
-                    fill: white;
-                    width: 24px;
-                    height: 24px;
-                }
-            }
-        }
     }
 }
 
 @media (max-width: 780px) {
     .documentation .article {
         padding: 0 40px !important;
+        @apply w-full;
 
         > ul:first-of-type {
+            @apply list-reset w-full;
             position: inherit;
             top: 10px;
             right: 30px;
-            padding: 1rem;
-            list-style: none;
-            width: auto;
-            padding: 0rem;
         }
     }
 }

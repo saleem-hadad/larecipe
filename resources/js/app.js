@@ -87,7 +87,7 @@ const app = new Vue({
     parseDocsContent() {
       // table styling
       $('.documentation').find('table').each(function () {
-        $(this).addClass('table table-bordered table-hover shadow shadow-sm--hover');
+        $(this).addClass('shadow');
       });
       
       // custom blockquote icons
@@ -117,8 +117,8 @@ const app = new Vue({
                 icon = '<span class="svg">'+ icons[icon] +'</span>';
           }
 
-          $(this).html(str.replace(/\{(.*?)\}/, '<div class="flag">'+ icon +'</div>'));
-          $(this).parent().addClass('alert shadow has-icon alert-' + word);
+          $(this).html(str.replace(/\{(.*?)\}/, '<div class="icon">'+ icon +'</div>'));
+          $(this).parent().addClass('alert is-' + word);
         }
       });
     },
