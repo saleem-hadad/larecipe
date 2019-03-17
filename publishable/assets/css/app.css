@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
 /* Document
@@ -790,6 +792,603 @@ table {
   fill: white;
   width: 60px;
   height: 60px;
+}
+
+.documentation.is-dark .article {
+  /* Code blocks *//* Inline code */
+}
+
+.documentation.is-dark .article code[class*="language-"],
+.documentation.is-dark .article pre[class*="language-"] {
+  text-shadow: none;
+}
+
+.documentation.is-dark .article :not(pre) > code[class*="language-"],
+.documentation.is-dark .article pre[class*="language-"] {
+  background: #344258 !important;
+}
+
+.documentation.is-dark .article code[class*="language-"],
+.documentation.is-dark .article pre[class*="language-"] {
+  color: #ccc;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+  -moz-tab-size: 4;
+    -o-tab-size: 4;
+       tab-size: 4;
+  -webkit-hyphens: none;
+      -ms-hyphens: none;
+          hyphens: none;
+}
+
+.documentation.is-dark .article pre[class*="language-"] {
+  padding: 1em;
+  margin: .5em 0;
+  overflow: auto;
+}
+
+.documentation.is-dark .article :not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+}
+
+.documentation.is-dark .article :not(pre) > code[class*="language-"],
+.documentation.is-dark .article pre[class*="language-"] {
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.documentation.is-dark .article .token.comment,
+.documentation.is-dark .article .token.block-comment,
+.documentation.is-dark .article .token.prolog,
+.documentation.is-dark .article .token.doctype,
+.documentation.is-dark .article .token.cdata {
+  color: #999;
+}
+
+.documentation.is-dark .article .token.punctuation {
+  color: #ccc;
+}
+
+.documentation.is-dark .article .token.tag,
+.documentation.is-dark .article .token.attr-name,
+.documentation.is-dark .article .token.namespace,
+.documentation.is-dark .article .token.deleted {
+  color: #e2777a;
+}
+
+.documentation.is-dark .article .token.function-name {
+  color: #6196cc;
+}
+
+.documentation.is-dark .article .token.boolean,
+.documentation.is-dark .article .token.number,
+.documentation.is-dark .article .token.function {
+  color: #f08d49;
+}
+
+.documentation.is-dark .article .token.property,
+.documentation.is-dark .article .token.class-name,
+.documentation.is-dark .article .token.constant,
+.documentation.is-dark .article .token.symbol {
+  color: #f8c555;
+}
+
+.documentation.is-dark .article .token.selector,
+.documentation.is-dark .article .token.important,
+.documentation.is-dark .article .token.atrule,
+.documentation.is-dark .article .token.keyword,
+.documentation.is-dark .article .token.builtin {
+  color: #cc99cd;
+}
+
+.documentation.is-dark .article .token.string,
+.documentation.is-dark .article .token.char,
+.documentation.is-dark .article .token.attr-value,
+.documentation.is-dark .article .token.regex,
+.documentation.is-dark .article .token.variable {
+  color: #7ec699;
+}
+
+.documentation.is-dark .article .token.operator,
+.documentation.is-dark .article .token.entity,
+.documentation.is-dark .article .token.url {
+  color: #67cdcc;
+}
+
+.documentation.is-dark .article .token.important,
+.documentation.is-dark .article .token.bold {
+  font-weight: bold;
+}
+
+.documentation.is-dark .article .token.italic {
+  font-style: italic;
+}
+
+.documentation.is-dark .article .token.entity {
+  cursor: help;
+}
+
+.documentation.is-dark .article .token.inserted {
+  color: green;
+}
+
+.documentation.is-dark .article pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+
+.documentation.is-dark .article .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  /* Same as .prism’s padding-top */
+  background: rgba(153, 122, 102, .08);
+  background: -webkit-gradient(linear, left top, right top, color-stop(70%, rgba(153, 122, 102, .1)), to(rgba(153, 122, 102, 0)));
+  background: linear-gradient(to right, rgba(153, 122, 102, .1) 70%, rgba(153, 122, 102, 0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+.documentation.is-dark .article .line-highlight:before,
+.documentation.is-dark .article .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: rgba(153, 122, 102, .4);
+  color: #f5f2f0;
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  -webkit-box-shadow: 0 1px white;
+          box-shadow: 0 1px white;
+}
+
+.documentation.is-dark .article .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}
+
+.documentation.is-dark .article .line-numbers .line-highlight:before,
+.documentation.is-dark .article .line-numbers .line-highlight:after {
+  content: none;
+}
+
+.documentation.is-dark .article pre[class*="language-"].line-numbers {
+  position: relative;
+  padding-left: 3.8em;
+  counter-reset: linenumber;
+}
+
+.documentation.is-dark .article pre[class*="language-"].line-numbers > code {
+  position: relative;
+  white-space: inherit;
+}
+
+.documentation.is-dark .article .line-numbers .line-numbers-rows {
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+  font-size: 100%;
+  left: -3.8em;
+  width: 3em;
+  /* works for line-numbers below 1000 lines */
+  letter-spacing: -1px;
+  border-right: 1px solid #999;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.documentation.is-dark .article .line-numbers-rows > span {
+  pointer-events: none;
+  display: block;
+  counter-increment: linenumber;
+}
+
+.documentation.is-dark .article .line-numbers-rows > span:before {
+  content: counter(linenumber);
+  color: #999;
+  display: block;
+  padding-right: .8em;
+  text-align: right;
+}
+
+.documentation.is-light .article {
+  /* Code blocks *//* Inline code */
+}
+
+.documentation.is-light .article code[class*="language-"],
+.documentation.is-light .article pre[class*="language-"] {
+  color: black;
+  text-shadow: 0 1px white;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  line-height: 1.7;
+  font-size: 14px;
+  -moz-tab-size: 4;
+    -o-tab-size: 4;
+       tab-size: 4;
+  -webkit-hyphens: none;
+      -ms-hyphens: none;
+          hyphens: none;
+}
+
+.documentation.is-light .article pre[class*="language-"]::-moz-selection,
+.documentation.is-light .article pre[class*="language-"] ::-moz-selection,
+.documentation.is-light .article code[class*="language-"]::-moz-selection,
+.documentation.is-light .article code[class*="language-"] ::-moz-selection {
+  text-shadow: none;
+  background: #b3d4fc;
+}
+
+.documentation.is-light .article pre[class*="language-"]::selection,
+.documentation.is-light .article pre[class*="language-"] ::selection,
+.documentation.is-light .article code[class*="language-"]::selection,
+.documentation.is-light .article code[class*="language-"] ::selection {
+  text-shadow: none;
+  background: #b3d4fc;
+}
+
+@media print {
+  .documentation.is-light .article code[class*="language-"],
+  .documentation.is-light .article pre[class*="language-"] {
+    text-shadow: none;
+  }
+}
+
+.documentation.is-light .article pre[class*="language-"] {
+  padding: 1em;
+  margin: 10px 0 20px;
+  overflow: auto;
+}
+
+.documentation.is-light .article :not(pre) > code[class*="language-"],
+.documentation.is-light .article pre[class*="language-"] {
+  background: #fff;
+  border-radius: 5px;
+  padding: 20px;
+  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+  border-top-width: 4px;
+  border-color: var(--primary);
+}
+
+.documentation.is-light .article :not(pre) > code[class*="language-"] {
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.documentation.is-light .article .token.comment,
+.documentation.is-light .article .token.prolog,
+.documentation.is-light .article .token.doctype,
+.documentation.is-light .article .token.cdata {
+  color: #999;
+}
+
+.documentation.is-light .article .token.punctuation {
+  color: #999;
+}
+
+.documentation.is-light .article .namespace {
+  opacity: .7;
+}
+
+.documentation.is-light .article .token.property,
+.documentation.is-light .article .token.tag,
+.documentation.is-light .article .token.boolean,
+.documentation.is-light .article .token.number,
+.documentation.is-light .article .token.constant,
+.documentation.is-light .article .token.symbol,
+.documentation.is-light .article .token.deleted {
+  color: #da564a;
+}
+
+.documentation.is-light .article .token.scope,
+.documentation.is-light .article .token.attr-name {
+  color: #da564a;
+}
+
+.documentation.is-light .article .token.selector,
+.documentation.is-light .article .token.string,
+.documentation.is-light .article .token.char,
+.documentation.is-light .article .token.builtin,
+.documentation.is-light .article .token.inserted {
+  color: #2e7d32;
+}
+
+.documentation.is-light .article .token.operator,
+.documentation.is-light .article .token.entity,
+.documentation.is-light .article .token.url,
+.documentation.is-light .article .language-css .token.string,
+.documentation.is-light .article .style .token.string {
+  color: #555;
+}
+
+.documentation.is-light .article .token.atrule,
+.documentation.is-light .article .token.attr-value,
+.documentation.is-light .article .token.keyword {
+  color: #07a;
+}
+
+.documentation.is-light .article .token.function {
+  color: #555;
+}
+
+.documentation.is-light .article .token.regex,
+.documentation.is-light .article .token.important,
+.documentation.is-light .article .token.variable {
+  color: #4ea1df;
+}
+
+.documentation.is-light .article .token.important,
+.documentation.is-light .article .token.bold {
+  font-weight: bold;
+}
+
+.documentation.is-light .article .token.italic {
+  font-style: italic;
+}
+
+.documentation.is-light .article .token.entity {
+  cursor: help;
+}
+
+.documentation.is-light .article pre.line-numbers {
+  position: relative;
+  padding-left: 3.8em;
+  padding-top: 0px;
+  margin-top: -1px;
+  border-radius: 0;
+  counter-reset: linenumber;
+}
+
+.documentation.is-light .article pre.line-numbers > code {
+  position: relative;
+}
+
+.documentation.is-light .article .line-numbers .line-numbers-rows {
+  position: absolute;
+  pointer-events: none;
+  top: -4px;
+  padding-top: 0px;
+  font-size: 100%;
+  left: -3.8em;
+  width: 3em;
+  /* works for line-numbers below 1000 lines */
+  letter-spacing: -1px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.documentation.is-light .article .line-numbers-rows > span {
+  pointer-events: none;
+  display: block;
+  counter-increment: linenumber;
+}
+
+.documentation.is-light .article .line-numbers-rows > span:before {
+  content: counter(linenumber);
+  color: #999;
+  display: block;
+  padding-right: .8em;
+  text-align: right;
+}
+
+.documentation.is-light .article .dark-code {
+  /* Code blocks *//* Inline code */
+}
+
+.documentation.is-light .article .dark-code code[class*="language-"],
+.documentation.is-light .article .dark-code pre[class*="language-"] {
+  color: #f8f8f2;
+  text-shadow: 0 1px rgba(0, 0, 0, .3);
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  line-height: 1.5;
+  -moz-tab-size: 4;
+    -o-tab-size: 4;
+       tab-size: 4;
+  -webkit-hyphens: none;
+      -ms-hyphens: none;
+          hyphens: none;
+}
+
+.documentation.is-light .article .dark-code pre[class*="language-"] {
+  padding: 1em;
+  margin: .5em 0;
+  overflow: auto;
+  border-radius: .3em;
+}
+
+.documentation.is-light .article .dark-code :not(pre) > code[class*="language-"],
+.documentation.is-light .article .dark-code pre[class*="language-"] {
+  background: #272822;
+}
+
+.documentation.is-light .article .dark-code :not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+}
+
+.documentation.is-light .article .dark-code .token.comment,
+.documentation.is-light .article .dark-code .token.prolog,
+.documentation.is-light .article .dark-code .token.doctype,
+.documentation.is-light .article .dark-code .token.cdata {
+  color: slategray;
+}
+
+.documentation.is-light .article .dark-code .token.punctuation {
+  color: #f8f8f2;
+}
+
+.documentation.is-light .article .dark-code .namespace {
+  opacity: .7;
+}
+
+.documentation.is-light .article .dark-code .token.property,
+.documentation.is-light .article .dark-code .token.tag,
+.documentation.is-light .article .dark-code .token.constant,
+.documentation.is-light .article .dark-code .token.symbol,
+.documentation.is-light .article .dark-code .token.deleted {
+  color: #f92672;
+}
+
+.documentation.is-light .article .dark-code .token.boolean,
+.documentation.is-light .article .dark-code .token.number {
+  color: #ae81ff;
+}
+
+.documentation.is-light .article .dark-code .token.selector,
+.documentation.is-light .article .dark-code .token.attr-name,
+.documentation.is-light .article .dark-code .token.string,
+.documentation.is-light .article .dark-code .token.char,
+.documentation.is-light .article .dark-code .token.builtin,
+.documentation.is-light .article .dark-code .token.inserted {
+  color: #a6e22e;
+}
+
+.documentation.is-light .article .dark-code .token.operator,
+.documentation.is-light .article .dark-code .token.entity,
+.documentation.is-light .article .dark-code .token.url,
+.documentation.is-light .article .dark-code .language-css .token.string,
+.documentation.is-light .article .dark-code .style .token.string,
+.documentation.is-light .article .dark-code .token.variable {
+  color: #f8f8f2;
+}
+
+.documentation.is-light .article .dark-code .token.atrule,
+.documentation.is-light .article .dark-code .token.attr-value {
+  color: #e6db74;
+}
+
+.documentation.is-light .article .dark-code .token.keyword {
+  color: #66d9ef;
+}
+
+.documentation.is-light .article .dark-code .token.regex,
+.documentation.is-light .article .dark-code .token.important {
+  color: #fd971f;
+}
+
+.documentation.is-light .article .dark-code .token.important,
+.documentation.is-light .article .dark-code .token.bold {
+  font-weight: bold;
+}
+
+.documentation.is-light .article .dark-code .token.italic {
+  font-style: italic;
+}
+
+.documentation.is-light .article .dark-code .token.entity {
+  cursor: help;
+}
+
+div.code-toolbar {
+  position: relative;
+}
+
+div.code-toolbar > .toolbar {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  -webkit-transition: opacity .3s ease-in-out;
+  transition: opacity .3s ease-in-out;
+  opacity: 0;
+}
+
+div.code-toolbar:hover > .toolbar {
+  opacity: 1;
+}
+
+div.code-toolbar > .toolbar .toolbar-item {
+  display: inline-block;
+}
+
+div.code-toolbar > .toolbar a {
+  cursor: pointer;
+}
+
+div.code-toolbar > .toolbar button {
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  overflow: visible;
+  padding: 0;
+  -webkit-user-select: none;
+  /* for button */
+     -moz-user-select: none;
+      -ms-user-select: none;
+}
+
+div.code-toolbar > .toolbar a,
+div.code-toolbar > .toolbar button,
+div.code-toolbar > .toolbar span {
+  color: var(--white);
+  background-color: var(--primary);
+  padding: .5rem;
+  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+  border-radius: .5rem;
+  font-size: .875rem;
+  -webkit-transition: -webkit-box-shadow .2s;
+  transition: -webkit-box-shadow .2s;
+  transition: box-shadow .2s;
+  transition: box-shadow .2s, -webkit-box-shadow .2s;
+}
+
+div.code-toolbar > .toolbar a:hover,
+div.code-toolbar > .toolbar a:focus,
+div.code-toolbar > .toolbar button:hover,
+div.code-toolbar > .toolbar button:focus,
+div.code-toolbar > .toolbar span:hover,
+div.code-toolbar > .toolbar span:focus {
+  color: #fff;
+  text-decoration: none;
+}
+
+div.code-toolbar > .toolbar a,
+div.code-toolbar > .toolbar button,
+div.code-toolbar > .toolbar span {
+  padding: .25rem .5em;
+}
+
+div.code-toolbar > .toolbar a:hover,
+div.code-toolbar > .toolbar a:focus,
+div.code-toolbar > .toolbar button:hover,
+div.code-toolbar > .toolbar button:focus,
+div.code-toolbar > .toolbar span:hover,
+div.code-toolbar > .toolbar span:focus {
+  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+  top: 13px;
 }
 
 :root {

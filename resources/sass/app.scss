@@ -4,7 +4,9 @@
 @import "./sidebar";
 @import "./docs";
 @import "./components/alerts";
-// @import "./prism";
+@import "./vendor/prism/dark";
+@import "./vendor/prism/light";
+@import "./vendor/prism/code-toolbar";
 
 :root {
     --black: #22292f;

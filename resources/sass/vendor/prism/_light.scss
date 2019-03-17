@@ -1,11 +1,3 @@
-/* http://prismjs.com/download.html?themes=prism&languages=markup+css+clike+javascript+php+php-extras+bash+sql+http */
-/**
- * prism.js default theme for JavaScript, CSS and HTML
- * Based on dabblet (http://dabblet.com)
- * @author Lea Verou
- */
-
-
  .documentation.is-light {
     .article {
 		code[class*="language-"],
@@ -61,8 +53,7 @@
 			background: #fff;
 			border-radius: 5px;
 			padding: 20px;
-			border-top: 3px solid $primary;
-			box-shadow: $box-shadow-sm !important;
+			@apply shadow border-t-4 border-primary;
 		}
 		
 		/* Inline code */
