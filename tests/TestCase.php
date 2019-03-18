@@ -8,7 +8,7 @@ use BinaryTorch\LaRecipe\LaRecipeServiceProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
-    public function setup()
+    public function setup(): void
     {
         parent::setup();
         
