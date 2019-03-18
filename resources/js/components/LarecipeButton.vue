@@ -29,7 +29,7 @@ export default {
     },
     type: {
       type: String,
-      default: "default",
+      default: "white",
       description: "Button type (e,g primary, danger etc)"
     },
     size: {
@@ -76,7 +76,7 @@ export default {
         { "btn-icon-only": this.iconOnly },
         { [`text-${this.textColor}`]: this.textColor },
         { "btn-icon": this.icon || this.$slots.icon },
-        this.type && !this.outline ? `btn-${this.type}` : "",
+        this.type && !this.outline ? `is-${this.type}` : "",
         this.outline ? `btn-outline-${this.type}` : ""
       ];
       if (this.size) {

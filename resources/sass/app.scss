@@ -42,7 +42,7 @@ a {
 /************** Buttons ***************/
 /**************************************/
 .button {
-    @apply py-3 px-5 bg-primary rounded shadow text-white;
+    @apply py-3 px-5 rounded shadow;
     transition: all 0.1s;
 
     &:hover {
@@ -53,6 +53,15 @@ a {
     &:focus {
         @apply outline-none;
     }
+
+    &.is-white { @apply bg-grey-lightest text-grey-darkest; }
+    &.is-black { @apply bg-grey-darkest text-white; }
+    &.is-primary { @apply bg-primary text-white; }
+    &.is-secondary { @apply bg-secondary text-white; }
+    &.is-success { @apply bg-success text-white; }
+    &.is-info { @apply bg-info text-white; }
+    &.is-warning { @apply bg-warning text-white; }
+    &.is-danger { @apply bg-danger text-white; }
 }
 
 @tailwind utilities;
