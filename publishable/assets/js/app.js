@@ -1851,11 +1851,6 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       }
     },
     parseDocsContent: function parseDocsContent() {
-      // table styling
-      $('.documentation').find('table').each(function () {
-        $(this).addClass('shadow');
-      });
-
       // custom blockquote icons
       $('.documentation blockquote p:first-child').each(function () {
         var str = $(this).html();

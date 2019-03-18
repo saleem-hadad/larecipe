@@ -70,4 +70,28 @@ a {
     &.is-danger { @apply bg-danger text-white; }
 }
 
+/**************************************/
+/************** Tables ****************/
+/**************************************/
+table {
+    @apply shadow-lg bg-white w-full p-4 my-4;
+    transition: box-shadow 0.1s;
+
+    &:hover {
+        @apply shadow;
+    }
+
+    tr, td, th {
+        @apply border border-grey-light;
+
+        &:hover {
+            @apply bg-grey-lightest;
+        }
+    }
+
+    td, th {
+        @apply p-4;
+    }
+}
+
 @tailwind utilities;

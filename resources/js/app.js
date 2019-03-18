@@ -84,12 +84,7 @@ const app = new Vue({
         }
       }
     },
-    parseDocsContent() {
-      // table styling
-      $('.documentation').find('table').each(function () {
-        $(this).addClass('shadow');
-      });
-      
+    parseDocsContent() {      
       // custom blockquote icons
       $('.documentation blockquote p:first-child').each(function() {
         var str = $(this).html();

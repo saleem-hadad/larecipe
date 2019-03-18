@@ -1508,6 +1508,49 @@ a {
   color: var(--white);
 }
 
+/**************************************/
+
+/************** Tables ****************/
+
+/**************************************/
+
+table {
+  -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, .11), 0 5px 15px 0 rgba(0, 0, 0, .08);
+          box-shadow: 0 15px 30px 0 rgba(0, 0, 0, .11), 0 5px 15px 0 rgba(0, 0, 0, .08);
+  background-color: var(--white);
+  width: 100%;
+  padding: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  -webkit-transition: -webkit-box-shadow .1s;
+  transition: -webkit-box-shadow .1s;
+  transition: box-shadow .1s;
+  transition: box-shadow .1s, -webkit-box-shadow .1s;
+}
+
+table:hover {
+  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+}
+
+table tr,
+table td,
+table th {
+  border-width: 1px;
+  border-color: #dae1e7;
+}
+
+table tr:hover,
+table td:hover,
+table th:hover {
+  background-color: #f8fafc;
+}
+
+table td,
+table th {
+  padding: 1rem;
+}
+
 .list-reset {
   list-style: none;
   padding: 0;
