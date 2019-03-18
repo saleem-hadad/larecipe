@@ -9,7 +9,7 @@
     .documentation h1 {
         border-left: 2px solid {{ config('larecipe.ui.colors.primary') }} !important;
     }
-    .btn-outline-primary, .documentation .article h2 a:before, .documentation .article :not(pre)>code, a {
+    .btn-outline-primary, .documentation h2 a:before, .documentation :not(pre)>code, a {
         color: {{ config('larecipe.ui.colors.primary') }};
     }
     .documentation .sidebar>ul>li>ul>li.is-active {

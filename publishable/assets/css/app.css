@@ -615,7 +615,7 @@ table {
   padding-left: .25rem;
 }
 
-.documentation .article {
+.documentation {
   position: static;
   margin-top: 8rem;
   margin-bottom: 8rem;
@@ -625,11 +625,11 @@ table {
   transition: padding-left .2s;
 }
 
-.documentation .article.expanded {
+.documentation.expanded {
   padding-left: 5rem;
 }
 
-.documentation .article h1:first-of-type {
+.documentation h1:first-of-type {
   border-left-width: 2px;
   border-color: var(--primary);
   padding-left: 1rem;
@@ -637,19 +637,19 @@ table {
   font-weight: 700;
 }
 
-.documentation .article h2 {
+.documentation h2 {
   margin-top: 2.5rem;
   margin-bottom: 1rem;
   font-weight: 700;
 }
 
-.documentation .article h2 a,
-.documentation .article h2 a:hover {
+.documentation h2 a,
+.documentation h2 a:hover {
   color: #606f7b;
   text-decoration: none;
 }
 
-.documentation .article h2 a:before {
+.documentation h2 a:before {
   content: "#";
   margin-left: -1rem;
   margin-top: .25rem;
@@ -659,22 +659,22 @@ table {
   opacity: .75;
 }
 
-.documentation .article h3 {
+.documentation h3 {
   margin-top: 2.5rem;
   margin-bottom: 1rem;
 }
 
-.documentation .article hr {
+.documentation hr {
   border-top-width: 2px;
   border-style: dashed;
   border-color: #f1f5f8;
 }
 
-.documentation .article img {
+.documentation img {
   max-width: 100%;
 }
 
-.documentation .article > ul:first-of-type {
+.documentation > ul:first-of-type {
   position: fixed;
   padding: 1rem;
   list-style: none;
@@ -684,7 +684,7 @@ table {
   right: 30px;
 }
 
-.documentation .article > ul:first-of-type li {
+.documentation > ul:first-of-type li {
   border-bottom-width: 1px;
   border-style: dashed;
   border-color: #dae1e7;
@@ -692,25 +692,25 @@ table {
   padding: .75rem;
 }
 
-.documentation .article > ul:first-of-type li a {
+.documentation > ul:first-of-type li a {
   font-size: .875rem;
   color: #b8c2cc;
 }
 
-.documentation .article > ul:first-of-type ul {
+.documentation > ul:first-of-type ul {
   list-style: none;
   padding: 0;
   padding-left: 1rem;
 }
 
-.documentation .article :not(pre) > code {
+.documentation :not(pre) > code {
   background-color: #f1f5f8;
   padding: .25rem;
   border-radius: .25rem;
   color: var(--primary);
 }
 
-.documentation .article p {
+.documentation p {
   font-size: 1rem;
   font-weight: 200;
   line-height: 2;
@@ -719,12 +719,12 @@ table {
 }
 
 @media (max-width: 780px) {
-  .documentation .article {
+  .documentation {
     padding: 0 40px !important;
     width: 100%;
   }
 
-  .documentation .article > ul:first-of-type {
+  .documentation > ul:first-of-type {
     list-style: none;
     padding: 0;
     width: 100%;
@@ -794,25 +794,25 @@ table {
   height: 60px;
 }
 
-.documentation.is-dark .article {
+.documentation.is-dark {
   /* Code blocks *//* Inline code */
 }
 
-.documentation.is-dark .article code[class*="language-"],
-.documentation.is-dark .article pre[class*="language-"] {
+.documentation.is-dark code[class*="language-"],
+.documentation.is-dark pre[class*="language-"] {
   text-shadow: none;
 }
 
-.documentation.is-dark .article :not(pre) > code[class*="language-"],
-.documentation.is-dark .article pre[class*="language-"] {
+.documentation.is-dark :not(pre) > code[class*="language-"],
+.documentation.is-dark pre[class*="language-"] {
   background: #344258 !important;
 }
 
-.documentation.is-dark .article code[class*="language-"],
-.documentation.is-dark .article pre[class*="language-"] {
+.documentation.is-dark code[class*="language-"],
+.documentation.is-dark pre[class*="language-"] {
   color: #ccc;
   background: none;
-  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
   text-align: left;
   white-space: pre;
   word-spacing: normal;
@@ -827,105 +827,105 @@ table {
           hyphens: none;
 }
 
-.documentation.is-dark .article pre[class*="language-"] {
+.documentation.is-dark pre[class*="language-"] {
   padding: 1em;
   margin: .5em 0;
   overflow: auto;
 }
 
-.documentation.is-dark .article :not(pre) > code[class*="language-"] {
+.documentation.is-dark :not(pre) > code[class*="language-"] {
   padding: .1em;
   border-radius: .3em;
   white-space: normal;
 }
 
-.documentation.is-dark .article :not(pre) > code[class*="language-"],
-.documentation.is-dark .article pre[class*="language-"] {
+.documentation.is-dark :not(pre) > code[class*="language-"],
+.documentation.is-dark pre[class*="language-"] {
   padding: 20px;
   border-radius: 5px;
 }
 
-.documentation.is-dark .article .token.comment,
-.documentation.is-dark .article .token.block-comment,
-.documentation.is-dark .article .token.prolog,
-.documentation.is-dark .article .token.doctype,
-.documentation.is-dark .article .token.cdata {
+.documentation.is-dark .token.comment,
+.documentation.is-dark .token.block-comment,
+.documentation.is-dark .token.prolog,
+.documentation.is-dark .token.doctype,
+.documentation.is-dark .token.cdata {
   color: #999;
 }
 
-.documentation.is-dark .article .token.punctuation {
+.documentation.is-dark .token.punctuation {
   color: #ccc;
 }
 
-.documentation.is-dark .article .token.tag,
-.documentation.is-dark .article .token.attr-name,
-.documentation.is-dark .article .token.namespace,
-.documentation.is-dark .article .token.deleted {
+.documentation.is-dark .token.tag,
+.documentation.is-dark .token.attr-name,
+.documentation.is-dark .token.namespace,
+.documentation.is-dark .token.deleted {
   color: #e2777a;
 }
 
-.documentation.is-dark .article .token.function-name {
+.documentation.is-dark .token.function-name {
   color: #6196cc;
 }
 
-.documentation.is-dark .article .token.boolean,
-.documentation.is-dark .article .token.number,
-.documentation.is-dark .article .token.function {
+.documentation.is-dark .token.boolean,
+.documentation.is-dark .token.number,
+.documentation.is-dark .token.function {
   color: #f08d49;
 }
 
-.documentation.is-dark .article .token.property,
-.documentation.is-dark .article .token.class-name,
-.documentation.is-dark .article .token.constant,
-.documentation.is-dark .article .token.symbol {
+.documentation.is-dark .token.property,
+.documentation.is-dark .token.class-name,
+.documentation.is-dark .token.constant,
+.documentation.is-dark .token.symbol {
   color: #f8c555;
 }
 
-.documentation.is-dark .article .token.selector,
-.documentation.is-dark .article .token.important,
-.documentation.is-dark .article .token.atrule,
-.documentation.is-dark .article .token.keyword,
-.documentation.is-dark .article .token.builtin {
+.documentation.is-dark .token.selector,
+.documentation.is-dark .token.important,
+.documentation.is-dark .token.atrule,
+.documentation.is-dark .token.keyword,
+.documentation.is-dark .token.builtin {
   color: #cc99cd;
 }
 
-.documentation.is-dark .article .token.string,
-.documentation.is-dark .article .token.char,
-.documentation.is-dark .article .token.attr-value,
-.documentation.is-dark .article .token.regex,
-.documentation.is-dark .article .token.variable {
+.documentation.is-dark .token.string,
+.documentation.is-dark .token.char,
+.documentation.is-dark .token.attr-value,
+.documentation.is-dark .token.regex,
+.documentation.is-dark .token.variable {
   color: #7ec699;
 }
 
-.documentation.is-dark .article .token.operator,
-.documentation.is-dark .article .token.entity,
-.documentation.is-dark .article .token.url {
+.documentation.is-dark .token.operator,
+.documentation.is-dark .token.entity,
+.documentation.is-dark .token.url {
   color: #67cdcc;
 }
 
-.documentation.is-dark .article .token.important,
-.documentation.is-dark .article .token.bold {
+.documentation.is-dark .token.important,
+.documentation.is-dark .token.bold {
   font-weight: bold;
 }
 
-.documentation.is-dark .article .token.italic {
+.documentation.is-dark .token.italic {
   font-style: italic;
 }
 
-.documentation.is-dark .article .token.entity {
+.documentation.is-dark .token.entity {
   cursor: help;
 }
 
-.documentation.is-dark .article .token.inserted {
+.documentation.is-dark .token.inserted {
   color: green;
 }
 
-.documentation.is-dark .article pre[data-line] {
+.documentation.is-dark pre[data-line] {
   position: relative;
   padding: 1em 0 1em 3em;
 }
 
-.documentation.is-dark .article .line-highlight {
+.documentation.is-dark .line-highlight {
   position: absolute;
   left: 0;
   right: 0;
@@ -940,8 +940,8 @@ table {
   white-space: pre;
 }
 
-.documentation.is-dark .article .line-highlight:before,
-.documentation.is-dark .article .line-highlight[data-end]:after {
+.documentation.is-dark .line-highlight:before,
+.documentation.is-dark .line-highlight[data-end]:after {
   content: attr(data-start);
   position: absolute;
   top: .4em;
@@ -959,29 +959,29 @@ table {
           box-shadow: 0 1px white;
 }
 
-.documentation.is-dark .article .line-highlight[data-end]:after {
+.documentation.is-dark .line-highlight[data-end]:after {
   content: attr(data-end);
   top: auto;
   bottom: .4em;
 }
 
-.documentation.is-dark .article .line-numbers .line-highlight:before,
-.documentation.is-dark .article .line-numbers .line-highlight:after {
+.documentation.is-dark .line-numbers .line-highlight:before,
+.documentation.is-dark .line-numbers .line-highlight:after {
   content: none;
 }
 
-.documentation.is-dark .article pre[class*="language-"].line-numbers {
+.documentation.is-dark pre[class*="language-"].line-numbers {
   position: relative;
   padding-left: 3.8em;
   counter-reset: linenumber;
 }
 
-.documentation.is-dark .article pre[class*="language-"].line-numbers > code {
+.documentation.is-dark pre[class*="language-"].line-numbers > code {
   position: relative;
   white-space: inherit;
 }
 
-.documentation.is-dark .article .line-numbers .line-numbers-rows {
+.documentation.is-dark .line-numbers .line-numbers-rows {
   position: absolute;
   pointer-events: none;
   top: 0;
@@ -997,13 +997,13 @@ table {
           user-select: none;
 }
 
-.documentation.is-dark .article .line-numbers-rows > span {
+.documentation.is-dark .line-numbers-rows > span {
   pointer-events: none;
   display: block;
   counter-increment: linenumber;
 }
 
-.documentation.is-dark .article .line-numbers-rows > span:before {
+.documentation.is-dark .line-numbers-rows > span:before {
   content: counter(linenumber);
   color: #999;
   display: block;
@@ -1011,12 +1011,12 @@ table {
   text-align: right;
 }
 
-.documentation.is-light .article {
+.documentation.is-light {
   /* Code blocks *//* Inline code */
 }
 
-.documentation.is-light .article code[class*="language-"],
-.documentation.is-light .article pre[class*="language-"] {
+.documentation.is-light code[class*="language-"],
+.documentation.is-light pre[class*="language-"] {
   color: black;
   text-shadow: 0 1px white;
   direction: ltr;
@@ -1034,37 +1034,37 @@ table {
           hyphens: none;
 }
 
-.documentation.is-light .article pre[class*="language-"]::-moz-selection,
-.documentation.is-light .article pre[class*="language-"] ::-moz-selection,
-.documentation.is-light .article code[class*="language-"]::-moz-selection,
-.documentation.is-light .article code[class*="language-"] ::-moz-selection {
+.documentation.is-light pre[class*="language-"]::-moz-selection,
+.documentation.is-light pre[class*="language-"] ::-moz-selection,
+.documentation.is-light code[class*="language-"]::-moz-selection,
+.documentation.is-light code[class*="language-"] ::-moz-selection {
   text-shadow: none;
   background: #b3d4fc;
 }
 
-.documentation.is-light .article pre[class*="language-"]::selection,
-.documentation.is-light .article pre[class*="language-"] ::selection,
-.documentation.is-light .article code[class*="language-"]::selection,
-.documentation.is-light .article code[class*="language-"] ::selection {
+.documentation.is-light pre[class*="language-"]::selection,
+.documentation.is-light pre[class*="language-"] ::selection,
+.documentation.is-light code[class*="language-"]::selection,
+.documentation.is-light code[class*="language-"] ::selection {
   text-shadow: none;
   background: #b3d4fc;
 }
 
 @media print {
-  .documentation.is-light .article code[class*="language-"],
-  .documentation.is-light .article pre[class*="language-"] {
+  .documentation.is-light code[class*="language-"],
+  .documentation.is-light pre[class*="language-"] {
     text-shadow: none;
   }
 }
 
-.documentation.is-light .article pre[class*="language-"] {
+.documentation.is-light pre[class*="language-"] {
   padding: 1em;
   margin: 10px 0 20px;
   overflow: auto;
 }
 
-.documentation.is-light .article :not(pre) > code[class*="language-"],
-.documentation.is-light .article pre[class*="language-"] {
+.documentation.is-light :not(pre) > code[class*="language-"],
+.documentation.is-light pre[class*="language-"] {
   background: #fff;
   border-radius: 5px;
   padding: 20px;
@@ -1074,87 +1074,87 @@ table {
   border-color: var(--primary);
 }
 
-.documentation.is-light .article :not(pre) > code[class*="language-"] {
+.documentation.is-light :not(pre) > code[class*="language-"] {
   padding: 1px 5px;
   border-radius: 3px;
 }
 
-.documentation.is-light .article .token.comment,
-.documentation.is-light .article .token.prolog,
-.documentation.is-light .article .token.doctype,
-.documentation.is-light .article .token.cdata {
+.documentation.is-light .token.comment,
+.documentation.is-light .token.prolog,
+.documentation.is-light .token.doctype,
+.documentation.is-light .token.cdata {
   color: #999;
 }
 
-.documentation.is-light .article .token.punctuation {
+.documentation.is-light .token.punctuation {
   color: #999;
 }
 
-.documentation.is-light .article .namespace {
+.documentation.is-light .namespace {
   opacity: .7;
 }
 
-.documentation.is-light .article .token.property,
-.documentation.is-light .article .token.tag,
-.documentation.is-light .article .token.boolean,
-.documentation.is-light .article .token.number,
-.documentation.is-light .article .token.constant,
-.documentation.is-light .article .token.symbol,
-.documentation.is-light .article .token.deleted {
+.documentation.is-light .token.property,
+.documentation.is-light .token.tag,
+.documentation.is-light .token.boolean,
+.documentation.is-light .token.number,
+.documentation.is-light .token.constant,
+.documentation.is-light .token.symbol,
+.documentation.is-light .token.deleted {
   color: #da564a;
 }
 
-.documentation.is-light .article .token.scope,
-.documentation.is-light .article .token.attr-name {
+.documentation.is-light .token.scope,
+.documentation.is-light .token.attr-name {
   color: #da564a;
 }
 
-.documentation.is-light .article .token.selector,
-.documentation.is-light .article .token.string,
-.documentation.is-light .article .token.char,
-.documentation.is-light .article .token.builtin,
-.documentation.is-light .article .token.inserted {
+.documentation.is-light .token.selector,
+.documentation.is-light .token.string,
+.documentation.is-light .token.char,
+.documentation.is-light .token.builtin,
+.documentation.is-light .token.inserted {
   color: #2e7d32;
 }
 
-.documentation.is-light .article .token.operator,
-.documentation.is-light .article .token.entity,
-.documentation.is-light .article .token.url,
-.documentation.is-light .article .language-css .token.string,
-.documentation.is-light .article .style .token.string {
+.documentation.is-light .token.operator,
+.documentation.is-light .token.entity,
+.documentation.is-light .token.url,
+.documentation.is-light .language-css .token.string,
+.documentation.is-light .style .token.string {
   color: #555;
 }
 
-.documentation.is-light .article .token.atrule,
-.documentation.is-light .article .token.attr-value,
-.documentation.is-light .article .token.keyword {
+.documentation.is-light .token.atrule,
+.documentation.is-light .token.attr-value,
+.documentation.is-light .token.keyword {
   color: #07a;
 }
 
-.documentation.is-light .article .token.function {
+.documentation.is-light .token.function {
   color: #555;
 }
 
-.documentation.is-light .article .token.regex,
-.documentation.is-light .article .token.important,
-.documentation.is-light .article .token.variable {
+.documentation.is-light .token.regex,
+.documentation.is-light .token.important,
+.documentation.is-light .token.variable {
   color: #4ea1df;
 }
 
-.documentation.is-light .article .token.important,
-.documentation.is-light .article .token.bold {
+.documentation.is-light .token.important,
+.documentation.is-light .token.bold {
   font-weight: bold;
 }
 
-.documentation.is-light .article .token.italic {
+.documentation.is-light .token.italic {
   font-style: italic;
 }
 
-.documentation.is-light .article .token.entity {
+.documentation.is-light .token.entity {
   cursor: help;
 }
 
-.documentation.is-light .article pre.line-numbers {
+.documentation.is-light pre.line-numbers {
   position: relative;
   padding-left: 3.8em;
   padding-top: 0px;
@@ -1163,11 +1163,11 @@ table {
   counter-reset: linenumber;
 }
 
-.documentation.is-light .article pre.line-numbers > code {
+.documentation.is-light pre.line-numbers > code {
   position: relative;
 }
 
-.documentation.is-light .article .line-numbers .line-numbers-rows {
+.documentation.is-light .line-numbers .line-numbers-rows {
   position: absolute;
   pointer-events: none;
   top: -4px;
@@ -1183,13 +1183,13 @@ table {
           user-select: none;
 }
 
-.documentation.is-light .article .line-numbers-rows > span {
+.documentation.is-light .line-numbers-rows > span {
   pointer-events: none;
   display: block;
   counter-increment: linenumber;
 }
 
-.documentation.is-light .article .line-numbers-rows > span:before {
+.documentation.is-light .line-numbers-rows > span:before {
   content: counter(linenumber);
   color: #999;
   display: block;
@@ -1197,12 +1197,12 @@ table {
   text-align: right;
 }
 
-.documentation.is-light .article .dark-code {
+.documentation.is-light .dark-code {
   /* Code blocks *//* Inline code */
 }
 
-.documentation.is-light .article .dark-code code[class*="language-"],
-.documentation.is-light .article .dark-code pre[class*="language-"] {
+.documentation.is-light .dark-code code[class*="language-"],
+.documentation.is-light .dark-code pre[class*="language-"] {
   color: #f8f8f2;
   text-shadow: 0 1px rgba(0, 0, 0, .3);
   direction: ltr;
@@ -1219,93 +1219,93 @@ table {
           hyphens: none;
 }
 
-.documentation.is-light .article .dark-code pre[class*="language-"] {
+.documentation.is-light .dark-code pre[class*="language-"] {
   padding: 1em;
   margin: .5em 0;
   overflow: auto;
   border-radius: .3em;
 }
 
-.documentation.is-light .article .dark-code :not(pre) > code[class*="language-"],
-.documentation.is-light .article .dark-code pre[class*="language-"] {
+.documentation.is-light .dark-code :not(pre) > code[class*="language-"],
+.documentation.is-light .dark-code pre[class*="language-"] {
   background: #272822;
 }
 
-.documentation.is-light .article .dark-code :not(pre) > code[class*="language-"] {
+.documentation.is-light .dark-code :not(pre) > code[class*="language-"] {
   padding: .1em;
   border-radius: .3em;
 }
 
-.documentation.is-light .article .dark-code .token.comment,
-.documentation.is-light .article .dark-code .token.prolog,
-.documentation.is-light .article .dark-code .token.doctype,
-.documentation.is-light .article .dark-code .token.cdata {
+.documentation.is-light .dark-code .token.comment,
+.documentation.is-light .dark-code .token.prolog,
+.documentation.is-light .dark-code .token.doctype,
+.documentation.is-light .dark-code .token.cdata {
   color: slategray;
 }
 
-.documentation.is-light .article .dark-code .token.punctuation {
+.documentation.is-light .dark-code .token.punctuation {
   color: #f8f8f2;
 }
 
-.documentation.is-light .article .dark-code .namespace {
+.documentation.is-light .dark-code .namespace {
   opacity: .7;
 }
 
-.documentation.is-light .article .dark-code .token.property,
-.documentation.is-light .article .dark-code .token.tag,
-.documentation.is-light .article .dark-code .token.constant,
-.documentation.is-light .article .dark-code .token.symbol,
-.documentation.is-light .article .dark-code .token.deleted {
+.documentation.is-light .dark-code .token.property,
+.documentation.is-light .dark-code .token.tag,
+.documentation.is-light .dark-code .token.constant,
+.documentation.is-light .dark-code .token.symbol,
+.documentation.is-light .dark-code .token.deleted {
   color: #f92672;
 }
 
-.documentation.is-light .article .dark-code .token.boolean,
-.documentation.is-light .article .dark-code .token.number {
+.documentation.is-light .dark-code .token.boolean,
+.documentation.is-light .dark-code .token.number {
   color: #ae81ff;
 }
 
-.documentation.is-light .article .dark-code .token.selector,
-.documentation.is-light .article .dark-code .token.attr-name,
-.documentation.is-light .article .dark-code .token.string,
-.documentation.is-light .article .dark-code .token.char,
-.documentation.is-light .article .dark-code .token.builtin,
-.documentation.is-light .article .dark-code .token.inserted {
+.documentation.is-light .dark-code .token.selector,
+.documentation.is-light .dark-code .token.attr-name,
+.documentation.is-light .dark-code .token.string,
+.documentation.is-light .dark-code .token.char,
+.documentation.is-light .dark-code .token.builtin,
+.documentation.is-light .dark-code .token.inserted {
   color: #a6e22e;
 }
 
-.documentation.is-light .article .dark-code .token.operator,
-.documentation.is-light .article .dark-code .token.entity,
-.documentation.is-light .article .dark-code .token.url,
-.documentation.is-light .article .dark-code .language-css .token.string,
-.documentation.is-light .article .dark-code .style .token.string,
-.documentation.is-light .article .dark-code .token.variable {
+.documentation.is-light .dark-code .token.operator,
+.documentation.is-light .dark-code .token.entity,
+.documentation.is-light .dark-code .token.url,
+.documentation.is-light .dark-code .language-css .token.string,
+.documentation.is-light .dark-code .style .token.string,
+.documentation.is-light .dark-code .token.variable {
   color: #f8f8f2;
 }
 
-.documentation.is-light .article .dark-code .token.atrule,
-.documentation.is-light .article .dark-code .token.attr-value {
+.documentation.is-light .dark-code .token.atrule,
+.documentation.is-light .dark-code .token.attr-value {
   color: #e6db74;
 }
 
-.documentation.is-light .article .dark-code .token.keyword {
+.documentation.is-light .dark-code .token.keyword {
   color: #66d9ef;
 }
 
-.documentation.is-light .article .dark-code .token.regex,
-.documentation.is-light .article .dark-code .token.important {
+.documentation.is-light .dark-code .token.regex,
+.documentation.is-light .dark-code .token.important {
   color: #fd971f;
 }
 
-.documentation.is-light .article .dark-code .token.important,
-.documentation.is-light .article .dark-code .token.bold {
+.documentation.is-light .dark-code .token.important,
+.documentation.is-light .dark-code .token.bold {
   font-weight: bold;
 }
 
-.documentation.is-light .article .dark-code .token.italic {
+.documentation.is-light .dark-code .token.italic {
   font-style: italic;
 }
 
-.documentation.is-light .article .dark-code .token.entity {
+.documentation.is-light .dark-code .token.entity {
   cursor: help;
 }
 
@@ -1418,8 +1418,8 @@ a {
   text-decoration: none;
 }
 
-.documentation .article ul > li,
-.documentation .article ol > li {
+.documentation ul > li,
+.documentation ol > li {
   padding-top: .5rem;
   padding-bottom: .5rem;
 }

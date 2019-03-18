@@ -32,10 +32,8 @@ a {
 }
 
 .documentation  {
-    .article {
-        ul > li , ol > li {
-            @apply py-2;
-        }
+    ul > li , ol > li {
+        @apply py-2;
     }
 }
 
