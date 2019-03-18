@@ -28464,21 +28464,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "larecipe-button",
@@ -28493,35 +28478,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       default: "white",
       description: "Button type (e,g primary, danger etc)"
     },
-    size: {
-      type: String,
-      default: "",
-      description: "Button size lg|sm"
-    },
     textColor: {
       type: String,
       default: "",
       description: "Button text color (e.g primary, danger etc)"
     },
-    icon: {
+    radius: {
       type: String,
-      default: "",
-      description: "Button icon"
+      default: "md",
+      description: "Border radius size"
     },
-    outline: {
-      type: Boolean,
-      default: false,
-      description: "Whether button style is outline"
-    },
-    rounded: {
-      type: Boolean,
-      default: false,
-      description: "Whether button style is rounded"
-    },
-    iconOnly: {
-      type: Boolean,
-      default: false,
-      description: "Whether button contains only an icon"
+    size: {
+      type: String,
+      default: "base",
+      description: "Border radius size"
     },
     block: {
       type: Boolean,
@@ -28531,10 +28501,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   computed: {
     classes: function classes() {
-      var btnClasses = [{ "btn-block": this.block }, { "rounded-circle": this.rounded }, { "btn-icon-only": this.iconOnly }, _defineProperty({}, "text-" + this.textColor, this.textColor), { "btn-icon": this.icon || this.$slots.icon }, this.type && !this.outline ? "is-" + this.type : "", this.outline ? "btn-outline-" + this.type : ""];
-      if (this.size) {
-        btnClasses.push("btn-" + this.size);
-      }
+      var btnClasses = [{ "w-full": this.block }, _defineProperty({}, "text-" + this.textColor, this.textColor), "is-" + this.type, "rounded-" + this.radius, "text-" + this.size];
+
       return btnClasses;
     }
   },
@@ -28559,36 +28527,9 @@ var render = function() {
       tag: "component",
       staticClass: "button",
       class: _vm.classes,
-      attrs: { type: _vm.tag === "button" ? _vm.nativeType : "" },
       on: { click: _vm.handleClick }
     },
-    [
-      _vm.$slots.icon || (_vm.icon && _vm.$slots.default)
-        ? _c(
-            "span",
-            { staticClass: "btn-inner--icon" },
-            [_vm._t("icon", [_c("i", { class: _vm.icon })])],
-            2
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      !_vm.$slots.default ? _c("i", { class: _vm.icon }) : _vm._e(),
-      _vm._v(" "),
-      _vm.$slots.icon || (_vm.icon && _vm.$slots.default)
-        ? _c(
-            "span",
-            { staticClass: "btn-inner--text" },
-            [
-              _vm._t("default", [
-                _vm._v("\n        " + _vm._s(_vm.text) + "\n      ")
-              ])
-            ],
-            2
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      !_vm.$slots.icon && !_vm.icon ? _vm._t("default") : _vm._e()
-    ],
+    [_vm._t("default")],
     2
   )
 }

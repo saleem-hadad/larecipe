@@ -42,7 +42,7 @@ a {
 /************** Buttons ***************/
 /**************************************/
 .button {
-    @apply py-3 px-5 rounded shadow;
+    @apply py-3 px-6 rounded shadow;
     transition: all 0.1s;
 
     &:hover {

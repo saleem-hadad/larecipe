@@ -1,21 +1,6 @@
 <template>
-    <component :is="tag"
-               :type="tag === 'button' ? nativeType: ''"
-               @click="handleClick"
-               class="button"
-               :class="classes">
-    <span class="btn-inner--icon" v-if="$slots.icon || icon && $slots.default">
-      <slot name="icon">
-        <i :class="icon"></i>
-      </slot>
-    </span>
-        <i v-if="!$slots.default" :class="icon"></i>
-        <span class="btn-inner--text" v-if="$slots.icon || icon && $slots.default">
-          <slot>
-            {{text}}
-          </slot>
-    </span>
-        <slot v-if="!$slots.icon && !icon"></slot>
+    <component :is="tag" @click="handleClick" class="button" :class="classes">
+        <slot></slot>
     </component>
 </template>
 <script>
@@ -32,35 +17,20 @@ export default {
       default: "white",
       description: "Button type (e,g primary, danger etc)"
     },
-    size: {
-      type: String,
-      default: "",
-      description: "Button size lg|sm"
-    },
     textColor: {
       type: String,
       default: "",
       description: "Button text color (e.g primary, danger etc)"
     },
-    icon: {
+    radius: {
       type: String,
-      default: "",
-      description: "Button icon"
+      default: "md",
+      description: "Border radius size"
     },
-    outline: {
-      type: Boolean,
-      default: false,
-      description: "Whether button style is outline"
-    },
-    rounded: {
-      type: Boolean,
-      default: false,
-      description: "Whether button style is rounded"
-    },
-    iconOnly: {
-      type: Boolean,
-      default: false,
-      description: "Whether button contains only an icon"
+    size: {
+      type: String,
+      default: "base",
+      description: "Border radius size"
     },
     block: {
       type: Boolean,
@@ -71,17 +41,13 @@ export default {
   computed: {
     classes() {
       let btnClasses = [
-        { "btn-block": this.block },
-        { "rounded-circle": this.rounded },
-        { "btn-icon-only": this.iconOnly },
+        { "w-full": this.block },
         { [`text-${this.textColor}`]: this.textColor },
-        { "btn-icon": this.icon || this.$slots.icon },
-        this.type && !this.outline ? `is-${this.type}` : "",
-        this.outline ? `btn-outline-${this.type}` : ""
+        `is-${this.type}`,
+        `rounded-${this.radius}`,
+        `text-${this.size}`,
       ];
-      if (this.size) {
-        btnClasses.push(`btn-${this.size}`);
-      }
+      
       return btnClasses;
     }
   },
