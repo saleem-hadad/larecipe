@@ -1418,6 +1418,12 @@ a {
   text-decoration: none;
 }
 
+.documentation .article ul > li,
+.documentation .article ol > li {
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+}
+
 /**************************************/
 
 /**************** Cards ***************/
