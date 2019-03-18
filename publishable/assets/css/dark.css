@@ -1,0 +1,49 @@
+/**************************************/
+
+/**************** Root ****************/
+
+/**************************************/
+
+:root {
+  --black: #22292f;
+  --white: white;
+  --primary: #787af6;
+  --secondary: #2b9cf2;
+  --info: #03a9f4;
+  --warning: #fb6340;
+  --success: #21b978;
+  --danger: #f5365c;
+  --sidebar: #27293d;
+  --documentation: #1e1e2f;
+  --navbar: #1f1f33;
+}
+
+html,
+body {
+  background-color: var(--documentation);
+  color: #f8fafc;
+}
+
+/**************************************/
+
+/*************** Sidebar **************/
+
+/**************************************/
+
+.sidebar {
+  background-color: var(--sidebar);
+  border-color: #3d4852;
+}
+
+.sidebar > ul > li > h2 {
+  color: #b8c2cc;
+}
+
+.sidebar > ul > li > ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar > ul > li > ul > li a {
+  color: #f1f5f8;
+}

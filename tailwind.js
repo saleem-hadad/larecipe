@@ -30,6 +30,8 @@ let colors = {
   'danger': 'var(--danger)',
 
   'sidebar': 'var(--sidebar)',
+  'documentation': 'var(--documentation)',
+  'navbar': 'var(--navbar)',
 
   'grey-darkest': '#3d4852',
   'grey-darker': '#606f7b',

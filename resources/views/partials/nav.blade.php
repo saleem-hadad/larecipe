@@ -1,7 +1,7 @@
 <div class="fixed pin-t pin-x z-40">
     <div class="bg-gradient-primary text-white h-1"></div>
 
-    <nav class="flex items-center justify-between text-black bg-white border-b border-grey-light h-16">
+    <nav class="flex items-center justify-between text-black bg-navbar shadow-lg h-16">
         <a href="{{ url('/') }}" class="flex items-center flex-no-shrink text-black mx-3">
             @if (config('larecipe.ui.logo'))
                 <img height="30px" src="{{ asset(config('larecipe.ui.logo')) }}"/>

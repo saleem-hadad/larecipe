@@ -1,0 +1,46 @@
+/**************************************/
+/**************** Root ****************/
+/**************************************/
+:root {
+    --black: #22292f;
+    --white: white;
+    --primary: #787AF6;
+    --secondary: #2b9cf2;
+    --info: #03a9f4;
+    --warning: #fb6340;
+    --success: #21b978;
+    --danger: #f5365c;
+
+    --sidebar: #27293d;
+    --documentation: #1e1e2f;
+    --navbar: #1f1f33;
+}
+
+html, body {
+    @apply bg-documentation text-grey-lightest;
+}
+
+/**************************************/
+/*************** Sidebar **************/
+/**************************************/
+.sidebar {
+    @apply bg-sidebar border-grey-darkest;
+
+    > ul {
+        > li {
+            > h2 {
+                @apply text-grey;
+            }
+
+            > ul {
+                @apply list-reset;
+
+                > li {
+                    a {
+                        @apply text-grey-lighter;
+                    }
+                }
+            }
+        }
+    }
+}

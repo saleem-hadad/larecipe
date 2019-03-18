@@ -24,7 +24,8 @@
         @endif
 
         {{-- CSS --}}
-        <link rel="stylesheet" href="{{ larecipe_assets('css/app.css') }}">
+        <link rel="stylesheet" href="{{ larecipe_assets('css/light.css') }}">
+        <link rel="stylesheet" href="{{ larecipe_assets('css/dark.css') }}">
 
         {{-- JS --}}
         <script type="text/javascript">
@@ -51,7 +52,7 @@
             @endforeach
         @endif
     </head>
-    <body class="bg-white">
+    <body>
         <div id="app" v-cloak>
             @include('larecipe::partials.nav')
             
