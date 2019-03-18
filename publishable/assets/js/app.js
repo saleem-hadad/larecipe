@@ -28409,10 +28409,6 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(77)
-}
 var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(79)
@@ -28421,7 +28417,7 @@ var __vue_template__ = __webpack_require__(80)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -28456,46 +28452,8 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 77 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(78);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("7ca3a4fe", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-5fb54500\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LarecipeButton.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-5fb54500\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LarecipeButton.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 78 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n", ""]);
-
-// exports
-
-
-/***/ }),
+/* 77 */,
+/* 78 */,
 /* 79 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -28547,20 +28505,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       default: "",
       description: "Button text color (e.g primary, danger etc)"
     },
-    nativeType: {
-      type: String,
-      default: "button",
-      description: "Button native type (e.g submit,button etc)"
-    },
     icon: {
       type: String,
       default: "",
       description: "Button icon"
-    },
-    text: {
-      type: String,
-      default: "",
-      description: "Button text in case not provided via default slot"
     },
     outline: {
       type: Boolean,
@@ -28611,7 +28559,7 @@ var render = function() {
     _vm.tag,
     {
       tag: "component",
-      staticClass: "btn",
+      staticClass: "button",
       class: _vm.classes,
       attrs: { type: _vm.tag === "button" ? _vm.nativeType : "" },
       on: { click: _vm.handleClick }
@@ -28661,10 +28609,6 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(82)
-}
 var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(84)
@@ -28673,7 +28617,7 @@ var __vue_template__ = __webpack_require__(85)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -28708,63 +28652,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 82 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(83);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("7a30c58b", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-8627e144\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LarecipeCard.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-8627e144\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LarecipeCard.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 83 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n", ""]);
-
-// exports
-
-
-/***/ }),
+/* 82 */,
+/* 83 */,
 /* 84 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -28783,15 +28677,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   props: {
     type: {
       type: String,
+      default: "white",
       description: "Card type"
-    },
-    gradient: {
-      type: String,
-      description: "Card background gradient type (warning,danger etc)"
-    },
-    hover: {
-      type: Boolean,
-      description: "Whether card should move on hover"
     },
     shadow: {
       type: Boolean,
@@ -28800,23 +28687,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     shadowSize: {
       type: String,
       description: "Card shadow size"
-    },
-    noBody: {
-      type: Boolean,
-      default: false,
-      description: "Whether card should have wrapper body class"
-    },
-    bodyClasses: {
-      type: [String, Object, Array],
-      description: "Card body css classes"
-    },
-    headerClasses: {
-      type: [String, Object, Array],
-      description: "Card header css classes"
-    },
-    footerClasses: {
-      type: [String, Object, Array],
-      description: "Card footer css classes"
     }
   }
 });
@@ -28832,54 +28702,19 @@ var render = function() {
   return _c(
     "div",
     {
-      staticClass: "card mt-2",
+      staticClass: "card",
       class: [
-        { "card-lift--hover": _vm.hover },
         { shadow: _vm.shadow },
         ((_obj = {}),
         (_obj["shadow-" + _vm.shadowSize] = _vm.shadowSize),
         _obj),
-        ((_obj$1 = {}),
-        (_obj$1["bg-gradient-" + _vm.gradient] = _vm.gradient),
-        _obj$1),
-        ((_obj$2 = {}), (_obj$2["bg-" + _vm.type] = _vm.type), _obj$2)
+        ((_obj$1 = {}), (_obj$1["bg-" + _vm.type] = _vm.type), _obj$1)
       ]
     },
-    [
-      _vm.$slots.header
-        ? _c(
-            "div",
-            { staticClass: "card-header", class: _vm.headerClasses },
-            [_vm._t("header")],
-            2
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      !_vm.noBody
-        ? _c(
-            "div",
-            { staticClass: "card-body", class: _vm.bodyClasses },
-            [_vm._t("default")],
-            2
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.noBody ? _vm._t("default") : _vm._e(),
-      _vm._v(" "),
-      _vm.$slots.footer
-        ? _c(
-            "div",
-            { staticClass: "card-footer", class: _vm.footerClasses },
-            [_vm._t("footer")],
-            2
-          )
-        : _vm._e()
-    ],
-    2
+    [!_vm.noBody ? _c("div", [_vm._t("default")], 2) : _vm._e()]
   )
   var _obj
   var _obj$1
-  var _obj$2
 }
 var staticRenderFns = []
 render._withStripped = true

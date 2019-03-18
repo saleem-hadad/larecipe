@@ -2,7 +2,7 @@
     <component :is="tag"
                :type="tag === 'button' ? nativeType: ''"
                @click="handleClick"
-               class="btn"
+               class="button"
                :class="classes">
     <span class="btn-inner--icon" v-if="$slots.icon || icon && $slots.default">
       <slot name="icon">
@@ -42,20 +42,10 @@ export default {
       default: "",
       description: "Button text color (e.g primary, danger etc)"
     },
-    nativeType: {
-      type: String,
-      default: "button",
-      description: "Button native type (e.g submit,button etc)"
-    },
     icon: {
       type: String,
       default: "",
       description: "Button icon"
-    },
-    text: {
-      type: String,
-      default: "",
-      description: "Button text in case not provided via default slot"
     },
     outline: {
       type: Boolean,
@@ -102,5 +92,3 @@ export default {
   }
 };
 </script>
-<style>
-</style>
