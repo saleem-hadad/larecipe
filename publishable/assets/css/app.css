@@ -1424,6 +1424,10 @@ a {
   padding-bottom: .5rem;
 }
 
+.documentation p {
+  margin-bottom: 1rem;
+}
+
 /**************************************/
 
 /**************** Cards ***************/
