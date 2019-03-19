@@ -29,15 +29,21 @@ class Cache
      *
      * @param  \Closure  $callback
      * @param  string  $key
-     * @return void
+     * @return mixed
      */
     public function remember(\Closure $callback, $key)
     {
+        $app_version = app()->version();
+
         if (! config('larecipe.cache.enabled')) {
             return $callback();
         }
 
         $cachePeriod = config('larecipe.cache.period');
+
+        if ((int) $app_version[0] >= 5 && (int) $app_version[1] >= 8) {
+            $cachePeriod = config('larecipe.cache.period') * 60;
+        }
 
         return $this->cache->remember($key, $cachePeriod, $callback);
     }
