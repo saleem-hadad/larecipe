@@ -10,7 +10,7 @@ class BuiltInSearchTest extends TestCase
 {
     protected $documentation;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

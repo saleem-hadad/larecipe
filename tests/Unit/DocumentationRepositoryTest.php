@@ -10,7 +10,7 @@ class DocumentationRepositoryTest extends TestCase
 {
     protected $documentationRepository;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
