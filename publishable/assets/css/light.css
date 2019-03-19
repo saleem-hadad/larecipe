@@ -1229,20 +1229,6 @@ a {
   text-decoration: none;
 }
 
-.documentation {
-  background-color: var(--documentation);
-}
-
-.documentation ul > li,
-.documentation ol > li {
-  padding-top: .5rem;
-  padding-bottom: .5rem;
-}
-
-.documentation p {
-  margin-bottom: 1rem;
-}
-
 /**************************************/
 
 /*************** Sidebar **************/
@@ -1461,6 +1447,7 @@ table th {
 /**************************************/
 
 .documentation {
+  background-color: var(--documentation);
   position: static;
   margin-top: 8rem;
   margin-bottom: 8rem;
@@ -1555,12 +1542,17 @@ table th {
   color: var(--primary);
 }
 
+.documentation ul > li,
+.documentation ol > li {
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+}
+
 .documentation p {
   font-size: 1rem;
   font-weight: 200;
   line-height: 2;
-  text-align: justify;
-  text-justify: inter-word;
+  margin-bottom: 1rem;
 }
 
 @media (max-width: 780px) {

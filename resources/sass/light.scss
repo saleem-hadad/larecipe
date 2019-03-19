@@ -31,17 +31,6 @@ a {
     @apply no-underline;
 }
 
-.documentation  {
-    @apply bg-documentation;
-
-    ul > li , ol > li {
-        @apply py-2;
-    }
-
-    p {
-        @apply mb-4;
-    }
-}
 
 /**************************************/
 /*************** Sidebar **************/
@@ -156,7 +145,7 @@ table {
 /********** Documentation *************/
 /**************************************/
 .documentation {
-    @apply static my-32 pl-50 w-3/4;
+    @apply bg-documentation static my-32 pl-50 w-3/4;
     transition: padding-left 0.2s;
 
     &.expanded {
@@ -214,10 +203,12 @@ table {
         @apply bg-grey-lighter p-1 rounded text-primary;
     }
 
+    ul > li , ol > li {
+        @apply py-2;
+    }
+
     p {
-        @apply text-base font-thin leading-large;
-        text-align: justify;
-        text-justify: inter-word;
+        @apply text-base font-thin leading-large mb-4;
     }
 }
 
