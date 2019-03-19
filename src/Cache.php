@@ -33,15 +33,15 @@ class Cache
      */
     public function remember(\Closure $callback, $key)
     {
-        $app_version = app()->version();
-
         if (! config('larecipe.cache.enabled')) {
             return $callback();
         }
 
         $cachePeriod = config('larecipe.cache.period');
 
-        if ((int) $app_version[0] >= 5 && (int) $app_version[1] >= 8) {
+        $app_version = app()->version();
+        
+        if (((int) $app_version[0] == 5 && (int) $app_version[1] >= 8) || $app_version[0] > 5) {
             $cachePeriod = config('larecipe.cache.period') * 60;
         }
 
