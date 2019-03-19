@@ -55,12 +55,6 @@ return [
 
     'settings' => [
         'auth'  => false,
-        'auth_links' => [
-            [
-                'name' => '',
-                'url' => '',
-            ],
-        ],
         'ga_id' => ''
     ],
 
@@ -111,23 +105,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Documentation Repository
-    |--------------------------------------------------------------------------
-    |
-    | This is an optional config you can set in order to show an external link
-    | to your documentation's repository if you have one. Once you set the
-    | value of the url, LaRecipe automatically will show the nav button.
-    |
-    |
-    */
-
-    'repository'   => [
-        'provider' => 'github',
-        'url'      => 'https://github.com/saleem-hadad/larecipe'
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Appearance
     |--------------------------------------------------------------------------
     |
@@ -140,13 +117,7 @@ return [
     */
 
     'ui'                 => [
-        'show_app_name'  => true,
-        'logo'           => '', // e.g.: /images/logo.svg
-        'fav'            => '', // e.g.: /fav.png
-        'theme'          => 'light',
-        'code'           => 'dark',
-        'back_to_top'    => true,
-        'show_side_bar'  => true,
+        'code_theme'     => 'dark',
         'colors'         => [
             'primary'    => '#787AF6',
             'secondary'  => '#2b9cf2',
@@ -198,7 +169,7 @@ return [
    |
    */
 
-  'forum'                 => [
+  'forum'                   => [
         'enabled'           => false,
         'default'           => 'disqus',
         'services'          => [
