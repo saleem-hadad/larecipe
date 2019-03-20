@@ -29,7 +29,7 @@ class Cache
      *
      * @param  \Closure  $callback
      * @param  string  $key
-     * @return void
+     * @return mixed
      */
     public function remember(\Closure $callback, $key)
     {
@@ -37,8 +37,26 @@ class Cache
             return $callback();
         }
 
-        $cachePeriod = config('larecipe.cache.period');
+        $cachePeriod = $this->checkTtlNeedsChanged(config('larecipe.cache.period'));
 
         return $this->cache->remember($key, $cachePeriod, $callback);
+    }
+
+    /**
+     * Checks if minutes need to be changed to seconds
+     *
+     * @param $ttl
+     *
+     * @return float|int
+     */
+    public function checkTtlNeedsChanged($ttl)
+    {
+        $app_version = explode('.', app()->version());
+
+        if (((int) $app_version[0] == 5 && (int) $app_version[1] >= 8) || $app_version[0] > 5) {
+            return config('larecipe.cache.period') * 60;
+        }
+
+        return $ttl;
     }
 }
