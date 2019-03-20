@@ -38,11 +38,15 @@ class DocumentationTest extends TestCase
     /** @test */
     public function it_caches_the_requested_documentation_and_index_for_a_given_period()
     {
+        $cache = $this->app->make(\BinaryTorch\LaRecipe\Cache::class);
+        $app_version = explode('.', app()->version());
+
         // set the docs path and landing
         Config::set('larecipe.docs.path', 'tests/views/docs');
         Config::set('larecipe.docs.landing', 'foo');
         Config::set('larecipe.versions.default', '1.0');
-        Config::set('larecipe.cache.enabled', '1.0');
+        Config::set('larecipe.cache.enabled', true);
+        Config::set('larecipe.cache.period', 300);
 
         $this->documentation->getIndex('1.0');
         $this->assertNotEmpty(cache('larecipe.docs.1.0.index'));
@@ -52,6 +56,12 @@ class DocumentationTest extends TestCase
 
         $this->documentation->get('1.0', 'bar');
         $this->assertNull(cache('larecipe.docs.1.0.bar'));
+
+        if (((int) $app_version[0] == 5 && (int) $app_version[1] >= 8) || $app_version[0] > 5) {
+            $this->assertEquals($cache->checkTtlNeedsChanged(300), 300 * 60);
+        } else {
+            $this->assertEquals($cache->checkTtlNeedsChanged(300), 300);
+        }
     }
 
     /** @test */
