@@ -28610,7 +28610,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   props: {
     type: {
       type: String,
-      default: "white",
+      default: "default",
       description: "Card type"
     },
     shadow: {
@@ -28641,7 +28641,7 @@ var render = function() {
         ((_obj = {}),
         (_obj["shadow-" + _vm.shadowSize] = _vm.shadowSize),
         _obj),
-        ((_obj$1 = {}), (_obj$1["bg-" + _vm.type] = _vm.type), _obj$1)
+        ((_obj$1 = {}), (_obj$1["is-" + _vm.type] = _vm.type), _obj$1)
       ]
     },
     [!_vm.noBody ? _c("div", [_vm._t("default")], 2) : _vm._e()]

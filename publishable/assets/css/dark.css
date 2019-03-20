@@ -13,9 +13,9 @@
   --warning: #fb6340;
   --success: #21b978;
   --danger: #f5365c;
-  --sidebar: #27293d;
-  --documentation: #1e1e2f;
-  --navbar: #1f1f33;
+  --sidebar: #11152c;
+  --documentation: #191e38;
+  --navbar: rgb(28, 35, 68);
 }
 
 html,
@@ -26,13 +26,36 @@ body {
 
 /**************************************/
 
+/**************** Cards ***************/
+
+/**************************************/
+
+.card.is-default {
+  background-color: #2f365f;
+  color: #f8fafc;
+  border-style: none;
+  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+  -webkit-transition: -webkit-box-shadow .2s;
+  transition: -webkit-box-shadow .2s;
+  transition: box-shadow .2s;
+  transition: box-shadow .2s, -webkit-box-shadow .2s;
+}
+
+.card.is-default:hover {
+  -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, .11), 0 5px 15px 0 rgba(0, 0, 0, .08);
+          box-shadow: 0 15px 30px 0 rgba(0, 0, 0, .11), 0 5px 15px 0 rgba(0, 0, 0, .08);
+}
+
+/**************************************/
+
 /*************** Sidebar **************/
 
 /**************************************/
 
 .sidebar {
   background-color: var(--sidebar);
-  border-color: #3d4852;
+  border-style: none;
 }
 
 .sidebar > ul > li > h2 {
@@ -45,5 +68,5 @@ body {
 }
 
 .sidebar > ul > li > ul > li a {
-  color: #f1f5f8;
+  color: #8795a1;
 }

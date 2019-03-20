@@ -3,7 +3,7 @@
          :class="[
          {'shadow': shadow},
          {[`shadow-${shadowSize}`]: shadowSize},
-         {[`bg-${type}`]: type}
+         {[`is-${type}`]: type}
        ]">
         <div v-if="!noBody">
             <slot></slot>
@@ -16,7 +16,7 @@ export default {
   props: {
     type: {
       type: String,
-      default: "white",
+      default: "default",
       description: "Card type"
     },
     shadow: {

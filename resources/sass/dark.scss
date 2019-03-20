@@ -11,9 +11,9 @@
     --success: #21b978;
     --danger: #f5365c;
 
-    --sidebar: #27293d;
-    --documentation: #1e1e2f;
-    --navbar: #1f1f33;
+    --sidebar: #11152C; //
+    --documentation: #191E38;
+    --navbar: rgb(28, 35, 68);
 }
 
 html, body {
@@ -21,10 +21,24 @@ html, body {
 }
 
 /**************************************/
+/**************** Cards ***************/
+/**************************************/
+.card {
+    &.is-default {
+        @apply bg-indigo-darker text-grey-lightest border-none shadow-md;
+        transition: box-shadow 0.2s;
+
+        &:hover {
+            @apply shadow-lg;
+        }
+    }
+}
+
+/**************************************/
 /*************** Sidebar **************/
 /**************************************/
 .sidebar {
-    @apply bg-sidebar border-grey-darkest;
+    @apply bg-sidebar border-none;
 
     > ul {
         > li {
@@ -37,7 +51,7 @@ html, body {
 
                 > li {
                     a {
-                        @apply text-grey-lighter;
+                        @apply text-grey-dark;
                     }
                 }
             }

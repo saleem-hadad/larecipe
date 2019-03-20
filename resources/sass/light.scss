@@ -89,6 +89,10 @@ a {
 /**************************************/
 .card {
     @apply border border-grey-lighter p-6 rounded my-4;
+
+    &.is-default {
+        // @apply shadow-inner;
+    }
 }
 
 /**************************************/
