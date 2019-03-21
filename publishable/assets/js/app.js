@@ -1831,7 +1831,7 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       });
     },
     setupSmoothScrolling: function setupSmoothScrolling() {
-      $('.article > ul:first > li a[href*="#"]:not([href="#"])').click(function () {
+      $('.documentation > ul:first > li a[href*="#"]:not([href="#"])').click(function () {
         var target = $(this.hash);
         target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
         if (target.length) {
@@ -28644,7 +28644,7 @@ var render = function() {
         ((_obj$1 = {}), (_obj$1["is-" + _vm.type] = _vm.type), _obj$1)
       ]
     },
-    [!_vm.noBody ? _c("div", [_vm._t("default")], 2) : _vm._e()]
+    [_c("div", [_vm._t("default")], 2)]
   )
   var _obj
   var _obj$1

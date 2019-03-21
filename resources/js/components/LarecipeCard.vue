@@ -5,7 +5,7 @@
          {[`shadow-${shadowSize}`]: shadowSize},
          {[`is-${type}`]: type}
        ]">
-        <div v-if="!noBody">
+        <div>
             <slot></slot>
         </div>
     </div>
