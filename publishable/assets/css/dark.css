@@ -70,3 +70,22 @@ body {
 .sidebar > ul > li > ul > li a {
   color: #8795a1;
 }
+
+/**************************************/
+
+/********** Documentation *************/
+
+/**************************************/
+
+.documentation {
+  color: #b8c2cc;
+}
+
+.documentation h1 {
+  color: #f8fafc;
+}
+
+.documentation h2 a,
+.documentation h2 a:hover {
+  color: #dae1e7;
+}

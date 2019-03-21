@@ -58,3 +58,20 @@ html, body {
         }
     }
 }
+
+/**************************************/
+/********** Documentation *************/
+/**************************************/
+.documentation {
+    @apply text-grey;
+
+    h1 {
+        @apply text-grey-lightest;
+    }
+
+    h2 {
+        a, a:hover {
+            @apply text-grey-light;
+        }
+    }
+}
