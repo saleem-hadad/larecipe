@@ -37,12 +37,9 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        {{-- Custom CSS --}}
-        @if(!empty(config('larecipe.ui.additional_css')))
-            @foreach(config('larecipe.ui.additional_css') as $css)
-                <link rel="stylesheet" type="text/css" href="{{ asset($css) . '?id=' . \Illuminate\Support\Str::random(8) }}">
-            @endforeach
-        @endif
+        @foreach(LaRecipe::allStyles() as $name => $path)
+            <link rel="stylesheet" href="{{ $path }}">
+        @endforeach
     </head>
     <body>
         <div id="app" v-cloak>
@@ -93,6 +90,10 @@
             </script>
         @endif
         {{-- /Google Analytics --}}
+
+        @foreach (LaRecipe::allScripts() as $name => $path)
+            <script src="{!! $path !!}"></script>
+        @endforeach
 
         <script>
             Larecipe.run()

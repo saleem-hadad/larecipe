@@ -41,7 +41,10 @@
         "laravel": {
             "providers": [
                 "BinaryTorch\\LaRecipe\\LaRecipeServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "LaRecipe": "BinaryTorch\\LaRecipe\\LaRecipe"
+            }
         }
     }
 }
