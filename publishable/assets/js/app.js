@@ -1777,7 +1777,6 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = document.head.querySelector('meta[name="csrf-token"]').content;
 
 __webpack_require__(36);
-// This enables all language support via CDN
 Prism.plugins.autoloader.use_minified = true;
 Prism.plugins.autoloader.languages_path = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/';
 
@@ -29862,10 +29861,6 @@ if (false) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__directives_click_outside_js__ = __webpack_require__(109);
 
-
-/**
- * You can register global directives here and use them as a plugin in your main Vue instance
- */
 
 var GlobalDirectives = {
   install: function install(Vue) {
