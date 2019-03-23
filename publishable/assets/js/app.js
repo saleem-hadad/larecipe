@@ -28161,6 +28161,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "larecipe-badge",
@@ -28172,7 +28173,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     rounded: {
       type: Boolean,
-      default: false,
+      default: true,
       description: "Whether badge is of pill type"
     },
     circle: {
@@ -28193,7 +28194,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   computed: {
     classes: function classes() {
-      return ["bg-" + this.type, this.rounded && 'rounded', this.circle && 'rounded-full h-8 w-8 flex items-center justify-center'];
+      return ["is-" + this.type, this.rounded && 'rounded', this.circle && 'rounded-full h-8 w-8 flex items-center justify-center'];
     }
   }
 });
@@ -28208,11 +28209,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     _vm.tag,
-    {
-      tag: "component",
-      staticClass: "badge p-2 inline-flex",
-      class: _vm.classes
-    },
+    { tag: "component", staticClass: "badge inline-flex", class: _vm.classes },
     [_vm._t("default", [_vm.icon ? _c("i", { class: _vm.icon }) : _vm._e()])],
     2
   )

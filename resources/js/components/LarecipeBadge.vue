@@ -1,10 +1,11 @@
 <template>
-  <component :is="tag" class="badge p-2 inline-flex" :class="classes">
+  <component :is="tag" class="badge inline-flex" :class="classes">
     <slot>
       <i v-if="icon" :class="icon"></i>
     </slot>
   </component>
 </template>
+
 <script>
 export default {
   name: "larecipe-badge",
@@ -16,7 +17,7 @@ export default {
     },
     rounded: {
       type: Boolean,
-      default: false,
+      default: true,
       description: "Whether badge is of pill type"
     },
     circle: {
@@ -38,7 +39,7 @@ export default {
   computed: {
     classes() {
       return [
-        `bg-${this.type}`,
+        `is-${this.type}`,
         this.rounded && 'rounded',
         this.circle && 'rounded-full h-8 w-8 flex items-center justify-center'
       ];

@@ -603,6 +603,50 @@ table {
   height: 60px;
 }
 
+.badge {
+  padding: .5rem;
+}
+
+.badge.is-white {
+  background-color: #f8fafc;
+  color: #3d4852;
+}
+
+.badge.is-black {
+  background-color: #3d4852;
+  color: var(--white);
+}
+
+.badge.is-primary {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.badge.is-secondary {
+  background-color: var(--secondary);
+  color: var(--white);
+}
+
+.badge.is-success {
+  background-color: var(--success);
+  color: var(--white);
+}
+
+.badge.is-info {
+  background-color: var(--info);
+  color: var(--white);
+}
+
+.badge.is-warning {
+  background-color: var(--warning);
+  color: var(--white);
+}
+
+.badge.is-danger {
+  background-color: var(--danger);
+  color: var(--white);
+}
+
 .documentation.is-dark {
   /* Code blocks *//* Inline code */
 }
