@@ -6,12 +6,25 @@ Vue.use(Argon);
 Vue.config.productionTip = false;
 const noDelimiter = { replace: () => "(?!x)x" };
 
-export default class Larecipe {
+export default class LaRecipe {
   constructor(config) {
     this.config = config;
+    this.bootingCallbacks = []
+  }
+
+  booting(callback) {
+    this.bootingCallbacks.push(callback)
+  }
+
+  boot() {
+      this.bootingCallbacks.forEach(callback => callback(Vue))
+
+      this.bootingCallbacks = []
   }
 
   run() {
+    this.boot()
+    
     this.app = new Vue({
       el: "#app",
       delimiters: [noDelimiter, noDelimiter],

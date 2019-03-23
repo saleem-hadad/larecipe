@@ -24,8 +24,7 @@
         @endif
 
         {{-- CSS --}}
-        <link rel="stylesheet" href="{{ larecipe_assets('css/light.css') }}">
-        <link rel="stylesheet" href="{{ larecipe_assets('css/dark.css') }}">
+        <link rel="stylesheet" href="{{ larecipe_assets('css/app.css') }}">
 
         {{-- Icon --}}
         <link rel="apple-touch-icon" href="{{ asset(config('larecipe.ui.fav')) }}">
@@ -68,7 +67,7 @@
         <script src="{{ larecipe_assets('js/app.js') }}"></script>
 
         <script>
-            window.Larecipe = new CreateLarecipe(config)
+            window.LaRecipe = new CreateLarecipe(config)
         </script>
 
         {{-- Custom JS --}}
@@ -96,7 +95,7 @@
         @endforeach
 
         <script>
-            Larecipe.run()
+            LaRecipe.run()
         </script>
     </body>
 </html>
