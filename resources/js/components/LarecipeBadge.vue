@@ -1,15 +1,9 @@
 <template>
-    <component :is="tag"
-               class="badge"
-               :class="
-               [`badge-${type}`,
-                rounded ? `badge-pill` : '',
-                circle && 'badge-circle'
-               ]">
-        <slot>
-            <i v-if="icon" :class="icon"></i>
-        </slot>
-    </component>
+  <component :is="tag" class="badge p-2 inline-flex" :class="classes">
+    <slot>
+      <i v-if="icon" :class="icon"></i>
+    </slot>
+  </component>
 </template>
 <script>
 export default {
@@ -37,8 +31,17 @@ export default {
     },
     type: {
       type: String,
-      default: "default",
-      description: "Badge type (primary|info|danger|default|warning|success)"
+      default: "primary",
+      description: "Badge type (info|danger|warning|success)"
+    }
+  },
+  computed: {
+    classes() {
+      return [
+        `bg-${this.type}`,
+        this.rounded && 'rounded',
+        this.circle && 'rounded-full h-8 w-8 flex items-center justify-center'
+      ];
     }
   }
 };

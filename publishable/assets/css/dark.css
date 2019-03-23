@@ -111,3 +111,7 @@ table th:hover {
 .documentation h2 a:hover {
   color: #dae1e7;
 }
+
+.documentation a {
+  color: #3490dc;
+}
