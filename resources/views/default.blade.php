@@ -27,14 +27,6 @@
         <link rel="stylesheet" href="{{ larecipe_assets('css/light.css') }}">
         <link rel="stylesheet" href="{{ larecipe_assets('css/dark.css') }}">
 
-        {{-- JS --}}
-        <script type="text/javascript">
-            if(localStorage.getItem('larecipeSidebar') == null) {
-                localStorage.setItem('larecipeSidebar', !! {{ config('larecipe.ui.show_side_bar') ?: 0 }});
-            }
-        </script>
-        <script src="{{ larecipe_assets('js/app.js') }}" defer></script>
-
         {{-- Icon --}}
         <link rel="apple-touch-icon" href="{{ asset(config('larecipe.ui.fav')) }}">
         <link rel="shortcut icon" type="image/png" href="{{ asset(config('larecipe.ui.fav')) }}"/>
@@ -65,6 +57,23 @@
             @endif
         </div>
 
+
+        <script>
+            window.config = @json([]);
+        </script>
+
+        <script type="text/javascript">
+            if(localStorage.getItem('larecipeSidebar') == null) {
+                localStorage.setItem('larecipeSidebar', !! {{ config('larecipe.ui.show_side_bar') ?: 0 }});
+            }
+        </script>
+
+        <script src="{{ larecipe_assets('js/app.js') }}"></script>
+
+        <script>
+            window.Larecipe = new CreateLarecipe(config)
+        </script>
+
         {{-- Custom JS --}}
         @if(!empty(config('larecipe.ui.additional_js')))
             @foreach(config('larecipe.ui.additional_js') as $js)
@@ -84,5 +93,9 @@
             </script>
         @endif
         {{-- /Google Analytics --}}
+
+        <script>
+            Larecipe.run()
+        </script>
     </body>
 </html>
