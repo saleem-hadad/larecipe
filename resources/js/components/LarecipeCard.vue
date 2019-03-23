@@ -1,10 +1,5 @@
 <template>
-    <div class="card"
-         :class="[
-         {'shadow': shadow},
-         {[`shadow-${shadowSize}`]: shadowSize},
-         {[`is-${type}`]: type}
-       ]">
+    <div class="card" :class="classes">
         <div>
             <slot></slot>
         </div>
@@ -27,6 +22,15 @@ export default {
       type: String,
       description: "Card shadow size"
     },
+  },
+  computed: {
+    classes() {
+      return [
+        {'shadow': this.shadow},
+        {[`shadow-${this.shadowSize}`]: this.shadowSize},
+        `is-${this.type}`
+      ];
+    }
   }
 };
 </script>

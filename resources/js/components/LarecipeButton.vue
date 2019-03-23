@@ -3,6 +3,7 @@
         <slot></slot>
     </component>
 </template>
+
 <script>
 export default {
   name: "larecipe-button",
