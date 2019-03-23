@@ -2,7 +2,6 @@
 
 namespace BinaryTorch\LaRecipe\Tests\Unit;
 
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use BinaryTorch\LaRecipe\Tests\TestCase;
 use BinaryTorch\LaRecipe\Models\Documentation;

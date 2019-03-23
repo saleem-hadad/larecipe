@@ -25,7 +25,7 @@
 
         {{-- CSS --}}
         <link rel="stylesheet" href="{{ larecipe_assets('css/light.css') }}">
-        <!-- <link rel="stylesheet" href="{{ larecipe_assets('css/dark.css') }}"> -->
+        <link rel="stylesheet" href="{{ larecipe_assets('css/dark.css') }}">
 
         {{-- Icon --}}
         <link rel="apple-touch-icon" href="{{ asset(config('larecipe.ui.fav')) }}">

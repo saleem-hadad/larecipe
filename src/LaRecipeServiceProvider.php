@@ -5,6 +5,7 @@ namespace BinaryTorch\LaRecipe;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use BinaryTorch\LaRecipe\Commands\InstallCommand;
+use BinaryTorch\LaRecipe\Facades\LaRecipe as LaRecipeFacade;
 use BinaryTorch\LaRecipe\Commands\GenerateDocumentationCommand;
 
 class LaRecipeServiceProvider extends ServiceProvider
@@ -51,6 +52,12 @@ class LaRecipeServiceProvider extends ServiceProvider
             $this->registerPublishableResources();
             $this->registerConsoleCommands();
         }
+
+        $this->app->alias('LaRecipe', LaRecipeFacade::class);
+
+        $this->app->singleton('LaRecipe', function () {
+            return new LaRecipe();
+        });
     }
 
     /**
