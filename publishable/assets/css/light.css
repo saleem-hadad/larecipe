@@ -1229,6 +1229,11 @@ a {
   text-decoration: none;
 }
 
+html,
+body {
+  background-color: var(--documentation);
+}
+
 /**************************************/
 
 /*************** Sidebar **************/

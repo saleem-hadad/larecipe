@@ -31,6 +31,10 @@ a {
     @apply no-underline;
 }
 
+html, body {
+    @apply bg-documentation;
+}
+
 
 /**************************************/
 /*************** Sidebar **************/
