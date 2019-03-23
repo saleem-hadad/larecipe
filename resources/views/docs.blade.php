@@ -3,7 +3,7 @@
 @section('content')
 <div>
 	<div class="sidebar" 
-		:class="[{'is-hidden': ! sidebar}, theme]">
+		:class="[{'is-hidden': ! sidebar}]">
 		{!! $index !!}
 	</div>
 	
