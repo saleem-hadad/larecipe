@@ -25,7 +25,7 @@
 
         {{-- CSS --}}
         <link rel="stylesheet" href="{{ larecipe_assets('css/light.css') }}">
-        <link rel="stylesheet" href="{{ larecipe_assets('css/dark.css') }}">
+        <!-- <link rel="stylesheet" href="{{ larecipe_assets('css/dark.css') }}"> -->
 
         {{-- Icon --}}
         <link rel="apple-touch-icon" href="{{ asset(config('larecipe.ui.fav')) }}">
@@ -38,7 +38,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         @foreach(LaRecipe::allStyles() as $name => $path)
-            <link rel="stylesheet" href="{{ $path }}">
+            <link rel="stylesheet" href="{{ route('larecipe.styles', $name) }}">
         @endforeach
     </head>
     <body>
@@ -92,7 +92,7 @@
         {{-- /Google Analytics --}}
 
         @foreach (LaRecipe::allScripts() as $name => $path)
-            <script src="{!! $path !!}"></script>
+            <script src="{{ route('larecipe.scripts', $name) }}"></script>
         @endforeach
 
         <script>

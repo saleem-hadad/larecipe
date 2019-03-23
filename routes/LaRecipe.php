@@ -6,5 +6,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/search-index/{version}', 'SearchController')->name('search');
 
 // Documentation..
+Route::get('/styles/{style}', 'StyleController')->name('styles');
+Route::get('/scripts/{script}', 'ScriptController')->name('scripts');
+
 Route::get('/', 'DocumentationController@index')->name('index');
 Route::get('/{version}/{page?}', 'DocumentationController@show')->where('page', '(.*)')->name('show');
