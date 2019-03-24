@@ -1269,13 +1269,13 @@ div.code-toolbar > .toolbar span:focus {
 
 /**************************************/
 
-a {
-  text-decoration: none;
-}
-
 html,
 body {
   background-color: var(--documentation);
+}
+
+a {
+  text-decoration: none;
 }
 
 /**************************************/
@@ -1549,6 +1549,8 @@ table th {
   border-top-width: 2px;
   border-style: dashed;
   border-color: #f1f5f8;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .documentation img {

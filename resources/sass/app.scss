@@ -28,12 +28,12 @@
 /**************************************/
 /*************** Global ***************/
 /**************************************/
-a {
-    @apply no-underline;
-}
-
 html, body {
     @apply bg-documentation;
+}
+
+a {
+    @apply no-underline;
 }
 
 
@@ -183,7 +183,7 @@ table {
     }
 
     hr {
-        @apply border-t-2 border-dashed border-grey-lighter;
+        @apply border-t-2 border-dashed border-grey-lighter my-4;
     }
 
     img {
