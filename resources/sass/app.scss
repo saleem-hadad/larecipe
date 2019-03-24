@@ -46,8 +46,7 @@ a {
     @apply hidden;
 }
 .form-switch-label {
-    @apply block overflow-hidden cursor-pointer bg-white border rounded-full h-6  shadow-inner;
-
+    @apply block overflow-hidden cursor-pointer bg-white border rounded-full h-6 shadow-inner;
     transition: background-color 0.1s ease-in;
 }
 .form-switch-label:before {
@@ -57,12 +56,8 @@ a {
     content: "";
     transition: all 0.1s ease-in;
 }
-.form-switch-checkbox:checked + .form-switch-label,
-.form-switch-checkbox:checked + .form-switch-label:before {
- 
-}
 .form-switch-checkbox:checked + .form-switch-label {
-    @apply bg-green shadow-none;
+    @apply bg-primary shadow-none;
 }
 .form-switch-checkbox:checked + .form-switch-label:before {
     @apply pin-r;
