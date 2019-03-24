@@ -1,8 +1,11 @@
+import "../sass/vendor/nucleo/css/nucleo.css";
+import "../sass/vendor/font-awesome/css/font-awesome.css";
+
 import Vue from "vue";
 import mediumZoom from "medium-zoom";
-import Argon from "./plugins/argon-kit";
+import LaRecipeComponents from "./components";
 
-Vue.use(Argon);
+Vue.use(LaRecipeComponents);
 Vue.config.productionTip = false;
 const noDelimiter = { replace: () => "(?!x)x" };
 
