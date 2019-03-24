@@ -26760,22 +26760,25 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__AlgoliaSearchBox__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__AlgoliaSearchBox___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__AlgoliaSearchBox__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__InternalSearchBox__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__InternalSearchBox___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__InternalSearchBox__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LarecipeBackToTop__ = __webpack_require__(64);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LarecipeBackToTop___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__LarecipeBackToTop__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__LarecipeBadge__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__LarecipeBadge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__LarecipeBadge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__LarecipeButton__ = __webpack_require__(72);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__LarecipeButton___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__LarecipeButton__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__LarecipeCard__ = __webpack_require__(75);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__LarecipeCard___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__LarecipeCard__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__LarecipeInput__ = __webpack_require__(78);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__LarecipeInput___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__LarecipeInput__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__LarecipeProgress__ = __webpack_require__(81);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__LarecipeProgress___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__LarecipeProgress__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__click_outside__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__AlgoliaSearchBox__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__AlgoliaSearchBox___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__AlgoliaSearchBox__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__InternalSearchBox__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__InternalSearchBox___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__InternalSearchBox__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__LarecipeBackToTop__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__LarecipeBackToTop___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__LarecipeBackToTop__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__LarecipeBadge__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__LarecipeBadge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__LarecipeBadge__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__LarecipeButton__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__LarecipeButton___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__LarecipeButton__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__LarecipeCard__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__LarecipeCard___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__LarecipeCard__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__LarecipeInput__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__LarecipeInput___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__LarecipeInput__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__LarecipeProgress__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__LarecipeProgress___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__LarecipeProgress__);
+
+
 
 
 
@@ -26787,14 +26790,16 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   install: function install(Vue) {
-    Vue.component(__WEBPACK_IMPORTED_MODULE_0__AlgoliaSearchBox___default.a.name, __WEBPACK_IMPORTED_MODULE_0__AlgoliaSearchBox___default.a);
-    Vue.component(__WEBPACK_IMPORTED_MODULE_1__InternalSearchBox___default.a.name, __WEBPACK_IMPORTED_MODULE_1__InternalSearchBox___default.a);
-    Vue.component(__WEBPACK_IMPORTED_MODULE_2__LarecipeBackToTop___default.a.name, __WEBPACK_IMPORTED_MODULE_2__LarecipeBackToTop___default.a);
-    Vue.component(__WEBPACK_IMPORTED_MODULE_3__LarecipeBadge___default.a.name, __WEBPACK_IMPORTED_MODULE_3__LarecipeBadge___default.a);
-    Vue.component(__WEBPACK_IMPORTED_MODULE_4__LarecipeButton___default.a.name, __WEBPACK_IMPORTED_MODULE_4__LarecipeButton___default.a);
-    Vue.component(__WEBPACK_IMPORTED_MODULE_5__LarecipeCard___default.a.name, __WEBPACK_IMPORTED_MODULE_5__LarecipeCard___default.a);
-    Vue.component(__WEBPACK_IMPORTED_MODULE_6__LarecipeInput___default.a.name, __WEBPACK_IMPORTED_MODULE_6__LarecipeInput___default.a);
-    Vue.component(__WEBPACK_IMPORTED_MODULE_7__LarecipeProgress___default.a.name, __WEBPACK_IMPORTED_MODULE_7__LarecipeProgress___default.a);
+    Vue.directive("click-outside", __WEBPACK_IMPORTED_MODULE_0__click_outside__["a" /* default */]);
+
+    Vue.component(__WEBPACK_IMPORTED_MODULE_1__AlgoliaSearchBox___default.a.name, __WEBPACK_IMPORTED_MODULE_1__AlgoliaSearchBox___default.a);
+    Vue.component(__WEBPACK_IMPORTED_MODULE_2__InternalSearchBox___default.a.name, __WEBPACK_IMPORTED_MODULE_2__InternalSearchBox___default.a);
+    Vue.component(__WEBPACK_IMPORTED_MODULE_3__LarecipeBackToTop___default.a.name, __WEBPACK_IMPORTED_MODULE_3__LarecipeBackToTop___default.a);
+    Vue.component(__WEBPACK_IMPORTED_MODULE_4__LarecipeBadge___default.a.name, __WEBPACK_IMPORTED_MODULE_4__LarecipeBadge___default.a);
+    Vue.component(__WEBPACK_IMPORTED_MODULE_5__LarecipeButton___default.a.name, __WEBPACK_IMPORTED_MODULE_5__LarecipeButton___default.a);
+    Vue.component(__WEBPACK_IMPORTED_MODULE_6__LarecipeCard___default.a.name, __WEBPACK_IMPORTED_MODULE_6__LarecipeCard___default.a);
+    Vue.component(__WEBPACK_IMPORTED_MODULE_7__LarecipeInput___default.a.name, __WEBPACK_IMPORTED_MODULE_7__LarecipeInput___default.a);
+    Vue.component(__WEBPACK_IMPORTED_MODULE_8__LarecipeProgress___default.a.name, __WEBPACK_IMPORTED_MODULE_8__LarecipeProgress___default.a);
   }
 });
 
@@ -28450,6 +28455,26 @@ module.exports = __webpack_amd_options__;
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 87 */,
+/* 88 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+  bind: function bind(el, binding, vnode) {
+    el.clickOutsideEvent = function (event) {
+      if (!(el == event.target || el.contains(event.target))) {
+        vnode.context[binding.expression](event);
+      }
+    };
+    document.body.addEventListener("click", el.clickOutsideEvent);
+  },
+  unbind: function unbind(el) {
+    document.body.removeEventListener("click", el.clickOutsideEvent);
+  }
+});
 
 /***/ })
 /******/ ]);

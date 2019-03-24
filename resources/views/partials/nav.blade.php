@@ -37,54 +37,46 @@
                 </larecipe-button>
                 {{-- /search button --}}
             @endif
+
+            {{-- versions dropdown --}}
+            <larecipe-dropdown>
+                <larecipe-button slot="title" type="primary" class="dropdown-toggle" style="width: 100%">
+                    {{ $currentVersion }}
+                </larecipe-button>
+
+                @foreach ($versions as $version)
+                    <li role="presentation">
+                        <a class="dropdown-item" href="{{ url(config('larecipe.docs.route').'/'.$version.$currentSection) }}">{{ $version }}</a>
+                    </li>
+                @endforeach
+            </larecipe-dropdown>
+            {{-- /versions dropdown --}}
+
+            @auth
+                {{-- account --}}
+                <larecipe-dropdown>
+                    <larecipe-button slot="title" type="secondary" class="dropdown-toggle btn-white ml-2">
+                        {{ auth()->user()->name ?? 'Account' }}
+                    </larecipe-button>
+
+                    @if(config('larecipe.settings.auth_links') !== null)
+                        @foreach(config('larecipe.settings.auth_links') as $link)
+                            @if($link['url'] !== '')
+                                <li>
+                                    <a href="{{ $link['url'] }}" class="dropdown-item">{{ $link['name'] }}</a>
+                                </li>
+                            @endif
+                        @endforeach
+                    @endif
+
+                    <form action="/logout" method="POST">
+                        {{ csrf_field() }}
+
+                        <button class="dropdown-item" type="submit">Logout</button>
+                    </form>
+                </larecipe-dropdown>
+                {{-- /account --}}
+            @endauth
         </div>
     </nav>
 </div>
-
-    {{-- right navbar --}}
-    <div class="navbar-nav ml-lg-auto" slot-scope="{closeMenu}">
-        
-
-        {{-- versions dropdown --}}
-        <larecipe-dropdown>
-            <larecipe-button slot="title" type="primary" class="dropdown-toggle" style="width: 100%">
-                {{ $currentVersion }}
-            </larecipe-button>
-
-            @foreach ($versions as $version)
-				<li role="presentation">
-					<a class="dropdown-item" href="{{ url(config('larecipe.docs.route').'/'.$version.$currentSection) }}">{{ $version }}</a>
-				</li>
-			@endforeach
-        </larecipe-dropdown>
-        {{-- /versions dropdown --}}
-
-        @auth
-            {{-- account --}}
-            <larecipe-dropdown>
-                <larecipe-button slot="title" type="secondary" class="dropdown-toggle btn-white ml-2">
-                    {{ auth()->user()->name ?? 'Account' }}
-                </larecipe-button>
-
-                @if(config('larecipe.settings.auth_links') !== null)
-                    @foreach(config('larecipe.settings.auth_links') as $link)
-                        @if($link['url'] !== '')
-                            <li>
-                                <a href="{{ $link['url'] }}" class="dropdown-item">{{ $link['name'] }}</a>
-                            </li>
-                        @endif
-                    @endforeach
-                @endif
-
-                <form action="/logout" method="POST">
-                    {{ csrf_field() }}
-
-                    <button class="dropdown-item" type="submit">Logout</button>
-                </form>
-            </larecipe-dropdown>
-            {{-- /account --}}
-        @endauth
-    </div>
-    {{-- /right navbar --}}
- </larecipe-nav> -->
-{{-- /navbar --}} 
