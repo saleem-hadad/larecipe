@@ -1299,8 +1299,7 @@ a {
   display: block;
   overflow: hidden;
   cursor: pointer;
-  background-color: var(--white);
-  border-width: 1px;
+  background-color: #dae1e7;
   border-radius: 9999px;
   height: 1.5rem;
   -webkit-box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, .06);
@@ -1313,10 +1312,12 @@ a {
   position: absolute;
   display: block;
   background-color: var(--white);
+  border-width: 1px;
+  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   top: 0;
   bottom: 0;
   width: 1.5rem;
-  border-width: 1px;
   border-radius: 9999px;
   margin-left: -0.25rem;
   right: 50%;

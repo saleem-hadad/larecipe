@@ -46,11 +46,11 @@ a {
     @apply hidden;
 }
 .form-switch-label {
-    @apply block overflow-hidden cursor-pointer bg-white border rounded-full h-6 shadow-inner;
+    @apply block overflow-hidden cursor-pointer bg-grey-light rounded-full h-6 shadow-inner;
     transition: background-color 0.1s ease-in;
 }
 .form-switch-label:before {
-    @apply absolute block bg-white pin-y w-6 border rounded-full -ml-1;
+    @apply absolute block bg-white border shadow pin-y w-6 rounded-full -ml-1;
     
     right: 50%;
     content: "";
