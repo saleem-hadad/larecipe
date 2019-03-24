@@ -1278,6 +1278,63 @@ a {
   text-decoration: none;
 }
 
+/* CHECKBOX TOGGLE SWITCH */
+
+.form-switch {
+  position: relative;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  width: 3rem;
+  margin-right: .5rem;
+  line-height: 1.5;
+}
+
+.form-switch-checkbox {
+  display: none;
+}
+
+.form-switch-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: var(--white);
+  border-width: 1px;
+  border-radius: 9999px;
+  height: 1.5rem;
+  -webkit-box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, .06);
+          box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, .06);
+  -webkit-transition: background-color .1s ease-in;
+  transition: background-color .1s ease-in;
+}
+
+.form-switch-label:before {
+  position: absolute;
+  display: block;
+  background-color: var(--white);
+  top: 0;
+  bottom: 0;
+  width: 1.5rem;
+  border-width: 1px;
+  border-radius: 9999px;
+  margin-left: -0.25rem;
+  right: 50%;
+  content: "";
+  -webkit-transition: all .1s ease-in;
+  transition: all .1s ease-in;
+}
+
+.form-switch-checkbox:checked + .form-switch-label {
+  background-color: #38c172;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.form-switch-checkbox:checked + .form-switch-label:before {
+  right: 0;
+}
+
 /**************************************/
 
 /*************** Sidebar **************/
@@ -1404,6 +1461,13 @@ a {
 
 .button:focus {
   outline: 0;
+}
+
+.button.is-link {
+  background-color: transparent;
+  color: #3d4852;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 .button.is-white {

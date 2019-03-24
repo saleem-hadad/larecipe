@@ -37,6 +37,37 @@ a {
 }
 
 
+
+/* CHECKBOX TOGGLE SWITCH */
+.form-switch {
+    @apply relative select-none w-12 mr-2 leading-normal;
+}
+.form-switch-checkbox {
+    @apply hidden;
+}
+.form-switch-label {
+    @apply block overflow-hidden cursor-pointer bg-white border rounded-full h-6  shadow-inner;
+
+    transition: background-color 0.1s ease-in;
+}
+.form-switch-label:before {
+    @apply absolute block bg-white pin-y w-6 border rounded-full -ml-1;
+    
+    right: 50%;
+    content: "";
+    transition: all 0.1s ease-in;
+}
+.form-switch-checkbox:checked + .form-switch-label,
+.form-switch-checkbox:checked + .form-switch-label:before {
+ 
+}
+.form-switch-checkbox:checked + .form-switch-label {
+    @apply bg-green shadow-none;
+}
+.form-switch-checkbox:checked + .form-switch-label:before {
+    @apply pin-r;
+}
+
 /**************************************/
 /*************** Sidebar **************/
 /**************************************/
@@ -116,6 +147,7 @@ a {
         @apply outline-none;
     }
 
+    &.is-link { @apply bg-transparent text-grey-darkest shadow-none; }
     &.is-white { @apply bg-grey-lightest text-grey-darkest; }
     &.is-black { @apply bg-grey-darkest text-white; }
     &.is-primary { @apply bg-primary text-white; }

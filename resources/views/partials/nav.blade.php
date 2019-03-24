@@ -2,13 +2,20 @@
     <div class="bg-gradient-primary text-white h-1"></div>
 
     <nav class="flex items-center justify-between text-black bg-navbar shadow h-16">
-        <a href="{{ url('/') }}" class="flex items-center flex-no-shrink text-black mx-3">
-            @include("larecipe::partials.logo")
+        <div class="flex items-center flex-no-shrink">
+            <a href="{{ url('/') }}" class="flex items-center flex-no-shrink text-black mx-3">
+                @include("larecipe::partials.logo")
 
-            <p class="inline-block font-semibold ml-1 text-grey-darker hover:text-black">
-                {{ config('app.name') }}
-            </p>
-        </a>
+                <p class="inline-block font-semibold ml-1 text-grey-darker hover:text-black">
+                    {{ config('app.name') }}
+                </p>
+            </a>
+            
+            <div class="form-switch">
+                <input type="checkbox" name="1" id="1" v-model="sidebar" class="form-switch-checkbox" />
+                <label class="form-switch-label" for="1"></label>
+            </div>
+        </div>
 
         <div class="block lg:hidden">
             <button class="flex items-center px-3 py-2 border rounded text-grey-darker border-grey-darker hover:text-white hover:border-white">
@@ -18,57 +25,25 @@
                 </svg>
             </button>
         </div>
+
+        <div class="block">
+            @if(config('larecipe.search.enabled'))
+                {{-- search button --}}
+                <larecipe-button id="search-button" 
+                    :class="{'btn-primary': searchBox}" 
+                    type="link"
+                    @click="searchBox = ! searchBox">
+                    <i class="fa fa-search"></i>
+                </larecipe-button>
+                {{-- /search button --}}
+            @endif
+        </div>
     </nav>
 </div>
 
-
-<!-- <larecipe-nav type="white"
-    effect="light" expand fixed 
-    style="height: 4rem; top: 3px;">
-    
-    <div slot="brand" style="display: flex; align-items: center;">
-        
-        
-        {{-- sidebar toggle button --}}
-        <larecipe-switch class="mt-2" v-model="sidebar"></larecipe-switch>
-        {{-- /sidebar toggle button --}}
-    </div>
-    
-
-    {{-- presented when toggle pressed --}}
-    <div class="row" slot="content-header" slot-scope="{closeMenu}">
-        <div class="col-6 collapse-brand"></div>
-        <div class="col-6 collapse-close">
-            <larecipe-close-button @click="closeMenu"></larecipe-close-button>
-        </div>
-    </div>
-    {{-- /presented when toggle pressed --}}
-
     {{-- right navbar --}}
     <div class="navbar-nav ml-lg-auto" slot-scope="{closeMenu}">
-        @if(config('larecipe.search.enabled'))
-            {{-- search button --}}
-            <larecipe-button id="search-button" 
-                :class="{'btn-primary': searchBox}" 
-                @click="searchBox = ! searchBox" 
-                type="link" 
-                style="width: 100%;">
-                <i class="fa fa-search"></i>
-            </larecipe-button>
-            {{-- /search button --}}
-        @endif
-
-        {{-- repository link --}}
-        @if (config('larecipe.repository.url'))
-            <larecipe-button tag="a" id="repository_button" 
-                target="__blank" href="{{ config('larecipe.repository.url') }}" 
-                slot="title" 
-                type="outline-primary" 
-                style="width: 100%">
-                <i class="fa fa-{{ config('larecipe.repository.provider') }}"></i>
-            </larecipe-button>
-        @endif
-        {{-- /repository link --}}
+        
 
         {{-- versions dropdown --}}
         <larecipe-dropdown>
