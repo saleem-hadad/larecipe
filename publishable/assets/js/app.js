@@ -26912,7 +26912,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n#search-button {\n  color: gray;\n}\n#search-button.btn-primary {\n  color: #fff;\n}\n.search-box {\n  width: 100% !important;\n  margin-top: 4rem;\n  -webkit-transition: all .2s;\n  transition: all .2s;\n  height: 6rem;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  position: absolute;\n  z-index: 100;\n  -webkit-box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;\n          box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;\n}\n.search-box .form-control {\n  font-size: 2rem;\n  text-transform: uppercase;\n}\n.search-box .form-control,\n.search-box .form-group {\n  border: none;\n  margin-bottom: 0px;\n  height: 100%;\n  text-align: center;\n  width: 100%;\n  background: #f4f5f7;\n  border-radius: 0px;\n  -webkit-transition: all .2s;\n  transition: all .2s;\n}\n.search-box .form-control:focus,\n.search-box .form-group:focus {\n  background: #fff;\n}\n.search-box .algolia-autocomplete {\n  width: 100%;\n  height: 100%;\n  -webkit-box-shadow: 0 1px 3px rgba(50, 50, 93, .15), 0 1px 0 rgba(0, 0, 0, .02);\n          box-shadow: 0 1px 3px rgba(50, 50, 93, .15), 0 1px 0 rgba(0, 0, 0, .02);\n}\n", ""]);
+exports.push([module.i, "\n.search-box {\n  width: 100% !important;\n  margin-top: 4rem;\n  -webkit-transition: all .2s;\n  transition: all .2s;\n  height: 6rem;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  position: absolute;\n  z-index: 100;\n  -webkit-box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;\n          box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;\n}\n.search-box .form-control {\n  font-size: 2rem;\n  text-transform: uppercase;\n}\n.search-box .form-control,\n.search-box .form-group {\n  border: none;\n  margin-bottom: 0px;\n  height: 100%;\n  text-align: center;\n  width: 100%;\n  background: #f4f5f7;\n  border-radius: 0px;\n  -webkit-transition: all .2s;\n  transition: all .2s;\n}\n.search-box .form-control:focus,\n.search-box .form-group:focus {\n  background: #fff;\n}\n.search-box .algolia-autocomplete {\n  width: 100%;\n  height: 100%;\n  -webkit-box-shadow: 0 1px 3px rgba(50, 50, 93, .15), 0 1px 0 rgba(0, 0, 0, .02);\n          box-shadow: 0 1px 3px rgba(50, 50, 93, .15), 0 1px 0 rgba(0, 0, 0, .02);\n}\n", ""]);
 
 // exports
 
@@ -27408,10 +27408,6 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(66)
-}
 var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(68)
@@ -27420,7 +27416,7 @@ var __vue_template__ = __webpack_require__(69)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -27455,46 +27451,8 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 66 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(67);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(6)("0d0bc8e4", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-26698155\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LarecipeBackToTop.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-26698155\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LarecipeBackToTop.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 67 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n#backtotop {\n  position: fixed;\n  right: 0;\n  opacity: 0;\n  visibility: hidden;\n  bottom: 25px;\n  margin: 0 25px 0 0;\n  z-index: 9999;\n  -webkit-transition: .35s;\n  transition: .35s;\n  -webkit-transform: scale(.7);\n          transform: scale(.7);\n  -webkit-transition: all .5s;\n  transition: all .5s;\n}\n#backtotop.visible {\n  opacity: 1;\n  visibility: visible;\n  -webkit-transform: scale(1);\n          transform: scale(1);\n}\n#backtotop.visible a:hover {\n  outline: none;\n  opacity: .9;\n  background: #34495e;\n}\n#backtotop a {\n  outline: none;\n  text-decoration: none;\n  border: 0 none;\n  display: block;\n  width: 46px;\n  height: 46px;\n  background-color: #95a5a6;\n  opacity: 1;\n  -webkit-transition: all .3s;\n  transition: all .3s;\n  border-radius: 50%;\n  text-align: center;\n  font-size: 26px;\n}\nbody #backtotop a {\n  outline: none;\n  color: #fff;\n}\n#backtotop a:after {\n  outline: none;\n  content: \"\\F106\";\n  font-family: \"FontAwesome\";\n  position: relative;\n  display: block;\n  top: 50%;\n  -webkit-transform: translateY(-55%);\n          transform: translateY(-55%);\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
+/* 66 */,
+/* 67 */,
 /* 68 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -27504,24 +27462,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'larecipe-back-to-top',
-    mounted: function mounted() {
-        $(window).on('scroll', function () {
-            if ($(window).scrollTop() >= 300) {
-                $("#backtotop").addClass('visible');
-            } else {
-                $("#backtotop").removeClass('visible');
-            }
-        });
-        $('#backtotop a').on('click', function () {
-            $('html, body').animate({
-                scrollTop: 0
-            }, 500);
-            return false;
-        });
-    }
+  name: "larecipe-back-to-top",
+  mounted: function mounted() {
+    $(window).on("scroll", function () {
+      if ($(window).scrollTop() >= 300) {
+        $("#backtotop").addClass("visible");
+      } else {
+        $("#backtotop").removeClass("visible");
+      }
+    });
+    $("#backtotop a").on("click", function () {
+      $("html, body").animate({
+        scrollTop: 0
+      }, 500);
+      return false;
+    });
+  }
 });
 
 /***/ }),

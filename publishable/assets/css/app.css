@@ -647,6 +647,65 @@ table {
   color: var(--white);
 }
 
+#backtotop {
+  position: fixed;
+  right: 0;
+  opacity: 0;
+  z-index: 50;
+  margin-right: 1.5rem;
+  bottom: 25px;
+  -webkit-transition: .35s;
+  transition: .35s;
+  -webkit-transform: scale(.7);
+          transform: scale(.7);
+  -webkit-transition: all .5s;
+  transition: all .5s;
+}
+
+#backtotop.visible {
+  opacity: 1;
+  -webkit-transform: scale(1);
+          transform: scale(1);
+}
+
+#backtotop.visible a:hover {
+  background-color: var(--primary);
+  opacity: .75;
+  outline: 0;
+}
+
+#backtotop a {
+  background-color: var(--primary);
+  outline: 0;
+  border-style: none;
+  display: block;
+  opacity: 1;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  text-align: center;
+  font-size: 26px;
+}
+
+body #backtotop a {
+  outline: 0;
+  color: var(--white);
+}
+
+#backtotop a:after {
+  outline: 0;
+  position: relative;
+  display: block;
+  content: "\F106";
+  font-family: "FontAwesome";
+  top: 50%;
+  -webkit-transform: translateY(-55%);
+          transform: translateY(-55%);
+}
+
 .documentation.is-dark {
   /* Code blocks *//* Inline code */
 }

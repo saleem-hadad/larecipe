@@ -31,13 +31,6 @@ export default {
 </script>
 
 <style lang="scss">
-#search-button {
-  color: gray;
-  &.btn-primary {
-      color: #ffffff;
-  }
-}
-
 .search-box {
     width: 100% !important; 
     margin-top: 4rem; 
