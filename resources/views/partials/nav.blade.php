@@ -19,9 +19,8 @@
 
         <div class="block mx-4">
             @if(config('larecipe.search.enabled'))
-                <larecipe-button id="search-button" 
-                    :class="{'btn-primary': searchBox}" 
-                    type="link"
+                <larecipe-button id="search-button"
+                    :type="searchBox ? 'primary' : 'link'"
                     @click="searchBox = ! searchBox">
                     <i class="fa fa-search"></i>
                 </larecipe-button>
