@@ -50,7 +50,7 @@ export default class LaRecipe {
         this.activateCurrentSection();
         this.parseDocsContent();
         this.setupKeyboardShortcuts();
-        mediumZoom(".documentation .article img");
+        mediumZoom(".documentation img");
       },
       methods: {
         handleSidebarVisibility() {

@@ -14982,7 +14982,7 @@ var LaRecipe = function () {
           this.activateCurrentSection();
           this.parseDocsContent();
           this.setupKeyboardShortcuts();
-          Object(__WEBPACK_IMPORTED_MODULE_3_medium_zoom__["a" /* default */])(".documentation .article img");
+          Object(__WEBPACK_IMPORTED_MODULE_3_medium_zoom__["a" /* default */])(".documentation img");
         },
 
         methods: {
