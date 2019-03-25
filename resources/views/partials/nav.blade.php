@@ -17,38 +17,31 @@
             </div>
         </div>
 
-        <div class="block lg:hidden">
-            <button class="flex items-center px-3 py-2 border rounded text-grey-darker border-grey-darker hover:text-white hover:border-white">
-                <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <title>Menu</title>
-                    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-                </svg>
-            </button>
-        </div>
-
-        <div class="block">
+        <div class="block mx-4">
             @if(config('larecipe.search.enabled'))
-                {{-- search button --}}
                 <larecipe-button id="search-button" 
                     :class="{'btn-primary': searchBox}" 
                     type="link"
                     @click="searchBox = ! searchBox">
                     <i class="fa fa-search"></i>
                 </larecipe-button>
-                {{-- /search button --}}
             @endif
 
             {{-- versions dropdown --}}
             <larecipe-dropdown>
-                <larecipe-button slot="title" type="primary" class="dropdown-toggle" style="width: 100%">
-                    {{ $currentVersion }}
+                <larecipe-button type="primary">
+                    {{ $currentVersion }} <i class="fa fa-angle-down"></i>
                 </larecipe-button>
 
-                @foreach ($versions as $version)
-                    <li role="presentation">
-                        <a class="dropdown-item" href="{{ url(config('larecipe.docs.route').'/'.$version.$currentSection) }}">{{ $version }}</a>
-                    </li>
-                @endforeach
+                <template slot="list">
+                    <ul class="list-reset">
+                        @foreach ($versions as $version)
+                            <li class="py-2 hover:bg-grey-lightest">
+                                <a class="px-6 text-grey-darkest" href="{{ url(config('larecipe.docs.route').'/'.$version.$currentSection) }}">{{ $version }}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </template>
             </larecipe-dropdown>
             {{-- /versions dropdown --}}
 

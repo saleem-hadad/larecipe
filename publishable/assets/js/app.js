@@ -26773,10 +26773,13 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__LarecipeButton___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__LarecipeButton__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__LarecipeCard__ = __webpack_require__(76);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__LarecipeCard___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__LarecipeCard__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__LarecipeInput__ = __webpack_require__(79);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__LarecipeInput___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__LarecipeInput__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__LarecipeProgress__ = __webpack_require__(82);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__LarecipeProgress___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__LarecipeProgress__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__LarecipeDropdown__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__LarecipeDropdown___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__LarecipeDropdown__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__LarecipeInput__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__LarecipeInput___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__LarecipeInput__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__LarecipeProgress__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__LarecipeProgress___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__LarecipeProgress__);
+
 
 
 
@@ -26798,8 +26801,9 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     Vue.component(__WEBPACK_IMPORTED_MODULE_4__LarecipeBadge___default.a.name, __WEBPACK_IMPORTED_MODULE_4__LarecipeBadge___default.a);
     Vue.component(__WEBPACK_IMPORTED_MODULE_5__LarecipeButton___default.a.name, __WEBPACK_IMPORTED_MODULE_5__LarecipeButton___default.a);
     Vue.component(__WEBPACK_IMPORTED_MODULE_6__LarecipeCard___default.a.name, __WEBPACK_IMPORTED_MODULE_6__LarecipeCard___default.a);
-    Vue.component(__WEBPACK_IMPORTED_MODULE_7__LarecipeInput___default.a.name, __WEBPACK_IMPORTED_MODULE_7__LarecipeInput___default.a);
-    Vue.component(__WEBPACK_IMPORTED_MODULE_8__LarecipeProgress___default.a.name, __WEBPACK_IMPORTED_MODULE_8__LarecipeProgress___default.a);
+    Vue.component(__WEBPACK_IMPORTED_MODULE_7__LarecipeDropdown___default.a.name, __WEBPACK_IMPORTED_MODULE_7__LarecipeDropdown___default.a);
+    Vue.component(__WEBPACK_IMPORTED_MODULE_8__LarecipeInput___default.a.name, __WEBPACK_IMPORTED_MODULE_8__LarecipeInput___default.a);
+    Vue.component(__WEBPACK_IMPORTED_MODULE_9__LarecipeProgress___default.a.name, __WEBPACK_IMPORTED_MODULE_9__LarecipeProgress___default.a);
   }
 });
 
@@ -28474,6 +28478,154 @@ module.exports = __webpack_amd_options__;
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 88 */,
+/* 89 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(90)
+/* template */
+var __vue_template__ = __webpack_require__(91)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/LarecipeDropdown.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-8832b642", Component.options)
+  } else {
+    hotAPI.reload("data-v-8832b642", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 90 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "larecipe-dropdown",
+  data: function data() {
+    return {
+      isOpen: false
+    };
+  },
+
+  methods: {
+    handleClickOutside: function handleClickOutside() {
+      if (this.isOpen) {
+        this.isOpen = false;
+      }
+    }
+  }
+});
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      directives: [
+        {
+          name: "click-outside",
+          rawName: "v-click-outside",
+          value: _vm.handleClickOutside,
+          expression: "handleClickOutside"
+        }
+      ],
+      staticClass: "inline-flex relative"
+    },
+    [
+      _c(
+        "div",
+        {
+          on: {
+            click: function($event) {
+              _vm.isOpen = !_vm.isOpen
+            }
+          }
+        },
+        [_vm._t("default")],
+        2
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.isOpen,
+              expression: "isOpen"
+            }
+          ],
+          staticClass:
+            "absolute z-20 pin-r mt-12 shadow-lg rounded border bg-white"
+        },
+        [_vm._t("list")],
+        2
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-8832b642", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

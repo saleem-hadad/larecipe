@@ -2,10 +2,7 @@
 
 @section('content')
 <div>
-	<div class="sidebar" 
-		:class="[{'is-hidden': ! sidebar}]">
-		{!! $index !!}
-	</div>
+	@include('larecipe::partials.sidebar')
 	
 	<div class="documentation is-{{ config('larecipe.ui.code') }}" :class="{'expanded': ! sidebar}">
 		{!! $content !!}

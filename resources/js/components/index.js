@@ -6,6 +6,7 @@ import LarecipeBackToTop from "./LarecipeBackToTop";
 import LarecipeBadge from "./LarecipeBadge";
 import LarecipeButton from "./LarecipeButton";
 import LarecipeCard from "./LarecipeCard";
+import LarecipeDropdown from "./LarecipeDropdown";
 import LarecipeInput from "./LarecipeInput";
 import LarecipeProgress from "./LarecipeProgress";
 
@@ -19,6 +20,7 @@ export default {
     Vue.component(LarecipeBadge.name, LarecipeBadge);
     Vue.component(LarecipeButton.name, LarecipeButton);
     Vue.component(LarecipeCard.name, LarecipeCard);
+    Vue.component(LarecipeDropdown.name, LarecipeDropdown);
     Vue.component(LarecipeInput.name, LarecipeInput);
     Vue.component(LarecipeProgress.name, LarecipeProgress);
   }
