@@ -3,7 +3,7 @@
     <div @click="isOpen = !isOpen">
       <slot></slot>
     </div>
-    <div v-show="isOpen" class="absolute z-20 pin-r mt-12 shadow-lg rounded border bg-white">
+    <div v-show="isOpen" class="absolute z-20 pin-r mt-12 shadow-lg rounded border bg-white overflow-hidden">
       <slot name="list"></slot>
     </div>
   </div>

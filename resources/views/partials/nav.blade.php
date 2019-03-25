@@ -47,25 +47,17 @@
             @auth
                 {{-- account --}}
                 <larecipe-dropdown>
-                    <larecipe-button slot="title" type="secondary" class="dropdown-toggle btn-white ml-2">
-                        {{ auth()->user()->name ?? 'Account' }}
+                    <larecipe-button type="white" class="dropdown-toggle btn-white ml-2">
+                        {{ auth()->user()->name ?? 'Account' }} <i class="fa fa-angle-down"></i>
                     </larecipe-button>
 
-                    @if(config('larecipe.settings.auth_links') !== null)
-                        @foreach(config('larecipe.settings.auth_links') as $link)
-                            @if($link['url'] !== '')
-                                <li>
-                                    <a href="{{ $link['url'] }}" class="dropdown-item">{{ $link['name'] }}</a>
-                                </li>
-                            @endif
-                        @endforeach
-                    @endif
+                    <template slot="list">
+                        <form action="/logout" method="POST">
+                            {{ csrf_field() }}
 
-                    <form action="/logout" method="POST">
-                        {{ csrf_field() }}
-
-                        <button class="dropdown-item" type="submit">Logout</button>
-                    </form>
+                            <button type="submit" class="py-2 px-4 text-white bg-danger inline-flex"><i class="fa fa-power-off mr-2"></i> Logout</button>
+                        </form>
+                    </template>
                 </larecipe-dropdown>
                 {{-- /account --}}
             @endauth
