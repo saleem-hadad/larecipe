@@ -1,5 +1,5 @@
 <template>
-    <div class="search-box" v-click-outside="close">
+    <div class="search-box fixed pin-t mt-16" v-click-outside="close">
         <larecipe-input @input="filterResults" :value="search" input-classes="internal-search-input has-text-centered" placeholder="Search"></larecipe-input>
 
         <div class="autocomplete-result">
@@ -92,12 +92,10 @@ export default {
 
 .search-box {
     width: 100% !important; 
-    margin-top: 4rem; 
     transition: all 0.2s; 
     height: 6rem; 
     display: flex; 
     align-items: center; 
-    position: absolute; 
     z-index: 100;
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
 
@@ -116,6 +114,7 @@ export default {
         transition: all 0.2s;
         &:focus {
             background: #ffffff;
+            outline-color: none;
         }
       }
 }

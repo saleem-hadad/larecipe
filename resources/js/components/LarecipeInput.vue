@@ -29,7 +29,7 @@
                 :value="value"
                 v-on="listeners"
                 v-bind="$attrs"
-                class="form-control"
+                class="form-control outline-none"
                 :class="[{'is-valid': valid === true}, {'is-invalid': valid === false}, inputClasses]"
                 aria-describedby="addon-right addon-left">
         </slot>
