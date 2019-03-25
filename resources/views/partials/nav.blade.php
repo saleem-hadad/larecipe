@@ -20,7 +20,7 @@
         <div class="block mx-4">
             @if(config('larecipe.search.enabled'))
                 <larecipe-button id="search-button"
-                    :type="searchBox ? 'primary' : 'link'"
+                    :type="searchBox ? 'black' : 'link'"
                     @click="searchBox = ! searchBox">
                     <i class="fa fa-search"></i>
                 </larecipe-button>
