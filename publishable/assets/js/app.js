@@ -1055,234 +1055,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-  Modified by Evan You @yyx990803
-*/
-
-var hasDocument = typeof document !== 'undefined'
-
-if (typeof DEBUG !== 'undefined' && DEBUG) {
-  if (!hasDocument) {
-    throw new Error(
-    'vue-style-loader cannot be used in a non-browser environment. ' +
-    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
-  ) }
-}
-
-var listToStyles = __webpack_require__(54)
-
-/*
-type StyleObject = {
-  id: number;
-  parts: Array<StyleObjectPart>
-}
-
-type StyleObjectPart = {
-  css: string;
-  media: string;
-  sourceMap: ?string
-}
-*/
-
-var stylesInDom = {/*
-  [id: number]: {
-    id: number,
-    refs: number,
-    parts: Array<(obj?: StyleObjectPart) => void>
-  }
-*/}
-
-var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
-var singletonElement = null
-var singletonCounter = 0
-var isProduction = false
-var noop = function () {}
-var options = null
-var ssrIdKey = 'data-vue-ssr-id'
-
-// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-// tags it will allow on a page
-var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
-
-module.exports = function (parentId, list, _isProduction, _options) {
-  isProduction = _isProduction
-
-  options = _options || {}
-
-  var styles = listToStyles(parentId, list)
-  addStylesToDom(styles)
-
-  return function update (newList) {
-    var mayRemove = []
-    for (var i = 0; i < styles.length; i++) {
-      var item = styles[i]
-      var domStyle = stylesInDom[item.id]
-      domStyle.refs--
-      mayRemove.push(domStyle)
-    }
-    if (newList) {
-      styles = listToStyles(parentId, newList)
-      addStylesToDom(styles)
-    } else {
-      styles = []
-    }
-    for (var i = 0; i < mayRemove.length; i++) {
-      var domStyle = mayRemove[i]
-      if (domStyle.refs === 0) {
-        for (var j = 0; j < domStyle.parts.length; j++) {
-          domStyle.parts[j]()
-        }
-        delete stylesInDom[domStyle.id]
-      }
-    }
-  }
-}
-
-function addStylesToDom (styles /* Array<StyleObject> */) {
-  for (var i = 0; i < styles.length; i++) {
-    var item = styles[i]
-    var domStyle = stylesInDom[item.id]
-    if (domStyle) {
-      domStyle.refs++
-      for (var j = 0; j < domStyle.parts.length; j++) {
-        domStyle.parts[j](item.parts[j])
-      }
-      for (; j < item.parts.length; j++) {
-        domStyle.parts.push(addStyle(item.parts[j]))
-      }
-      if (domStyle.parts.length > item.parts.length) {
-        domStyle.parts.length = item.parts.length
-      }
-    } else {
-      var parts = []
-      for (var j = 0; j < item.parts.length; j++) {
-        parts.push(addStyle(item.parts[j]))
-      }
-      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
-    }
-  }
-}
-
-function createStyleElement () {
-  var styleElement = document.createElement('style')
-  styleElement.type = 'text/css'
-  head.appendChild(styleElement)
-  return styleElement
-}
-
-function addStyle (obj /* StyleObjectPart */) {
-  var update, remove
-  var styleElement = document.querySelector('style[' + ssrIdKey + '~="' + obj.id + '"]')
-
-  if (styleElement) {
-    if (isProduction) {
-      // has SSR styles and in production mode.
-      // simply do nothing.
-      return noop
-    } else {
-      // has SSR styles but in dev mode.
-      // for some reason Chrome can't handle source map in server-rendered
-      // style tags - source maps in <style> only works if the style tag is
-      // created and inserted dynamically. So we remove the server rendered
-      // styles and inject new ones.
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  if (isOldIE) {
-    // use singleton mode for IE9.
-    var styleIndex = singletonCounter++
-    styleElement = singletonElement || (singletonElement = createStyleElement())
-    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
-    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
-  } else {
-    // use multi-style-tag mode in all other cases
-    styleElement = createStyleElement()
-    update = applyToTag.bind(null, styleElement)
-    remove = function () {
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  update(obj)
-
-  return function updateStyle (newObj /* StyleObjectPart */) {
-    if (newObj) {
-      if (newObj.css === obj.css &&
-          newObj.media === obj.media &&
-          newObj.sourceMap === obj.sourceMap) {
-        return
-      }
-      update(obj = newObj)
-    } else {
-      remove()
-    }
-  }
-}
-
-var replaceText = (function () {
-  var textStore = []
-
-  return function (index, replacement) {
-    textStore[index] = replacement
-    return textStore.filter(Boolean).join('\n')
-  }
-})()
-
-function applyToSingletonTag (styleElement, index, remove, obj) {
-  var css = remove ? '' : obj.css
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = replaceText(index, css)
-  } else {
-    var cssNode = document.createTextNode(css)
-    var childNodes = styleElement.childNodes
-    if (childNodes[index]) styleElement.removeChild(childNodes[index])
-    if (childNodes.length) {
-      styleElement.insertBefore(cssNode, childNodes[index])
-    } else {
-      styleElement.appendChild(cssNode)
-    }
-  }
-}
-
-function applyToTag (styleElement, obj) {
-  var css = obj.css
-  var media = obj.media
-  var sourceMap = obj.sourceMap
-
-  if (media) {
-    styleElement.setAttribute('media', media)
-  }
-  if (options.ssrId) {
-    styleElement.setAttribute(ssrIdKey, obj.id)
-  }
-
-  if (sourceMap) {
-    // https://developer.chrome.com/devtools/docs/javascript-debugging
-    // this makes source maps inside style tags work properly in Chrome
-    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
-    // http://stackoverflow.com/a/26603875
-    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
-  }
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = css
-  } else {
-    while (styleElement.firstChild) {
-      styleElement.removeChild(styleElement.firstChild)
-    }
-    styleElement.appendChild(document.createTextNode(css))
-  }
-}
-
-
-/***/ }),
+/* 6 */,
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26831,10 +26604,6 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(52)
-}
 var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(55)
@@ -26843,7 +26612,7 @@ var __vue_template__ = __webpack_require__(59)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -26878,79 +26647,9 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(53);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(6)("e0a40e8e", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-14cc9fc6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AlgoliaSearchBox.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-14cc9fc6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AlgoliaSearchBox.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.search-box {\n  width: 100% !important;\n  margin-top: 4rem;\n  -webkit-transition: all .2s;\n  transition: all .2s;\n  height: 6rem;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  position: absolute;\n  z-index: 100;\n  -webkit-box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;\n          box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;\n}\n.search-box .form-control {\n  font-size: 2rem;\n  text-transform: uppercase;\n}\n.search-box .form-control,\n.search-box .form-group {\n  border: none;\n  margin-bottom: 0px;\n  height: 100%;\n  text-align: center;\n  width: 100%;\n  background: #f4f5f7;\n  border-radius: 0px;\n  -webkit-transition: all .2s;\n  transition: all .2s;\n}\n.search-box .form-control:focus,\n.search-box .form-group:focus {\n  background: #fff;\n}\n.search-box .algolia-autocomplete {\n  width: 100%;\n  height: 100%;\n  -webkit-box-shadow: 0 1px 3px rgba(50, 50, 93, .15), 0 1px 0 rgba(0, 0, 0, .02);\n          box-shadow: 0 1px 3px rgba(50, 50, 93, .15), 0 1px 0 rgba(0, 0, 0, .02);\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports) {
-
-/**
- * Translates the list format produced by css-loader into something
- * easier to manipulate.
- */
-module.exports = function listToStyles (parentId, list) {
-  var styles = []
-  var newStyles = {}
-  for (var i = 0; i < list.length; i++) {
-    var item = list[i]
-    var id = item[0]
-    var css = item[1]
-    var media = item[2]
-    var sourceMap = item[3]
-    var part = {
-      id: parentId + ':' + i,
-      css: css,
-      media: media,
-      sourceMap: sourceMap
-    }
-    if (!newStyles[id]) {
-      styles.push(newStyles[id] = { id: id, parts: [part] })
-    } else {
-      newStyles[id].parts.push(part)
-    }
-  }
-  return styles
-}
-
-
-/***/ }),
+/* 52 */,
+/* 53 */,
+/* 54 */,
 /* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -26969,24 +26668,24 @@ __webpack_require__(56);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: "algolia-search-box",
-    props: ['algoliaKey', 'algoliaIndex', 'version'],
-    methods: {
-        close: function close() {
-            this.$emit('close');
-        }
-    },
-    mounted: function mounted() {
-        __WEBPACK_IMPORTED_MODULE_0_docsearch_js_dist_cdn_docsearch_min_js___default()({
-            apiKey: this.algoliaKey,
-            indexName: this.algoliaIndex,
-            inputSelector: '.algolia-search-input',
-            algoliaOptions: { 'facetFilters': ["version:" + this.version] },
-            debug: false
-        });
-
-        $('.algolia-search-input').focus();
+  name: "algolia-search-box",
+  props: ["algoliaKey", "algoliaIndex", "version"],
+  methods: {
+    close: function close() {
+      this.$emit("close");
     }
+  },
+  mounted: function mounted() {
+    __WEBPACK_IMPORTED_MODULE_0_docsearch_js_dist_cdn_docsearch_min_js___default()({
+      apiKey: this.algoliaKey,
+      indexName: this.algoliaIndex,
+      inputSelector: ".algolia-search-input",
+      algoliaOptions: { facetFilters: ["version:" + this.version] },
+      debug: false
+    });
+
+    $(".algolia-search-input").focus();
+  }
 });
 
 /***/ }),
@@ -27088,10 +26787,6 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(61)
-}
 var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(63)
@@ -27100,7 +26795,7 @@ var __vue_template__ = __webpack_require__(64)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -27135,46 +26830,8 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(62);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(6)("5bb06d10", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-04fb76eb\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InternalSearchBox.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-04fb76eb\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InternalSearchBox.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.search-box {\n  width: 100% !important;\n  -webkit-transition: all .2s;\n  transition: all .2s;\n  height: 6rem;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  margin-top: 4.25rem;\n  z-index: 100;\n  -webkit-box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;\n          box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;\n}\n.search-box .form-control {\n  font-size: 2rem;\n  text-transform: uppercase;\n}\n.search-box .form-control,\n.search-box .form-group {\n  border: none;\n  margin-bottom: 0px;\n  height: 100%;\n  text-align: center;\n  width: 100%;\n  background: #f4f5f7;\n  border-radius: 0px;\n  -webkit-transition: all .2s;\n  transition: all .2s;\n}\n.search-box .form-control:focus,\n.search-box .form-group:focus {\n  background: #fff;\n  outline-color: none;\n}\n.autocomplete-result {\n  background-color: #fff;\n  -webkit-box-shadow: 0 .125rem 1rem rgba(0, 0, 0, .075) !important;\n          box-shadow: 0 .125rem 1rem rgba(0, 0, 0, .075) !important;\n  width: 400px !important;\n  max-height: 400px;\n  position: absolute;\n  top: 7rem;\n  right: 10px;\n  border-radius: 10px;\n  -webkit-transition: all .2s;\n  transition: all .2s;\n  z-index: 100;\n  overflow: scroll;\n}\n.autocomplete-result ul {\n  list-style: none;\n  margin-left: -20px !important;\n  margin-right: 20px !important;\n}\n.autocomplete-result ul li {\n  background: #fff;\n  width: 100%;\n  margin-top: 20px;\n}\n.autocomplete-result ul li hr {\n  margin-top: .5rem;\n  margin-bottom: .5rem;\n}\n.autocomplete-result ul li .heading {\n  width: 100%;\n  padding: 5px 10px;\n  cursor: pointer;\n  margin-bottom: 0px;\n}\n.autocomplete-result ul li .heading:hover {\n  background: #f4f5f7;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
+/* 61 */,
+/* 62 */,
 /* 63 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -27211,61 +26868,85 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: "internal-search-box",
-    props: ['version'],
-    data: function data() {
-        return {
-            search: '',
-            pages: [],
-            isLoaded: false
-        };
+  name: "internal-search-box",
+  props: ["version"],
+  data: function data() {
+    return {
+      search: "",
+      pages: [],
+      isLoaded: false
+    };
+  },
+
+  methods: {
+    close: function close() {
+      this.$emit("close");
     },
-
-    methods: {
-        close: function close() {
-            this.$emit('close');
-        },
-        filterResults: function filterResults(value) {
-            this.search = value;
-        },
-        navigateToHeading: function navigateToHeading(page, heading) {
-            window.location = '/docs/' + this.version + page.path + '#' + this.slugify(heading);
-        },
-        slugify: function slugify(heading) {
-            return heading.toString().toLowerCase().replace(/\s+/g, '-');
-        }
+    filterResults: function filterResults(value) {
+      this.search = value;
     },
-    computed: {
-        filteredPages: function filteredPages() {
-            var _this = this;
-
-            return this.pages.filter(function (page) {
-                var foundInHeading = false;
-
-                page.headings.forEach(function (heading) {
-                    if (heading.toLowerCase().includes(_this.search)) {
-                        foundInHeading = true;
-                    }
-                });
-
-                return page.title.toLowerCase().includes(_this.search) || foundInHeading;
-            });
-        }
+    navigateToHeading: function navigateToHeading(page, heading) {
+      window.location = "/docs/" + this.version + page.path + "#" + this.slugify(heading);
     },
-    mounted: function mounted() {
-        var _this2 = this;
-
-        $('.internal-search-input').focus();
-
-        axios.get('/docs/search-index/' + this.version).then(function (res) {
-            _this2.pages = res.data;
-            _this2.isLoaded = true;
-        }).catch(function () {
-            return _this2.isLoaded = true;
-        });
+    slugify: function slugify(heading) {
+      return heading.toString().toLowerCase().replace(/\s+/g, "-");
     }
+  },
+  computed: {
+    filteredPages: function filteredPages() {
+      var _this = this;
+
+      return this.pages.filter(function (page) {
+        var foundInHeading = false;
+
+        page.headings.forEach(function (heading) {
+          if (heading.toLowerCase().includes(_this.search)) {
+            foundInHeading = true;
+          }
+        });
+
+        return page.title.toLowerCase().includes(_this.search) || foundInHeading;
+      });
+    }
+  },
+  mounted: function mounted() {
+    var _this2 = this;
+
+    $(".internal-search-input").focus();
+
+    axios.get("/docs/search-index/" + this.version).then(function (res) {
+      _this2.pages = res.data;
+      _this2.isLoaded = true;
+    }).catch(function () {
+      return _this2.isLoaded = true;
+    });
+  }
 });
 
 /***/ }),
@@ -27293,13 +26974,13 @@ var render = function() {
       _c("larecipe-input", {
         attrs: {
           value: _vm.search,
-          "input-classes": "internal-search-input has-text-centered",
-          placeholder: "Search"
+          "input-classes": "internal-search-input text-center",
+          placeholder: "Search..."
         },
         on: { input: _vm.filterResults }
       }),
       _vm._v(" "),
-      _c("div", { staticClass: "autocomplete-result" }, [
+      _c("div", { staticClass: "internal-autocomplete-result" }, [
         _vm.filteredPages.length
           ? _c(
               "ul",
@@ -27312,14 +26993,8 @@ var render = function() {
                       "a",
                       { attrs: { href: "/docs/" + _vm.version + page.path } },
                       [
-                        _c("span", { staticClass: "title" }, [
-                          _c("b", [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(page.title) +
-                                "\n                    "
-                            )
-                          ])
+                        _c("span", { staticClass: "page-title" }, [
+                          _c("b", [_vm._v(_vm._s(page.title))])
                         ])
                       ]
                     ),
@@ -27349,7 +27024,7 @@ var render = function() {
           : _vm._e(),
         _vm._v(" "),
         !_vm.filteredPages.length && _vm.isLoaded
-          ? _c("div", { staticClass: "text-center pt-4" }, [
+          ? _c("div", { staticClass: "text-center py-8" }, [
               _c(
                 "svg",
                 {
@@ -27368,6 +27043,7 @@ var render = function() {
                       fill: "#9c9c9c"
                     }
                   }),
+                  _vm._v(" "),
                   _c("path", {
                     attrs: {
                       d:
@@ -27375,6 +27051,7 @@ var render = function() {
                       fill: "#9c9c9c"
                     }
                   }),
+                  _vm._v(" "),
                   _c("path", {
                     attrs: {
                       d:

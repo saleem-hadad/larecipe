@@ -647,6 +647,107 @@ table {
   color: var(--white);
 }
 
+.search-box {
+  width: 100%;
+  height: 6rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  z-index: 50;
+  -webkit-transition: all .2s;
+  transition: all .2s;
+  margin-top: 4.25rem;
+  -webkit-box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+          box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+}
+
+.search-box .form-control {
+  font-size: 2rem;
+  text-transform: uppercase;
+}
+
+.search-box .form-control,
+.search-box .form-group {
+  border-style: none;
+  margin-bottom: 0;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  outline: 0;
+  background: #f4f5f7;
+  -webkit-transition: all .2s;
+  transition: all .2s;
+}
+
+.search-box .form-control:focus,
+.search-box .form-group:focus {
+  background: #fff;
+}
+
+.search-box .algolia-autocomplete {
+  width: 100%;
+  height: 100%;
+  -webkit-box-shadow: 0 1px 3px rgba(50, 50, 93, .15), 0 1px 0 rgba(0, 0, 0, .02);
+          box-shadow: 0 1px 3px rgba(50, 50, 93, .15), 0 1px 0 rgba(0, 0, 0, .02);
+}
+
+.internal-autocomplete-result {
+  background-color: #fff;
+  -webkit-box-shadow: 0 .125rem 1rem rgba(0, 0, 0, .075) !important;
+          box-shadow: 0 .125rem 1rem rgba(0, 0, 0, .075) !important;
+  width: 400px !important;
+  max-height: 400px;
+  position: absolute;
+  top: 7rem;
+  right: 10px;
+  border-radius: 10px;
+  -webkit-transition: all .2s;
+  transition: all .2s;
+  z-index: 100;
+  overflow: scroll;
+}
+
+.internal-autocomplete-result ul {
+  list-style: none;
+  margin-left: -20px !important;
+  margin-right: 20px !important;
+}
+
+.internal-autocomplete-result ul li {
+  background: #fff;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.internal-autocomplete-result ul li .page-title {
+  color: #3d4852;
+  font-weight: 700;
+}
+
+.internal-autocomplete-result ul li hr {
+  background-color: #f1f5f8;
+  width: 100%;
+  border-top-width: 1px;
+  border-color: #dae1e7;
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+}
+
+.internal-autocomplete-result ul li .heading {
+  width: 100%;
+  margin-bottom: 0;
+  color: #8795a1;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.internal-autocomplete-result ul li .heading:hover {
+  background-color: #f8fafc;
+}
+
 #backtotop {
   position: fixed;
   right: 0;
