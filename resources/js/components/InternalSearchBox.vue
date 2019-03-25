@@ -1,11 +1,9 @@
 <template>
   <div class="search-box fixed pin-t border-t" v-click-outside="close">
-    <larecipe-input
-      @input="filterResults"
-      :value="search"
-      input-classes="internal-search-input text-center"
-      placeholder="Search..."
-    ></larecipe-input>
+    <input
+        v-model="search"
+        placeholder="Search..."
+        class="form-control outline-none internal-search-input text-center"/>
 
     <div class="internal-autocomplete-result">
       <ul v-if="filteredPages.length">
@@ -68,12 +66,8 @@ export default {
     close() {
       this.$emit("close");
     },
-    filterResults(value) {
-      this.search = value;
-    },
     navigateToHeading(page, heading) {
-      window.location =
-        "/docs/" + this.version + page.path + "#" + this.slugify(heading);
+      window.location = "/docs/" + this.version + page.path + "#" + this.slugify(heading);
     },
     slugify(heading) {
       return heading

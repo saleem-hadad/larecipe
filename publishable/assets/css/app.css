@@ -664,13 +664,9 @@ table {
           box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
 }
 
-.search-box .form-control {
+.search-box input {
   font-size: 2rem;
   text-transform: uppercase;
-}
-
-.search-box .form-control,
-.search-box .form-group {
   border-style: none;
   margin-bottom: 0;
   height: 100%;
@@ -682,8 +678,7 @@ table {
   transition: all .2s;
 }
 
-.search-box .form-control:focus,
-.search-box .form-group:focus {
+.search-box input:focus {
   background: #fff;
 }
 
