@@ -145,7 +145,7 @@ a {
         @apply outline-none;
     }
 
-    &.is-link { @apply bg-transparent text-grey-darkest shadow-none; }
+    &.is-link { @apply bg-transparent text-grey shadow-none; }
     &.is-white { @apply bg-grey-lightest text-grey-darkest; }
     &.is-black { @apply bg-grey-darkest text-white; }
     &.is-primary { @apply bg-primary text-white; }

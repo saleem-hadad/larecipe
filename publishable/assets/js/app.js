@@ -27691,7 +27691,7 @@ var render = function() {
             }
           ],
           staticClass:
-            "absolute z-20 pin-r mt-12 shadow-lg rounded border bg-white overflow-hidden"
+            "absolute z-20 pin-r mt-12 shadow-lg rounded bg-white overflow-hidden"
         },
         [_vm._t("list")],
         2
