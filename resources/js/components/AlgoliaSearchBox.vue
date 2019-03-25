@@ -1,6 +1,8 @@
 <template>
-  <div class="search-box" v-click-outside="close">
-    <larecipe-input input-classes="algolia-search-input has-text-centered" placeholder="Search"></larecipe-input>
+  <div class="search-box fixed pin-t border-t" v-click-outside="close">
+    <input
+        placeholder="Search..."
+        class="form-control outline-none algolia-search-input text-center"/>
   </div>
 </template>
 

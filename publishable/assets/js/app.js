@@ -26655,6 +26655,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 __webpack_require__(52);
 
@@ -26751,17 +26753,15 @@ var render = function() {
           expression: "close"
         }
       ],
-      staticClass: "search-box"
+      staticClass: "search-box fixed pin-t border-t"
     },
     [
-      _c("larecipe-input", {
-        attrs: {
-          "input-classes": "algolia-search-input has-text-centered",
-          placeholder: "Search"
-        }
+      _c("input", {
+        staticClass:
+          "form-control outline-none algolia-search-input text-center",
+        attrs: { placeholder: "Search..." }
       })
-    ],
-    1
+    ]
   )
 }
 var staticRenderFns = []
