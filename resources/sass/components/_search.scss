@@ -1,13 +1,12 @@
 .search-box {
-    @apply w-full h-24 flex items-center z-50;
+    @apply w-full h-24 flex items-center z-50 shadow;
     transition: all 0.2s;
     margin-top: 4.25rem;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
 
   input {
+      @apply border-none mb-0 h-full w-full text-center outline-none;
       font-size: 2rem;
       text-transform: uppercase;
-      @apply border-none mb-0 h-full w-full text-center outline-none;
       background: #f4f5f7;
       transition: all 0.2s;
       &:focus {
@@ -23,8 +22,8 @@
 }
 
 .internal-autocomplete-result {
+  @apply shadow-lg;
   background-color: #ffffff;
-  box-shadow: 0 0.125rem 1rem rgba(0, 0, 0, 0.075) !important;
   width: 400px !important;
   max-height: 400px;
   position: absolute;

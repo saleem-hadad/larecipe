@@ -39,30 +39,30 @@ a {
     @apply no-underline;
 }
 
-
-
-/* CHECKBOX TOGGLE SWITCH */
-.form-switch {
+/**************************************/
+/*************** Switch ***************/
+/**************************************/
+.switch {
     @apply relative select-none w-12 mr-2 leading-normal;
 }
-.form-switch-checkbox {
+.switch-checkbox {
     @apply hidden;
 }
-.form-switch-label {
+.switch-label {
     @apply block overflow-hidden cursor-pointer bg-grey-light rounded-full h-6 shadow-inner;
     transition: background-color 0.1s ease-in;
 }
-.form-switch-label:before {
+.switch-label:before {
     @apply absolute block bg-white border shadow pin-y w-6 rounded-full -ml-1;
     
     right: 50%;
     content: "";
     transition: all 0.1s ease-in;
 }
-.form-switch-checkbox:checked + .form-switch-label {
+.switch-checkbox:checked + .switch-label {
     @apply bg-primary shadow-none;
 }
-.form-switch-checkbox:checked + .form-switch-label:before {
+.switch-checkbox:checked + .switch-label:before {
     @apply pin-r;
 }
 
@@ -247,7 +247,7 @@ table {
     }
 
     p {
-        @apply text-base font-thin leading-large mb-4;
+        @apply text-base font-thin leading-large;
     }
 }
 

@@ -11,9 +11,9 @@
                 </p>
             </a>
             
-            <div class="form-switch">
-                <input type="checkbox" name="1" id="1" v-model="sidebar" class="form-switch-checkbox" />
-                <label class="form-switch-label" for="1"></label>
+            <div class="switch">
+                <input type="checkbox" name="1" id="1" v-model="sidebar" class="switch-checkbox" />
+                <label class="switch-label" for="1"></label>
             </div>
         </div>
 

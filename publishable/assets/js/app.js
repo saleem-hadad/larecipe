@@ -1517,7 +1517,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(13);
-module.exports = __webpack_require__(82);
+module.exports = __webpack_require__(79);
 
 
 /***/ }),
@@ -15065,7 +15065,7 @@ var LaRecipe = function () {
             var _this2 = this;
 
             // keyboard magic 🎹
-            var Mousetrap = __webpack_require__(80);
+            var Mousetrap = __webpack_require__(77);
 
             // toggle the sidebar
             Mousetrap.bind("/", function (e) {
@@ -26547,7 +26547,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__LarecipeCard___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__LarecipeCard__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__LarecipeDropdown__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__LarecipeDropdown___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__LarecipeDropdown__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__LarecipeProgress__ = __webpack_require__(77);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__LarecipeProgress__ = __webpack_require__(74);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__LarecipeProgress___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__LarecipeProgress__);
 
 
@@ -27706,18 +27706,15 @@ if (false) {
 }
 
 /***/ }),
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(78)
+var __vue_script__ = __webpack_require__(75)
 /* template */
-var __vue_template__ = __webpack_require__(79)
+var __vue_template__ = __webpack_require__(76)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -27756,7 +27753,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 78 */
+/* 75 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27795,7 +27792,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 });
 
 /***/ }),
-/* 79 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -27825,7 +27822,7 @@ if (false) {
 }
 
 /***/ }),
-/* 80 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/* mousetrap v1.5.3 craig.is/killing/mice */
@@ -27934,14 +27931,14 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/* mousetrap v1.5.3 craig.is/killing/mice */
         };
       }(b));
     }
-  };c.init();C.Mousetrap = c;"undefined" !== typeof module && module.exports && (module.exports = c);"function" === "function" && __webpack_require__(81) && !(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
+  };c.init();C.Mousetrap = c;"undefined" !== typeof module && module.exports && (module.exports = c);"function" === "function" && __webpack_require__(78) && !(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
     return c;
   }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 })(window, document);
 
 /***/ }),
-/* 81 */
+/* 78 */
 /***/ (function(module, exports) {
 
 /* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
@@ -27950,7 +27947,7 @@ module.exports = __webpack_amd_options__;
 /* WEBPACK VAR INJECTION */}.call(exports, {}))
 
 /***/ }),
-/* 82 */
+/* 79 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

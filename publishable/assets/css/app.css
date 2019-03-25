@@ -582,7 +582,6 @@ table {
 
 .alert p {
   padding-left: 2rem;
-  padding-top: .25rem;
   margin-bottom: 0;
   color: var(--white);
 }
@@ -657,22 +656,22 @@ table {
       -ms-flex-align: center;
           align-items: center;
   z-index: 50;
+  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   -webkit-transition: all .2s;
   transition: all .2s;
   margin-top: 4.25rem;
-  -webkit-box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
-          box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
 }
 
 .search-box input {
-  font-size: 2rem;
-  text-transform: uppercase;
   border-style: none;
   margin-bottom: 0;
   height: 100%;
   width: 100%;
   text-align: center;
   outline: 0;
+  font-size: 2rem;
+  text-transform: uppercase;
   background: #f4f5f7;
   -webkit-transition: all .2s;
   transition: all .2s;
@@ -690,9 +689,9 @@ table {
 }
 
 .internal-autocomplete-result {
+  -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, .11), 0 5px 15px 0 rgba(0, 0, 0, .08);
+          box-shadow: 0 15px 30px 0 rgba(0, 0, 0, .11), 0 5px 15px 0 rgba(0, 0, 0, .08);
   background-color: #fff;
-  -webkit-box-shadow: 0 .125rem 1rem rgba(0, 0, 0, .075) !important;
-          box-shadow: 0 .125rem 1rem rgba(0, 0, 0, .075) !important;
   width: 400px !important;
   max-height: 400px;
   position: absolute;
@@ -1433,9 +1432,13 @@ a {
   text-decoration: none;
 }
 
-/* CHECKBOX TOGGLE SWITCH */
+/**************************************/
 
-.form-switch {
+/*************** Switch ***************/
+
+/**************************************/
+
+.switch {
   position: relative;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -1446,11 +1449,11 @@ a {
   line-height: 1.5;
 }
 
-.form-switch-checkbox {
+.switch-checkbox {
   display: none;
 }
 
-.form-switch-label {
+.switch-label {
   display: block;
   overflow: hidden;
   cursor: pointer;
@@ -1463,7 +1466,7 @@ a {
   transition: background-color .1s ease-in;
 }
 
-.form-switch-label:before {
+.switch-label:before {
   position: absolute;
   display: block;
   background-color: var(--white);
@@ -1481,13 +1484,13 @@ a {
   transition: all .1s ease-in;
 }
 
-.form-switch-checkbox:checked + .form-switch-label {
+.switch-checkbox:checked + .switch-label {
   background-color: var(--primary);
   -webkit-box-shadow: none;
           box-shadow: none;
 }
 
-.form-switch-checkbox:checked + .form-switch-label:before {
+.switch-checkbox:checked + .switch-label:before {
   right: 0;
 }
 
@@ -1823,7 +1826,6 @@ table th {
   font-size: 1rem;
   font-weight: 200;
   line-height: 2;
-  margin-bottom: 1rem;
 }
 
 @media (max-width: 780px) {
