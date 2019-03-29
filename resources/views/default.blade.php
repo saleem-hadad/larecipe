@@ -31,7 +31,7 @@
         <link rel="shortcut icon" type="image/png" href="{{ asset(config('larecipe.ui.fav')) }}"/>
         
         {{-- Dynamic color --}}
-        @include('larecipe::partials.style')
+        @include('larecipe::style')
 
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -44,7 +44,7 @@
         <div id="app" v-cloak>
             @include('larecipe::partials.nav')
             
-            @include('larecipe::partials.plugins.search')
+            @include('larecipe::plugins.search')
             
             @yield('content')
 

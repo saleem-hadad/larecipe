@@ -6,7 +6,7 @@
 	
 	<div class="documentation is-{{ config('larecipe.ui.code') }}" :class="{'expanded': ! sidebar}">
 		{!! $content !!}
-		@include('larecipe::partials.plugins.forum')
+		@include('larecipe::plugins.forum')
 	</div>
 </div>
 @endsection

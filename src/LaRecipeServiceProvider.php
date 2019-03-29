@@ -65,7 +65,7 @@ class LaRecipeServiceProvider extends ServiceProvider
      */
     protected function registerPublishableResources()
     {
-        $publishablePath = dirname(__DIR__).'/publishable';
+        $publishablePath = dirname(__DIR__) . '/publishable';
 
         $publishable = [
             'larecipe_config' => [
@@ -73,6 +73,9 @@ class LaRecipeServiceProvider extends ServiceProvider
             ],
             'larecipe_assets' => [
                 "{$publishablePath}/assets/" => public_path('vendor/binarytorch/larecipe/assets'),
+            ],
+            'larecipe_views' => [
+                dirname(__DIR__) . "/resources/views/partials" => resource_path('views/vendor/larecipe/partials'),
             ],
         ];
 

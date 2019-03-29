@@ -30,7 +30,7 @@ class InstallCommand extends Command
     public function handle()
     {
         $this->line('Publishing assets and congigurations.. 🍪');
-        $this->call('vendor:publish', ['--provider' => LaRecipeServiceProvider::class, '--tag' => ['larecipe_assets', 'larecipe_config']]);
+        $this->call('vendor:publish', ['--provider' => LaRecipeServiceProvider::class, '--tag' => ['larecipe_assets', 'larecipe_config', 'larecipe_views']]);
 
         $this->line('Setup initial documentations structure under '.config('larecipe.docs.path').'.. 🍪');
         $this->call('larecipe:docs');
