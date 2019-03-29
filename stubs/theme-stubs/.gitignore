@@ -1,0 +1,10 @@
+/.idea
+/vendor
+/node_modules
+package-lock.json
+composer.phar
+composer.lock
+phpunit.xml
+.phpunit.result.cache
+.DS_Store
+Thumbs.db

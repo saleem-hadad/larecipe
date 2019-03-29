@@ -1,0 +1,29 @@
+{
+    "name": "{{ name }}",
+    "description": "A LaRecipe theme.",
+    "keywords": [
+        "laravel",
+        "larecipe"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "{{ escapedNamespace }}\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "{{ escapedNamespace }}\\ThemeServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

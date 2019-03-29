@@ -1,0 +1,23 @@
+/**************************************/
+/**************** Root ****************/
+/**************************************/
+:root {
+  --documentation: white;
+  --navbar: white;
+}
+
+/**************************************/
+/*************** Sidebar **************/
+/**************************************/
+.sidebar {
+  border: none;
+  background-image: linear-gradient(0deg, #12283A, #1C3D5A);
+}
+
+.sidebar ul li h2 {
+  color: #6CB2EB;
+}
+
+.sidebar ul li ul li a {
+  color: #DAE1E7;
+}
