@@ -692,7 +692,7 @@ table {
   -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, .11), 0 5px 15px 0 rgba(0, 0, 0, .08);
           box-shadow: 0 15px 30px 0 rgba(0, 0, 0, .11), 0 5px 15px 0 rgba(0, 0, 0, .08);
   background-color: var(--white);
-  width: 400px !important;
+  min-width: 300px;
   max-height: 400px;
   position: absolute;
   top: 7rem;

@@ -22,7 +22,7 @@
 
 .internal-autocomplete-result {
   @apply shadow-lg bg-white;
-  width: 400px !important;
+  min-width: 300px;
   max-height: 400px;
   position: absolute;
   top: 7rem;
