@@ -36,7 +36,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        @foreach(\BinaryTorch\LaRecipe\LaRecipe::allStyles() as $name => $path)
+        @foreach(LaRecipe::allStyles() as $name => $path)
             <link rel="stylesheet" href="{{ route('larecipe.styles', $name) }}">
         @endforeach
     </head>
@@ -75,7 +75,7 @@
         @endif
         {{-- /Google Analytics --}}
 
-        @foreach (\BinaryTorch\LaRecipe\LaRecipe::allScripts() as $name => $path)
+        @foreach (LaRecipe::allScripts() as $name => $path)
             <script src="{{ route('larecipe.scripts', $name) }}"></script>
         @endforeach
 
