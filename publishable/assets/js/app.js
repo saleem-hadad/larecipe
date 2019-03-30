@@ -27801,7 +27801,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "bg-grey h-2 rounded overflow-hidden my-4" },
+    { staticClass: "bg-grey-light h-2 rounded overflow-hidden my-4" },
     [
       _c("div", {
         staticClass: "h-full",
