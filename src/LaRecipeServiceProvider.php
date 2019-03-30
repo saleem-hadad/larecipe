@@ -4,6 +4,7 @@ namespace BinaryTorch\LaRecipe;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use BinaryTorch\LaRecipe\Commands\AssetCommand;
 use BinaryTorch\LaRecipe\Commands\ThemeCommand;
 use BinaryTorch\LaRecipe\Commands\InstallCommand;
 use BinaryTorch\LaRecipe\Facades\LaRecipe as LaRecipeFacade;
@@ -100,6 +101,7 @@ class LaRecipeServiceProvider extends ServiceProvider
      */
     protected function registerConsoleCommands()
     {
+        $this->commands(AssetCommand::class);
         $this->commands(ThemeCommand::class);
         $this->commands(InstallCommand::class);
         $this->commands(GenerateDocumentationCommand::class);
