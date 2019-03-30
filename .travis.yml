@@ -9,10 +9,6 @@ php:
 
 services:
 - sqlite
-- docker
-
-before_install:
-  - docker run -d -p 6379:6379 redislabs/redisearch:latest --protected-mode no --loadmodule /usr/lib/redis/modules/redisearch.so
 
 before_script:
 - composer install
