@@ -26,6 +26,10 @@
                 </larecipe-button>
             @endif
 
+            <larecipe-button tag="a" href="https://github.com/saleem-hadad/larecipe" target="__blank" type="black" class="mx-2">
+                <i class="fa fa-github"></i>
+            </larecipe-button>
+
             {{-- versions dropdown --}}
             <larecipe-dropdown>
                 <larecipe-button type="primary">
