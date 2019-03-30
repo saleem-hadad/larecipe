@@ -1588,18 +1588,59 @@ a {
 /**************************************/
 
 .card {
-  border-width: 1px;
-  border-color: #f1f5f8;
-  -webkit-box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
-          box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
   padding: 1.5rem;
-  border-radius: .25rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
+  -webkit-box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+          box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+  border-radius: .25rem;
 }
 
 .card.is-default {
   background-color: var(--white);
+  color: #3d4852;
+  border-width: 1px;
+  border-color: #f1f5f8;
+}
+
+.card.is-white {
+  background-color: #f8fafc;
+  color: #3d4852;
+}
+
+.card.is-black {
+  background-color: #3d4852;
+  color: var(--white);
+}
+
+.card.is-primary {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.card.is-secondary {
+  background-color: var(--secondary);
+  color: var(--white);
+}
+
+.card.is-success {
+  background-color: var(--success);
+  color: var(--white);
+}
+
+.card.is-info {
+  background-color: var(--info);
+  color: var(--white);
+}
+
+.card.is-warning {
+  background-color: var(--warning);
+  color: var(--white);
+}
+
+.card.is-danger {
+  background-color: var(--danger);
+  color: var(--white);
 }
 
 /**************************************/

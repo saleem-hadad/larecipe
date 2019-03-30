@@ -3,10 +3,10 @@
     
     <nav class="flex items-center justify-between text-black bg-navbar shadow-xs h-16">
         <div class="flex items-center flex-no-shrink">
-            <a href="{{ url('/') }}" class="flex items-center flex-no-shrink text-black mx-3">
+            <a href="{{ url('/') }}" class="flex items-center flex-no-shrink text-black mx-4">
                 @include("larecipe::partials.logo")
 
-                <p class="inline-block font-semibold ml-1 text-grey-darker hover:text-black">
+                <p class="inline-block font-semibold ml-1 text-grey-dark">
                     {{ config('app.name') }}
                 </p>
             </a>
@@ -17,23 +17,24 @@
             </div>
         </div>
 
-        <div class="block mx-4">
+        <div class="block mx-4 flex items-center">
             @if(config('larecipe.search.enabled'))
                 <larecipe-button id="search-button"
                     :type="searchBox ? 'primary' : 'link'"
-                    @click="searchBox = ! searchBox">
+                    @click="searchBox = ! searchBox"
+                    class="px-4">
                     <i class="fa fa-search"></i>
                 </larecipe-button>
             @endif
 
-            <larecipe-button tag="a" href="https://github.com/saleem-hadad/larecipe" target="__blank" type="black" class="mx-2">
+            <larecipe-button tag="a" href="https://github.com/saleem-hadad/larecipe" target="__blank" type="black" class="mx-2 px-4">
                 <i class="fa fa-github"></i>
             </larecipe-button>
 
             {{-- versions dropdown --}}
             <larecipe-dropdown>
-                <larecipe-button type="primary">
-                    {{ $currentVersion }} <i class="fa fa-angle-down"></i>
+                <larecipe-button type="primary" class="flex">
+                    {{ $currentVersion }} <i class="ml-1 fa fa-angle-down"></i>
                 </larecipe-button>
 
                 <template slot="list">
@@ -51,7 +52,7 @@
             @auth
                 {{-- account --}}
                 <larecipe-dropdown>
-                    <larecipe-button type="white" class="dropdown-toggle btn-white ml-2">
+                    <larecipe-button type="white" class="ml-2">
                         {{ auth()->user()->name ?? 'Account' }} <i class="fa fa-angle-down"></i>
                     </larecipe-button>
 

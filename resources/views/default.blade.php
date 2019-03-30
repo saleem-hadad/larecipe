@@ -48,9 +48,7 @@
             
             @yield('content')
 
-            @if(config('larecipe.ui.back_to_top'))
-                <larecipe-back-to-top></larecipe-back-to-top>
-            @endif
+            <larecipe-back-to-top></larecipe-back-to-top>
         </div>
 
 
@@ -58,24 +56,11 @@
             window.config = @json([]);
         </script>
 
-        <script type="text/javascript">
-            if(localStorage.getItem('larecipeSidebar') == null) {
-                localStorage.setItem('larecipeSidebar', !! {{ config('larecipe.ui.show_side_bar') ?: 0 }});
-            }
-        </script>
-
         <script src="{{ larecipe_assets('js/app.js') }}"></script>
 
         <script>
             window.LaRecipe = new CreateLarecipe(config)
         </script>
-
-        {{-- Custom JS --}}
-        @if(!empty(config('larecipe.ui.additional_js')))
-            @foreach(config('larecipe.ui.additional_js') as $js)
-                <script type="text/javascript" src="{{ asset($js) . '?id=' . \Illuminate\Support\Str::random(8) }}"></script>
-            @endforeach
-        @endif
 
         {{-- Google Analytics --}}
         @if(config('larecipe.settings.ga_id'))

@@ -96,11 +96,17 @@ a {
 /**************** Cards ***************/
 /**************************************/
 .card {
-    @apply border border-grey-lighter shadow-xs p-6 rounded my-4;
+    @apply p-6 my-4 shadow-xs rounded;
 
-    &.is-default {
-        @apply bg-white;
-    }
+    &.is-default { @apply bg-white text-grey-darkest border border-grey-lighter; }
+    &.is-white { @apply bg-grey-lightest text-grey-darkest; }
+    &.is-black { @apply bg-grey-darkest text-white; }
+    &.is-primary { @apply bg-primary text-white; }
+    &.is-secondary { @apply bg-secondary text-white; }
+    &.is-success { @apply bg-success text-white; }
+    &.is-info { @apply bg-info text-white; }
+    &.is-warning { @apply bg-warning text-white; }
+    &.is-danger { @apply bg-danger text-white; }
 }
 
 /**************************************/

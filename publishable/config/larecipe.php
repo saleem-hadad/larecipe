@@ -47,9 +47,6 @@ return [
     | where you can limit the access to only authenticated users in your
     | system. It is false initially so that guests can view your docs.
     |
-    | You may also specify links to show under the auth dropdown menu.
-    | Logout link will show by default.
-    |
     |
     */
 
@@ -109,25 +106,18 @@ return [
     |--------------------------------------------------------------------------
     |
     | Here you can add configure the appearance of your docs. For example,
-    | you can swap the default logo to custom one that matches your Id
-    | Also, you can change the theme of your docs if you prefer that
+    | you can set the primary and secondary colors that will give your
+    | documentation a unique look. You can set the fav of your docs.
     |
-    | Supported Themes: 'light', 'dark'
     |
     */
 
     'ui'                 => [
         'code_theme'     => 'dark',
+        'fav'            => '', // eg: /fav.png
         'colors'         => [
             'primary'    => '#787AF6',
-            'secondary'  => '#2b9cf2',
-            'selection'  => '#f4f5f7'
-        ],
-        'additional_css' => [
-            //'css/custom.css',
-        ],
-        'additional_js'  => [
-            //'js/custom.js',
+            'secondary'  => '#2b9cf2'
         ],
     ],
 
