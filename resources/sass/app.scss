@@ -4,6 +4,7 @@
 @import "./components/alerts";
 @import "./components/badges";
 @import "./components/search";
+@import "./components/switch";
 @import "./components/back-to-top";
 
 @import "./vendor/prism/dark";
@@ -24,7 +25,7 @@
     --danger: #f5365c;
 
     --sidebar: #f4f5f7;
-    --documentation: white;
+    --documentation: rgb(254, 254, 254);
     --navbar: white;
 }
 
@@ -37,33 +38,6 @@ html, body {
 
 a {
     @apply no-underline;
-}
-
-/**************************************/
-/*************** Switch ***************/
-/**************************************/
-.switch {
-    @apply relative select-none w-12 mr-2 leading-normal;
-}
-.switch-checkbox {
-    @apply hidden;
-}
-.switch-label {
-    @apply block overflow-hidden cursor-pointer bg-grey-light rounded-full h-6 shadow-inner;
-    transition: background-color 0.1s ease-in;
-}
-.switch-label:before {
-    @apply absolute block bg-white border shadow pin-y w-6 rounded-full -ml-1;
-    
-    right: 50%;
-    content: "";
-    transition: all 0.1s ease-in;
-}
-.switch-checkbox:checked + .switch-label {
-    @apply bg-primary shadow-none;
-}
-.switch-checkbox:checked + .switch-label:before {
-    @apply pin-r;
 }
 
 /**************************************/
@@ -122,10 +96,10 @@ a {
 /**************** Cards ***************/
 /**************************************/
 .card {
-    @apply border border-grey-lighter p-6 rounded my-4;
+    @apply border border-grey-lighter shadow-xs p-6 rounded my-4;
 
     &.is-default {
-        // @apply shadow-inner;
+        @apply bg-white;
     }
 }
 

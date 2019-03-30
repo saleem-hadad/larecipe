@@ -27258,7 +27258,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     rounded: {
       type: Boolean,
-      default: true,
+      default: false,
       description: "Whether badge is of pill type"
     },
     circle: {

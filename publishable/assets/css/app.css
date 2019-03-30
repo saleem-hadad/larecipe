@@ -603,7 +603,11 @@ table {
 }
 
 .badge {
-  padding: .5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  font-size: .875rem;
 }
 
 .badge.is-white {
@@ -739,6 +743,68 @@ table {
 
 .internal-autocomplete-result ul li .heading:hover {
   font-weight: 700;
+}
+
+/**************************************/
+
+/*************** Switch ***************/
+
+/**************************************/
+
+.switch {
+  position: relative;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  width: 3rem;
+  margin-right: .5rem;
+  line-height: 1.5;
+}
+
+.switch-checkbox {
+  display: none;
+}
+
+.switch-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: #dae1e7;
+  border-radius: 9999px;
+  height: 1.5rem;
+  -webkit-box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, .06);
+          box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, .06);
+  -webkit-transition: background-color .1s ease-in;
+  transition: background-color .1s ease-in;
+}
+
+.switch-label:before {
+  position: absolute;
+  display: block;
+  background-color: var(--white);
+  border-width: 1px;
+  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+  top: 0;
+  bottom: 0;
+  width: 1.5rem;
+  border-radius: 9999px;
+  margin-left: -0.25rem;
+  right: 50%;
+  content: "";
+  -webkit-transition: all .1s ease-in;
+  transition: all .1s ease-in;
+}
+
+.switch-checkbox:checked + .switch-label {
+  background-color: var(--primary);
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.switch-checkbox:checked + .switch-label:before {
+  right: 0;
 }
 
 #backtotop {
@@ -1392,8 +1458,8 @@ div.code-toolbar > .toolbar button:hover,
 div.code-toolbar > .toolbar button:focus,
 div.code-toolbar > .toolbar span:hover,
 div.code-toolbar > .toolbar span:focus {
-  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
-          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+  -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+          box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
 }
 
 /**************************************/
@@ -1412,7 +1478,7 @@ div.code-toolbar > .toolbar span:focus {
   --success: #21b978;
   --danger: #f5365c;
   --sidebar: #f4f5f7;
-  --documentation: white;
+  --documentation: rgb(254, 254, 254);
   --navbar: white;
 }
 
@@ -1429,68 +1495,6 @@ body {
 
 a {
   text-decoration: none;
-}
-
-/**************************************/
-
-/*************** Switch ***************/
-
-/**************************************/
-
-.switch {
-  position: relative;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  width: 3rem;
-  margin-right: .5rem;
-  line-height: 1.5;
-}
-
-.switch-checkbox {
-  display: none;
-}
-
-.switch-label {
-  display: block;
-  overflow: hidden;
-  cursor: pointer;
-  background-color: #dae1e7;
-  border-radius: 9999px;
-  height: 1.5rem;
-  -webkit-box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, .06);
-          box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, .06);
-  -webkit-transition: background-color .1s ease-in;
-  transition: background-color .1s ease-in;
-}
-
-.switch-label:before {
-  position: absolute;
-  display: block;
-  background-color: var(--white);
-  border-width: 1px;
-  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
-          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
-  top: 0;
-  bottom: 0;
-  width: 1.5rem;
-  border-radius: 9999px;
-  margin-left: -0.25rem;
-  right: 50%;
-  content: "";
-  -webkit-transition: all .1s ease-in;
-  transition: all .1s ease-in;
-}
-
-.switch-checkbox:checked + .switch-label {
-  background-color: var(--primary);
-  -webkit-box-shadow: none;
-          box-shadow: none;
-}
-
-.switch-checkbox:checked + .switch-label:before {
-  right: 0;
 }
 
 /**************************************/
@@ -1586,10 +1590,16 @@ a {
 .card {
   border-width: 1px;
   border-color: #f1f5f8;
+  -webkit-box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+          box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
   padding: 1.5rem;
   border-radius: .25rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.card.is-default {
+  background-color: var(--white);
 }
 
 /**************************************/
@@ -1613,8 +1623,8 @@ a {
 .button:hover {
   -webkit-transform: translateY(-1px);
           transform: translateY(-1px);
-  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
-          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+  -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+          box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
 }
 
 .button:focus {
@@ -6366,9 +6376,19 @@ table th {
           box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
 }
 
+.shadow-xs {
+  -webkit-box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+          box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+}
+
+.shadow-sm {
+  -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+          box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+}
+
 .shadow-md {
-  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
-          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+  -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+          box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
 }
 
 .shadow-lg {
@@ -6396,9 +6416,19 @@ table th {
           box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
 }
 
+.hover\:shadow-xs:hover {
+  -webkit-box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+          box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+}
+
+.hover\:shadow-sm:hover {
+  -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+          box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+}
+
 .hover\:shadow-md:hover {
-  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
-          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+  -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+          box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
 }
 
 .hover\:shadow-lg:hover {
@@ -6426,9 +6456,19 @@ table th {
           box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
 }
 
+.focus\:shadow-xs:focus {
+  -webkit-box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+          box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+}
+
+.focus\:shadow-sm:focus {
+  -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+          box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+}
+
 .focus\:shadow-md:focus {
-  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
-          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+  -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+          box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
 }
 
 .focus\:shadow-lg:focus {
@@ -12385,9 +12425,19 @@ table th {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
 
+  .sm\:shadow-xs {
+    -webkit-box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+            box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+  }
+
+  .sm\:shadow-sm {
+    -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+            box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  }
+
   .sm\:shadow-md {
-    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
   }
 
   .sm\:shadow-lg {
@@ -12415,9 +12465,19 @@ table th {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
 
+  .sm\:hover\:shadow-xs:hover {
+    -webkit-box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+            box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+  }
+
+  .sm\:hover\:shadow-sm:hover {
+    -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+            box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  }
+
   .sm\:hover\:shadow-md:hover {
-    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
   }
 
   .sm\:hover\:shadow-lg:hover {
@@ -12445,9 +12505,19 @@ table th {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
 
+  .sm\:focus\:shadow-xs:focus {
+    -webkit-box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+            box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+  }
+
+  .sm\:focus\:shadow-sm:focus {
+    -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+            box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  }
+
   .sm\:focus\:shadow-md:focus {
-    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
   }
 
   .sm\:focus\:shadow-lg:focus {
@@ -18397,9 +18467,19 @@ table th {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
 
+  .md\:shadow-xs {
+    -webkit-box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+            box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+  }
+
+  .md\:shadow-sm {
+    -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+            box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  }
+
   .md\:shadow-md {
-    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
   }
 
   .md\:shadow-lg {
@@ -18427,9 +18507,19 @@ table th {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
 
+  .md\:hover\:shadow-xs:hover {
+    -webkit-box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+            box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+  }
+
+  .md\:hover\:shadow-sm:hover {
+    -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+            box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  }
+
   .md\:hover\:shadow-md:hover {
-    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
   }
 
   .md\:hover\:shadow-lg:hover {
@@ -18457,9 +18547,19 @@ table th {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
 
+  .md\:focus\:shadow-xs:focus {
+    -webkit-box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+            box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+  }
+
+  .md\:focus\:shadow-sm:focus {
+    -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+            box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  }
+
   .md\:focus\:shadow-md:focus {
-    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
   }
 
   .md\:focus\:shadow-lg:focus {
@@ -24409,9 +24509,19 @@ table th {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
 
+  .lg\:shadow-xs {
+    -webkit-box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+            box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+  }
+
+  .lg\:shadow-sm {
+    -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+            box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  }
+
   .lg\:shadow-md {
-    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
   }
 
   .lg\:shadow-lg {
@@ -24439,9 +24549,19 @@ table th {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
 
+  .lg\:hover\:shadow-xs:hover {
+    -webkit-box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+            box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+  }
+
+  .lg\:hover\:shadow-sm:hover {
+    -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+            box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  }
+
   .lg\:hover\:shadow-md:hover {
-    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
   }
 
   .lg\:hover\:shadow-lg:hover {
@@ -24469,9 +24589,19 @@ table th {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
 
+  .lg\:focus\:shadow-xs:focus {
+    -webkit-box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+            box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+  }
+
+  .lg\:focus\:shadow-sm:focus {
+    -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+            box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  }
+
   .lg\:focus\:shadow-md:focus {
-    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
   }
 
   .lg\:focus\:shadow-lg:focus {
@@ -30421,9 +30551,19 @@ table th {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
 
+  .xl\:shadow-xs {
+    -webkit-box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+            box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+  }
+
+  .xl\:shadow-sm {
+    -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+            box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  }
+
   .xl\:shadow-md {
-    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
   }
 
   .xl\:shadow-lg {
@@ -30451,9 +30591,19 @@ table th {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
 
+  .xl\:hover\:shadow-xs:hover {
+    -webkit-box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+            box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+  }
+
+  .xl\:hover\:shadow-sm:hover {
+    -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+            box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  }
+
   .xl\:hover\:shadow-md:hover {
-    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
   }
 
   .xl\:hover\:shadow-lg:hover {
@@ -30481,9 +30631,19 @@ table th {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
 
+  .xl\:focus\:shadow-xs:focus {
+    -webkit-box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+            box-shadow: 0 2px 1px rgba(50, 50, 93, .03), 0 1px 1px rgba(0, 0, 0, .03);
+  }
+
+  .xl\:focus\:shadow-sm:focus {
+    -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+            box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  }
+
   .xl\:focus\:shadow-md:focus {
-    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
   }
 
   .xl\:focus\:shadow-lg:focus {

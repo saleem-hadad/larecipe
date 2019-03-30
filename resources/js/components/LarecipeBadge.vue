@@ -17,7 +17,7 @@ export default {
     },
     rounded: {
       type: Boolean,
-      default: true,
+      default: false,
       description: "Whether badge is of pill type"
     },
     circle: {
