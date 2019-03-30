@@ -113,8 +113,8 @@ return [
     */
 
     'ui'                 => [
-        'code_theme'     => 'dark',
-        'fav'            => '', // eg: /fav.png
+        'code_theme'     => 'dark', // or: light
+        'fav'            => '',     // eg: fav.png
         'colors'         => [
             'primary'    => '#787AF6',
             'secondary'  => '#2b9cf2'
