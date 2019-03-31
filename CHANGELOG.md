@@ -4,6 +4,31 @@ All notable changes to `larecipe` will be documented in this file
 
 ---
 
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/saleem-hadad/larecipe/releases/tag/v2.0.0) (2019-04-01)
+
+### Features
+
+- Move to TailwindCSS - ([#b6071e4](https://github.com/saleem-hadad/larecipe/commit/b6071e425e7a6545c9b947f43858145c4415da15))
+- Add support for custom packages - ([#73b9245](https://github.com/saleem-hadad/larecipe/commit/73b9245f8b338e53e633890a4b2d22c09ef15466))
+
+### Enhancement
+
+- Support nested menus in sidebar - ([#
+98](https://github.com/saleem-hadad/larecipe/pull/98))
+- Add copy-to-clipboard prism plugin - ([#
+99](https://github.com/saleem-hadad/larecipe/pull/99))
+- Expand Test Coverage - ([#
+103](https://github.com/saleem-hadad/larecipe/pull/103))
+- Check for Laravel version and change cache from minutes to seconds - ([#
+106](https://github.com/saleem-hadad/larecipe/pull/106))
+
+
+### Breaking Changes
+
+- Remove Few Vue Component
+- Change Most of Vue components props
+
 <a name="1.4.0"></a>
 # [1.4.0](https://github.com/saleem-hadad/larecipe/releases/tag/v1.4.0) (2019-02-28)
 
