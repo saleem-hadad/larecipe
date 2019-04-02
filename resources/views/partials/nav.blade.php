@@ -6,7 +6,7 @@
             <a href="{{ url('/') }}" class="flex items-center flex-no-shrink text-black mx-4">
                 @include("larecipe::partials.logo")
 
-                <p class="inline-block font-semibold ml-1 text-grey-dark">
+                <p class="inline-block font-semibold mx-1 text-grey-dark">
                     {{ config('app.name') }}
                 </p>
             </a>
@@ -34,7 +34,7 @@
             {{-- versions dropdown --}}
             <larecipe-dropdown>
                 <larecipe-button type="primary" class="flex">
-                    {{ $currentVersion }} <i class="ml-1 fa fa-angle-down"></i>
+                    {{ $currentVersion }} <i class="mx-1 fa fa-angle-down"></i>
                 </larecipe-button>
 
                 <template slot="list">
