@@ -14,6 +14,7 @@
 
 <p align="center">
 <a href="https://github.com/saleem-hadad/larecipe"><img src="https://img.shields.io/packagist/dt/binarytorch/larecipe.svg" alt="License"></a>
+<a title="MadeWithVueJs.com Shield" href="https://madewithvuejs.com/p/larecipe/shield-link"> <img src="https://madewithvuejs.com/storage/repo-shields/1087-shield.svg"/></a>
 <a href="https://github.com/saleem-hadad/larecipe"><img src="https://img.shields.io/github/release/saleem-hadad/larecipe.svg" alt="Release"></a>
 <a href="https://github.com/saleem-hadad/larecipe"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 <a href="#backers" alt="sponsors on Open Collective"><img src="https://opencollective.com/larecipe/backers/badge.svg" /></a> <a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/larecipe/sponsors/badge.svg" /></a> 
