@@ -46,12 +46,8 @@ Visit your app domain with `/docs` endpoint. That's it.
 
 * [Zino](https://zino.saleemhadad.me/docs/1.0/installation) - 🤖 Custom Arduino library made for humans.
 * [Blogged](https://blogged.binarytorch.com.my/docs/1.0/overview) - Blogged is a package provides an easy way to create beautiful blog inside your Laravel projects.
+* [Wave](https://wave.devdojo.com/docs) - Wave is the perfect starter kit for building your next great idea
 * Put your docs here 😍👌
-
-## Contributors
-
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
-<a href="https://github.com/saleem-hadad/larecipe/graphs/contributors"><img src="https://opencollective.com/larecipe/contributors.svg?width=890&button=false" /></a>
 
 
 
@@ -76,7 +72,10 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 
 <a href="https://opencollective.com/larecipe#backers" target="_blank"><img src="https://opencollective.com/larecipe/backers.svg?width=890"></a>
 
+## Contributors
 
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/saleem-hadad/larecipe/graphs/contributors"><img src="https://opencollective.com/larecipe/contributors.svg?width=890&button=false" /></a>
 
 ## License
 
