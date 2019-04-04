@@ -50,9 +50,9 @@ return [
     |
     */
 
-    'settings' => [
-        'auth'  => false,
-        'ga_id' => ''
+    'settings'       => [
+        'auth'       => false,
+        'ga_id'      => ''
     ],
 
     /*
@@ -167,5 +167,21 @@ return [
                 'site_name' => '', // yoursite.disqus.com
             ]
         ]
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Components and Packages
+    |--------------------------------------------------------------------------
+    |
+    | Once you create a new asset or theme, its directory will be 
+    | published under `larecipe-components` folder. However, If 
+    | you want a different location, feel free to change it.
+    |
+    |
+    */
+
+    'packages' => [
+        'path' => 'larecipe-components',
     ]
 ];

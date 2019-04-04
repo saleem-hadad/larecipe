@@ -210,7 +210,7 @@ class AssetCommand extends Command
      */
     protected function assetPath()
     {
-        return base_path('larecipe-components/'.$this->assetClass());
+        return base_path($this->relativeAssetPath());
     }
 
     /**
@@ -220,7 +220,7 @@ class AssetCommand extends Command
      */
     protected function relativeAssetPath()
     {
-        return 'larecipe-components/'.$this->assetClass();
+        return config('larecipe.packages.path', 'larecipe-components').'/'.$this->assetClass();
     }
 
     /**

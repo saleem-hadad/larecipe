@@ -159,7 +159,7 @@ class ThemeCommand extends Command
      */
     protected function themePath()
     {
-        return base_path('larecipe-components/'.$this->themeClass());
+        return base_path($this->relativeThemePath());
     }
 
     /**
@@ -169,7 +169,7 @@ class ThemeCommand extends Command
      */
     protected function relativeThemePath()
     {
-        return 'larecipe-components/'.$this->themeClass();
+        return config('larecipe.packages.path', 'larecipe-components').'/'.$this->themeClass();
     }
 
     /**
