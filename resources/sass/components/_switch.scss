@@ -8,7 +8,7 @@
     @apply hidden;
 }
 .switch-label {
-    @apply block overflow-hidden cursor-pointer bg-grey-light rounded-full h-6 shadow-inner;
+    @apply block overflow-hidden cursor-pointer bg-grey-light rounded-full h-6 shadow-inner border-2 border-white;
     transition: background-color 0.1s ease-in;
 }
 .switch-label:before {
