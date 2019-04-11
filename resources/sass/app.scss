@@ -46,7 +46,7 @@ a {
 .sidebar {
     @apply bg-sidebar border-r border-grey-light w-64 fixed z-10 text-base pin-y pin-l mt-16 overflow-y-auto py-8;
     transition: all 0.2s;
-    
+
     &.is-hidden {
         left: -16rem;
     }
@@ -161,6 +161,14 @@ table {
 }
 
 /**************************************/
+/*********** Medium-Zoom **************/
+/**************************************/
+
+.medium-zoom-overlay, img.medium-zoom-image--opened{
+    z-index: 10;
+}
+
+/**************************************/
 /********** Documentation *************/
 /**************************************/
 .documentation {
@@ -181,7 +189,7 @@ table {
         a, a:hover {
             @apply text-grey-darker no-underline;
         }
-        
+
         a:before {
             content: "#";
             @apply -ml-4 mt-1 absolute text-base text-primary opacity-75;
