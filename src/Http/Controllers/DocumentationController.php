@@ -31,9 +31,13 @@ class DocumentationController extends Controller
      */
     public function index()
     {
-        $redirectURL = config('larecipe.versions.default').'/'.config('larecipe.docs.landing');
-
-        return redirect()->route('larecipe.show', $redirectURL);
+        return redirect()->route(
+            'larecipe.show',
+            [
+                'version' => config('larecipe.versions.default'),
+                'page' => config('larecipe.docs.landing')
+            ]
+        );
     }
 
     /**
@@ -52,7 +56,13 @@ class DocumentationController extends Controller
         }
 
         if ($this->documentationRepository->isNotPublishedVersion($version)) {
-            return redirect($documentation->defaultVersionUrl.'/'.$page, 301);
+            return redirect()->route(
+                'larecipe.show',
+                [
+                    'version' => config('larecipe.versions.default'),
+                    'page' => config('larecipe.docs.landing')
+                ]
+            );
         }
 
         return response()->view('larecipe::docs', [
