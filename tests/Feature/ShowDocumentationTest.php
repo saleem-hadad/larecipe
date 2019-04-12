@@ -55,8 +55,7 @@ class ShowDocumentationTest extends TestCase
         
         // guest can view foo page
         $this->get('/docs/2.0/foo')
-            ->assertRedirect('/docs/1.0/foo')
-            ->assertStatus(301);
+            ->assertRedirect('/docs/1.0/foo');
     }
 
     /** @test */
