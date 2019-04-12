@@ -1891,7 +1891,6 @@ img.medium-zoom-image--opened {
 .documentation p {
   font-size: 1rem;
   line-height: 2;
-  color: #3d4852;
 }
 
 @media (max-width: 780px) {
