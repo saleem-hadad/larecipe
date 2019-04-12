@@ -8,9 +8,8 @@ use BinaryTorch\LaRecipe\LaRecipe;
 class ScriptController extends Controller
 {
     /**
-     *
-     * @param  string $version
-     * @return Response
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function __invoke(Request $request)
     {

@@ -46,7 +46,6 @@ class Cache
      * Checks if minutes need to be changed to seconds
      *
      * @param $ttl
-     *
      * @return float|int
      */
     public function checkTtlNeedsChanged($ttl)

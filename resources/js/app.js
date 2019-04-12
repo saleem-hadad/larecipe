@@ -6,4 +6,4 @@ import LaRecipe from './LaRecipe';
   this.CreateLarecipe = function(config) {
       return new LaRecipe(config)
   }
-}.call(window))
+}.call(window));

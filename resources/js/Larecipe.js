@@ -12,21 +12,21 @@ const noDelimiter = { replace: () => "(?!x)x" };
 export default class LaRecipe {
   constructor(config) {
     this.config = config;
-    this.bootingCallbacks = []
+    this.bootingCallbacks = [];
   }
 
   booting(callback) {
-    this.bootingCallbacks.push(callback)
+    this.bootingCallbacks.push(callback);
   }
 
   boot() {
-      this.bootingCallbacks.forEach(callback => callback(Vue))
+      this.bootingCallbacks.forEach(callback => callback(Vue));
 
-      this.bootingCallbacks = []
+      this.bootingCallbacks = [];
   }
 
   run() {
-    this.boot()
+    this.boot();
     
     this.app = new Vue({
       el: "#app",

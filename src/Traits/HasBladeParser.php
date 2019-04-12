@@ -9,9 +9,10 @@ trait HasBladeParser
     /**
      * Render markdown contain blade syntax.
      *
-     * @param  $content
-     * @param  $data
-     * @return string
+     * @param $content
+     * @param array $data
+     * @return false|string
+     * @throws \Exception
      */
     public function renderBlade($content, $data = [])
     {

@@ -12,7 +12,8 @@ class SearchController extends Controller
     protected $documentationRepository;
 
     /**
-     * DocumentationController constructor.
+     * SearchController constructor.
+     * @param DocumentationRepository $documentationRepository
      */
     public function __construct(DocumentationRepository $documentationRepository)
     {
@@ -26,8 +27,8 @@ class SearchController extends Controller
     /**
      * Get the index of a given version.
      *
-     * @param  string $version
-     * @return Response
+     * @param $version
+     * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke($version)
     {
@@ -39,10 +40,9 @@ class SearchController extends Controller
     }
 
     /**
-     * @param  string $version
-     * @return Response
+     * @param $version
      */
-    protected function authorizeAccessSearch($version) 
+    protected function authorizeAccessSearch($version)
     {
         abort_if(
             $this->documentationRepository->isNotPublishedVersion($version)

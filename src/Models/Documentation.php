@@ -29,8 +29,8 @@ class Documentation
     /**
      * Create a new documentation instance.
      *
-     * @param  Filesystem  $files
-     * @return void
+     * @param Filesystem $files
+     * @param Cache $cache
      */
     public function __construct(Filesystem $files, Cache $cache)
     {
@@ -62,9 +62,10 @@ class Documentation
     /**
      * Get the given documentation page.
      *
-     * @param  string  $version
-     * @param  string  $page
-     * @return string
+     * @param $version
+     * @param $page
+     * @param array $data
+     * @return mixed
      */
     public function get($version, $page, $data = [])
     {

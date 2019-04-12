@@ -35,9 +35,9 @@ class DocumentationRepository
 
     /**
      * @param $version
-     * @param $page
-     *
-     * @return $this
+     * @param null $page
+     * @param array $data
+     * @return $this|DocumentationRepository
      */
     public function get($version, $page = null, $data = [])
     {
@@ -90,6 +90,8 @@ class DocumentationRepository
     /**
      * Prepare the current section page.
      *
+     * @param $version
+     * @param $page
      * @return $this
      */
     protected function prepareSection($version, $page)
