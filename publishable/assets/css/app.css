@@ -1872,9 +1872,14 @@ img.medium-zoom-image--opened {
 
 .documentation :not(pre) > code {
   background-color: #f1f5f8;
-  padding: .25rem;
+  padding-left: .5rem;
+  padding-right: .5rem;
   border-radius: .25rem;
   color: var(--primary);
+  line-height: 1.5;
+  padding-top: .1rem;
+  padding-bottom: .1rem;
+  line-height: 1.6;
 }
 
 .documentation ul > li,
@@ -1885,8 +1890,8 @@ img.medium-zoom-image--opened {
 
 .documentation p {
   font-size: 1rem;
-  font-weight: 200;
   line-height: 2;
+  color: #3d4852;
 }
 
 @media (max-width: 780px) {

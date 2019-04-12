@@ -227,7 +227,10 @@ table {
     }
 
     :not(pre) > code {
-        @apply bg-grey-lighter p-1 rounded text-primary;
+        @apply bg-grey-lighter px-2 rounded text-primary leading-normal;
+        padding-top: 0.1rem;
+        padding-bottom: 0.1rem;
+        line-height: 1.6;
     }
 
     ul > li , ol > li {
@@ -235,7 +238,7 @@ table {
     }
 
     p {
-        @apply text-base font-thin leading-large;
+        @apply text-base leading-large text-grey-darkest;
     }
 }
 
