@@ -52,26 +52,22 @@ Visit your app domain with `/docs` endpoint. That's it.
 
 
 
-## Sponsors
+## Gold Sponsors
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/larecipe#sponsor)]
 
-<a href="https://opencollective.com/larecipe/sponsor/0/website" target="_blank"><img src="https://opencollective.com/larecipe/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/larecipe/sponsor/1/website" target="_blank"><img src="https://opencollective.com/larecipe/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/larecipe/sponsor/2/website" target="_blank"><img src="https://opencollective.com/larecipe/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/larecipe/sponsor/3/website" target="_blank"><img src="https://opencollective.com/larecipe/sponsor/3/avatar.svg"></a>
-<a href="https://opencollective.com/larecipe/sponsor/4/website" target="_blank"><img src="https://opencollective.com/larecipe/sponsor/4/avatar.svg"></a>
-<a href="https://opencollective.com/larecipe/sponsor/5/website" target="_blank"><img src="https://opencollective.com/larecipe/sponsor/5/avatar.svg"></a>
-<a href="https://opencollective.com/larecipe/sponsor/6/website" target="_blank"><img src="https://opencollective.com/larecipe/sponsor/6/avatar.svg"></a>
-<a href="https://opencollective.com/larecipe/sponsor/7/website" target="_blank"><img src="https://opencollective.com/larecipe/sponsor/7/avatar.svg"></a>
-<a href="https://opencollective.com/larecipe/sponsor/8/website" target="_blank"><img src="https://opencollective.com/larecipe/sponsor/8/avatar.svg"></a>
-<a href="https://opencollective.com/larecipe/sponsor/9/website" target="_blank"><img src="https://opencollective.com/larecipe/sponsor/9/avatar.svg"></a>
+<img src="https://opencollective.com/larecipe/tiers/gold-sponsors.svg?avatarHeight=150" />
+
+## Bronze Sponsors
+
+<img src="https://opencollective.com/larecipe/tiers/bronze-sponsors.svg?avatarHeight=100" />
+
 
 ## Backers
 
 Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/larecipe#backer)]
 
-<a href="https://opencollective.com/larecipe#backers" target="_blank"><img src="https://opencollective.com/larecipe/backers.svg?width=890"></a>
+<img src="https://opencollective.com/larecipe/tiers/backers.svg?avatarHeight=50" />
 
 ## Contributors
 
