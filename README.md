@@ -56,11 +56,15 @@ Visit your app domain with `/docs` endpoint. That's it.
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/larecipe#sponsor)]
 
-<img src="https://opencollective.com/larecipe/tiers/gold-sponsors.svg?avatarHeight=150" />
+<a href="https://www.logengine.dev/" target="_blank">
+    <img width="200px" height="200px" src="https://opencollective-production.s3-us-west-1.amazonaws.com/badd02d0-61fc-11e9-bd81-b7f6a515acbf.png">
+</a>
 
 ## Bronze Sponsors
 
-<img src="https://opencollective.com/larecipe/tiers/bronze-sponsors.svg?avatarHeight=100" />
+<a href="https://github.com/mrgfrederic" target="_blank">
+    <img width="100px" height="100px" src="https://avatars0.githubusercontent.com/u/42940842?s=460&v=4">
+</a>
 
 
 ## Backers
