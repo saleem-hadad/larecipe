@@ -32,7 +32,7 @@
 
         {{-- FontAwesome --}}
         <link rel="stylesheet" href="{{ larecipe_assets('css/font-awesome.css') }}">
-        @if (config('larecipe.ui.fa_v4_shims'))
+        @if (config('larecipe.ui.fa_v4_shims', true))
             <link rel="stylesheet" href="{{ larecipe_assets('css/font-awesome-v4-shims.css') }}">
         @endif
 

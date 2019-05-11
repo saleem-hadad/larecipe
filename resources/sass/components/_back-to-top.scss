@@ -30,7 +30,8 @@ body #backtotop a {
 #backtotop a:after {
     @apply outline-none relative block;
     content: "\f106";
-    font-family: "FontAwesome";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
     top: 50%;
     -webkit-transform: translateY(-55%);
     transform: translateY(-55%);
