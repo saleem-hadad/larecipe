@@ -8,7 +8,7 @@
     <div class="internal-autocomplete-result">
       <ul v-if="filteredPages.length">
         <li v-for="page in filteredPages" :key="page.path">
-          <a :href="'/docs/' + version + page.path">
+          <a :href="versionUrl + page.path">
             <span class="page-title">
               <b>{{ page.title }}</b>
             </span>
@@ -54,7 +54,7 @@
 <script>
 export default {
   name: "internal-search-box",
-  props: ["version"],
+  props: ["versionUrl", "searchUrl"],
   data() {
     return {
       search: "",
@@ -67,7 +67,7 @@ export default {
       this.$emit("close");
     },
     navigateToHeading(page, heading) {
-      window.location = "/docs/" + this.version + page.path + "#" + this.slugify(heading);
+      window.location =  this.versionUrl + page.path + "#" + this.slugify(heading);
     },
     slugify(heading) {
       return heading
@@ -95,7 +95,7 @@ export default {
     $(".internal-search-input").focus();
 
     axios
-      .get("/docs/search-index/" + this.version)
+      .get(this.searchUrl)
       .then(res => {
         this.pages = res.data;
         this.isLoaded = true;
