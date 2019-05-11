@@ -29,7 +29,13 @@
         {{-- Icon --}}
         <link rel="apple-touch-icon" href="{{ asset(config('larecipe.ui.fav')) }}">
         <link rel="shortcut icon" type="image/png" href="{{ asset(config('larecipe.ui.fav')) }}"/>
-        
+
+        {{-- FontAwesome --}}
+        <link rel="stylesheet" href="{{ larecipe_assets('css/font-awesome.css') }}">
+        @if (config('larecipe.ui.fa_v4_shims'))
+            <link rel="stylesheet" href="{{ larecipe_assets('css/font-awesome-v4-shims.css') }}">
+        @endif
+
         {{-- Dynamic color --}}
         @include('larecipe::style')
 
@@ -43,9 +49,9 @@
     <body>
         <div id="app" v-cloak>
             @include('larecipe::partials.nav')
-            
+
             @include('larecipe::plugins.search')
-            
+
             @yield('content')
 
             <larecipe-back-to-top></larecipe-back-to-top>
