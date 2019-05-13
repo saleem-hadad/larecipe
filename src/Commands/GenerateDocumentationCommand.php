@@ -154,12 +154,6 @@ class GenerateDocumentationCommand extends Command
         );
 
         $content = str_replace(
-            '{{ROOT}}',
-            config('larecipe.docs.route'),
-            $content
-        );
-
-        $content = str_replace(
             '{{LANDINGSMALL}}',
             trim(config('larecipe.docs.landing'), '/'),
             $content

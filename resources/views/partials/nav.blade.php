@@ -41,7 +41,7 @@
                     <ul class="list-reset">
                         @foreach ($versions as $version)
                             <li class="py-2 hover:bg-grey-lightest">
-                                <a class="px-6 text-grey-darkest" href="{{ url(config('larecipe.docs.route').'/'.$version.$currentSection) }}">{{ $version }}</a>
+                                <a class="px-6 text-grey-darkest" href="{{ route('larecipe.show', ['version' => $version, 'page' => $currentSection]) }}">{{ $version }}</a>
                             </li>
                         @endforeach
                     </ul>
