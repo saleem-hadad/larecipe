@@ -1,5 +1,4 @@
 import "../sass/vendor/nucleo/css/nucleo.css";
-import "../sass/vendor/font-awesome/css/font-awesome.css";
 
 import Vue from "vue";
 import mediumZoom from "medium-zoom";
@@ -27,7 +26,7 @@ export default class LaRecipe {
 
   run() {
     this.boot();
-    
+
     this.app = new Vue({
       el: "#app",
       delimiters: [noDelimiter, noDelimiter],
