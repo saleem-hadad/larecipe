@@ -115,6 +115,7 @@ return [
     'ui'                 => [
         'code_theme'     => 'dark', // or: light
         'fav'            => '',     // eg: fav.png
+        'fa_v4_shims'    => true, // Add FontAwesome v4 shims prevent BC break
         'colors'         => [
             'primary'    => '#787AF6',
             'secondary'  => '#2b9cf2'
@@ -174,8 +175,8 @@ return [
     | Components and Packages
     |--------------------------------------------------------------------------
     |
-    | Once you create a new asset or theme, its directory will be 
-    | published under `larecipe-components` folder. However, If 
+    | Once you create a new asset or theme, its directory will be
+    | published under `larecipe-components` folder. However, If
     | you want a different location, feel free to change it.
     |
     |
