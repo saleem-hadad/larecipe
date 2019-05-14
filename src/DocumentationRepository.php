@@ -97,7 +97,7 @@ class DocumentationRepository
     protected function prepareSection($version, $page)
     {
         if ($this->documentation->sectionExists($version, $page)) {
-            $this->currentSection = '/'.$page;
+            $this->currentSection = $page;
         }
 
         return $this;

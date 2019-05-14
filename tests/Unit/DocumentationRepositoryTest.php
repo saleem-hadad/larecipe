@@ -53,7 +53,7 @@ class DocumentationRepositoryTest extends TestCase
         Config::set('larecipe.docs.path', 'tests/views/docs');
 
         $documentation = $this->documentationRepository->get('1.0', 'foo');
-        $this->assertEquals('/docs/1.0/foo', $documentation->canonical);
+        $this->assertEquals('http://localhost/docs/1.0/foo', $documentation->canonical);
 
         $documentation = $this->documentationRepository->get('1.0', 'bar');
         $this->assertEmpty($documentation->canonical);
@@ -66,7 +66,7 @@ class DocumentationRepositoryTest extends TestCase
 
         $documentation = $this->documentationRepository->get('1.0', 'foo');
 
-        $this->assertEquals('/docs/1.0', $documentation->defaultVersionUrl);
+        $this->assertEquals('http://localhost/docs/1.0', $documentation->defaultVersionUrl);
     }
 
     /** @test */
