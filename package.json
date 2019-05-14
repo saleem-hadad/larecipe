@@ -12,16 +12,16 @@
   },
   "devDependencies": {
     "cross-env": "^5.1",
-    "jquery": "^3.2",
+    "jquery": "^3.4.0",
     "laravel-mix": "^2.0",
     "tailwindcss": "^0.7.4",
-    "vue": "^2.5.16"
+    "vue": "^2.6.10"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "clipboard": "^2.0.4",
-    "docsearch.js": "^2.5.2",
-    "medium-zoom": "^1.0.2",
+    "docsearch.js": "^2.6.3",
+    "medium-zoom": "^1.0.4",
     "opencollective": "^1.0.3",
     "opencollective-postinstall": "^2.0.2",
     "smoothscroll-for-websites": "1.4.6",

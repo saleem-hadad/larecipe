@@ -88,7 +88,7 @@ return [
 
     'search'            => [
         'enabled'       => false,
-        'default'       => 'internal',
+        'default'       => 'algolia',
         'engines'       => [
             'internal'  => [
                 'index' => ['h2', 'h3']
