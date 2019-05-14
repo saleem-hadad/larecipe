@@ -23,12 +23,12 @@
                     :type="searchBox ? 'primary' : 'link'"
                     @click="searchBox = ! searchBox"
                     class="px-4">
-                    <i class="fa fa-search"></i>
+                    <i class="fas fa-search"></i>
                 </larecipe-button>
             @endif
 
             <larecipe-button tag="a" href="https://github.com/saleem-hadad/larecipe" target="__blank" type="black" class="mx-2 px-4">
-                <i class="fa fab-github"></i>
+                <i class="fab fa-github"></i>
             </larecipe-button>
 
             {{-- versions dropdown --}}
