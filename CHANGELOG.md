@@ -4,6 +4,20 @@ All notable changes to `larecipe` will be documented in this file
 
 ---
 
+
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/saleem-hadad/larecipe/releases/tag/v2.1.0) (2019-05-15)
+
+### Features
+
+- Add support for FontAwesome v5 - ([#afb6347](https://github.com/saleem-hadad/larecipe/commit/afb6347df83e1f7abeee5aa9ee6757c08a978075))
+
+### Enhancement
+
+- Few UI improvements
+- Configureable new larecipe packages location - ([#6b82478](https://github.com/saleem-hadad/larecipe/commit/6b824786849ff4578bff5916fc510d21f746410d))
+- Add Z-index to Medium Zoom to prevent hiding - ([#58a7c05](https://github.com/saleem-hadad/larecipe/commit/58a7c05f013070c0b5628b04fe95761f97ec5108))
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/saleem-hadad/larecipe/releases/tag/v2.0.0) (2019-04-01)
 
