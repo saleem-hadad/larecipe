@@ -14,11 +14,12 @@ export default {
   name: "algolia-search-box",
   props: ["algoliaKey", "algoliaIndex", "version"],
   methods: {
-    close() {
+    close(e) {
+      let targetId = e.target.id;
       if(! ['search-button', 'search-button-icon'].includes(targetId)) {
         this.$emit("close");
       }
-    }
+    },
   },
   mounted() {
     docsearch({
