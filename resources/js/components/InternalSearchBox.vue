@@ -63,8 +63,11 @@ export default {
     };
   },
   methods: {
-    close() {
-      this.$emit("close");
+    close(e) {
+      let targetId = e.target.id;
+      if(! ['search-button', 'search-button-icon'].includes(targetId)) {
+        this.$emit("close");
+      }
     },
     navigateToHeading(page, heading) {
       window.location =  this.versionUrl + page.path + "#" + this.slugify(heading);

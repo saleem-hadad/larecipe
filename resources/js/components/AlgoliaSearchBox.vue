@@ -15,7 +15,9 @@ export default {
   props: ["algoliaKey", "algoliaIndex", "version"],
   methods: {
     close() {
-      this.$emit("close");
+      if(! ['search-button', 'search-button-icon'].includes(targetId)) {
+        this.$emit("close");
+      }
     }
   },
   mounted() {

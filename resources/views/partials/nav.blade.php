@@ -23,7 +23,7 @@
                     :type="searchBox ? 'primary' : 'link'"
                     @click="searchBox = ! searchBox"
                     class="px-4">
-                    <i class="fas fa-search"></i>
+                    <i class="fas fa-search" id="search-button-icon"></i>
                 </larecipe-button>
             @endif
 
