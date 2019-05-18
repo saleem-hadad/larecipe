@@ -4,6 +4,31 @@ All notable changes to `larecipe` will be documented in this file
 
 ---
 
+<a name="2.1.4"></a>
+# [2.1.4](https://github.com/saleem-hadad/larecipe/releases/tag/v2.1.4) (2019-05-18)
+
+### Features
+Update smoothscroll-for-websites dependency to 1.4.9 in order to prevent the error
+
+`Unable to preventDefault inside passive event listener due to target being treated as passive`
+
+<a name="2.1.3"></a>
+# [2.1.3](https://github.com/saleem-hadad/larecipe/releases/tag/v2.1.3) (2019-05-15)
+
+### Features
+Fix Algolia search box - ([#fef3c74](https://github.com/saleem-hadad/larecipe/commit/fef3c74ca3c99524254b78baf49e3ef0fbd20ecc))
+
+<a name="2.1.2"></a>
+# [2.1.2](https://github.com/saleem-hadad/larecipe/releases/tag/v2.1.2) (2019-05-15)
+
+### Features
+Fix Algolia search box - ([#973b230](https://github.com/saleem-hadad/larecipe/commit/973b230271981b94feab151e0ede5e906ea26de0))
+
+<a name="2.1.1"></a>
+# [2.1.1](https://github.com/saleem-hadad/larecipe/releases/tag/v2.1.1) (2019-05-15)
+
+### Features
+Fix search button - ([#8c3ced6](https://github.com/saleem-hadad/larecipe/commit/8c3ced63b3dca194afc8084e2babd478c24ccd1f))
 
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/saleem-hadad/larecipe/releases/tag/v2.1.0) (2019-05-15)
