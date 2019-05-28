@@ -157,6 +157,20 @@ export default class LaRecipe {
                 .addClass("alert is-" + word);
             }
           });
+
+          // Replace markdown checkboxes with html checkboxes
+          $(".documentation ul li").each(function() {
+              var regex = /\[.+\]/;
+              var text  = $(this).text();
+              var match = text.match(regex);
+
+              if (match) {
+                  $(this).parent().addClass('list-reset pl-0');
+                  var checkbox = '<input type="checkbox" disabled=""' + (match[0].includes('x') ? ' checked=""' : '') + '>'
+                  var html     = text.replace(regex, checkbox);
+                  $(this).html(html);
+              }
+          });
         },
         setupKeyboardShortcuts() {
           // keyboard magic 🎹
