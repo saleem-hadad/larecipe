@@ -5,7 +5,7 @@
     <script async>
         var disqus_config = function () {
             this.page.url = '{{ url($canonical) }}';
-            this.page.identifier = '{{ $currentSection }}';
+            this.page.identifier = '/{{ $currentSection }}';
         };
 
         (function() {

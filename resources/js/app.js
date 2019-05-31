@@ -1,6 +1,6 @@
 require('./bootsrap');
 
-import LaRecipe from './LaRecipe';
+import LaRecipe from './Larecipe';
 
 ;(function() {
   this.CreateLarecipe = function(config) {
