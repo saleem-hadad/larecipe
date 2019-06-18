@@ -15,9 +15,9 @@
     "jquery": "^3.4.0",
     "laravel-mix": "^2.0",
     "tailwindcss": "^0.7.4",
+    "tar": "^4.4.10",
     "vue": "^2.6.10",
-    "webpack-dev-server": ">=3.1.11",
-    "tar": ">=4.4.2"
+    "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
     "axios": "^0.19.0",
