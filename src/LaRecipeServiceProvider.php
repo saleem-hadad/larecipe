@@ -36,7 +36,7 @@ class LaRecipeServiceProvider extends ServiceProvider
             'namespace'  => 'BinaryTorch\LaRecipe\Http\Controllers',
             'domain'     => config('larecipe.domain', null),
             'as'         => 'larecipe.',
-            'middleware' => 'web',
+            'middleware' => config('larecipe.docs.middleware'),
         ];
     }
 
