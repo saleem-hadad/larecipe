@@ -17,7 +17,7 @@ trait Indexable
 
             $result = [];
             foreach($pages as $page) {
-                $page = explode($version, $page)[1];
+                $page = explode("{{version}}", $page)[1];
                 $pageContent = $this->get($version, $page);
 
                 if(! $pageContent)
