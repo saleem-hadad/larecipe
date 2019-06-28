@@ -128,17 +128,7 @@ class DocumentationRepository
      */
     public function isPublishedVersion($version)
     {
-        if($this->isAssoc($this->publishedVersions)) {
-            return array_key_exists($version, $this->publishedVersions);
-        }
-
-        return in_array($version, $this->publishedVersions);
-    }
-    
-    function isAssoc(array $arr)
-    {
-        if (array() === $arr) return false;
-        return array_keys($arr) !== range(0, count($arr) - 1);
+        return array_key_exists($version, $this->publishedVersions);
     }
 
     /**

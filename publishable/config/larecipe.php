@@ -35,7 +35,7 @@ return [
     'versions'      => [
         'default'   => '1.0',
         'published' => [
-            '1.0'   => ['en'],
+            '1.0'   => ['en', 'ar'],
         ]
     ],
 
