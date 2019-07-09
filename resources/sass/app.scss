@@ -63,13 +63,28 @@ a {
                 @apply list-reset leading-loose;
 
                 > li {
-                    @apply pl-1;
-
                     &.is-active {
-                        @apply pl-0 border-l-2 border-primary;
+                        @apply pl-2;
+
+                        &::before {
+                            content: "";
+                            position: absolute;
+                            left: 0;
+                            z-index: 100; 
+                            width: 2px;
+                            height: 35px;
+                            background: var(--primary);
+                        }
 
                         a {
                             @apply font-bold;
+                        }
+
+                        > ul > li {
+                            @apply -ml-2;
+                            a {
+                                @apply font-normal;
+                            }
                         }
                     }
 
@@ -84,7 +99,18 @@ a {
                     }
 
                     ul {
-                        @apply list-reset pl-1;
+                        @apply list-reset;
+                        > li {
+                            @apply pl-4;
+
+                            &.is-active {
+                                @apply border-l-2 border-primary;
+        
+                                a {
+                                    @apply font-bold;
+                                }
+                            }
+                        }
                     }
                 }
             }
