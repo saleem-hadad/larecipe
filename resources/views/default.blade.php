@@ -45,6 +45,9 @@
         @foreach(LaRecipe::allStyles() as $name => $path)
             <link rel="stylesheet" href="{{ route('larecipe.styles', $name) }}">
         @endforeach
+		
+		<!-- Base url -->
+		<base href="{{ Config::get('app.url') }}/" />
     </head>
     <body>
         <div id="app" v-cloak>
