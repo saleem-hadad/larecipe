@@ -27,6 +27,13 @@
 
 ![LaRecipe Screenshot](https://larecipe.binarytorch.com.my/images/screenshot.png#)
 
+## Official Tools and Assets Support
+
+| Title | v1.x | v2.x |
+| :- | :-: | :-: |
+| [LaRecipe Dark Theme](https://larecipe.binarytorch.com.my/packages/binarytorch/larecipe-dark-theme) | ❌ | ✅ |
+| [LaRecipe RTL Support](https://larecipe.binarytorch.com.my/packages/binarytorch/larecipe-rtl) | ❌ | ✅ |
+| [LaRecipe Feedback](https://larecipe.binarytorch.com.my/packages/binarytorch/larecipe-feedback) | ❌ | ✅ |
 
 ## Getting Started
 
