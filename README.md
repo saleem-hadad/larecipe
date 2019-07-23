@@ -34,6 +34,7 @@
 | [LaRecipe Dark Theme](https://larecipe.binarytorch.com.my/packages/binarytorch/larecipe-dark-theme) | ❌ | ✅ |
 | [LaRecipe RTL Support](https://larecipe.binarytorch.com.my/packages/binarytorch/larecipe-rtl) | ❌ | ✅ |
 | [LaRecipe Feedback](https://larecipe.binarytorch.com.my/packages/binarytorch/larecipe-feedback) | ❌ | ✅ |
+| [LaRecipe Swagger](https://larecipe.binarytorch.com.my/packages/binarytorch/larecipe-swagger) | ❌ | ✅ |
 
 ## Getting Started
 
