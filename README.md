@@ -64,9 +64,11 @@ Visit your app domain with `/docs` endpoint. That's it.
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/larecipe#sponsor)]
 
-<a href="https://www.logengine.dev/" target="_blank">
-    <img width="200px" height="200px" src="https://opencollective-production.s3-us-west-1.amazonaws.com/badd02d0-61fc-11e9-bd81-b7f6a515acbf.png">
+<a style="display: flex" href="https://nova-adc.com/" target="_blank">
+    <img width="200px" height="200px" src="https://images.opencollective.com/nova-adc/f507268/logo.png"/><br/>
+    <h4 style="text-align: center">Nova ADC</h4>
 </a>
+
 
 ## Bronze Sponsors
 
