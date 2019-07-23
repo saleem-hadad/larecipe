@@ -64,9 +64,8 @@ Visit your app domain with `/docs` endpoint. That's it.
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/larecipe#sponsor)]
 
-<a style="display: flex" href="https://nova-adc.com/" target="_blank">
-    <img width="200px" height="200px" src="https://images.opencollective.com/nova-adc/f507268/logo.png"/><br/>
-    <h4 style="text-align: center">Nova ADC</h4>
+<a href="https://nova-adc.com/" target="_blank">
+    <img alt="Nova ADC" width="200px" height="200px" src="https://images.opencollective.com/nova-adc/f507268/logo.png"/>
 </a>
 
 
