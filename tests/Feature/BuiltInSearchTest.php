@@ -26,7 +26,6 @@ class BuiltInSearchTest extends TestCase
         Config::set('larecipe.search.enabled', true);
         Config::set('larecipe.search.default', 'internal');
 
-        $this->withoutExceptionHandling();
         $this->get('/docs/search-index/1.0')
             ->assertStatus(200)
             ->assertJsonStructure([
@@ -36,7 +35,5 @@ class BuiltInSearchTest extends TestCase
                     'headings'
                 ]
             ]);
-
-        $this->assertTrue(true);
     }
 }
