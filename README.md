@@ -57,6 +57,7 @@ Visit your app domain with `/docs` endpoint. That's it.
 * [Blogged](https://blogged.binarytorch.com.my/docs/1.0/overview) - Blogged is a package provides an easy way to create beautiful blog inside your Laravel projects.
 * [Wave](https://wave.devdojo.com/docs) - Wave is the perfect starter kit for building your next great idea
 * [Inspector](https://www.inspector.dev/larecipe-is-now-our-docs-center/) - Laravel real-time performance & error alerting
+* [Nova ADC](https://nova-adc.com/docs/1.0/overview) - Nova is a cloud-based (or on-premise) SaaS application delivery controller.
 * Put your docs here 😍👌
 
 
