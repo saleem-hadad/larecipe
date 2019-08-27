@@ -117,6 +117,7 @@ return [
         'code_theme'     => 'dark', // or: light
         'fav'            => '',     // eg: fav.png
         'fa_v4_shims'    => true, // Add FontAwesome v4 shims prevent BC break
+        'show_side_bar'  => true,
         'colors'         => [
             'primary'    => '#787AF6',
             'secondary'  => '#2b9cf2'
