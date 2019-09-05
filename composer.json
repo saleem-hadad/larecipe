@@ -22,9 +22,9 @@
         "symfony/dom-crawler": "^4.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.0",
-        "laravel/framework": "^5.4|^6.0",
-        "orchestra/testbench": "^3.4|^4.0"
+        "phpunit/phpunit": "^8.0",
+        "laravel/framework": "^6.0",
+        "orchestra/testbench": "^4.0"
     },
     "autoload": {
         "psr-4": {
