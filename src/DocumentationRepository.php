@@ -128,7 +128,7 @@ class DocumentationRepository
      */
     public function isPublishedVersion($version)
     {
-        return array_key_exists($version, $this->publishedVersions);
+        return in_array($version, $this->publishedVersions);
     }
 
     /**

@@ -2,10 +2,10 @@
 
 namespace BinaryTorch\LaRecipe\Commands;
 
-use BinaryTorch\LaRecipe\Traits\RunProcess;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use BinaryTorch\LaRecipe\Traits\RunProcess;
 
 class AssetCommand extends Command
 {

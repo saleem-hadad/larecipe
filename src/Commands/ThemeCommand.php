@@ -2,11 +2,10 @@
 
 namespace BinaryTorch\LaRecipe\Commands;
 
-use BinaryTorch\LaRecipe\Traits\RunProcess;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Process\Process;
+use BinaryTorch\LaRecipe\Traits\RunProcess;
 
 class ThemeCommand extends Command
 {

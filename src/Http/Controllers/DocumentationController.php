@@ -52,7 +52,7 @@ class DocumentationController extends Controller
     public function show($version, $page = null)
     {
         $documentation = $this->documentationRepository->get($version, $page);
-
+        
         if (Gate::has('viewLarecipe')) {
             $this->authorize('viewLarecipe', $documentation);
         }

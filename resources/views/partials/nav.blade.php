@@ -39,7 +39,7 @@
 
                 <template slot="list">
                     <ul class="list-reset">
-                        @foreach (array_keys($versions) as $version)
+                        @foreach ($versions as $version)
                             <li class="py-2 hover:bg-grey-lightest">
                                 <a class="px-6 text-grey-darkest" href="{{ route('larecipe.show', ['version' => $version, 'page' => $currentSection]) }}">{{ $version }}</a>
                             </li>

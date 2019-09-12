@@ -6,3 +6,4 @@ build
 .lock
 composer.lock
 /fonts
+.phpunit.result.cache
