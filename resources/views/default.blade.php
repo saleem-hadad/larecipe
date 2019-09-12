@@ -65,6 +65,12 @@
             window.config = @json([]);
         </script>
 
+        <script type="text/javascript">
+            if(localStorage.getItem('larecipeSidebar') == null) {
+                localStorage.setItem('larecipeSidebar', !! {{ config('larecipe.ui.show_side_bar') ?: 0 }});
+            }
+        </script>
+
         <script src="{{ larecipe_assets('js/app.js') }}"></script>
 
         <script>
