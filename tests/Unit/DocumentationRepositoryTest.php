@@ -34,7 +34,7 @@ class DocumentationRepositoryTest extends TestCase
 
         $documentation = $this->documentationRepository->get('1.0', 'foo');
 
-        $this->assertContains('Get Started', $documentation->index);
+        $this->assertStringContainsString('Get Started', $documentation->index);
     }
 
     /** @test */
@@ -44,7 +44,7 @@ class DocumentationRepositoryTest extends TestCase
 
         $documentation = $this->documentationRepository->get('1.0', 'foo');
 
-        $this->assertContains('Section 1', $documentation->content);
+        $this->assertStringContainsString('Section 1', $documentation->content);
     }
 
     /** @test */
