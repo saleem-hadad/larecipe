@@ -75,10 +75,10 @@ class DocumentationRepositoryTest extends TestCase
         Config::set('larecipe.versions.published', ['1.0']);
 
         $this->assertTrue($this->documentationRepository->isPublishedVersion('1.0'));
-        // $this->assertFalse($this->documentationRepository->isNotPublishedVersion('1.0'));
+        $this->assertFalse($this->documentationRepository->isNotPublishedVersion('1.0'));
 
-        // $this->assertFalse($this->documentationRepository->isPublishedVersion('2.0'));
-        // $this->assertTrue($this->documentationRepository->isNotPublishedVersion('2.0'));
+        $this->assertFalse($this->documentationRepository->isPublishedVersion('2.0'));
+        $this->assertTrue($this->documentationRepository->isNotPublishedVersion('2.0'));
     }
 
     /** @test */
