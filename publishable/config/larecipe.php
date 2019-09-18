@@ -47,13 +47,19 @@ return [
     | These options configure the additional behaviors of your documentation
     | where you can limit the access to only authenticated users in your
     | system. It is false initially so that guests can view your docs.
+    | Middleware can be defined, but should not be left blank. For example,
+    | if you want all users to be able to access your docs, use wed middleware.
+    | If you want just auth users, use auth middleware. Or, make your own middleware
+    | to handle who can see your docs (don't forget to use gates for more granular control!).
     |
     |
     */
 
     'settings'       => [
-        'auth'       => false,
-        'ga_id'      => ''
+        'ga_id'      => '',
+        'middleware' => [
+            'web',
+        ]
     ],
 
     /*
