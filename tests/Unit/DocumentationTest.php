@@ -33,7 +33,7 @@ class DocumentationTest extends TestCase
             $this->documentation->replaceLinks('1.1', 'the current version is {{version}} and the route is /{{route}}')
         );
     }
-    
+
     /** @test */
     public function it_caches_the_requested_documentation_and_index_for_a_given_period()
     {
@@ -56,7 +56,7 @@ class DocumentationTest extends TestCase
         $this->documentation->get('1.0', 'bar');
         $this->assertNull(cache('larecipe.docs.1.0.bar'));
 
-        if (((int) $app_version[0] == 5 && (int) $app_version[1] >= 8) || $app_version[0] > 5) {
+        if (((int)$app_version[0] == 5 && (int)$app_version[1] >= 8) || $app_version[0] > 5) {
             $this->assertEquals($cache->checkTtlNeedsChanged(300), 300 * 60);
         } else {
             $this->assertEquals($cache->checkTtlNeedsChanged(300), 300);
@@ -75,5 +75,16 @@ class DocumentationTest extends TestCase
     {
         $content = "{{ count(['foo', 'bar']) }}";
         $this->assertEquals(2, $this->documentation->renderBlade($content));
+    }
+
+    /** @test */
+    public function it_replaces_links_with_full_site_link()
+    {
+        $baseUrl = 'http://test.domain:8000';
+        \URL::forceRootUrl($baseUrl);
+        $content = '<ul><li><a href="/{{route}}/{{version}}/overview">Overview</a></li></ul></li></ul>';
+
+        $newContent = $this->documentation->replaceLinks("2.0.0", $content);
+        $this->assertTrue(strpos($newContent, $baseUrl) !== false);
     }
 }
