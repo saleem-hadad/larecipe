@@ -25,9 +25,7 @@ class ShowDocumentationTest extends TestCase
         Config::set('larecipe.docs.landing', 'foo');
 
         // set auth to false
-        //Config::set('larecipe.settings.auth', false);  //this is deprecated with new middleware config setting and use in __construct for DocumentationController and SearchController
-        //set middleware to 'web' to simulate guest access
-        Config::set('larecipe.settings.middleware', ['web']);
+        Config::set('larecipe.settings.auth', false);
         
         // guest can view foo page
         $this->get('/docs/1.0')
@@ -74,12 +72,9 @@ class ShowDocumentationTest extends TestCase
     }
 
     /** @test */
-    public function only_auth_user_can_visit_docs_if_auth_middleware_is_set()
+    public function only_auth_user_can_visit_docs_if_auth_option_is_enabled()
     {
-        //Config::set('larecipe.settings.auth', true); //this is deprecated with new middleware config setting and use in __construct for DocumentationController and SearchController
-
-        //set middleware to 'auth' to simulate auth only access
-        Config::set('larecipe.settings.middleware', ['auth']);
+        Config::set('larecipe.settings.auth', true);
 
         $this->get('/docs/1.0')->assertRedirect('login');
     }
@@ -92,6 +87,17 @@ class ShowDocumentationTest extends TestCase
         });
 
         $this->get('/docs/1.0')->assertStatus(403);
+    }
+
+    /** @test
+     * @author wgoldstein@planelogix.com
+     */
+    public function only_auth_user_can_visit_docs_if_auth_middleware_is_set()
+    {
+        //set middleware to 'auth' to simulate auth only access
+        Config::set('larecipe.settings.middleware', ['auth']);
+
+        $this->get('/docs/1.0')->assertRedirect('login');
     }
 
     /** @test
