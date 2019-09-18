@@ -96,7 +96,9 @@ class Documentation
         $content = str_replace('{{version}}', $version, $content);
 
         $content = str_replace('{{route}}', trim(config('larecipe.docs.route'), '/'), $content);
-
+        // add base url so that if the site is running on a specific port (ex. 127.0.0.1:8000) sidebar links keep working
+        $content = preg_replace('/href=\"(.*)"/m', 'href="' . url('') . '$1' . '"' , $content);
+        
         return $content;
     }
 
