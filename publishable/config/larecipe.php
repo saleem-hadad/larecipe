@@ -122,6 +122,8 @@ return [
             'primary'    => '#787AF6',
             'secondary'  => '#2b9cf2'
         ],
+
+        'theme_order'    => null // ['LaRecipeDarkTheme', 'customTheme']
     ],
 
     /*
