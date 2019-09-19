@@ -16,7 +16,7 @@ class ThemeCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'larecipe:theme {name}';
+    protected $signature = 'larecipe:theme {name} {--R|remove}';
 
     /**
      * The console command description.
@@ -34,6 +34,12 @@ class ThemeCommand extends Command
     {
         if (! $this->hasValidNameArgument()) {
             return;
+        }
+
+        if ($this->option('remove')) {
+          $this->removeTheme();
+          $this->info('Successfully removed LaRecipe theme.');
+          return;
         }
 
         (new Filesystem)->copyDirectory(
@@ -232,5 +238,16 @@ class ThemeCommand extends Command
         foreach ($this->stubsToRename() as $stub) {
             (new Filesystem)->move($stub, str_replace('.stub', '.php', $stub));
         }
+    }
+
+    /**
+     * Remove the theme specified by vendor-name/theme
+     *
+     * @return void
+     */
+    protected function removeTheme()
+    {
+      $this->runProcess('composer remove '.$this->argument('name'), getcwd());
+      (new Filesystem)->deleteDirectory($this->themePath());
     }
 }
