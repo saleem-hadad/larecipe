@@ -22,6 +22,10 @@ class DocumentationController extends Controller
 
         if (config('larecipe.settings.auth')) {
             $this->middleware(['auth']);
+        }else{
+            if(config('larecipe.settings.middleware')){
+                $this->middleware(config('larecipe.settings.middleware'));
+            }
         }
     }
 

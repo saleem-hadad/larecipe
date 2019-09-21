@@ -13,6 +13,7 @@ before_script:
 - travis_retry composer self-update
 - travis_retry composer update --no-interaction --prefer-dist
 - composer show laravel/framework
+- composer dump-autoload
 
 script:
 - vendor/bin/phpunit
