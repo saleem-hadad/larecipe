@@ -58,6 +58,9 @@ Visit your app domain with `/docs` endpoint. That's it.
 * [Wave](https://wave.devdojo.com/docs) - Wave is the perfect starter kit for building your next great idea
 * [Inspector](https://www.inspector.dev/larecipe-is-now-our-docs-center/) - Laravel real-time performance & error alerting
 * [Nova ADC](https://nova-adc.com/docs/1.0/overview) - Nova is a cloud-based (or on-premise) SaaS application delivery controller.
+* [WooSignal](https://woosignal.com/docs/api/1.0/overview) - Fastest WooCommerce
+App Templates.
+* [AddChat](https://addchat-docs.classiebit.com/docs/1.0/introduction) - All-in-one multi-purpose Chat Widget For Laravel & Codeigniter websites.
 * Put your docs here 😍👌
 
 
