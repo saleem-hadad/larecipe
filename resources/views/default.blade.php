@@ -43,9 +43,13 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         @foreach(LaRecipe::allStyles() as $name => $path)
-            <link rel="stylesheet" href="{{ route('larecipe.styles', $name) }}">
+            @if (preg_match('/^https?:\/\//', $path))
+                <link rel="stylesheet" href="{{ $path }}">
+            @else
+                <link rel="stylesheet" href="{{ route('larecipe.styles', $name) }}">
+            @endif
         @endforeach
-		
+
     </head>
     <body>
         <div id="app" v-cloak>
@@ -89,7 +93,11 @@
         <!-- /Google Analytics -->
 
         @foreach (LaRecipe::allScripts() as $name => $path)
-            <script src="{{ route('larecipe.scripts', $name) }}"></script>
+            @if (preg_match('/^https?:\/\//', $path))
+                <script src="{{ $path }}"></script>
+            @else
+                <script src="{{ route('larecipe.scripts', $name) }}"></script>
+            @endif
         @endforeach
 
         <script>
