@@ -26,9 +26,11 @@
         <!-- CSS -->
         <link rel="stylesheet" href="{{ larecipe_assets('css/app.css') }}">
 
-        <!-- Favicon -->
-        <link rel="apple-touch-icon" href="{{ asset(config('larecipe.ui.fav')) }}">
-        <link rel="shortcut icon" type="image/png" href="{{ asset(config('larecipe.ui.fav')) }}"/>
+        @if (config('larecipe.ui.fav'))
+            <!-- Favicon -->
+            <link rel="apple-touch-icon" href="{{ asset(config('larecipe.ui.fav')) }}">
+            <link rel="shortcut icon" type="image/png" href="{{ asset(config('larecipe.ui.fav')) }}"/>
+        @endif
 
         <!-- FontAwesome -->
         <link rel="stylesheet" href="{{ larecipe_assets('css/font-awesome.css') }}">
