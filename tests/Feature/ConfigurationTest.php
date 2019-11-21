@@ -8,6 +8,20 @@ use BinaryTorch\LaRecipe\Tests\TestCase;
 class ConfigurationTest extends TestCase
 {
     /** @test */
+    public function favicon_is_visible_only_if_ui_fav_is_set()
+    {
+        Config::set('larecipe.ui.fav', '');
+        $this->get('/docs/1.0')
+            ->assertDontSee('rel="apple-touch-icon"')
+            ->assertDontSee('rel="shortcut icon"');
+
+        Config::set('larecipe.ui.fav', 'http://localhost/favicon.ico');
+        $this->get('/docs/1.0')
+            ->assertSee('rel="apple-touch-icon" href="http://localhost/favicon.ico"')
+            ->assertSee('rel="shortcut icon" type="image/png" href="http://localhost/favicon.ico"');
+    }
+
+    /** @test */
     public function ga_script_is_visible_only_if_ga_id_is_set()
     {
         Config::set('larecipe.settings.ga_id', '');
@@ -76,7 +90,7 @@ class ConfigurationTest extends TestCase
         Config::set('larecipe.forum.enabled', false);
         $this->get('/docs/1.0')
             ->assertDontSee('disqus_thread');
-            
+
         Config::set('larecipe.forum.default', 'disqus');
         Config::set('larecipe.forum.enabled', true);
         Config::set('larecipe.forum.services.disqus.site_name', 'larecipe');
