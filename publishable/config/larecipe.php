@@ -61,6 +61,22 @@ return [
             'web',
         ]
     ],
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Navigation Settings
+    |--------------------------------------------------------------------------
+    |
+    | These options will allow you to show or hide specific elements of
+    | the default navigation bar.
+    |
+    */
+    
+    'nav'=>[
+	    'hideGithub' => false,
+	    'hideVersions' => false,
+	    'hideAccount' => false
+    ],
 
     /*
     |--------------------------------------------------------------------------
