@@ -26,12 +26,12 @@
                     <i class="fas fa-search" id="search-button-icon"></i>
                 </larecipe-button>
             @endif
-			@if (config('larecipe.nav.hideGithub', false))
+			@if (config('larecipe.nav.hideGithub') == false)
             <larecipe-button tag="a" href="https://github.com/saleem-hadad/larecipe" target="__blank" type="black" class="mx-2 px-4">
                 <i class="fab fa-github"></i>
             </larecipe-button>
             @endif
-			@if (config('larecipe.nav.hideVersions', false))
+			@if (config('larecipe.nav.hideVersions') == false)
             {{-- versions dropdown --}}
             <larecipe-dropdown>
                 <larecipe-button type="primary" class="flex">
@@ -51,7 +51,7 @@
             {{-- /versions dropdown --}}
 			@endif
 			
-			@if (config('larecipe.nav.hideAccount', false))
+			@if (config('larecipe.nav.hideAccount') == false)
 				@auth
 	                {{-- account --}}
 	                <larecipe-dropdown>
