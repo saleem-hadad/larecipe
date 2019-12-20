@@ -27,7 +27,7 @@
 
 ![LaRecipe Screenshot](https://larecipe.binarytorch.com.my/images/screenshot.png#)
 
-## Official Tools and Assets Support
+## Official tools and assets support
 
 | Title | v1.x | v2.x |
 | :- | :-: | :-: |
