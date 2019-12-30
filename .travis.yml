@@ -4,6 +4,7 @@ sudo: true
 
 php:
 - 7.3
+- 7.4
 
 services:
 - sqlite
