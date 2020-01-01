@@ -73,6 +73,16 @@ class LaRecipe
      */
     public static function allStyles()
     {
-        return static::$styles;
+        $styles = static::$styles;
+
+        if (config('larecipe.ui.theme_order')) {
+            $newStyleOrder = [];
+            foreach (config('larecipe.ui.theme_order') as $styleName) {
+                $newStyleOrder[$styleName] = $styles[$styleName];
+            }
+            $styles = $newStyleOrder;
+        }
+
+        return $styles;
     }
 }

@@ -113,4 +113,17 @@ class ShowDocumentationTest extends TestCase
 
         $this->get('/docs/1.0')->assertOk();
     }
+
+    /** @test */
+    public function relative_anchor_link_support()
+    {
+        // set the docs path and landing
+        Config::set('larecipe.docs.path', 'tests/views/docs');
+        Config::set('larecipe.docs.landing', 'anchor');
+
+        $this->get('/docs/1.0')
+            ->assertStatus(200)
+            ->assertSee('/docs/1.0#foo')
+            ->assertSee('/docs/1.0#bar');
+    }
 }

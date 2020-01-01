@@ -26,7 +26,7 @@
     "medium-zoom": "^1.0.4",
     "opencollective": "^1.0.3",
     "opencollective-postinstall": "^2.0.2",
-    "smoothscroll-for-websites": "1.4.9",
+    "smoothscroll-for-websites": "1.4.10",
     "vue2-transitions": "0.2.3"
   },
   "collective": {
