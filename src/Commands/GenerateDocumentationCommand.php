@@ -49,7 +49,7 @@ class GenerateDocumentationCommand extends Command
     {
         $publishedVersions = config('larecipe.versions.published');
 
-        $this->info('Reading all docs versions, found: '.implode($publishedVersions), ',');
+        $this->info('Reading all docs versions, found: '.implode( ',',$publishedVersions));
         foreach ($publishedVersions as $version) {
             $versionDirectory = config('larecipe.docs.path').'/'.$version;
 
