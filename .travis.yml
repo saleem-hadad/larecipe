@@ -1,6 +1,6 @@
 language: php
 
-sudo: true
+sudo: false
 
 php:
 - 7.3
@@ -9,11 +9,9 @@ services:
 - sqlite
 
 before_script:
-- composer install
-- travis_retry composer self-update
-- travis_retry composer update --no-interaction --prefer-dist
+- travis_retry composer install --no-interaction --prefer-dist
 - composer show laravel/framework
-- composer dump-autoload
 
 script:
+- find src/ -type f -name '*.php' -print0 | xargs -0 -L1 -P4 -- php -l
 - vendor/bin/phpunit
