@@ -4,6 +4,13 @@ All notable changes to `larecipe` will be documented in this file
 
 ---
 
+<a name="2.2.2"></a>
+# [2.2.2](https://github.com/saleem-hadad/larecipe/releases/tag/v2.2.2) (2020-01-21)
+
+### Enhancement & Fixes
+
+- Add support for PHP 7.4 - ([#189](https://github.com/saleem-hadad/larecipe/pull/189))
+
 <a name="2.2.1"></a>
 # [2.2.1](https://github.com/saleem-hadad/larecipe/releases/tag/v2.2.1) (2019-11-08)
 
