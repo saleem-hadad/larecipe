@@ -38,7 +38,7 @@ class ShowDocumentationTest extends TestCase
                 'currentSection',
                 'canonical'
             ])
-            ->assertSee('<h1>Foo</h1>')
+            ->assertSee('<h1>Foo</h1>', false)
             ->assertSee('Get Started')
             ->assertSee('Section 1')
             ->assertStatus(200);
