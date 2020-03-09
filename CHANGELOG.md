@@ -3,6 +3,14 @@
 All notable changes to `larecipe` will be documented in this file
 
 ---
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/saleem-hadad/larecipe/releases/tag/v2.3.0) (2020-03-09)
+
+### Enhancement & Fixes
+
+- Add support for Laravel 7 - ([#197](https://github.com/saleem-hadad/larecipe/pull/197))
+- Fix Laravel ^7.0.x compatibility (Symfony/process) - ([#202](https://github.com/saleem-hadad/larecipe/pull/202))
+- Allow remote asset URLs & empty favicon fix - ([#183](https://github.com/saleem-hadad/larecipe/pull/183))
 
 <a name="2.2.3"></a>
 # [2.2.3](https://github.com/saleem-hadad/larecipe/releases/tag/v2.2.3) (2020-01-21)
