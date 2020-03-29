@@ -76,4 +76,11 @@ class DocumentationTest extends TestCase
         $content = "{{ count(['foo', 'bar']) }}";
         $this->assertEquals(2, $this->documentation->renderBlade($content));
     }
+
+    /** @test */
+    public function it_does_not_render_blade_content_within_code_blocks()
+    {
+        $content = "<pre><code>{{ count(['foo', 'bar']) }}</code></pre>";
+        $this->assertEquals($content, $this->documentation->renderBlade($content));
+    }
 }
