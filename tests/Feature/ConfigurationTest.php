@@ -12,13 +12,13 @@ class ConfigurationTest extends TestCase
     {
         Config::set('larecipe.ui.fav', '');
         $this->get('/docs/1.0')
-            ->assertDontSee('rel="apple-touch-icon"')
-            ->assertDontSee('rel="shortcut icon"');
+            ->assertDontSee('rel="apple-touch-icon"', false)
+            ->assertDontSee('rel="shortcut icon"', false);
 
         Config::set('larecipe.ui.fav', 'http://localhost/favicon.ico');
         $this->get('/docs/1.0')
-            ->assertSee('rel="apple-touch-icon" href="http://localhost/favicon.ico"')
-            ->assertSee('rel="shortcut icon" type="image/png" href="http://localhost/favicon.ico"');
+            ->assertSee('rel="apple-touch-icon" href="http://localhost/favicon.ico"', false)
+            ->assertSee('rel="shortcut icon" type="image/png" href="http://localhost/favicon.ico"', false);
     }
 
     /** @test */
