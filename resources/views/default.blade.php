@@ -44,7 +44,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        @foreach(LaRecipe::allStyles() as $name => $path)
+        @foreach(BinaryTorch\LaRecipe\LaRecipe::allStyles() as $name => $path)
             @if (preg_match('/^https?:\/\//', $path))
                 <link rel="stylesheet" href="{{ $path }}">
             @else
@@ -94,7 +94,7 @@
         @endif
         <!-- /Google Analytics -->
 
-        @foreach (LaRecipe::allScripts() as $name => $path)
+        @foreach (BinaryTorch\LaRecipe\LaRecipe::allScripts() as $name => $path)
             @if (preg_match('/^https?:\/\//', $path))
                 <script src="{{ $path }}"></script>
             @else
