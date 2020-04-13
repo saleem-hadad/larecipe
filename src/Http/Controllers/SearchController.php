@@ -35,7 +35,7 @@ class SearchController extends Controller
      * @param $version
      * @return \Illuminate\Http\JsonResponse
      */
-    public function __invoke($version)
+    public function show($version)
     {
         $this->authorizeAccessSearch($version);
         

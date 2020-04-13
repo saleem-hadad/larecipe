@@ -11,7 +11,7 @@ class StyleController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function __invoke(Request $request)
+    public function show(Request $request)
     {
         return response(
             file_get_contents(LaRecipe::allStyles()[$request->style]),
