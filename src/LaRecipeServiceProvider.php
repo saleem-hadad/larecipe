@@ -22,7 +22,7 @@ class LaRecipeServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'larecipe');
 
         Route::group($this->routesConfig(), function () {
-            $this->loadRoutesFrom(__DIR__.'/../routes/LaRecipe.php');
+            require __DIR__.'/../routes/LaRecipe.php';
         });
     }
 
