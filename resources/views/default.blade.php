@@ -66,7 +66,7 @@
 
 
         <script>
-            window.config = @json([]);
+            window.config = <?php echo json_encode([]); ?>
         </script>
 
         <script type="text/javascript">
