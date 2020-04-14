@@ -21,6 +21,9 @@
 </p>
 <br/><br/>
 
+# 5.1
+This branch was forked and adjusted to be compatible with Laravel 5.1
+
 # LaRecipe 🍪
 
 **LaRecipe** is simply a code-driven package provides an easy way to create beautiful documentation for your product or application inside your Laravel app.
