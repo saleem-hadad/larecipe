@@ -77,7 +77,7 @@ class LaRecipeServiceProvider extends ServiceProvider
                 "{$publishablePath}/assets/" => public_path('vendor/binarytorch/larecipe/assets'),
             ],
             'larecipe_views' => [
-                dirname(__DIR__) . "/resources/views/partials" => $this->app->make('path.base') . DIRECTORY_SEPARATOR . 'views/vendor/larecipe/partials',
+                dirname(__DIR__) . "/resources/views/partials" => $this->app->make('path.base') . DIRECTORY_SEPARATOR . 'resources/views/vendor/larecipe/partials',
             ],
         ];
 
