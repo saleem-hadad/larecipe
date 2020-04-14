@@ -49,7 +49,7 @@
             </larecipe-dropdown>
             {{-- /versions dropdown --}}
 
-            @auth
+            @if(auth()->check())
                 {{-- account --}}
                 <larecipe-dropdown>
                     <larecipe-button type="white" class="ml-2">
@@ -65,7 +65,7 @@
                     </template>
                 </larecipe-dropdown>
                 {{-- /account --}}
-            @endauth
+            @endif
         </div>
     </nav>
 </div>
