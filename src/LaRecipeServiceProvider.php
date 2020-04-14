@@ -22,7 +22,7 @@ class LaRecipeServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'larecipe');
 
         Route::group($this->routesConfig(), function () {
-            $this->loadRoutesFrom(__DIR__.'/../routes/LaRecipe.php');
+            require __DIR__.'/../routes/LaRecipe.php';
         });
     }
 
@@ -77,7 +77,7 @@ class LaRecipeServiceProvider extends ServiceProvider
                 "{$publishablePath}/assets/" => public_path('vendor/binarytorch/larecipe/assets'),
             ],
             'larecipe_views' => [
-                dirname(__DIR__) . "/resources/views/partials" => resource_path('views/vendor/larecipe/partials'),
+                dirname(__DIR__) . "/resources/views/partials" => $this->app->make('path.base') . DIRECTORY_SEPARATOR . 'resources/views/vendor/larecipe/partials',
             ],
         ];
 
