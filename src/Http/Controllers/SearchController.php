@@ -49,12 +49,12 @@ class SearchController extends Controller
      */
     protected function authorizeAccessSearch($version)
     {
-        abort_if(
-            $this->documentationRepository->isNotPublishedVersion($version)
+        if ($this->documentationRepository->isNotPublishedVersion($version)
             ||
             config('larecipe.search.default') != 'internal'
-            || 
-            ! config('larecipe.search.enabled')
-        , 403);
+            ||
+            ! config('larecipe.search.enabled')) {
+            abort(403);
+        }
     }
 }
