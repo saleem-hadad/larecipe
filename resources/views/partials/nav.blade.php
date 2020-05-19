@@ -1,4 +1,4 @@
-<div class="fixed pin-t pin-x z-40">
+<div class="fixed top-0 left-0 right-0 z-40">
     <div class="bg-gradient-primary text-white h-1"></div>
 
     <nav class="flex items-center justify-between text-black bg-navbar shadow-xs h-16">
@@ -6,7 +6,7 @@
             <a href="{{ url('/') }}" class="flex items-center flex-no-shrink text-black mx-4">
                 @include("larecipe::partials.logo")
 
-                <p class="inline-block font-semibold mx-1 text-grey-dark">
+                <p class="inline-block font-semibold mx-1 text-gray-600">
                     {{ config('app.name') }}
                 </p>
             </a>
@@ -38,10 +38,10 @@
                 </larecipe-button>
 
                 <template slot="list">
-                    <ul class="list-reset">
+                    <ul class="list-none p-0">
                         @foreach ($versions as $version)
-                            <li class="py-2 hover:bg-grey-lightest">
-                                <a class="px-6 text-grey-darkest" href="{{ route('larecipe.show', ['version' => $version, 'page' => $currentSection]) }}">{{ $version }}</a>
+                            <li class="py-2 hover:bg-gray-100">
+                                <a class="px-6 text-gray-800" href="{{ route('larecipe.show', ['version' => $version, 'page' => $currentSection]) }}">{{ $version }}</a>
                             </li>
                         @endforeach
                     </ul>

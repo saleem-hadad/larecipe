@@ -4,7 +4,7 @@ var tailwindcss = require('tailwindcss');
 
 mix.options({
 		processCssUrls: false,
-		postCss: [ tailwindcss('./tailwind.js') ],
+		postCss: [ tailwindcss('./tailwind.config.js') ],
 	})
 	.sass('resources/sass/app.scss', 'publishable/assets/css')
     .sass('resources/sass/font-awesome.scss', 'publishable/assets/css')

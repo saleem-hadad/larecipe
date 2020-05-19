@@ -42,15 +42,15 @@
       margin-top: 20px;
 
       .page-title {
-        @apply text-grey-darker font-bold;
+        @apply text-gray-700 font-bold;
       }
 
       hr {
-        @apply bg-grey-lighter w-full border-t border-grey-light my-2;
+        @apply bg-gray-200 w-full border-t border-gray-400 my-2;
       }
 
       .heading {
-        @apply w-full mb-0 text-grey;
+        @apply w-full mb-0 text-gray-500;
         padding: 5px 10px;
         cursor: pointer;
 

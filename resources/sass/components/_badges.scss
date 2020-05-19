@@ -1,8 +1,8 @@
 .badge {
     @apply px-4 py-2 text-sm;
 
-    &.is-white { @apply bg-grey-lightest text-grey-darkest; }
-    &.is-black { @apply bg-grey-darkest text-white; }
+    &.is-white { @apply bg-gray-100 text-gray-800; }
+    &.is-black { @apply bg-gray-800 text-white; }
     &.is-primary { @apply bg-primary text-white; }
     &.is-secondary { @apply bg-secondary text-white; }
     &.is-success { @apply bg-success text-white; }

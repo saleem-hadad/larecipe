@@ -1,5 +1,5 @@
 <template>
-  <div class="search-box fixed pin-t border-t" v-click-outside="close">
+  <div class="search-box fixed top-0 border-t" v-click-outside="close">
     <input
         placeholder="Search..."
         class="form-control outline-none algolia-search-input text-center"/>

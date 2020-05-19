@@ -165,7 +165,7 @@ export default class LaRecipe {
               var match = text.match(regex);
 
               if (match) {
-                  $(this).parent().addClass('list-reset pl-0');
+                  $(this).parent().addClass('list-none p-0');
                   var checkbox = '<input type="checkbox" disabled=""' + (match[0].includes('x') ? ' checked=""' : '') + '>'
                   var html     = text.replace(regex, checkbox);
                   $(this).html(html);
