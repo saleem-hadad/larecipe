@@ -12,11 +12,10 @@
   },
   "devDependencies": {
     "cross-env": "^5.1",
-    "jquery": "^3.4.0",
     "laravel-mix": "^2.0",
-    "tailwindcss": "^0.7.4",
     "tar": "^4.4.10",
-    "vue": "^2.6.10",
+    "opencollective": "^1.0.3",
+    "opencollective-postinstall": "^2.0.2",
     "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
@@ -24,9 +23,9 @@
     "clipboard": "^2.0.4",
     "docsearch.js": "^2.6.3",
     "medium-zoom": "^1.0.4",
-    "opencollective": "^1.0.3",
-    "opencollective-postinstall": "^2.0.2",
-    "smoothscroll-for-websites": "1.4.10",
+    "vue": "^2.6.10",
+    "jquery": "^3.4.0",
+    "tailwindcss": "^0.7.4",
     "vue2-transitions": "0.2.3"
   },
   "collective": {
