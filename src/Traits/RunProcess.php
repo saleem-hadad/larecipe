@@ -15,7 +15,7 @@ trait RunProcess
      */
     protected function runProcess($command, $path)
     {
-        $process = (new Process($command, $path))->setTimeout(null);
+        $process = (new Process(explode(" ", $command), $path))->setTimeout(null);
 
         if ('\\' !== DIRECTORY_SEPARATOR && file_exists('/dev/tty') && is_readable('/dev/tty')) {
             $process->setTty(true);
