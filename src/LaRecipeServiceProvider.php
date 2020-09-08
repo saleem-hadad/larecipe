@@ -48,7 +48,6 @@ class LaRecipeServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerConfigs();
-        $this->loadHelpers();
 
         if ($this->app->runningInConsole()) {
             $this->registerPublishableResources();
@@ -83,16 +82,6 @@ class LaRecipeServiceProvider extends ServiceProvider
 
         foreach ($publishable as $group => $paths) {
             $this->publishes($paths, $group);
-        }
-    }
-
-    /**
-     * Load helpers.
-     */
-    protected function loadHelpers()
-    {
-        foreach (glob(__DIR__.'/Helpers/*.php') as $filename) {
-            require_once $filename;
         }
     }
 
