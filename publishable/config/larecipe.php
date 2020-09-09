@@ -199,7 +199,7 @@ return [
     'blade-parser' => [
         'regex' => [
             'code-blocks' => [
-                'match' => '/\<pre\>(.|\n)*<\/pre\>/',
+                'match' => '/\<pre\>(.|\n)*+<\/pre\>/',
                 'replacement' => '<code-block>',
             ]
         ]
