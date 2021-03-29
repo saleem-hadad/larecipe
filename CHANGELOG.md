@@ -3,6 +3,16 @@
 All notable changes to `larecipe` will be documented in this file
 
 ---
+
+<a name="2.4.0"></a>
+# [2.4.0](https://github.com/saleem-hadad/larecipe/releases/tag/v2.4.0) (2020-09-08)
+
+### Enhancement & Fixes
+
+- Add support for Laravel 8 - ([#235](https://github.com/saleem-hadad/larecipe/pull/235))
+- Permit show blade directives - ([#234](https://github.com/saleem-hadad/larecipe/pull/234))
+- Exclude code blocks from Blade compilation - ([#206](https://github.com/saleem-hadad/larecipe/pull/206))
+
 <a name="2.3.0"></a>
 # [2.3.0](https://github.com/saleem-hadad/larecipe/releases/tag/v2.3.0) (2020-03-09)
 

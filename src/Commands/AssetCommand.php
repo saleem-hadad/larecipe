@@ -149,7 +149,8 @@ class AssetCommand extends Command
      */
     protected function installNpmDependencies()
     {
-        $this->runProcess('npm set progress=false && npm install', $this->assetPath());
+        $this->runProcess('npm set progress=false', $this->assetPath());
+        $this->runProcess('npm install', $this->assetPath());
     }
 
     /**

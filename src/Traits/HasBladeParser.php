@@ -41,13 +41,75 @@ trait HasBladeParser
     }
 
     /**
-     * Compile blade content.
+     * Compile blade content, except within code blocks.
      *
-     * @param  $content
+     * @param  $rawContent
      * @return string
      */
-    public function compileBlade($content)
+    public function compileBlade($rawContent)
     {
-        return Blade::compileString($content);
+        $compilableContent = $this->stripCodeBlocks($rawContent);
+
+        $compiledContent = Blade::compileString($compilableContent);
+
+        return $this->mergeContent($compiledContent, $rawContent);
+    }
+
+    /**
+     * Replace code blocks with a placeholder string.
+     *
+     * @param $content
+     * @return string|string[]|null
+     */
+    private function stripCodeBlocks($content)
+    {
+        return preg_replace(
+            config('larecipe.blade-parser.regex.code-blocks.match'),
+            config('larecipe.blade-parser.regex.code-blocks.replacement'),
+            $content
+        );
+    }
+
+    /**
+     * Add in stubbed out code blocks with the original content.
+     *
+     * @param $compiledContent
+     * @param $originalContent
+     * @return string|string[]|null
+     */
+    private function mergeContent($compiledContent, $originalContent)
+    {
+        $replacement = config('larecipe.blade-parser.regex.code-blocks.replacement');
+        $codeBlocks = $this->getCodeBlocks($originalContent);
+
+        foreach ($codeBlocks as $codeBlock) {
+            $compiledContent = preg_replace(
+                "/{$replacement}/",
+                $codeBlock,
+                $compiledContent,
+                1
+            );
+        }
+
+        return $compiledContent;
+    }
+
+    /**
+     * Find all code blocks in the current content.
+     *
+     * @param $rawContent
+     * @return mixed
+     */
+    private function getCodeBlocks($rawContent)
+    {
+        $pattern = config('larecipe.blade-parser.regex.code-blocks.match');
+
+        preg_match_all(
+            $pattern,
+            $rawContent,
+            $codeBlocks
+        );
+
+        return $codeBlocks[0];
     }
 }
