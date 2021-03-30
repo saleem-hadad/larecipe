@@ -2,7 +2,7 @@
 
 namespace BinaryTorch\LaRecipe\Traits;
 
-use ParsedownExtra;
+use League\CommonMark\CommonMarkConverter;
 
 trait HasMarkdownParser
 {
@@ -13,6 +13,11 @@ trait HasMarkdownParser
      */
     public function parse($text)
     {
-        return (new ParsedownExtra)->text($text);
+        $converter = new CommonMarkConverter([
+            'html_input'         => 'allow',
+            'allow_unsafe_links' => true,
+        ]);
+
+        return $converter->convertToHtml($text);
     }
 }

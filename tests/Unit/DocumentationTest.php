@@ -20,9 +20,9 @@ class DocumentationTest extends TestCase
     /** @test */
     public function it_can_parse_content()
     {
-        $this->assertEquals('<p>hello</p>', $this->documentation->parse('hello'));
+        $this->assertEquals("<p>hello</p>\n", $this->documentation->parse('hello'));
 
-        $this->assertEquals('<h1>hello</h1>', $this->documentation->parse('#hello'));
+        $this->assertEquals("<h1>Hello World!</h1>\n", $this->documentation->parse('# Hello World!'));
     }
 
     /** @test */

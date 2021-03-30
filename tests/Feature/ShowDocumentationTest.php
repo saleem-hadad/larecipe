@@ -20,7 +20,6 @@ class ShowDocumentationTest extends TestCase
     /** @test */
     public function a_guest_can_access_any_documentation_if_auth_is_not_enabled()
     {
-        // set the docs path and landing
         Config::set('larecipe.docs.path', 'tests/views/docs');
         Config::set('larecipe.docs.landing', 'foo');
 
@@ -47,7 +46,6 @@ class ShowDocumentationTest extends TestCase
     /** @test */
     public function a_guest_will_be_redirected_to_default_version_if_the_given_version_not_exists()
     {
-        // set the docs path and landing
         Config::set('larecipe.docs.path', 'tests/views/docs');
         Config::set('larecipe.docs.landing', 'foo');
         Config::set('larecipe.versions.published', ['1.0']);
@@ -61,7 +59,6 @@ class ShowDocumentationTest extends TestCase
     /** @test */
     public function a_guest_may_not_get_contents_of_not_exists_documentation()
     {
-        // set the docs path and landing
         Config::set('larecipe.docs.path', 'tests/views/docs');
         Config::set('larecipe.docs.landing', 'foo');
 
@@ -89,9 +86,7 @@ class ShowDocumentationTest extends TestCase
         $this->get('/docs/1.0')->assertStatus(403);
     }
 
-    /** @test
-     * @author wgoldstein@planelogix.com
-     */
+    /** @test */
     public function only_auth_user_can_visit_docs_if_auth_middleware_is_set()
     {
         //set middleware to 'auth' to simulate auth only access
@@ -100,12 +95,9 @@ class ShowDocumentationTest extends TestCase
         $this->get('/docs/1.0')->assertRedirect('login');
     }
 
-    /** @test
-     * @author wgoldstein@planelogix.com
-     */
+    /** @test */
     public function auth_or_public_user_can_visit_docs_if_web_middleware_is_set()
     {
-        // set the docs path and landing
         Config::set('larecipe.docs.path', 'tests/views/docs');
         Config::set('larecipe.docs.landing', 'foo');
 
@@ -117,7 +109,6 @@ class ShowDocumentationTest extends TestCase
     /** @test */
     public function relative_anchor_link_support()
     {
-        // set the docs path and landing
         Config::set('larecipe.docs.path', 'tests/views/docs');
         Config::set('larecipe.docs.landing', 'anchor');
 

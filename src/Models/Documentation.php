@@ -50,9 +50,11 @@ class Documentation
             $path = base_path(config('larecipe.docs.path').'/'.$version.'/index.md');
 
             if ($this->files->exists($path)) {
-                $parsedContent = $this->parse($this->files->get($path));
+                $parsedContent = $this->parse($this->replaceNewLinks($version, $this->files->get($path)));
+                
+                $parsedContent = $this->replaceLinks($version, $parsedContent);
 
-                return $this->replaceLinks($version, $parsedContent);
+                return $parsedContent;
             }
 
             return null;
@@ -73,8 +75,8 @@ class Documentation
             $path = base_path(config('larecipe.docs.path').'/'.$version.'/'.$page.'.md');
 
             if ($this->files->exists($path)) {
-                $parsedContent = $this->parse($this->files->get($path));
-
+                $parsedContent = $this->parse($this->replaceNewLinks($version,  $this->files->get($path) ));
+                
                 $parsedContent = $this->replaceLinks($version, $parsedContent);
 
                 return $this->renderBlade($parsedContent, $data);
@@ -98,6 +100,15 @@ class Documentation
         $content = str_replace('{{route}}', trim(config('larecipe.docs.route'), '/'), $content);
 
         $content = str_replace('"#', '"'.request()->getRequestUri().'#', $content);
+
+        return $content;
+    }
+
+    public static function replaceNewLinks($version, $content)
+    {
+        $content = str_replace('{{version}}', $version, $content);
+
+        $content = str_replace('{{route}}', trim(config('larecipe.docs.route'), '/'), $content);
 
         return $content;
     }
