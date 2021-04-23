@@ -59,6 +59,27 @@ class Documentation
         }, 'larecipe.docs.'.$version.'.index');
     }
 
+     /**
+     * Get the specific product documentation index page.
+     *
+     * @param  string  $version
+     * @return string
+     */
+    public function getProductIndex($product, $version)
+    {
+        return $this->cache->remember(function() use($product,$version) {
+            $path = base_path(config('larecipe.docs.path').'/'.$product.'/'.$version.'/index.md');
+
+            if ($this->files->exists($path)) {
+                $parsedContent = $this->parse($this->files->get($path));
+
+                return $this->replaceLinks($version, $parsedContent, $product);
+            }
+
+            return null;
+        }, 'larecipe.docs.'.$product.'.'.$version.'.index');
+    }
+
     /**
      * Get the given documentation page.
      *
@@ -85,15 +106,44 @@ class Documentation
     }
 
     /**
+     * Get the specific product given documentation page.
+     *
+     * @param $version
+     * @param $page
+     * @param array $data
+     * @return mixed
+     */
+    public function getProduct($product, $version, $page, $data = [])
+    {
+        return $this->cache->remember(function() use($product, $version, $page, $data) {
+            $path = base_path(config('larecipe.docs.path').'/'.$product.'/'.$version.'/'.$page.'.md');
+
+            if ($this->files->exists($path)) {
+                $parsedContent = $this->parse($this->files->get($path));
+
+                $parsedContent = $this->replaceLinks($version, $parsedContent, $product);
+
+                return $this->renderBlade($parsedContent, $data);
+            }
+
+            return null;
+        }, 'larecipe.docs.'.$product.'.'.$version.'.'.$page);
+    }
+
+    /**
      * Replace the version and route placeholders.
      *
      * @param  string  $version
      * @param  string  $content
+     * @param  string|null  $product
      * @return string
      */
-    public static function replaceLinks($version, $content)
+    public static function replaceLinks($version, $content, $product = null)
     {
         $content = str_replace('{{version}}', $version, $content);
+
+        if(!is_null($product))
+            $content = str_replace('{{product}}', $product, $content);
 
         $content = str_replace('{{route}}', trim(config('larecipe.docs.route'), '/'), $content);
 
@@ -107,12 +157,16 @@ class Documentation
      *
      * @param  string  $version
      * @param  string  $page
+     * @param  string  $product
      * @return bool
      */
-    public function sectionExists($version, $page)
+    public function sectionExists($version, $page, $product = null)
     {
-        return $this->files->exists(
-            base_path(config('larecipe.docs.path').'/'.$version.'/'.$page.'.md')
-        );
+        if(!is_null($product))
+            $path = base_path(config('larecipe.docs.path').'/' . $product.'/' .$version.'/'.$page.'.md');
+        else
+            $path = base_path(config('larecipe.docs.path').'/' . $version.'/'.$page.'.md');
+
+        return $this->files->exists( $path );
     }
 }

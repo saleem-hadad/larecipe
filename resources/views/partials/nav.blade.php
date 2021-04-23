@@ -31,6 +31,28 @@
                 <i class="fab fa-github"></i>
             </larecipe-button>
 
+            @if($products && !empty($products))
+            <larecipe-dropdown class="mx-2 px-4">
+                <larecipe-button type="primary" class="flex">
+                    {{ $product ?? "Default" }} <i class="mx-2 fa fa-angle-down"></i>
+                </larecipe-button>
+
+                <template slot="list">
+                    <ul class="list-reset">
+                        @foreach ($products as $productItem)
+                            <li class="py-2 hover:bg-grey-lightest">
+                                @if ($productItem == "larecipe_default")
+                                    <a class="px-6 text-grey-darkest" href="{{ route('larecipe.show', ['version' => $currentVersion, 'page' => $currentSection]) }}">{{ "Default" }}</a>
+                                @else
+                                    <a class="px-6 text-grey-darkest" href="{{ route('larecipe.show.product', [ 'version' => $currentVersion, 'page' => $currentSection, 'product' => $productItem]) }}">{{ $productItem }}</a>
+                                @endif
+                            </li>
+                        @endforeach
+                    </ul>
+                </template>
+            </larecipe-dropdown>
+            @endif
+
             {{-- versions dropdown --}}
             <larecipe-dropdown>
                 <larecipe-button type="primary" class="flex">
@@ -41,7 +63,11 @@
                     <ul class="list-reset">
                         @foreach ($versions as $version)
                             <li class="py-2 hover:bg-grey-lightest">
-                                <a class="px-6 text-grey-darkest" href="{{ route('larecipe.show', ['version' => $version, 'page' => $currentSection]) }}">{{ $version }}</a>
+                                @if ($product)
+                                    <a class="px-6 text-grey-darkest" href="{{ route('larecipe.show.product', ['version' => $version, 'page' => $currentSection, 'product' => $product ]) }}">{{ $version }}</a>
+                                @else
+                                    <a class="px-6 text-grey-darkest" href="{{ route('larecipe.show', ['version' => $version, 'page' => $currentSection]) }}">{{ $version }}</a>
+                                @endif
                             </li>
                         @endforeach
                     </ul>

@@ -58,6 +58,36 @@ class DocumentationRepository
         return $this;
     }
 
+     /**
+     * @param $product
+     * @param $version
+     * @param null $page
+     * @param array $data
+     * @return $this|DocumentationRepository
+     */
+    public function getProduct($product, $version, $page = null, $data = [])
+    {
+        $this->version = $version;
+
+        $this->product = $product;
+
+        $this->sectionPage = $page ?: config('larecipe.docs.landing');
+
+        $this->index = $this->documentation->getProductIndex($product, $version);
+
+        $this->content = $this->documentation->getProduct($product, $version, $this->sectionPage, $data);
+
+        if (is_null($this->content)) {
+            return $this->prepareNotFound();
+        }
+
+        $this->prepareTitle()
+            ->prepareProductCanonical()
+            ->prepareSection($version, $page, $product);
+
+        return $this;
+    }
+
     /**
      * If the docs content is empty then show 404 page.
      *
@@ -92,14 +122,14 @@ class DocumentationRepository
      *
      * @param $version
      * @param $page
+     * @param $product
      * @return $this
      */
-    protected function prepareSection($version, $page)
+    protected function prepareSection($version, $page, $product = null)
     {
-        if ($this->documentation->sectionExists($version, $page)) {
+        if ($this->documentation->sectionExists($version, $page, $product)) {
             $this->currentSection = $page;
         }
-
         return $this;
     }
 
@@ -121,6 +151,45 @@ class DocumentationRepository
     }
 
     /**
+     * Prepare the canonical link for product page.
+     *
+     * @return $this
+     */
+    protected function prepareProductCanonical()
+    {
+        if ($this->documentation->sectionExists($this->defaultVersion, $this->sectionPage, $this->product)) {
+            $this->canonical = route('larecipe.show.product', [
+                'version' => $this->defaultVersion,
+                'page' => $this->sectionPage,
+                'product' => $this->product,
+            ]);
+        }
+
+        return $this;
+    }
+    /**
+     * Check if product exists on documentation
+     *
+     * @param [type] $product
+     * @return void
+     */
+    public function productExists($product){
+        return isset($this->publishedVersions[$product]);
+    }
+    /**
+     * Check if the given version is in the published versions of product.
+     *
+     * @param $product
+     * @param $version
+     * @return bool
+     */
+    public function isPublishedProductVersion($product, $version)
+    {
+        return isset($this->publishedVersions[$product]) &&
+        is_array($this->publishedVersions[$product]) &&
+        in_array($version, $this->publishedVersions[$product]);
+    }
+    /**
      * Check if the given version is in the published versions.
      *
      * @param $version
@@ -140,6 +209,16 @@ class DocumentationRepository
     public function isNotPublishedVersion($version)
     {
         return ! $this->isPublishedVersion($version);
+    }
+    /**
+     * Check if the given version is not in the published versions of current product.
+     *
+     * @param $version
+     * @return bool
+     */
+    public function isNotPublishedProductVersion($product,$version)
+    {
+        return ! $this->isPublishedProductVersion($product,$version);
     }
 
     /**

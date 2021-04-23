@@ -7,6 +7,7 @@ trait HasDocumentationAttributes
     protected $title;
     protected $index;
     protected $version;
+    protected $product;
     protected $content;
     protected $canonical;
     protected $docsRoute;
