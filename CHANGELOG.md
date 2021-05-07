@@ -12,6 +12,7 @@ All notable changes to `larecipe` will be documented in this file
 - Add support for Laravel 8 - ([#235](https://github.com/saleem-hadad/larecipe/pull/235))
 - Permit show blade directives - ([#234](https://github.com/saleem-hadad/larecipe/pull/234))
 - Exclude code blocks from Blade compilation - ([#206](https://github.com/saleem-hadad/larecipe/pull/206))
+- Markdown is now parsed against a contract, allowing you to change it - ([#252](https://github.com/saleem-hadad/larecipe/issues/252))
 
 <a name="2.3.0"></a>
 # [2.3.0](https://github.com/saleem-hadad/larecipe/releases/tag/v2.3.0) (2020-03-09)
