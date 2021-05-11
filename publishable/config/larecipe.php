@@ -32,7 +32,16 @@ return [
     |
     */
 
+    'Languages'      => [
+        'enabled'   => true,
+        'default'   => 'en',
+        'published' => [
+            'en'
+        ]
+    ],
+    
     'versions'      => [
+        'enabled'   => true,
         'default'   => '1.0',
         'published' => [
             '1.0'
@@ -122,78 +131,11 @@ return [
     'ui'                 => [
         'code_theme'     => 'dark', // or: light
         'fav'            => '',     // eg: fav.png
-        'fa_v4_shims'    => true, // Add FontAwesome v4 shims prevent BC break
-        'show_side_bar'  => true,
         'colors'         => [
             'primary'    => '#787AF6',
             'secondary'  => '#2b9cf2'
         ],
-
         'theme_order'    => null // ['LaRecipeDarkTheme', 'customTheme']
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | SEO
-    |--------------------------------------------------------------------------
-    |
-    | These options configure the SEO settings of your docs. You can set the
-    | author, the description and the keywords. Also, LaRecipe by default
-    | sets the canonical link to the viewed page's link automatically.
-    |
-    |
-    */
-
-    'seo'                 => [
-        'author'          => '',
-        'description'     => '',
-        'keywords'        => '',
-        'og'              => [
-            'title'       => '',
-            'type'        => 'article',
-            'url'         => '',
-            'image'       => '',
-            'description' => '',
-        ]
-    ],
-
-   /*
-   |--------------------------------------------------------------------------
-   | Forum
-   |--------------------------------------------------------------------------
-   |
-   | Giving a chance to your users to post their questions or feedback
-   | directly on your docs, is pretty nice way to engage them more.
-   | However, you can also enable/disable the forum's visibility.
-   |
-   | Supported Services: 'disqus'
-   |
-   */
-
-  'forum'                   => [
-        'enabled'           => false,
-        'default'           => 'disqus',
-        'services'          => [
-            'disqus'        => [
-                'site_name' => '', // yoursite.disqus.com
-            ]
-        ]
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Components and Packages
-    |--------------------------------------------------------------------------
-    |
-    | Once you create a new asset or theme, its directory will be
-    | published under `larecipe-components` folder. However, If
-    | you want a different location, feel free to change it.
-    |
-    |
-    */
-
-    'packages' => [
-        'path' => 'larecipe-components',
     ],
 
     'blade-parser' => [
