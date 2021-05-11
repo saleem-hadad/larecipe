@@ -10,14 +10,14 @@ class DocumentTest extends TestCase
     /** @test */
     public function it_can_be_returned_as_array()
     {
-        $sut = Document::create();
+        $sut = Document::create(['title' => 'Hello']);
 
         $this->assertIsArray($sut->toArray());
 
         $this->assertEquals([
             'seo' => null,
             'path' => null,
-            'title' => null,
+            'title' => 'Hello',
             'content' => null,
             'canonical' => null
         ], $sut->toArray());

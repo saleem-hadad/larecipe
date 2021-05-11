@@ -3,10 +3,12 @@
 namespace BinaryTorch\LaRecipe\Models;
 
 use Illuminate\Contracts\Support\Arrayable;
-use BinaryTorch\LaRecipe\Exceptions\FillUnknownPropertyException;
 
 abstract class Model implements Arrayable
 {
+    protected $attributes = [];
+    protected $fillable = [];
+
     public static function create($attributes = []): Model
     {
         $document = new static();
@@ -18,20 +20,15 @@ abstract class Model implements Arrayable
 
     public function fill($attributes = [])
     {
-        foreach($attributes as $key => $value) {
-            if(property_exists($this, $key)) {
-                $this->{$key} = $value;
-            }else {
-                throw new FillUnknownPropertyException(sprintf(
-                    'Fill [%s] to unknown property on [%s].',
-                    $key, get_class($this)
-                ));
-            }
+        $fillFromArray = array_intersect_key($attributes, array_flip($this->fillable));
+
+        foreach($fillFromArray as $key => $value) {
+            $this->attributes[$key] = $value;
         }
     }
 
     public function __get($key)
     {
-        return property_exists($this, $key) ? $this->{$key} : null;
+        return array_key_exists($key, $this->attributes) ? $this->attributes[$key] : null;
     }
 }

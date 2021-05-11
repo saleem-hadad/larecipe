@@ -4,7 +4,9 @@ namespace BinaryTorch\LaRecipe\Models;
 
 class Version extends Model
 {
-    protected $title;
+    protected $fillable = ['title'];
+
+    protected $documents = [];
 
     /**
      * @return array

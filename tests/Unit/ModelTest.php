@@ -13,7 +13,7 @@ class ModelTest extends TestCase
     public function can_get_property_using_magic_method_get()
     {
         $sut = new class extends Model {
-            protected $title;
+            protected $fillable = ['title'];
             public function toArray() { }
         };
 
@@ -23,27 +23,16 @@ class ModelTest extends TestCase
     }
 
     /** @test */
-    public function it_may_not_fill_unknown_property()
+    public function it_fill_attributes_if_key_is_inside_fillable()
     {
         $sut = new class extends Model {
+            protected $fillable = ['title'];
             public function toArray() { }
         };
 
-        $this->expectException(FillUnknownPropertyException::class);
-
-        $sut->fill(['foo' => 'Home page']);
-    }
-
-    /** @test */
-    public function it_fill_properties_from_fill_method()
-    {
-        $sut = new class extends Model {
-            protected $title;
-            public function toArray() { }
-        };
-
-        $sut->fill(['title' => 'Home page']);
+        $sut->fill(['title' => 'Home page', 'foo' => 'bar']);
 
         $this->assertEquals('Home page', $sut->title);
+        $this->assertEquals(null, $sut->foo);
     }
 }

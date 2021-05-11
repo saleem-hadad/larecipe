@@ -9,8 +9,10 @@ use BinaryTorch\LaRecipe\Exceptions\FillUnknownPropertyException;
 class VersionTest extends TestCase
 {
     /** @test */
-    public function it_test()
+    public function it_has_title()
     {
-        $this->assertTrue(true);
+        $sut = Version::create(['title' => 'v1']);
+
+        $this->assertEquals('v1', $sut->title);
     }
 }
