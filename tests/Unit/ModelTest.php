@@ -3,7 +3,6 @@
 
 namespace BianryTorch\LaRecipe\Tests\Unit;
 
-use BinaryTorch\LaRecipe\Exceptions\FillUnknownPropertyException;
 use BinaryTorch\LaRecipe\Models\Model;
 use BinaryTorch\LaRecipe\Tests\TestCase;
 

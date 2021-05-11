@@ -8,6 +8,18 @@ class Version extends Model
 
     protected $documents = [];
 
+    public function getDocuments(): array
+    {
+        return $this->documents;
+    }
+
+    public function addDocument(Document $document): Version
+    {
+        $this->documents[] = $document;
+
+        return $this;
+    }
+
     /**
      * @return array
      */
