@@ -2,7 +2,17 @@
 
 namespace BinaryTorch\LaRecipe\Models;
 
-class Version
+class Version extends Model
 {
-    // documents
+    protected $title;
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'title' => $this->title,
+        ];
+    }
 }
