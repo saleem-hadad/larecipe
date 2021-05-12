@@ -1,8 +1,7 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Models;
+namespace BinaryTorch\LaRecipe;
 
-use BinaryTorch\LaRecipe\Cache;
 use Illuminate\Filesystem\Filesystem;
 use BinaryTorch\LaRecipe\Traits\Indexable;
 use BinaryTorch\LaRecipe\Traits\HasBladeParser;
@@ -51,7 +50,7 @@ class Documentation
 
             if ($this->files->exists($path)) {
                 $parsedContent = $this->parse($this->replaceNewLinks($version, $this->files->get($path)));
-                
+
                 $parsedContent = $this->replaceLinks($version, $parsedContent);
 
                 return $parsedContent;
@@ -76,7 +75,7 @@ class Documentation
 
             if ($this->files->exists($path)) {
                 $parsedContent = $this->parse($this->replaceNewLinks($version,  $this->files->get($path) ));
-                
+
                 $parsedContent = $this->replaceLinks($version, $parsedContent);
 
                 return $this->renderBlade($parsedContent, $data);
@@ -108,9 +107,7 @@ class Documentation
     {
         $content = str_replace('{{version}}', $version, $content);
 
-        $content = str_replace('{{route}}', trim(config('larecipe.docs.route'), '/'), $content);
-
-        return $content;
+        return str_replace('{{route}}', trim(config('larecipe.docs.route'), '/'), $content);
     }
 
     /**

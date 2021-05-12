@@ -3,7 +3,6 @@
 namespace BinaryTorch\LaRecipe;
 
 use Symfony\Component\DomCrawler\Crawler;
-use BinaryTorch\LaRecipe\Models\Documentation;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use BinaryTorch\LaRecipe\Traits\HasDocumentationAttributes;
 

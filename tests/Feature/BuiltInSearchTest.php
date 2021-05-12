@@ -4,7 +4,7 @@ namespace BinaryTorch\LaRecipe\Tests\Feature;
 
 use Illuminate\Support\Facades\Config;
 use BinaryTorch\LaRecipe\Tests\TestCase;
-use BinaryTorch\LaRecipe\Models\Documentation;
+use BinaryTorch\LaRecipe\Documentation;
 
 class BuiltInSearchTest extends TestCase
 {

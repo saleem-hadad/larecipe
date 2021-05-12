@@ -4,7 +4,7 @@ namespace BinaryTorch\LaRecipe\Tests\Unit;
 
 use Illuminate\Support\Facades\Config;
 use BinaryTorch\LaRecipe\Tests\TestCase;
-use BinaryTorch\LaRecipe\Models\Documentation;
+use BinaryTorch\LaRecipe\Documentation;
 
 class DocumentationTest extends TestCase
 {
@@ -33,7 +33,7 @@ class DocumentationTest extends TestCase
             $this->documentation->replaceLinks('1.1', 'the current version is {{version}} and the route is /{{route}}')
         );
     }
-    
+
     /** @test */
     public function it_caches_the_requested_documentation_and_index_for_a_given_period()
     {
