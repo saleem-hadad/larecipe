@@ -9,6 +9,10 @@ abstract class Model implements Arrayable
     protected $attributes = [];
     protected $fillable = [];
 
+    /**
+     * @param array $attributes
+     * @return Model
+     */
     public static function create($attributes = []): Model
     {
         $document = new static();
@@ -18,6 +22,9 @@ abstract class Model implements Arrayable
         return $document;
     }
 
+    /**
+     * @param array $attributes
+     */
     public function fill($attributes = [])
     {
         $fillFromArray = array_intersect_key($attributes, array_flip($this->fillable));
@@ -27,6 +34,10 @@ abstract class Model implements Arrayable
         }
     }
 
+    /**
+     * @param $key
+     * @return mixed|null
+     */
     public function __get($key)
     {
         return array_key_exists($key, $this->attributes) ? $this->attributes[$key] : null;

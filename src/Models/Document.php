@@ -4,6 +4,9 @@ namespace BinaryTorch\LaRecipe\Models;
 
 class Document extends Model
 {
+    /**
+     * @var string[]
+     */
     protected $fillable = ['seo', 'path', 'title', 'content', 'canonical'];
 
     /**
