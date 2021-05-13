@@ -7,8 +7,10 @@ use Illuminate\Support\ServiceProvider;
 use BinaryTorch\LaRecipe\Commands\AssetCommand;
 use BinaryTorch\LaRecipe\Commands\ThemeCommand;
 use BinaryTorch\LaRecipe\Commands\InstallCommand;
+use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
 use BinaryTorch\LaRecipe\BusinessLogic\DocumentFinder;
 use BinaryTorch\LaRecipe\BusinessLogic\RequestPathParser;
+use BinaryTorch\LaRecipe\Services\ParseDownMarkdownParser;
 use BinaryTorch\LaRecipe\Facades\LaRecipe as LaRecipeFacade;
 use BinaryTorch\LaRecipe\Commands\GenerateDocumentationCommand;
 use BinaryTorch\LaRecipe\Contracts\DocumentFinder as DocumentFinderContract;
@@ -66,6 +68,7 @@ class LaRecipeServiceProvider extends ServiceProvider
 
         $this->app->bind(RequestPathParserContract::Class, RequestPathParser::class);
         $this->app->bind(DocumentFinderContract::Class, DocumentFinder::class);
+        $this->app->bind(MarkdownParser::Class, ParseDownMarkdownParser::class);
     }
 
     /**

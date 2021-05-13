@@ -2,8 +2,6 @@
 
 namespace BinaryTorch\LaRecipe;
 
-use BinaryTorch\LaRecipe\Models\DocumentRequest;
-use Illuminate\Filesystem\Filesystem;
 use BinaryTorch\LaRecipe\Traits\Indexable;
 use BinaryTorch\LaRecipe\Traits\HasBladeParser;
 use BinaryTorch\LaRecipe\Traits\HasMarkdownParser;

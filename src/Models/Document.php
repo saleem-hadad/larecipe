@@ -2,8 +2,12 @@
 
 namespace BinaryTorch\LaRecipe\Models;
 
+use BinaryTorch\LaRecipe\Traits\HasMarkdownParser;
+
 class Document extends Model
 {
+    use HasMarkdownParser;
+
     /**
      * @var string[]
      */
@@ -29,7 +33,7 @@ class Document extends Model
             'currentVersion' => '1.0',
             'versions' => ['1.2', '23s'],
             'title' => $this->title,
-            'content' => $this->content,
+            'content' => $this->parse($this->content),
             'canonical' => $this->canonical,
             'currentSection' => '',
             'canonical'      => '',
