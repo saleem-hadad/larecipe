@@ -2,7 +2,8 @@
 
 namespace BinaryTorch\LaRecipe\Traits;
 
-use ParsedownExtra;
+use Illuminate\Support\Facades\App;
+use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
 
 trait HasMarkdownParser
 {
@@ -13,6 +14,6 @@ trait HasMarkdownParser
      */
     public function parse($text)
     {
-        return (new ParsedownExtra)->text($text);
+        return App::make(MarkdownParser::class)->parse($text);
     }
 }

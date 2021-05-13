@@ -7,6 +7,8 @@ use Illuminate\Support\ServiceProvider;
 use BinaryTorch\LaRecipe\Commands\AssetCommand;
 use BinaryTorch\LaRecipe\Commands\ThemeCommand;
 use BinaryTorch\LaRecipe\Commands\InstallCommand;
+use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
+use BinaryTorch\LaRecipe\Services\ParseDownMarkdownParser;
 use BinaryTorch\LaRecipe\Facades\LaRecipe as LaRecipeFacade;
 use BinaryTorch\LaRecipe\Commands\GenerateDocumentationCommand;
 
@@ -53,6 +55,8 @@ class LaRecipeServiceProvider extends ServiceProvider
             $this->registerPublishableResources();
             $this->registerConsoleCommands();
         }
+
+        $this->app->bind(MarkdownParser::class, ParseDownMarkdownParser::class);
 
         $this->app->alias('LaRecipe', LaRecipeFacade::class);
 
