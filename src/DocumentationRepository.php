@@ -44,7 +44,8 @@ class DocumentationRepository
         $this->sectionPage = $page ?: config('larecipe.docs.landing');
         $this->index = $this->documentation->getIndex($version);
 
-        $this->content = $this->documentation->get($version, $this->sectionPage, $data);
+        $documentRequest = new DocumentRequest('en', $version, $this->sectionPage, $data);
+        $this->content = $this->documentation->get($documentRequest);
 
         if (is_null($this->content)) {
             return $this->prepareNotFound();

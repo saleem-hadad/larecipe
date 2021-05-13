@@ -15,7 +15,7 @@ return [
 
     'docs'        => [
         'route'   => '/docs',
-        'path'    => '/resources/docs',
+        'path'    => 'resources/docs',
         'landing' => 'overview',
         'middleware' => ['web'],
     ],
@@ -39,7 +39,7 @@ return [
             'en'
         ]
     ],
-    
+
     'versions'      => [
         'enabled'   => true,
         'default'   => '1.0',

@@ -14,7 +14,7 @@ class ShowDocumentationTest extends TestCase
         Config::set('larecipe.docs.path', 'tests/views/docs');
         Config::set('larecipe.docs.landing', 'foo');
 
-        $this->get('/docs')->assertRedirect('/docs/1.0/foo')->assertStatus(302);
+        $this->get('/docs')->dump()->assertRedirect('/docs/1.0/foo')->assertStatus(302);
     }
 
     /** @test */
@@ -25,7 +25,7 @@ class ShowDocumentationTest extends TestCase
 
         // set auth to false
         Config::set('larecipe.settings.auth', false);
-        
+
         // guest can view foo page
         $this->get('/docs/1.0')
             ->assertViewHasAll([
@@ -50,7 +50,7 @@ class ShowDocumentationTest extends TestCase
         Config::set('larecipe.docs.landing', 'foo');
         Config::set('larecipe.versions.published', ['1.0']);
 
-        
+
         // guest can view foo page
         $this->get('/docs/2.0/foo')
             ->assertRedirect('/docs/1.0/foo');
@@ -62,7 +62,7 @@ class ShowDocumentationTest extends TestCase
         Config::set('larecipe.docs.path', 'tests/views/docs');
         Config::set('larecipe.docs.landing', 'foo');
 
-        
+
         // guest can view foo page
         $this->get('/docs/1.0/bar')
             ->assertStatus(404);
