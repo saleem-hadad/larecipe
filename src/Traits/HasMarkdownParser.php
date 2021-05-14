@@ -13,6 +13,8 @@ trait HasMarkdownParser
      */
     public function parse($text)
     {
+        if(empty($text)) { return null; }
+
         try {
             return App::make(MarkdownParser::class)->parse($text);
         }catch (\Exception $exception) {

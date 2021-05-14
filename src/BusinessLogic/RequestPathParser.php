@@ -1,15 +1,12 @@
 <?php
 
-
 namespace BinaryTorch\LaRecipe\BusinessLogic;
 
 use BinaryTorch\LaRecipe\Contracts\RequestPathParser as RequestPathParserContract;
 
 class RequestPathParser implements RequestPathParserContract
 {
-    protected $language;
-    protected $version;
-    protected $relativePath;
+    protected $parts = [];
 
     /**
      * @param String $path
@@ -19,9 +16,11 @@ class RequestPathParser implements RequestPathParserContract
     {
         $path = trim($path);
 
-//        $this->language = $this->parseLanguage($path);
-        $this->version = $this->parseVersion($path);
-        $this->relativePath = $this->parseRelativePath($path);
+        $this->parts['language'] = $this->parseLanguage($path);
+
+        $this->parts['version'] = $this->parseVersion($path);
+
+        $this->parts['relativePath'] = $this->parseRelativePathWithMarkdownExtension($path);
 
         return $this;
     }
@@ -33,42 +32,99 @@ class RequestPathParser implements RequestPathParserContract
     {
         $documentPath = trim(config('larecipe.docs.path'), '/');
 
-        if($this->version) {
-            $documentPath .= "/$this->version";
+        foreach ($this->parts as $key => $value) {
+            if($value) {
+                $documentPath .= "/$value";
+            }
         }
-
-        $documentPath .= "/$this->relativePath.md";
 
         return base_path($documentPath);
     }
 
-    private function parseVersion($path)
+    /**
+     * @return array
+     */
+    public function getPathParts(): array
     {
-        if(config('larecipe.versions.enabled')) {
-            $pathParts = explode('/', $path);
-
-            return $pathParts[0] ?: config('larecipe.versions.default');
-        }
-
-        return null;
+        return $this->parts;
     }
 
-    private function parseRelativePath($path)
+    /**
+     * @param $path
+     * @return mixed|string|null
+     */
+    protected function parseLanguage($path)
     {
-        $relativePath = $path;
-
-        if(config('larecipe.versions.enabled')) {
-            $pathParts = explode('/', $path);
-
-            unset($pathParts[0]);
-
-            $relativePath = implode('/', $pathParts);
+        if(! config('larecipe.languages.enabled')) {
+            return null;
         }
 
-        if($relativePath == "") {
-            return config('larecipe.docs.landing');
+        $pathParts = explode('/', $path);
+
+        return $pathParts[0] ?? config('larecipe.languages.default');
+    }
+
+    /**
+     * @param $path
+     * @return mixed|string|null
+     */
+    protected function parseVersion($path)
+    {
+        if(! config('larecipe.versions.enabled')) {
+            return null;
         }
 
-        return $relativePath;
+        $pathParts = explode('/', $path);
+
+        $versionIndex = config('larecipe.languages.enabled') ? 1 : 0;
+
+        return $pathParts[$versionIndex] ?? config('larecipe.versions.default');
+    }
+
+    /**
+     * @param $path
+     * @return mixed|string|null
+     */
+    protected function parseRelativePathWithMarkdownExtension($path)
+    {
+        $relativePath = $this->removeLanguageIfEnabled($path);
+
+        $relativePath = $this->removeVersionIfEnabled($relativePath);
+
+        if ($relativePath == "") {
+             $relativePath = config('larecipe.docs.landing');
+        }
+
+        return "$relativePath.md";
+    }
+
+    /**
+     * @param $path
+     * @return mixed
+     */
+    protected function removeLanguageIfEnabled($path)
+    {
+        if(! config('larecipe.languages.enabled')) { return $path; }
+
+        $pathParts = explode('/', $path);
+
+        unset($pathParts[0]);
+
+        return implode('/', $pathParts);
+    }
+
+    /**
+     * @param $path
+     * @return mixed
+     */
+    protected function removeVersionIfEnabled($path)
+    {
+        if(! config('larecipe.versions.enabled')) { return $path; }
+
+        $pathParts = explode('/', $path);
+
+        unset($pathParts[0]);
+
+        return implode('/', $pathParts);
     }
 }

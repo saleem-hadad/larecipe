@@ -1,7 +1,6 @@
 <?php
 
-
-namespace BianryTorch\LaRecipe\Tests\Unit;
+namespace BinaryTorch\LaRecipe\Tests\Unit;
 
 use BinaryTorch\LaRecipe\Models\Model;
 use BinaryTorch\LaRecipe\Tests\TestCase;

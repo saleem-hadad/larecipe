@@ -18,7 +18,7 @@ class Document extends Model
      */
     public function hasContent(): bool
     {
-        return false;
+        return !! $this->content;
     }
 
     /**
@@ -36,7 +36,6 @@ class Document extends Model
             'content' => $this->parse($this->content),
             'canonical' => $this->canonical,
             'currentSection' => '',
-            'canonical'      => '',
         ];
     }
 }
