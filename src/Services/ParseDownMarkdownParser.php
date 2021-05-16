@@ -8,11 +8,13 @@ use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
 class ParseDownMarkdownParser implements MarkdownParser
 {
     /**
-     * @param string $source
+     * @param $source
      * @return string|string[]|null
      */
-    public function parse(string $source)
+    public function parse($source)
     {
+        if(empty($source)) { return null; }
+
         $converter = new CommonMarkConverter([
             'html_input'         => 'allow',
             'allow_unsafe_links' => true,

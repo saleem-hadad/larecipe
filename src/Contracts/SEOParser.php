@@ -9,8 +9,8 @@ interface SEOParser
     /**
      * Parse the given source to SEO object.
      *
-     * @param string $source
+     * @param $source
      * @return SEO
      */
-    public function parse(string $source) : SEO;
+    public function parse($source) : SEO;
 }

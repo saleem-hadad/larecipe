@@ -8,10 +8,10 @@ use \BinaryTorch\LaRecipe\Contracts\SEOParser as SEOParserContract;
 class SEOParser implements SEOParserContract
 {
     /**
-     * @param string $source
+     * @param $source
      * @return SEO
      */
-    public function parse(string $source): SEO
+    public function parse($source): SEO
     {
         return SEO::create([
             'author' => 'Saleem'

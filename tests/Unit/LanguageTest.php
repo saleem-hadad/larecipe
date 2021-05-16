@@ -1,6 +1,5 @@
 <?php
 
-
 namespace BinaryTorch\LaRecipe\Tests\Unit;
 
 use BinaryTorch\LaRecipe\Models\Language;
