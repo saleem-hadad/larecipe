@@ -4,19 +4,9 @@ namespace BinaryTorch\LaRecipe\Tests\Feature;
 
 use Illuminate\Support\Facades\Config;
 use BinaryTorch\LaRecipe\Tests\TestCase;
-use BinaryTorch\LaRecipe\Documentation;
 
-class BuiltInSearchTest extends TestCase
+class SearchTest extends TestCase
 {
-    protected $documentation;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->documentation = $this->app->make(Documentation::class);
-    }
-
     /** @test */
     public function can_search_within_givin_version_for_h1_h2_h3()
     {
