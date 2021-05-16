@@ -3,8 +3,8 @@
 namespace BinaryTorch\LaRecipe\BusinessLogic;
 
 use BinaryTorch\LaRecipe\Cache;
-use BinaryTorch\LaRecipe\Models\Model;
 use Illuminate\Filesystem\Filesystem;
+use BinaryTorch\LaRecipe\Models\Model;
 use BinaryTorch\LaRecipe\Models\Document;
 use BinaryTorch\LaRecipe\Contracts\RequestPathParser;
 use BinaryTorch\LaRecipe\Contracts\DocumentFinder as DocumentFinderContract;

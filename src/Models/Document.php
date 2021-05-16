@@ -2,16 +2,18 @@
 
 namespace BinaryTorch\LaRecipe\Models;
 
+use BinaryTorch\LaRecipe\Traits\HasCanonical;
+use BinaryTorch\LaRecipe\Traits\HasSEOParser;
 use BinaryTorch\LaRecipe\Traits\HasMarkdownParser;
 
 class Document extends Model
 {
-    use HasMarkdownParser;
+    use HasMarkdownParser, HasSEOParser, HasCanonical;
 
     /**
      * @var string[]
      */
-    protected $fillable = ['seo', 'path', 'title', 'content', 'canonical'];
+    protected $fillable = ['path', 'title', 'content', 'version'];
 
     /**
      * @return bool
@@ -27,15 +29,12 @@ class Document extends Model
     public function toArray(): array
     {
         return [
-            'seo' => $this->seo,
-            'index' => '',
+            'seo' => $this->parseSEO($this->content)->toArray(),
             'path' => $this->path,
-            'currentVersion' => '1.0',
-            'versions' => ['1.2', '23s'],
-            'title' => $this->title,
-            'content' => $this->parse($this->content),
-            'canonical' => $this->canonical,
-            'currentSection' => '',
+            'version' => $this->version,
+            'title' => ucfirst($this->title),
+            'content' => $this->parseMarkdown($this->content),
+            'canonical' => $this->getCanonical(),
         ];
     }
 }

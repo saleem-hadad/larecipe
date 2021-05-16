@@ -11,7 +11,7 @@ trait HasMarkdownParser
      * @param $text
      * @return null|string|string[]
      */
-    public function parse($text)
+    protected function parseMarkdown($text)
     {
         if(empty($text)) { return null; }
 
