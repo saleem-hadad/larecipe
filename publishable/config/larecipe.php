@@ -56,6 +56,7 @@ return [
 
     'settings'       => [
         'auth'       => false,
+        'guard'      => null,
         'ga_id'      => '',
         'middleware' => [
             'web',

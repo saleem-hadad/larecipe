@@ -2,6 +2,7 @@
 
 namespace BinaryTorch\LaRecipe\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use BinaryTorch\LaRecipe\DocumentationRepository;
 
@@ -19,6 +20,10 @@ class DocumentationController extends Controller
     public function __construct(DocumentationRepository $documentationRepository)
     {
         $this->documentationRepository = $documentationRepository;
+
+        if (config('larecipe.settings.guard')) {
+            Auth::shouldUse(config('larecipe.settings.guard'));
+        }
 
         if (config('larecipe.settings.auth')) {
             $this->middleware(['auth']);
