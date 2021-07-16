@@ -47,7 +47,7 @@ class DocumentTest extends TestCase
 //    /** @test */
 //    public function it_has_index_for_a_given_version()
 //    {
-//        Config::set('larecipe.docs.path', 'tests/views/docs');
+//        Config::set('larecipe.settings.path', 'tests/views/docs');
 //
 //        $documentation = $this->documentationRepository->get('1.0', 'foo');
 //
@@ -57,7 +57,7 @@ class DocumentTest extends TestCase
 //    /** @test */
 //    public function it_has_canonical()
 //    {
-//        Config::set('larecipe.docs.path', 'tests/views/docs');
+//        Config::set('larecipe.settings.path', 'tests/views/docs');
 //
 //        $documentation = $this->documentationRepository->get('1.0', 'foo');
 //        $this->assertEquals('http://localhost/docs/1.0/foo', $documentation->canonical);
@@ -69,7 +69,7 @@ class DocumentTest extends TestCase
 //    /** @test */
 //    public function it_has_default_version_url()
 //    {
-//        Config::set('larecipe.docs.path', 'tests/views/docs');
+//        Config::set('larecipe.settings.path', 'tests/views/docs');
 //
 //        $documentation = $this->documentationRepository->get('1.0', 'foo');
 //
@@ -134,20 +134,20 @@ class DocumentTest extends TestCase
 //        $app_version = explode('.', app()->version());
 //
 //        // set the docs path and landing
-//        Config::set('larecipe.docs.path', 'tests/views/docs');
-//        Config::set('larecipe.docs.landing', 'foo');
+//        Config::set('larecipe.settings.path', 'tests/views/docs');
+//        Config::set('larecipe.settings.landing', 'foo');
 //        Config::set('larecipe.versions.default', '1.0');
 //        Config::set('larecipe.cache.enabled', true);
 //        Config::set('larecipe.cache.period', 300);
 //
 //        $this->documentation->getIndex('1.0');
-//        $this->assertNotEmpty(cache('larecipe.docs.1.0.index'));
+//        $this->assertNotEmpty(cache('larecipe.settings.1.0.index'));
 //
 //        $this->documentation->get('1.0', 'foo');
-//        $this->assertNotEmpty(cache('larecipe.docs.1.0.foo'));
+//        $this->assertNotEmpty(cache('larecipe.settings.1.0.foo'));
 //
 //        $this->documentation->get('1.0', 'bar');
-//        $this->assertNull(cache('larecipe.docs.1.0.bar'));
+//        $this->assertNull(cache('larecipe.settings.1.0.bar'));
 //
 //        if (((int) $app_version[0] == 5 && (int) $app_version[1] >= 8) || $app_version[0] > 5) {
 //            $this->assertEquals($cache->checkTtlNeedsChanged(300), 300 * 60);

@@ -51,7 +51,7 @@ class GenerateDocumentationCommand extends Command
 
         $this->info('Reading all docs versions, found: '.implode(',', $publishedVersions));
         foreach ($publishedVersions as $version) {
-            $versionDirectory = config('larecipe.docs.path').'/'.$version;
+            $versionDirectory = config('larecipe.settings.path').'/'.$version;
 
             $this->line('');
             $this->info('---------------- Version '.$version.' ----------------');
@@ -71,9 +71,9 @@ class GenerateDocumentationCommand extends Command
 
             // // check if the version landing page not exists => create one
             if ($this->createVersionLanding(base_path($versionDirectory))) {
-                $this->line(config('larecipe.docs.landing').'.md created under '.$versionDirectory);
+                $this->line(config('larecipe.settings.landing').'.md created under '.$versionDirectory);
             } else {
-                $this->line('<info>'.config('larecipe.docs.landing').'.md</info> for <info>v'.$version.'</info> already exists.');
+                $this->line('<info>'.config('larecipe.settings.landing').'.md</info> for <info>v'.$version.'</info> already exists.');
             }
 
             $this->info('--------------- /Version '.$version.' ----------------');
@@ -128,7 +128,7 @@ class GenerateDocumentationCommand extends Command
      */
     protected function createVersionLanding($versionDirectory)
     {
-        $landingPath = $versionDirectory.'/'.config('larecipe.docs.landing').'.md';
+        $landingPath = $versionDirectory.'/'.config('larecipe.settings.landing').'.md';
 
         if (! $this->filesystem->exists($landingPath)) {
             $content = $this->generateLandingContent($this->getStub('landing'));
@@ -149,13 +149,13 @@ class GenerateDocumentationCommand extends Command
     {
         $content = str_replace(
             '{{LANDING}}',
-            ucwords(config('larecipe.docs.landing')),
+            ucwords(config('larecipe.settings.landing')),
             $stub
         );
 
         $content = str_replace(
             '{{LANDINGSMALL}}',
-            trim(config('larecipe.docs.landing'), '/'),
+            trim(config('larecipe.settings.landing'), '/'),
             $content
         );
 
@@ -171,7 +171,7 @@ class GenerateDocumentationCommand extends Command
     {
         return str_replace(
             '{{TITLE}}',
-            ucwords(config('larecipe.docs.landing')),
+            ucwords(config('larecipe.settings.landing')),
             $stub
         );
     }

@@ -8,7 +8,7 @@ class RouteTest extends TestCase
     public function a_user_will_be_redirected_to_default_version_and_landing_page_when_visit_the_root_route()
     {
         $this->call('GET', '/docs')->assertRedirect(
-            config('larecipe.docs.route') . '/' . config('larecipe.versions.default') . '/' . config('larecipe.docs.landing')
+            config('larecipe.settings.route') . '/' . config('larecipe.versions.default') . '/' . config('larecipe.settings.landing')
         );
     }
 

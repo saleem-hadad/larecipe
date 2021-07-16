@@ -10,7 +10,7 @@ class SearchTest extends TestCase
     /** @test */
     public function can_search_within_givin_version_for_h1_h2_h3()
     {
-        Config::set('larecipe.docs.path', 'tests/views/docs');
+        Config::set('larecipe.settings.path', 'tests/views/docs');
 
         // activate built-in search..
         Config::set('larecipe.search.enabled', true);

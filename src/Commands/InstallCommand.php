@@ -32,7 +32,7 @@ class InstallCommand extends Command
         $this->line('Publishing assets and congigurations.. 🍪');
         $this->call('vendor:publish', ['--provider' => LaRecipeServiceProvider::class, '--tag' => ['larecipe_assets', 'larecipe_config', 'larecipe_views']]);
 
-        $this->line('Setup initial documentations structure under '.config('larecipe.docs.path').'.. 🍪');
+        $this->line('Setup initial documentations structure under '.config('larecipe.settings.path').'.. 🍪');
         $this->call('larecipe:docs');
 
         $this->line('Dumping the autoloaded files and reloading all new files.. 🍪');

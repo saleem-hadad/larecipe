@@ -49,7 +49,7 @@ trait Indexable
             }
 
             return $result;
-        }, 'larecipe.docs.'.$version.'.search');
+        }, 'larecipe.settings.'.$version.'.search');
     }
 
     /**
@@ -58,7 +58,7 @@ trait Indexable
      */
     protected function getPages($version)
     {
-        $path = base_path(config('larecipe.docs.path').'/'.$version.'/index.md');
+        $path = base_path(config('larecipe.settings.path').'/'.$version.'/index.md');
 
         // match all markdown urls => [title](url)
         preg_match_all('/\[.+\]\((.+)\)/', $this->files->get($path), $matches);

@@ -25,12 +25,24 @@ class RequestPathParser implements RequestPathParserContract
         return $this;
     }
 
+    public function getDocumentDefaultPath()
+    {
+        $parts = [
+            config('larecipe.languages.default'),
+            config('larecipe.versions.default'),
+            config('larecipe.settings.landing')
+        ];
+
+
+        return implode('/', $parts);
+    }
+
     /**
      * @return string
      */
     public function getDocumentBasePath(): string
     {
-        $documentPath = trim(config('larecipe.docs.path'), '/');
+        $documentPath = trim(config('larecipe.settings.path'), '/');
 
         foreach ($this->parts as $key => $value) {
             if($value) {
@@ -92,7 +104,7 @@ class RequestPathParser implements RequestPathParserContract
         $relativePath = $this->removeVersionIfEnabled($relativePath);
 
         if ($relativePath == "") {
-             $relativePath = config('larecipe.docs.landing');
+             $relativePath = config('larecipe.settings.landing');
         }
 
         return "$relativePath.md";

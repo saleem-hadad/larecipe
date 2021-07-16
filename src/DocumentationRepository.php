@@ -45,7 +45,7 @@ class DocumentationRepository
     public function getIndex($version)
     {
         return $this->cache->remember(function() use($version) {
-            $path = base_path(config('larecipe.docs.path').'/'.$version.'/index.md');
+            $path = base_path(config('larecipe.settings.path').'/'.$version.'/index.md');
 
             if ($this->files->exists($path)) {
                 $parsedContent = $this->parse($this->replaceNewLinks($version, $this->files->get($path)));
@@ -56,7 +56,7 @@ class DocumentationRepository
             }
 
             return null;
-        }, 'larecipe.docs.'.$version.'.index');
+        }, 'larecipe.settings.'.$version.'.index');
     }
 
     /**
@@ -70,7 +70,7 @@ class DocumentationRepository
     {
         $content = str_replace('{{version}}', $version, $content);
 
-        $content = str_replace('{{route}}', trim(config('larecipe.docs.route'), '/'), $content);
+        $content = str_replace('{{route}}', trim(config('larecipe.settings.route'), '/'), $content);
 
         $content = str_replace('"#', '"'.request()->getRequestUri().'#', $content);
 
@@ -81,7 +81,7 @@ class DocumentationRepository
     {
         $content = str_replace('{{version}}', $version, $content);
 
-        return str_replace('{{route}}', trim(config('larecipe.docs.route'), '/'), $content);
+        return str_replace('{{route}}', trim(config('larecipe.settings.route'), '/'), $content);
     }
 
     /**
@@ -94,7 +94,7 @@ class DocumentationRepository
     public function sectionExists($version, $page)
     {
         return $this->files->exists(
-            base_path(config('larecipe.docs.path').'/'.$version.'/'.$page.'.md')
+            base_path(config('larecipe.settings.path').'/'.$version.'/'.$page.'.md')
         );
     }
 }

@@ -30,7 +30,7 @@ class LaRecipeServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'larecipe');
 
         Route::group($this->routesConfig(), function () {
-            $this->loadRoutesFrom(__DIR__.'/../routes/LaRecipe.php');
+            $this->loadRoutesFrom(__DIR__.'/../src/Http/routes.php');
         });
     }
 
@@ -40,11 +40,11 @@ class LaRecipeServiceProvider extends ServiceProvider
     protected function routesConfig()
     {
         return [
-            'prefix'     => config('larecipe.docs.route'),
+            'prefix'     => config('larecipe.settings.route'),
             'namespace'  => 'BinaryTorch\LaRecipe\Http\Controllers',
             'domain'     => config('larecipe.domain', null),
             'as'         => 'larecipe.',
-            'middleware' => config('larecipe.docs.middleware'),
+            'middleware' => config('larecipe.settings.middleware'),
         ];
     }
 

@@ -4,27 +4,37 @@ namespace BinaryTorch\LaRecipe\Http\Controllers;
 
 use Illuminate\Support\Facades\Gate;
 use BinaryTorch\LaRecipe\Contracts\DocumentFinder;
+use BinaryTorch\LaRecipe\Contracts\RequestPathParser;
 
 class DocumentationController extends Controller
 {
-//    public function __construct()
-//        if (config('larecipe.settings.auth')) {
-//            $this->middleware(['auth']);
-//        }else{
-//            if(config('larecipe.settings.middleware')){
-//                $this->middleware(config('larecipe.settings.middleware'));
-//            }
-//        }
+    public function index(RequestPathParser $requestPathParser)
+    {
+        $landingPath = $requestPathParser->getDocumentDefaultPath();
 
-//if (Gate::has('viewLarecipe')) {
-//$this->authorize('viewLarecipe', $documentation);
-//}
-//    }
+        return redirect()->route('larecipe.show', ['path' => $landingPath]);
+    }
 
-    public function __invoke($path = '', DocumentFinder $documentFinder)
+    public function show($path, DocumentFinder $documentFinder)
     {
         $document = $documentFinder->find($path);
 
-        return response()->view('larecipe::docs', $document->toArray(), $document->hasContent() ? 200 : 404);
+        $this->ensureSuccessResponse($document);
+
+        $this->authorizeShow($document);
+
+        return response()->view('larecipe::docs', $document->toArray());
+    }
+
+    private function ensureSuccessResponse($document)
+    {
+        abort_unless($document->hasContent(), 404);
+    }
+
+    private function authorizeShow($document)
+    {
+        if (Gate::has('viewLarecipe')) {
+            $this->authorize('viewLarecipe', $document);
+        }
     }
 }
