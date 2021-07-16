@@ -7,29 +7,6 @@ use BinaryTorch\LaRecipe\DocumentationRepository;
 class SearchController extends Controller
 {
     /**
-     * @var DocumentationRepository
-     */
-    protected $documentationRepository;
-
-    /**
-     * SearchController constructor.
-     * @param DocumentationRepository $documentationRepository
-     */
-    public function __construct(DocumentationRepository $documentationRepository)
-    {
-        $this->documentationRepository = $documentationRepository;
-
-        if (config('larecipe.settings.auth')) {
-            $this->middleware(['auth']);
-        }else{
-            if(config('larecipe.settings.middleware')){
-                $this->middleware(config('larecipe.settings.middleware'));
-            }
-        }
-
-    }
-
-    /**
      * Get the index of a given version.
      *
      * @param $version

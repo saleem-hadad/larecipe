@@ -8,4 +8,6 @@ interface RequestPathParser
     public function parse(String $path);
 
     public function getDocumentBasePath(): string;
+
+    public function getDefaultLandingPath(): string;
 }

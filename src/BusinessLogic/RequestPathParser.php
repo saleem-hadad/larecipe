@@ -25,7 +25,7 @@ class RequestPathParser implements RequestPathParserContract
         return $this;
     }
 
-    public function getDocumentDefaultPath()
+    public function getDefaultLandingPath(): string
     {
         $parts = [
             $this->parseLanguage(null),
