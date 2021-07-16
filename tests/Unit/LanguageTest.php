@@ -25,7 +25,7 @@ class LanguageTest extends TestCase
     }
 
     /** @test */
-    public function it_can_add_document()
+    public function it_can_add_version()
     {
         $sut = Language::create();
 
