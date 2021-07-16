@@ -28,8 +28,8 @@ class RequestPathParser implements RequestPathParserContract
     public function getDocumentDefaultPath()
     {
         $parts = [
-            config('larecipe.languages.default'),
-            config('larecipe.versions.default'),
+            $this->parseLanguage(null),
+            $this->parseVersion(null),
             config('larecipe.settings.landing')
         ];
 
@@ -70,10 +70,10 @@ class RequestPathParser implements RequestPathParserContract
         if(! config('larecipe.languages.enabled')) {
             return null;
         }
-
+        
         $pathParts = explode('/', $path);
 
-        return $pathParts[0] ?? config('larecipe.languages.default');
+        return empty($pathParts[0]) ? config('larecipe.languages.default') : $pathParts[0];
     }
 
     /**
@@ -90,7 +90,7 @@ class RequestPathParser implements RequestPathParserContract
 
         $versionIndex = config('larecipe.languages.enabled') ? 1 : 0;
 
-        return $pathParts[$versionIndex] ?? config('larecipe.versions.default');
+        return empty($pathParts[$versionIndex]) ? config('larecipe.versions.default') : $pathParts[$versionIndex];
     }
 
     /**
