@@ -5,8 +5,10 @@ namespace BinaryTorch\LaRecipe\BusinessLogic;
 use BinaryTorch\LaRecipe\Cache;
 use Illuminate\Filesystem\Filesystem;
 use BinaryTorch\LaRecipe\Models\Model;
+use BinaryTorch\LaRecipe\Models\Sidebar;
 use BinaryTorch\LaRecipe\Models\Document;
 use BinaryTorch\LaRecipe\Contracts\RequestPathParser;
+use BinaryTorch\LaRecipe\Http\Responses\DocumentationResponse;
 use BinaryTorch\LaRecipe\Contracts\DocumentFinder as DocumentFinderContract;
 
 class DocumentFinder implements DocumentFinderContract
@@ -38,9 +40,9 @@ class DocumentFinder implements DocumentFinderContract
 
     /**
      * @param $path
-     * @return Model
+     * @return DocumentationResponse
      */
-    public function find($path): Model
+    public function find($path): DocumentationResponse
     {
         $documentBasePath = $this->requestPathParser->parse($path)->getDocumentBasePath();
 
@@ -52,6 +54,9 @@ class DocumentFinder implements DocumentFinderContract
             }
         }, $path);
 
-        return Document::create(['content' => $content]);
+        return DocumentationResponse::create([
+            'sidebar' => Sidebar::create(['content' => '<div></div>']),
+            'document' => Document::create(['content' => $content])
+        ]);
     }
 }

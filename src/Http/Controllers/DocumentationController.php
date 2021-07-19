@@ -17,13 +17,13 @@ class DocumentationController extends Controller
 
     public function show($path, DocumentFinder $documentFinder)
     {
-        $document = $documentFinder->find($path);
+        $documentationResponse = $documentFinder->find($path);
 
-        $this->ensureSuccessResponse($document);
+        $this->ensureSuccessResponse($documentationResponse->document);
 
-        $this->authorizeShow($document);
+        $this->authorizeShow($documentationResponse->document);
 
-        return response()->view('larecipe::docs', $document->toArray());
+        return response()->view('larecipe::docs', $documentationResponse->toArray());
     }
 
     private function ensureSuccessResponse($document)

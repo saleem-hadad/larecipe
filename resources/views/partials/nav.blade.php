@@ -22,24 +22,6 @@
                 <i class="fab fa-github"></i>
             </larecipe-button>
 
-            {{-- versions dropdown --}}
-            <larecipe-dropdown>
-                <larecipe-button type="primary" class="flex">
-                    {{ $currentVersion }} <i class="mx-1 fa fa-angle-down"></i>
-                </larecipe-button>
-
-                <template slot="list">
-                    <ul class="list-none p-0">
-                        @foreach ($versions as $version)
-                            <li class="py-2 hover:bg-gray-100">
-                                <a class="px-6 text-gray-800" href="{{ route('larecipe.show', ['version' => $version, 'page' => $currentSection]) }}">{{ $version }}</a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </template>
-            </larecipe-dropdown>
-            {{-- /versions dropdown --}}
-
             @auth
                 {{-- account --}}
                 <larecipe-dropdown>

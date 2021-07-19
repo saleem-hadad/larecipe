@@ -29,12 +29,12 @@ class Document extends Model
     public function toArray(): array
     {
         return [
-            'seo' => $this->parseSEO($this->content)->toArray(),
-            'path' => $this->path,
-            'version' => $this->version,
-            'title' => ucfirst($this->title),
-            'content' => $this->parseMarkdown($this->content),
-            'canonical' => $this->getCanonical(),
+            'seo'       => $this->parseSEO($this->content)->toArray(),
+            'path'      => $this->path,
+            'version'   => $this->version,
+            'title'     => ucfirst($this->title),
+            'content'   => $this->parseMarkdown($this->content),
+            'canonical' => $this->getCanonical()
         ];
     }
 }
