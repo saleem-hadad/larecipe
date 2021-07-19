@@ -17,7 +17,7 @@ class DocumentationResponse extends Model
     public function toArray()
     {
         return [
-            'sidebar' => $this->sidebar->toArray(),
+            'sidebar'  => $this->sidebar->toArray(),
             'document' => $this->document->toArray(),
         ];
     }
