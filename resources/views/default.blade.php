@@ -57,8 +57,6 @@
         <div id="app" v-cloak>
             @include('larecipe::partials.nav')
 
-            @include('larecipe::plugins.search')
-
             @yield('content')
 
             <larecipe-back-to-top></larecipe-back-to-top>
