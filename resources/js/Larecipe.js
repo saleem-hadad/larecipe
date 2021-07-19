@@ -48,7 +48,6 @@ export default class LaRecipe {
         this.setupSmoothScrolling();
         this.activateCurrentSection();
         this.parseDocsContent();
-        this.setupKeyboardShortcuts();
         mediumZoom(".documentation img");
       },
       methods: {
@@ -170,44 +169,6 @@ export default class LaRecipe {
                   var html     = text.replace(regex, checkbox);
                   $(this).html(html);
               }
-          });
-        },
-        setupKeyboardShortcuts() {
-          // keyboard magic 🎹
-          const Mousetrap = require("./vendor/mousetrap.js");
-
-          // toggle the sidebar
-          Mousetrap.bind("/", e => {
-            e.preventDefault();
-            this.sidebar = !this.sidebar;
-          });
-
-          // open the search box
-          Mousetrap.bind("s", e => {
-            e.preventDefault();
-            this.searchBox = true;
-          });
-
-          // scroll to the top of the page
-          Mousetrap.bind("t", e => {
-            e.preventDefault();
-            $("html,body").animate(
-              {
-                scrollTop: 0
-              },
-              500
-            );
-          });
-
-          // scroll to the bottom of the page
-          Mousetrap.bind("b", e => {
-            e.preventDefault();
-            $("html,body").animate(
-              {
-                scrollTop: $(document).height()
-              },
-              500
-            );
           });
         }
       }
