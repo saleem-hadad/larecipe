@@ -15,7 +15,7 @@ jobs:
             - v1-dependencies-{{ checksum "composer.json" }}
             - v1-dependencies-
 
-      - run: COMPOSER_MEMORY_LIMIT=-1 composer install
+      - run: COMPOSER_MEMORY_LIMIT=-1 composer install -n --prefer-dist
 
       - save_cache:
           key: v1-dependencies-{{ checksum "composer.json" }}
