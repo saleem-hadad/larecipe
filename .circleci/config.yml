@@ -13,7 +13,7 @@ jobs:
           keys:
             - composer-v1-{{ checksum "composer.json" }}
             - composer-v1-
-      - run: COMPOSER_MEMORY_LIMIT=-1 composer install -n --prefer-dist
+      - run: composer install --no-interaction --prefer-dist --optimize-autoloader
       - save_cache:
           key: composer-v1-{{ checksum "composer.json" }}
           paths:
