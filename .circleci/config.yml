@@ -8,17 +8,15 @@ jobs:
       - checkout
 
       - run: sudo apt update
-      - run: sudo docker-php-ext-install zip
+      # - run: sudo docker-php-ext-install zip
 
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "composer.json" }}
-            - v1-dependencies-
-
+            - composer-v1-{{ checksum "composer.lock" }}
+            - composer-v1-
       - run: COMPOSER_MEMORY_LIMIT=-1 composer install -n --prefer-dist
-
       - save_cache:
-          key: v1-dependencies-{{ checksum "composer.json" }}
+          key: composer-v1-{{ checksum "composer.lock" }}
           paths:
             - vendor
 
