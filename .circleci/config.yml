@@ -12,11 +12,11 @@ jobs:
 
       - restore_cache:
           keys:
-            - composer-v1-{{ checksum "composer.lock" }}
+            - composer-v1-{{ checksum "composer.json" }}
             - composer-v1-
       - run: COMPOSER_MEMORY_LIMIT=-1 composer install -n --prefer-dist
       - save_cache:
-          key: composer-v1-{{ checksum "composer.lock" }}
+          key: composer-v1-{{ checksum "composer.json" }}
           paths:
             - vendor
 
