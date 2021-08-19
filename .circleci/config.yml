@@ -22,5 +22,4 @@ jobs:
           paths:
             - ./vendor
 
-
       - run: ./vendor/bin/phpunit
