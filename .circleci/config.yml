@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  test:
     docker:
       - image: circleci/php:7.1-stretch
 
@@ -15,7 +15,7 @@ jobs:
             - v1-dependencies-{{ checksum "composer.json" }}
             - v1-dependencies-
 
-      - run: composer install
+      - run: COMPOSER_MEMORY_LIMIT=-1 composer install
 
       - save_cache:
           key: v1-dependencies-{{ checksum "composer.json" }}
