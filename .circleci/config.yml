@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/php:7.1-stretch
+      - image: circleci/php:7.4-stretch
 
     steps:
       - checkout
@@ -13,7 +13,7 @@ jobs:
           keys:
             - composer-v1-{{ checksum "composer.json" }}
             - composer-v1-
-      - run: composer install --no-interaction --prefer-dist --optimize-autoloader
+      - run: COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --prefer-dist --optimize-autoloader
       - save_cache:
           key: composer-v1-{{ checksum "composer.json" }}
           paths:
