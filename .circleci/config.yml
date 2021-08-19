@@ -16,6 +16,7 @@ jobs:
       - run: COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --prefer-dist --optimize-autoloader
       - save_cache:
           key: composer-v1-{{ checksum "composer.json" }}
+          when: always
           paths:
             - vendor
 
