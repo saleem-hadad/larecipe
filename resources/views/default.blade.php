@@ -79,19 +79,6 @@
             window.LaRecipe = new CreateLarecipe(config)
         </script>
 
-        <!-- Google Analytics -->
-        @if(config('larecipe.settings.ga_id'))
-            <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('larecipe.settings.ga_id') }}"></script>
-            <script>
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-
-                gtag('config', "{{ config('larecipe.settings.ga_id') }}");
-            </script>
-        @endif
-        <!-- /Google Analytics -->
-
         @foreach (LaRecipe::allScripts() as $name => $path)
             @if (preg_match('/^https?:\/\//', $path))
                 <script src="{{ $path }}"></script>

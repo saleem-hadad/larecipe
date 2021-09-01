@@ -2,13 +2,8 @@
 
 namespace BinaryTorch\LaRecipe\BusinessLogic;
 
-use BinaryTorch\LaRecipe\Cache;
 use Illuminate\Filesystem\Filesystem;
-use BinaryTorch\LaRecipe\Models\Model;
-use BinaryTorch\LaRecipe\Models\Sidebar;
-use BinaryTorch\LaRecipe\Models\Document;
 use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
-use BinaryTorch\LaRecipe\Http\Responses\DocumentationResponse;
 use BinaryTorch\LaRecipe\Contracts\DocumentFinder as DocumentFinderContract;
 
 class DocumentFinder implements DocumentFinderContract
@@ -26,12 +21,16 @@ class DocumentFinder implements DocumentFinderContract
         $this->filesystem = $filesystem;
     }
 
-    /**
-     * @param $path
-     * @return DocumentationResponse
-     */
     public function find(GetDocumentRequest $getDocumentRequest)
     {
-        return $this->filesystem->get($getDocumentRequest->getPath());
+        $larecipePath = config('larecipe.path');
+        $filePath = $getDocumentRequest->getPath();
+        $basePath = base_path(trim(implode('/', [$larecipePath, $filePath . '.md']), '/'));
+
+        if ($this->filesystem->exists($basePath)) { 
+            return $this->filesystem->get($basePath);
+        }
+        
+        return null;
     }
 }

@@ -18,8 +18,8 @@ class DocumentationControllerTest extends TestCase
     /** @test */
     public function a_guest_can_access_any_documentation()
     {
-        Config::set('larecipe.settings.path', 'tests/Fixture/docs');
-        Config::set('larecipe.settings.landing', 'custom-landing');
+        Config::set('larecipe.path', 'tests/Fixture/docs');
+        Config::set('larecipe.landing', 'custom-landing');
 
         $this->get('/docs/en/1.0/custom-landing')
             ->assertSee('<h1>Custom Landing Page</h1>', false)
@@ -29,12 +29,10 @@ class DocumentationControllerTest extends TestCase
     /** @test */
     public function show_not_exist_version_throw_not_found_exception()
     {
-        Config::set('larecipe.settings.path', 'tests/Fixture/docs');
-        Config::set('larecipe.settings.landing', 'custom-landing');
+        Config::set('larecipe.path', 'tests/Fixture/docs');
+        Config::set('larecipe.landing', 'custom-landing');
         Config::set('larecipe.versions.published', ['1.0']);
 
-
-        // guest can view foo page
         $this->get('/docs/2.0/foo')
             ->assertStatus(404);
     }
@@ -42,38 +40,30 @@ class DocumentationControllerTest extends TestCase
     /** @test */
     public function a_guest_may_not_get_contents_of_not_exists_documentation()
     {
-        Config::set('larecipe.settings.path', 'tests/views/docs');
-        Config::set('larecipe.settings.landing', 'foo');
+        Config::set('larecipe.path', 'tests/views/docs');
+        Config::set('larecipe.landing', 'foo');
 
-
-        // guest can view foo page
         $this->get('/docs/1.0/bar')
             ->assertStatus(404);
     }
 
     /** @test */
-    public function only_auth_user_can_visit_docs_if_auth_option_is_enabled()
-    {
-        Config::set('larecipe.settings.auth', true);
-
-        $this->get('/docs/1.0')->assertRedirect('login');
-    }
-
-    /** @test */
     public function only_authorized_users_can_access_viewLarecipe_gate_is_defined()
     {
+        Config::set('larecipe.path', 'tests/Fixture/docs');
+        Config::set('larecipe.landing', 'custom-landing');
         Gate::define('viewLarecipe', function($user, $documentation) {
             return false;
         });
 
-        $this->get('/docs/1.0')->assertStatus(403);
+        $this->get('/docs/en/1.0/custom-landing')->assertStatus(403);
     }
 
     /** @test */
     public function only_auth_user_can_visit_docs_if_auth_middleware_is_set()
     {
         //set middleware to 'auth' to simulate auth only access
-        Config::set('larecipe.settings.middleware', ['auth']);
+        Config::set('larecipe.middleware', ['auth']);
 
         $this->get('/docs/1.0')->assertRedirect('login');
     }
@@ -81,10 +71,10 @@ class DocumentationControllerTest extends TestCase
     /** @test */
     public function auth_or_public_user_can_visit_docs_if_web_middleware_is_set()
     {
-        Config::set('larecipe.settings.path', 'tests/views/docs');
-        Config::set('larecipe.settings.landing', 'foo');
+        Config::set('larecipe.path', 'tests/views/docs');
+        Config::set('larecipe.landing', 'foo');
 
-        Config::set('larecipe.settings.middleware', ['web']);
+        Config::set('larecipe.middleware', ['web']);
 
         $this->get('/docs/1.0')->assertOk();
     }
@@ -92,8 +82,8 @@ class DocumentationControllerTest extends TestCase
     /** @test */
     public function relative_anchor_link_support()
     {
-        Config::set('larecipe.settings.path', 'tests/views/docs');
-        Config::set('larecipe.settings.landing', 'anchor');
+        Config::set('larecipe.path', 'tests/views/docs');
+        Config::set('larecipe.landing', 'anchor');
 
         $this->get('/docs/1.0')
             ->assertStatus(200)
