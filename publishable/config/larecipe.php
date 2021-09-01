@@ -3,6 +3,8 @@
 return [
     'path' => env('LARECIPE_PATH', '/docs'),
 
+    'landing' => 'overview',
+
     'languages'      => [
         'enabled'   => true,
         'default'   => 'en',

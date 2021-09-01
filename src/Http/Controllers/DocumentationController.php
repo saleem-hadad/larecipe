@@ -10,7 +10,7 @@ class DocumentationController extends Controller
 {
     public function index(GetDocumentRequest $getDocumentRequest)
     {
-        $landingPath = $getDocumentRequest->getDefaultLandingPath();
+        $landingPath = $getDocumentRequest->getLandingPath();
 
         return redirect()->route('larecipe.show', ['path' => $landingPath]);
     }

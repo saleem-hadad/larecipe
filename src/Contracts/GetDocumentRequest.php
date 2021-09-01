@@ -9,4 +9,5 @@ interface GetDocumentRequest
     public function getLanguage();
     public function getVersion();
     public function getPath();
+    public function getLandingPath();
 }

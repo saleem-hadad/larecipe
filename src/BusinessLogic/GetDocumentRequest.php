@@ -2,7 +2,6 @@
 
 namespace BinaryTorch\LaRecipe\BusinessLogic;
 
-use BinaryTorch\LaRecipe\Config;
 use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest as GetDocumentRequestContract;
 
 class GetDocumentRequest implements GetDocumentRequestContract
@@ -23,7 +22,7 @@ class GetDocumentRequest implements GetDocumentRequestContract
 
         $this->version = $this->parseVersion($path);
 
-        $this->path = $this->parsePath($path);
+        $this->path = $path;
 
         return $this;
     }
@@ -34,13 +33,13 @@ class GetDocumentRequest implements GetDocumentRequestContract
      */
     protected function parseLanguage($path)
     {
-        if(! Config::isLanguageEnabled()) {
+        if(! config('larecipe.languages.enabled')) {
             return null;
         }
         
         $pathParts = explode('/', $path);
 
-        return empty($pathParts[0]) ? Config::defaultLanguage() : $pathParts[0];
+        return empty($pathParts[0]) ? config('larecipe.languages.default') : $pathParts[0];
     }
 
     /**
@@ -49,20 +48,15 @@ class GetDocumentRequest implements GetDocumentRequestContract
      */
     protected function parseVersion($path)
     {
-        if(! Config::isVersionEnabled()) {
+        if(! config('larecipe.versions.enabled')) {
             return null;
         }
 
         $pathParts = explode('/', $path);
 
-        $versionIndex = Config::isLanguageEnabled() ? 1 : 0;
+        $versionIndex = config('larecipe.languages.enabled') ? 1 : 0;
 
-        return empty($pathParts[$versionIndex]) ? Config::defaultVersion() : $pathParts[$versionIndex];
-    }
-
-    protected function parsePath($path)
-    {
-        return trim(str_replace([$this->language, $this->version], "", $path), '/');
+        return empty($pathParts[$versionIndex]) ? config('larecipe.versions.default') : $pathParts[$versionIndex];
     }
     
     public function getLanguage()
@@ -78,5 +72,25 @@ class GetDocumentRequest implements GetDocumentRequestContract
     public function getPath()
     {
         return $this->path;
+    }
+
+    public function getLandingPath()
+    {
+        $language = '';
+        $version = '';
+
+        if(config('larecipe.languages.enabled') && config('larecipe.languages.default') && in_array(config('larecipe.languages.default'), config('larecipe.languages.published'))) {
+            $language = config('larecipe.languages.default');
+        }
+
+        if(config('larecipe.versions.enabled') && config('larecipe.versions.default') && in_array(config('larecipe.versions.default'), config('larecipe.versions.published'))) {
+            $version = config('larecipe.versions.default');
+        }
+
+        return trim(implode('/', [
+            $language,
+            $version,
+            config('larecipe.landing')
+        ]), '/');
     }
 }

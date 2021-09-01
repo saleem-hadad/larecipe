@@ -2,7 +2,6 @@
 
 namespace BinaryTorch\LaRecipe;
 
-use BinaryTorch\LaRecipe\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use BinaryTorch\LaRecipe\Services\SEOParser;
@@ -41,10 +40,10 @@ class LaRecipeServiceProvider extends ServiceProvider
     protected function routesConfig()
     {
         return [
-            'prefix'     => Config::path(),
+            'prefix'     => config('larecipe.path'),
             'namespace'  => 'BinaryTorch\LaRecipe\Http\Controllers',
             'as'         => 'larecipe.',
-            'middleware' => Config::middleware(),
+            'middleware' => config('larecipe.middleware'),
         ];
     }
 

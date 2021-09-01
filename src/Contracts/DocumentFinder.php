@@ -7,5 +7,5 @@ interface DocumentFinder
     /**
      * @return mixed
      */
-    public function find($path);
+    public function find(GetDocumentRequest $getDocumentRequest);
 }

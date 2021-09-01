@@ -35,7 +35,7 @@ class GetDocumentRequestTest extends TestCase
         $this->sut->parse("en/v1/overview");
 
         $this->assertEquals("en", $this->sut->getLanguage());
-        $this->assertEquals("v1/overview", $this->sut->getPath());
+        $this->assertEquals("en/v1/overview", $this->sut->getPath());
         $this->assertNull($this->sut->getVersion());
     }
 
@@ -48,7 +48,7 @@ class GetDocumentRequestTest extends TestCase
         $this->sut->parse("v1/overview");
 
         $this->assertEquals("v1", $this->sut->getVersion());
-        $this->assertEquals("overview", $this->sut->getPath());
+        $this->assertEquals("v1/overview", $this->sut->getPath());
         $this->assertNull($this->sut->getLanguage());
     }
 
@@ -62,6 +62,6 @@ class GetDocumentRequestTest extends TestCase
 
         $this->assertEquals("en", $this->sut->getLanguage());
         $this->assertEquals("v1", $this->sut->getVersion());
-        $this->assertEquals("section/one", $this->sut->getPath());
+        $this->assertEquals("en/v1/section/one", $this->sut->getPath());
     }
 }

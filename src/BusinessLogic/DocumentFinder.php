@@ -14,49 +14,24 @@ use BinaryTorch\LaRecipe\Contracts\DocumentFinder as DocumentFinderContract;
 class DocumentFinder implements DocumentFinderContract
 {
     /**
-     * @var GetDocumentRequest
-     */
-    protected $getDocumentRequest;
-
-    /**
      * @var Filesystem
      */
-    protected $files;
-
-    /**
-     * @var Cache
-     */
-    protected $cache;
+    protected $filesystem;
 
     /**
      * DocumentFinder constructor.
      */
-    public function __construct(GetDocumentRequest $getDocumentRequest, Filesystem $files, Cache $cache)
+    public function __construct(Filesystem $filesystem)
     {
-        $this->GetDocumentRequest = $getDocumentRequest;
-        $this->files = $files;
-        $this->cache = $cache;
+        $this->filesystem = $filesystem;
     }
 
     /**
      * @param $path
      * @return DocumentationResponse
      */
-    public function find($path): DocumentationResponse
+    public function find(GetDocumentRequest $getDocumentRequest)
     {
-        $documentBasePath = $this->GetDocumentRequest->parse($path)->getDocumentBasePath();
-
-        $content = $this->cache->remember(function() use($documentBasePath) {
-            try {
-                return $this->files->get($documentBasePath);
-            }catch (\Exception $exception) {
-                return null;
-            }
-        }, $path);
-
-        return DocumentationResponse::create([
-            'sidebar' => Sidebar::create(['content' => '<div></div>']),
-            'document' => Document::create(['content' => $content])
-        ]);
+        return $this->filesystem->get($getDocumentRequest->getPath());
     }
 }
