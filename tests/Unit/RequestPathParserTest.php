@@ -4,10 +4,10 @@ namespace BinaryTorch\LaRecipe\Tests\Unit;
 
 use Illuminate\Support\Facades\Config;
 use BinaryTorch\LaRecipe\Tests\TestCase;
-use BinaryTorch\LaRecipe\BusinessLogic\RequestPathParser;
-use BinaryTorch\LaRecipe\Contracts\RequestPathParser as RequestPathParserContract;
+use BinaryTorch\LaRecipe\BusinessLogic\GetDocumentRequest;
+use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest as GetDocumentRequestContract;
 
-class RequestPathParserTest extends TestCase
+class GetDocumentRequestTest extends TestCase
 {
     protected $sut;
 
@@ -15,15 +15,15 @@ class RequestPathParserTest extends TestCase
     {
         parent::setUp();
 
-        $this->sut = $this->app->make(RequestPathParserContract::class);
+        $this->sut = $this->app->make(GetDocumentRequestContract::class);
     }
 
     /** @test */
-    public function it_can_parse_request_path_string_and_returns_RequestPathParser()
+    public function it_can_parse_request_path_string_and_returns_GetDocumentRequest()
     {
         $returned = $this->sut->parse("someString");
 
-        $this->assertEquals(RequestPathParser::class, get_class($returned));
+        $this->assertEquals(GetDocumentRequest::class, get_class($returned));
     }
 
     /** @test */
@@ -34,21 +34,22 @@ class RequestPathParserTest extends TestCase
 
         $this->sut->parse("en/v1/overview");
 
-        $parts = $this->sut->getPathParts();
-        $this->assertEquals("en", $parts['language']);
-        $this->assertEquals("v1/overview.md", $parts['relativePath']);
+        $this->assertEquals("en", $this->sut->getLanguage());
+        $this->assertEquals("v1/overview", $this->sut->getPath());
+        $this->assertNull($this->sut->getVersion());
     }
 
     /** @test */
     public function it_can_parse_version_from_path_if_enabled()
     {
+        Config::set('larecipe.languages.enabled', false);
         Config::set('larecipe.versions.enabled', true);
 
         $this->sut->parse("v1/overview");
 
-        $parts = $this->sut->getPathParts();
-        $this->assertEquals("v1", $parts['version']);
-        $this->assertEquals("overview.md", $parts['relativePath']);
+        $this->assertEquals("v1", $this->sut->getVersion());
+        $this->assertEquals("overview", $this->sut->getPath());
+        $this->assertNull($this->sut->getLanguage());
     }
 
     /** @test */
@@ -59,9 +60,8 @@ class RequestPathParserTest extends TestCase
 
         $this->sut->parse("en/v1/section/one");
 
-        $parts = $this->sut->getPathParts();
-        $this->assertEquals("en", $parts['language']);
-        $this->assertEquals("v1", $parts['version']);
-        $this->assertEquals("section/one.md", $parts['relativePath']);
+        $this->assertEquals("en", $this->sut->getLanguage());
+        $this->assertEquals("v1", $this->sut->getVersion());
+        $this->assertEquals("section/one", $this->sut->getPath());
     }
 }

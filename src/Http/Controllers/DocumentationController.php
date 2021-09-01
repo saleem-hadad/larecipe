@@ -4,13 +4,13 @@ namespace BinaryTorch\LaRecipe\Http\Controllers;
 
 use Illuminate\Support\Facades\Gate;
 use BinaryTorch\LaRecipe\Contracts\DocumentFinder;
-use BinaryTorch\LaRecipe\Contracts\RequestPathParser;
+use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
 
 class DocumentationController extends Controller
 {
-    public function index(RequestPathParser $requestPathParser)
+    public function index(GetDocumentRequest $getDocumentRequest)
     {
-        $landingPath = $requestPathParser->getDefaultLandingPath();
+        $landingPath = $getDocumentRequest->getDefaultLandingPath();
 
         return redirect()->route('larecipe.show', ['path' => $landingPath]);
     }

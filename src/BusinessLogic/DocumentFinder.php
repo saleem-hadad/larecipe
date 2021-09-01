@@ -7,16 +7,16 @@ use Illuminate\Filesystem\Filesystem;
 use BinaryTorch\LaRecipe\Models\Model;
 use BinaryTorch\LaRecipe\Models\Sidebar;
 use BinaryTorch\LaRecipe\Models\Document;
-use BinaryTorch\LaRecipe\Contracts\RequestPathParser;
+use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
 use BinaryTorch\LaRecipe\Http\Responses\DocumentationResponse;
 use BinaryTorch\LaRecipe\Contracts\DocumentFinder as DocumentFinderContract;
 
 class DocumentFinder implements DocumentFinderContract
 {
     /**
-     * @var RequestPathParser
+     * @var GetDocumentRequest
      */
-    protected $requestPathParser;
+    protected $getDocumentRequest;
 
     /**
      * @var Filesystem
@@ -31,9 +31,9 @@ class DocumentFinder implements DocumentFinderContract
     /**
      * DocumentFinder constructor.
      */
-    public function __construct(RequestPathParser $requestPathParser, Filesystem $files, Cache $cache)
+    public function __construct(GetDocumentRequest $getDocumentRequest, Filesystem $files, Cache $cache)
     {
-        $this->requestPathParser = $requestPathParser;
+        $this->GetDocumentRequest = $getDocumentRequest;
         $this->files = $files;
         $this->cache = $cache;
     }
@@ -44,7 +44,7 @@ class DocumentFinder implements DocumentFinderContract
      */
     public function find($path): DocumentationResponse
     {
-        $documentBasePath = $this->requestPathParser->parse($path)->getDocumentBasePath();
+        $documentBasePath = $this->GetDocumentRequest->parse($path)->getDocumentBasePath();
 
         $content = $this->cache->remember(function() use($documentBasePath) {
             try {

@@ -2,6 +2,7 @@
 
 namespace BinaryTorch\LaRecipe;
 
+use BinaryTorch\LaRecipe\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use BinaryTorch\LaRecipe\Services\SEOParser;
@@ -10,13 +11,13 @@ use BinaryTorch\LaRecipe\Commands\ThemeCommand;
 use BinaryTorch\LaRecipe\Commands\InstallCommand;
 use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
 use BinaryTorch\LaRecipe\BusinessLogic\DocumentFinder;
-use BinaryTorch\LaRecipe\BusinessLogic\RequestPathParser;
+use BinaryTorch\LaRecipe\BusinessLogic\GetDocumentRequest;
 use BinaryTorch\LaRecipe\Services\ParseDownMarkdownParser;
 use BinaryTorch\LaRecipe\Facades\LaRecipe as LaRecipeFacade;
 use BinaryTorch\LaRecipe\Commands\GenerateDocumentationCommand;
 use BinaryTorch\LaRecipe\Contracts\SEOParser as SEOParserContract;
 use BinaryTorch\LaRecipe\Contracts\DocumentFinder as DocumentFinderContract;
-use BinaryTorch\LaRecipe\Contracts\RequestPathParser as RequestPathParserContract;
+use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest as GetDocumentRequestContract;
 
 class LaRecipeServiceProvider extends ServiceProvider
 {
@@ -40,11 +41,10 @@ class LaRecipeServiceProvider extends ServiceProvider
     protected function routesConfig()
     {
         return [
-            'prefix'     => config('larecipe.settings.route'),
+            'prefix'     => Config::path(),
             'namespace'  => 'BinaryTorch\LaRecipe\Http\Controllers',
-            'domain'     => config('larecipe.domain', null),
             'as'         => 'larecipe.',
-            'middleware' => config('larecipe.settings.middleware'),
+            'middleware' => Config::middleware(),
         ];
     }
 
@@ -68,7 +68,7 @@ class LaRecipeServiceProvider extends ServiceProvider
             return new LaRecipe();
         });
 
-        $this->app->bind(RequestPathParserContract::Class, RequestPathParser::class);
+        $this->app->bind(GetDocumentRequestContract::Class, GetDocumentRequest::class);
         $this->app->bind(DocumentFinderContract::Class, DocumentFinder::class);
         $this->app->bind(MarkdownParser::Class, ParseDownMarkdownParser::class);
         $this->app->bind(SEOParserContract::Class, SEOParser::class);

@@ -27,16 +27,16 @@ class DocumentationControllerTest extends TestCase
     }
 
     /** @test */
-    public function a_guest_will_be_redirected_to_default_version_if_the_given_version_not_exists()
+    public function show_not_exist_version_throw_not_found_exception()
     {
-        Config::set('larecipe.settings.path', 'tests/views/docs');
-        Config::set('larecipe.settings.landing', 'foo');
+        Config::set('larecipe.settings.path', 'tests/Fixture/docs');
+        Config::set('larecipe.settings.landing', 'custom-landing');
         Config::set('larecipe.versions.published', ['1.0']);
 
 
         // guest can view foo page
         $this->get('/docs/2.0/foo')
-            ->assertRedirect('/docs/1.0/foo');
+            ->assertStatus(404);
     }
 
     /** @test */
