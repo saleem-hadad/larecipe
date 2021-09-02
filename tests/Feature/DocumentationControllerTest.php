@@ -58,36 +58,4 @@ class DocumentationControllerTest extends TestCase
 
         $this->get('/docs/en/1.0/custom-landing')->assertStatus(403);
     }
-
-    /** @test */
-    public function only_auth_user_can_visit_docs_if_auth_middleware_is_set()
-    {
-        //set middleware to 'auth' to simulate auth only access
-        Config::set('larecipe.middleware', ['auth']);
-
-        $this->get('/docs/1.0')->assertRedirect('login');
-    }
-
-    /** @test */
-    public function auth_or_public_user_can_visit_docs_if_web_middleware_is_set()
-    {
-        Config::set('larecipe.path', 'tests/views/docs');
-        Config::set('larecipe.landing', 'foo');
-
-        Config::set('larecipe.middleware', ['web']);
-
-        $this->get('/docs/1.0')->assertOk();
-    }
-
-    /** @test */
-    public function relative_anchor_link_support()
-    {
-        Config::set('larecipe.path', 'tests/views/docs');
-        Config::set('larecipe.landing', 'anchor');
-
-        $this->get('/docs/1.0')
-            ->assertStatus(200)
-            ->assertSee('/docs/1.0#foo')
-            ->assertSee('/docs/1.0#bar');
-    }
 }
