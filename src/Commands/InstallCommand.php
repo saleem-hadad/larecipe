@@ -48,17 +48,11 @@ class InstallCommand extends Command
 
         $this->info('LaRecipe has been successfully installed! Enjoy 😍');
         $this->info('Visit ' . config('larecipe.path') . ' in your browser 👻');
-        $this->info('Support the project: https://opencollective.com/larecipe 😍');
-        $this->newLine();
-    }
+        $this->newLine(2);
 
-    private function showProgress()
-    {
-        $bar = $this->output->createProgressBar(1);
-        $bar->start();
-        sleep(2);
-        $bar->advance();
-        $bar->finish();
+        $this->line('Support the project if you love it 👻');
+        $this->info('https://opencollective.com/larecipe');
+        $this->newLine();
     }
 
     /**
