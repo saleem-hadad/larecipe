@@ -99,3 +99,32 @@ This project exists thanks to all the people who contribute. [[Contribute](CONTR
 ## License
 
 This library is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details.
+
+
+# TODO
+
+- Removed SEO from config
+- Migrate fourom to external plugin
+
+'forum'                   => [
+        'enabled'           => false,
+        'default'           => 'disqus',
+        'services'          => [
+            'disqus'        => [
+                'site_name' => '', // yoursite.disqus.com
+            ]
+        ]
+    ],
+
+- Removed packages from config
+
+'packages' => [
+    'path' => 'larecipe-components',
+],
+
+- Removed fa_v4_shims from ui in config
+- Removed show_side_bar from ui in config
+- Add enabled flag to versions in config
+- Add languages in config
+- Correct config comments
+

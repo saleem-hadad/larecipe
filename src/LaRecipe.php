@@ -19,16 +19,6 @@ class LaRecipe
     public static $styles = [];
 
     /**
-     * Get the current Larecipe version.
-     *
-     * @return string
-     */
-    public static function version()
-    {
-        return '2.0.0';
-    }
-
-    /**
      * Register the given script file with LaReipce.
      *
      * @param  string  $name

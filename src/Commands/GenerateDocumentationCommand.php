@@ -19,7 +19,7 @@ class GenerateDocumentationCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Generate docs structure with indexes for all your documentation\'s versions';
+    protected $description = 'Generate docs structure';
 
     /**
      * The Filesystem instance.
@@ -47,38 +47,42 @@ class GenerateDocumentationCommand extends Command
      */
     public function handle()
     {
+        $publishedLanguages = config('larecipe.languages.published');
         $publishedVersions = config('larecipe.versions.published');
 
-        $this->info('Reading all docs versions, found: '.implode(',', $publishedVersions));
-        foreach ($publishedVersions as $version) {
-            $versionDirectory = config('larecipe.docs.path').'/'.$version;
+        $this->info('Reading all supported languages, found: '.implode(',', $publishedLanguages));
+        $this->info('Reading all supported versions, found: '.implode(',', $publishedVersions));
+        
+        // foreach ($publishedVersions as $version) {
+        //     $versionDirectory = config('larecipe.source').'/'.$version;
 
-            $this->line('');
-            $this->info('---------------- Version '.$version.' ----------------');
-            // check if the version directory not exists => create one
-            if ($this->createVersionDirectory(base_path($versionDirectory))) {
-                $this->line('Docs folder created for v'.$version.' under '.$versionDirectory);
-            } else {
-                $this->line('Docs folder for <info>v'.$version.'</info> already exists.');
-            }
+        //     $this->line('');
+        //     $this->info('---------------- Version '.$version.' ----------------');
+        //     // check if the version directory not exists => create one
+        //     if ($this->createVersionDirectory(base_path($versionDirectory))) {
+        //         $this->line('Docs folder created for v'.$version.' under '.$versionDirectory);
+        //     } else {
+        //         $this->line('Docs folder for <info>v'.$version.'</info> already exists.');
+        //     }
 
-            // check if the version index.md not exists => create one
-            if ($this->createVersionIndex(base_path($versionDirectory))) {
-                $this->line('index.md created under '.$versionDirectory);
-            } else {
-                $this->line('<info>index.md</info> for <info>v'.$version.'</info> already exists.');
-            }
+        //     // check if the version index.md not exists => create one
+        //     if ($this->createVersionIndex(base_path($versionDirectory))) {
+        //         $this->line('index.md created under '.$versionDirectory);
+        //     } else {
+        //         $this->line('<info>index.md</info> for <info>v'.$version.'</info> already exists.');
+        //     }
 
-            // // check if the version landing page not exists => create one
-            if ($this->createVersionLanding(base_path($versionDirectory))) {
-                $this->line(config('larecipe.docs.landing').'.md created under '.$versionDirectory);
-            } else {
-                $this->line('<info>'.config('larecipe.docs.landing').'.md</info> for <info>v'.$version.'</info> already exists.');
-            }
+        //     // // check if the version landing page not exists => create one
+        //     if ($this->createVersionLanding(base_path($versionDirectory))) {
+        //         $this->line(config('larecipe.landing').'.md created under '.$versionDirectory);
+        //     } else {
+        //         $this->line('<info>'.config('larecipe.landing').'.md</info> for <info>v'.$version.'</info> already exists.');
+        //     }
 
-            $this->info('--------------- /Version '.$version.' ----------------');
-            $this->line('');
-        }
+        //     $this->info('--------------- /Version '.$version.' ----------------');
+        //     $this->line('');
+        // }
+
         $this->info('Done.');
     }
 
@@ -128,7 +132,7 @@ class GenerateDocumentationCommand extends Command
      */
     protected function createVersionLanding($versionDirectory)
     {
-        $landingPath = $versionDirectory.'/'.config('larecipe.docs.landing').'.md';
+        $landingPath = $versionDirectory.'/'.config('larecipe.landing').'.md';
 
         if (! $this->filesystem->exists($landingPath)) {
             $content = $this->generateLandingContent($this->getStub('landing'));
@@ -149,13 +153,13 @@ class GenerateDocumentationCommand extends Command
     {
         $content = str_replace(
             '{{LANDING}}',
-            ucwords(config('larecipe.docs.landing')),
+            ucwords(config('larecipe.landing')),
             $stub
         );
 
         $content = str_replace(
             '{{LANDINGSMALL}}',
-            trim(config('larecipe.docs.landing'), '/'),
+            trim(config('larecipe.landing'), '/'),
             $content
         );
 
@@ -171,7 +175,7 @@ class GenerateDocumentationCommand extends Command
     {
         return str_replace(
             '{{TITLE}}',
-            ucwords(config('larecipe.docs.landing')),
+            ucwords(config('larecipe.landing')),
             $stub
         );
     }

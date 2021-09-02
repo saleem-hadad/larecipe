@@ -2,17 +2,21 @@
 
 namespace BinaryTorch\LaRecipe\Traits;
 
-use ParsedownExtra;
+use Illuminate\Support\Facades\App;
+use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
 
 trait HasMarkdownParser
 {
     /**
      * @param $text
      * @return null|string|string[]
-     * @throws \Exception
      */
-    public function parse($text)
+    protected function parseMarkdown($text)
     {
-        return (new ParsedownExtra)->text($text);
+        try {
+            return App::make(MarkdownParser::class)->parse($text);
+        }catch (\Exception $exception) {
+            return null;
+        }
     }
 }
