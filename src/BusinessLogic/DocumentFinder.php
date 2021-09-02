@@ -23,7 +23,7 @@ class DocumentFinder implements DocumentFinderContract
 
     public function find(GetDocumentRequest $getDocumentRequest)
     {
-        $larecipePath = config('larecipe.path');
+        $larecipePath = config('larecipe.source');
         $filePath = $getDocumentRequest->getPath();
         $basePath = base_path(trim(implode('/', [$larecipePath, $filePath . '.md']), '/'));
 

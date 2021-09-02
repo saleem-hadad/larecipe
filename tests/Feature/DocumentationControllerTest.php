@@ -18,7 +18,7 @@ class DocumentationControllerTest extends TestCase
     /** @test */
     public function a_guest_can_access_any_documentation()
     {
-        Config::set('larecipe.path', 'tests/Fixture/docs');
+        Config::set('larecipe.source', 'tests/Fixture/docs');
         Config::set('larecipe.landing', 'custom-landing');
 
         $this->get('/docs/en/1.0/custom-landing')
@@ -29,7 +29,7 @@ class DocumentationControllerTest extends TestCase
     /** @test */
     public function show_not_exist_version_throw_not_found_exception()
     {
-        Config::set('larecipe.path', 'tests/Fixture/docs');
+        Config::set('larecipe.source', 'tests/Fixture/docs');
         Config::set('larecipe.landing', 'custom-landing');
         Config::set('larecipe.versions.published', ['1.0']);
 
@@ -40,7 +40,7 @@ class DocumentationControllerTest extends TestCase
     /** @test */
     public function a_guest_may_not_get_contents_of_not_exists_documentation()
     {
-        Config::set('larecipe.path', 'tests/views/docs');
+        Config::set('larecipe.source', 'tests/views/docs');
         Config::set('larecipe.landing', 'foo');
 
         $this->get('/docs/1.0/bar')
@@ -50,7 +50,7 @@ class DocumentationControllerTest extends TestCase
     /** @test */
     public function only_authorized_users_can_access_viewLarecipe_gate_is_defined()
     {
-        Config::set('larecipe.path', 'tests/Fixture/docs');
+        Config::set('larecipe.source', 'tests/Fixture/docs');
         Config::set('larecipe.landing', 'custom-landing');
         Gate::define('viewLarecipe', function($user, $documentation) {
             return false;

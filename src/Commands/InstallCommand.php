@@ -32,7 +32,7 @@ class InstallCommand extends Command
         $this->line('Publishing assets and congigurations.. 🍪');
         $this->call('vendor:publish', ['--provider' => LaRecipeServiceProvider::class, '--tag' => ['larecipe_assets', 'larecipe_config', 'larecipe_views']]);
 
-        $this->line('Setup initial documentations structure under '.config('larecipe.path').'.. 🍪');
+        $this->line('Setup initial documentations structure under ' . config('larecipe.path') . '.. 🍪');
         $this->call('larecipe:docs');
 
         $this->line('Dumping the autoloaded files and reloading all new files.. 🍪');
@@ -42,7 +42,7 @@ class InstallCommand extends Command
         $process->setWorkingDirectory(base_path())->run();
 
         $this->info('LaRecipe successfully installed! Enjoy 😍');
-        $this->info('Visit /docs in your browser 👻');
+        $this->info('Visit /' . config('larecipe.path') . ' in your browser 👻');
     }
 
     /**

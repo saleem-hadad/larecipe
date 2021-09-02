@@ -3,6 +3,8 @@
 return [
     'path' => env('LARECIPE_PATH', '/docs'),
 
+    'source' => 'recourses/docs',
+
     'landing' => 'overview',
 
     'languages'      => [
