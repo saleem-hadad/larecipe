@@ -47,43 +47,66 @@ class GenerateDocumentationCommand extends Command
      */
     public function handle()
     {
+        $isLanguageEnabled = config('larecipe.languages.enabled');
         $publishedLanguages = config('larecipe.languages.published');
+
+        if($isLanguageEnabled) {
+            $this->info('Lanugages enabled. Reading all supported languages, found: '.implode(',', $publishedLanguages));
+            foreach($publishedLanguages as $language) {
+                $this->renderVersions();
+            }
+
+            return;
+        }
+
+        $this->renderVersions();
+    }
+
+    protected function renderVersions()
+    {
+        $isVersionEnabled = config('larecipe.versions.enabled');
         $publishedVersions = config('larecipe.versions.published');
 
-        $this->info('Reading all supported languages, found: '.implode(',', $publishedLanguages));
-        $this->info('Reading all supported versions, found: '.implode(',', $publishedVersions));
-        
-        // foreach ($publishedVersions as $version) {
-        //     $versionDirectory = config('larecipe.source').'/'.$version;
+        if($isVersionEnabled){ 
+            $this->info('Versioning enabled. Reading all supported versions, found: '.implode(',', $publishedVersions));
 
-        //     $this->line('');
-        //     $this->info('---------------- Version '.$version.' ----------------');
-        //     // check if the version directory not exists => create one
-        //     if ($this->createVersionDirectory(base_path($versionDirectory))) {
-        //         $this->line('Docs folder created for v'.$version.' under '.$versionDirectory);
-        //     } else {
-        //         $this->line('Docs folder for <info>v'.$version.'</info> already exists.');
-        //     }
+            foreach($publishedVersions as $version) {
+                $this->renderDocs();
+            }
 
-        //     // check if the version index.md not exists => create one
-        //     if ($this->createVersionIndex(base_path($versionDirectory))) {
-        //         $this->line('index.md created under '.$versionDirectory);
-        //     } else {
-        //         $this->line('<info>index.md</info> for <info>v'.$version.'</info> already exists.');
-        //     }
+            return;
+        }
 
-        //     // // check if the version landing page not exists => create one
-        //     if ($this->createVersionLanding(base_path($versionDirectory))) {
-        //         $this->line(config('larecipe.landing').'.md created under '.$versionDirectory);
-        //     } else {
-        //         $this->line('<info>'.config('larecipe.landing').'.md</info> for <info>v'.$version.'</info> already exists.');
-        //     }
+        $this->renderDocs();
+    }
 
-        //     $this->info('--------------- /Version '.$version.' ----------------');
-        //     $this->line('');
-        // }
+    protected function renderDocs()
+    {
+        $this->line('');
+        $this->info('---------------- Version '.$version.' ----------------');
+        // check if the version directory not exists => create one
+        if ($this->createVersionDirectory(base_path($versionDirectory))) {
+            $this->line('Docs folder created for v'.$version.' under '.$versionDirectory);
+        } else {
+            $this->line('Docs folder for <info>v'.$version.'</info> already exists.');
+        }
 
-        $this->info('Done.');
+        // check if the version index.md not exists => create one
+        if ($this->createVersionIndex(base_path($versionDirectory))) {
+            $this->line('index.md created under '.$versionDirectory);
+        } else {
+            $this->line('<info>index.md</info> for <info>v'.$version.'</info> already exists.');
+        }
+
+        // // check if the version landing page not exists => create one
+        if ($this->createVersionLanding(base_path($versionDirectory))) {
+            $this->line(config('larecipe.landing').'.md created under '.$versionDirectory);
+        } else {
+            $this->line('<info>'.config('larecipe.landing').'.md</info> for <info>v'.$version.'</info> already exists.');
+        }
+
+        $this->info('--------------- /Version '.$version.' ----------------');
+        $this->line('');
     }
 
     /**
