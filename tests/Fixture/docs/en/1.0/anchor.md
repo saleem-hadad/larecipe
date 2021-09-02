@@ -1,2 +1,2 @@
 - [Foo](#foo)
-- [Bar](/{{route}}/{{version}}#bar)
+- [Bar](#bar)
