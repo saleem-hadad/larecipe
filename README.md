@@ -66,30 +66,9 @@ App Templates.
 
 
 
-## Gold Sponsors
+## Sponsors
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/larecipe#sponsor)]
-
-| Nova ADC |
-| :-: |
-| <a href="https://nova-adc.com/"><img width="200px" src="https://images.opencollective.com/nova-adc/f507268/logo.png" /></a> |
-
-## Bronze Sponsors
-
-<a href="https://github.com/mrgfrederic" target="_blank">
-    <img width="100px" height="100px" src="https://avatars0.githubusercontent.com/u/42940842?s=460&v=4">
-</a>
-
-<a href="https://cierra.de/" target="_blank">
-    <img width="200px" src="https://images.opencollective.com/cierrasoftware/1c2b298/logo.png">
-</a>
-
-
-## Backers
-
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/larecipe#backer)]
-
-<img src="https://opencollective.com/larecipe/tiers/backers.svg?avatarHeight=50" />
 
 ## Contributors
 
