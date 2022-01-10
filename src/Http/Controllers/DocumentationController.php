@@ -84,6 +84,7 @@ class DocumentationController extends Controller
             'versions'       => $documentation->publishedVersions,
             'currentSection' => $documentation->currentSection,
             'canonical'      => $documentation->canonical,
+            'authors'        => $documentation->authors,
         ], $documentation->statusCode);
     }
 }

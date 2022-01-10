@@ -6,6 +6,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use BinaryTorch\LaRecipe\Models\Documentation;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use BinaryTorch\LaRecipe\Traits\HasDocumentationAttributes;
+use Symfony\Component\Process\Process;
 
 class DocumentationRepository
 {
@@ -53,6 +54,7 @@ class DocumentationRepository
 
         $this->prepareTitle()
             ->prepareCanonical()
+            ->prepareAuthors()
             ->prepareSection($version, $page);
 
         return $this;
@@ -116,6 +118,19 @@ class DocumentationRepository
                 'page' => $this->sectionPage
             ]);
         }
+
+        return $this;
+    }
+
+    protected function prepareAuthors()
+    {
+        $pagePath = base_path(config('larecipe.docs.path').'/'.$this->version.'/'.$this->sectionPage.'.md');
+        $process = new Process(['git', 'shortlog', '-sn', 'HEAD', '--', $pagePath]);
+        $process->run();
+        $this->authors = collect(explode("\n", $process->getOutput()))->slice(0, -1)->map(function ($logLine) {
+            [$commits, $name] = explode("\t", trim($logLine));
+            return compact('commits', 'name');
+        });
 
         return $this;
     }

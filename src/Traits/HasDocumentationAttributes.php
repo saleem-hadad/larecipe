@@ -16,6 +16,7 @@ trait HasDocumentationAttributes
     protected $statusCode = 200;
     protected $publishedVersions;
     protected $defaultVersionUrl;
+    protected $authors;
 
     /**
      * @return string
@@ -87,5 +88,13 @@ trait HasDocumentationAttributes
     public function getPublishedVersionsAttribute()
     {
         return $this->publishedVersions;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAuthorsAttribute()
+    {
+        return $this->authors;
     }
 }
