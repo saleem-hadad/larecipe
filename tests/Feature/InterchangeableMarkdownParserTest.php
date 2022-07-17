@@ -14,7 +14,6 @@ class InterchangeableMarkdownParserTest extends TestCase
     /** @test */
     public function a_parser_is_accepted_as_long_as_the_contract_matches()
     {
-        // set the docs path and landing
         Config::set('larecipe.source', 'tests/Fixture/docs');
         Config::set('larecipe.landing', 'custom-landing');
 
