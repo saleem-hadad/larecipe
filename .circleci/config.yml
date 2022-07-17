@@ -1,23 +1,18 @@
 version: 2
 jobs:
-  build:
+  test:
     docker:
-      - image: circleci/php:7.2-stretch
+      - image: cimg/php:8.0.17-node
 
     steps:
       - checkout
-
-      - run: sudo apt update
-      - run: sudo docker-php-ext-install zip
-      - restore_cache:
-          keys:
-            - composer-v1-{{ checksum "composer.json" }}
-            - composer-v1-
-      - run: COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --prefer-dist --optimize-autoloader
-      - save_cache:
-          key: composer-v1-{{ checksum "composer.json" }}
-          when: always
-          paths:
-            - vendor
-
+      - run: composer install -n --prefer-dist
+      - run: cp .env.example .env
+      - run: php artisan key:generate
       - run: ./vendor/bin/phpunit
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+    - test
