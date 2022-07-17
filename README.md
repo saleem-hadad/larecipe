@@ -1,5 +1,5 @@
 <h6 align="center">
-    <img src="https://larecipe.binarytorch.com.my/images/logo.svg"/>
+    <img src="https://larecipe.saleem.dev/images/logo.svg"/>
 </h6>
 
 <h2 align="center">
@@ -17,7 +17,7 @@
 <a title="MadeWithVueJs.com Shield" href="https://madewithvuejs.com/p/larecipe/shield-link"> <img src="https://madewithvuejs.com/storage/repo-shields/1087-shield.svg"/></a>
 <a href="https://github.com/saleem-hadad/larecipe"><img src="https://img.shields.io/github/release/saleem-hadad/larecipe.svg" alt="Release"></a>
 <a href="https://github.com/saleem-hadad/larecipe"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-<a href="#backers" alt="sponsors on Open Collective"><img src="https://opencollective.com/larecipe/backers/badge.svg" /></a> <a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/larecipe/sponsors/badge.svg" /></a> 
+ <a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/larecipe/sponsors/badge.svg" /></a> 
 </p>
 <br/><br/>
 
@@ -25,16 +25,16 @@
 
 **LaRecipe** is simply a code-driven package provides an easy way to create beautiful documentation for your product or application inside your Laravel app.
 
-![LaRecipe Screenshot](https://larecipe.binarytorch.com.my/images/screenshot.png#)
+![LaRecipe Screenshot](https://larecipe.saleem.dev/images/screenshot.png#)
 
 ## Official tools and assets support
 
 | Title | v1.x | v2.x |
 | :- | :-: | :-: |
-| [LaRecipe Dark Theme](https://larecipe.binarytorch.com.my/packages/binarytorch/larecipe-dark-theme) | ❌ | ✅ |
-| [LaRecipe RTL Support](https://larecipe.binarytorch.com.my/packages/binarytorch/larecipe-rtl) | ❌ | ✅ |
-| [LaRecipe Feedback](https://larecipe.binarytorch.com.my/packages/binarytorch/larecipe-feedback) | ❌ | ✅ |
-| [LaRecipe Swagger](https://larecipe.binarytorch.com.my/packages/binarytorch/larecipe-swagger) | ❌ | ✅ |
+| [LaRecipe Dark Theme](https://larecipe.saleem.dev/packages/binarytorch/larecipe-dark-theme) | ❌ | ✅ |
+| [LaRecipe RTL Support](https://larecipe.saleem.dev/packages/binarytorch/larecipe-rtl) | ❌ | ✅ |
+| [LaRecipe Feedback](https://larecipe.saleem.dev/packages/binarytorch/larecipe-feedback) | ❌ | ✅ |
+| [LaRecipe Swagger](https://larecipe.saleem.dev/packages/binarytorch/larecipe-swagger) | ❌ | ✅ |
 
 ## Getting Started
 
@@ -48,7 +48,7 @@
 
 Visit your app domain with `/docs` endpoint. That's it.
 
-#### See [full documentation](https://larecipe.binarytorch.com.my/)
+#### See [full documentation](https://larecipe.saleem.dev/)
 
 
 ## Examples
@@ -66,30 +66,9 @@ App Templates.
 
 
 
-## Gold Sponsors
+## Sponsors
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/larecipe#sponsor)]
-
-| Nova ADC |
-| :-: |
-| <a href="https://nova-adc.com/"><img width="200px" src="https://images.opencollective.com/nova-adc/f507268/logo.png" /></a> |
-
-## Bronze Sponsors
-
-<a href="https://github.com/mrgfrederic" target="_blank">
-    <img width="100px" height="100px" src="https://avatars0.githubusercontent.com/u/42940842?s=460&v=4">
-</a>
-
-<a href="https://cierra.de/" target="_blank">
-    <img width="200px" src="https://images.opencollective.com/cierrasoftware/1c2b298/logo.png">
-</a>
-
-
-## Backers
-
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/larecipe#backer)]
-
-<img src="https://opencollective.com/larecipe/tiers/backers.svg?avatarHeight=50" />
 
 ## Contributors
 
