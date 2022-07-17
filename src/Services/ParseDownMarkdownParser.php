@@ -20,6 +20,6 @@ class ParseDownMarkdownParser implements MarkdownParser
             'allow_unsafe_links' => true,
         ]);
 
-        return $converter->convertToHtml($source);
+        return $converter->convert($source);
     }
 }

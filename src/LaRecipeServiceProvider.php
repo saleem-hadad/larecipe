@@ -69,11 +69,11 @@ class LaRecipeServiceProvider extends ServiceProvider
             return new LaRecipe();
         });
 
-        $this->app->bind(GetDocumentRequestContract::Class, GetDocumentRequest::class);
-        $this->app->bind(DocumentFinderContract::Class, DocumentFinder::class);
-        $this->app->bind(DocumentRepositoryContract::Class, DocumentRepository::class);
-        $this->app->bind(MarkdownParser::Class, ParseDownMarkdownParser::class);
-        $this->app->bind(SEOParserContract::Class, SEOParser::class);
+        $this->app->bind(GetDocumentRequestContract::class, GetDocumentRequest::class);
+        $this->app->bind(DocumentFinderContract::class, DocumentFinder::class);
+        $this->app->bind(DocumentRepositoryContract::class, DocumentRepository::class);
+        $this->app->bind(MarkdownParser::class, ParseDownMarkdownParser::class);
+        $this->app->bind(SEOParserContract::class, SEOParser::class);
     }
 
     /**
