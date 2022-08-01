@@ -5,7 +5,7 @@
 	@include('larecipe::partials.sidebar')
 	
 	<div class="documentation is-{{ config('larecipe.ui.code_theme') }}" :class="{'expanded': ! sidebar}">
-		@if($authors)
+		@if($authors && !$authors->isEmpty())
 			<div class="text-xs text-grey-darker mb-6">
 				@if(($authorsCount = count($authors)) > 1)
 					{{$authorsCount}} authors ($authors[0]['name'] and others)
