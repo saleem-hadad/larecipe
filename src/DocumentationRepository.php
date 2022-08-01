@@ -127,7 +127,7 @@ class DocumentationRepository
     {
         $gitService = new GitService();
 
-        if (!$gitService->isGitInstalled()) {
+        if (!$gitService->isGitInstalled() || !config('larecipe.git.enabled')) {
             return $this;
         }
         
