@@ -76,21 +76,18 @@ class GetDocumentRequest implements GetDocumentRequestContract
 
     public function getLandingPath()
     {
-        $language = '';
-        $version = '';
+        $parts = [];
 
         if(config('larecipe.languages.enabled') && config('larecipe.languages.default') && in_array(config('larecipe.languages.default'), config('larecipe.languages.published'))) {
-            $language = config('larecipe.languages.default');
+            $parts[] = config('larecipe.languages.default');
         }
 
         if(config('larecipe.versions.enabled') && config('larecipe.versions.default') && in_array(config('larecipe.versions.default'), config('larecipe.versions.published'))) {
-            $version = config('larecipe.versions.default');
+            $parts[] = config('larecipe.versions.default');
         }
 
-        return trim(implode('/', [
-            $language,
-            $version,
-            config('larecipe.landing')
-        ]), '/');
+        $parts[] = config('larecipe.landing');
+
+        return trim(implode('/', $parts), '/');
     }
 }

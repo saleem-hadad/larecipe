@@ -26,10 +26,10 @@
         <!-- CSS -->
         <link rel="stylesheet" href="{{ larecipe_assets('css/app.css') }}">
 
-        @if (config('larecipe.ui.fav'))
-            <!-- Favicon -->
-            <link rel="apple-touch-icon" href="{{ asset(config('larecipe.ui.fav')) }}">
-            <link rel="shortcut icon" type="image/png" href="{{ asset(config('larecipe.ui.fav')) }}"/>
+        <!-- Favicon -->
+        @if (config('larecipe.branding.favicon'))
+            <link rel="apple-touch-icon" href="{{ asset(config('larecipe.branding.favicon')) }}">
+            <link rel="shortcut icon" type="image/png" href="{{ asset(config('larecipe.branding.favicon')) }}"/>
         @endif
 
         <!-- Dynamic Colors -->
@@ -56,15 +56,8 @@
             <larecipe-back-to-top></larecipe-back-to-top>
         </div>
 
-
         <script>
             window.config = @json([]);
-        </script>
-
-        <script type="text/javascript">
-            if(localStorage.getItem('larecipeSidebar') == null) {
-                localStorage.setItem('larecipeSidebar', !! {{ config('larecipe.ui.show_side_bar') ?: 0 }});
-            }
         </script>
 
         <script src="{{ larecipe_assets('js/app.js') }}"></script>

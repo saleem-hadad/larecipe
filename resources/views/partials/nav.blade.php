@@ -3,13 +3,7 @@
 
     <nav class="flex items-center justify-between text-slate-900 bg-navbar shadow h-16">
         <div class="flex items-center flex-no-shrink">
-            <a href="{{ url('/') }}" class="flex items-center flex-no-shrink text-slate-900 mx-4">
-                @include("larecipe::partials.logo")
-
-                <p class="inline-block font-bold uppercase mx-2 text-slate-900">
-                    {{ config('app.name') }}
-                </p>
-            </a>
+            @include("larecipe::partials.logo")
 
             <div class="switch">
                 <input type="checkbox" name="1" id="1" v-model="sidebar" class="switch-checkbox" />

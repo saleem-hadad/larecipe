@@ -146,8 +146,7 @@ a {
     transition: all 0.1s;
 
     &:hover {
-        transform: translateY(-1px);
-        @apply shadow-md;
+        @apply shadow-lg;
     }
 
     &:focus {

@@ -23,6 +23,12 @@ return [
         ]
     ],
 
+    'branding'       => [
+        'favicon'    => '',
+        'primary'    => '#787AF6',
+        'secondary'  => '#2b9cf2',
+    ],
+
     'middleware' => [
         'web',
     ],
@@ -30,10 +36,5 @@ return [
     'cache'        => [
         'enabled'  => false,
         'duration' => 5
-    ],
-
-    'branding'       => [
-        'primary'    => '#787AF6',
-        'secondary'  => '#2b9cf2',
     ],
 ];

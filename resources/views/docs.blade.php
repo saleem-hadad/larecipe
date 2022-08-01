@@ -2,6 +2,10 @@
 
 @section('content')
 <div>
-	sdgsgd
+	@include('larecipe::partials.sidebar')
+	
+	<div class="documentation is-{{ config('larecipe.ui.code_theme') }}" :class="{'expanded': ! sidebar}">
+		{!! $document['content'] !!}
+	</div>
 </div>
 @endsection
