@@ -56,14 +56,10 @@
             <larecipe-back-to-top></larecipe-back-to-top>
         </div>
 
-        <script>
-            window.config = @json([]);
-        </script>
-
         <script src="{{ larecipe_assets('js/app.js') }}"></script>
 
         <script>
-            window.LaRecipe = new CreateLarecipe(config)
+            window.LaRecipe = new CreateLarecipe()
         </script>
 
         @foreach (LaRecipe::allScripts() as $name => $path)

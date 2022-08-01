@@ -1,4 +1,4 @@
-<a href="{{ url('/') }}" class="flex items-center flex-no-shrink text-slate-900 ml-4 mr-2">
+<a href="{{ url('/') }}" class="flex items-center flex-no-shrink text-slate-700 mr-2">
     <svg height="30px" viewBox="0 0 46 46" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <defs></defs>
         <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -13,7 +13,7 @@
         </g>
     </svg>
 
-    <p class="inline-block font-bold mx-2 text-slate-900">
+    <p class="inline-block font-bold mx-2 text-slate-700">
         {{ config('app.name') }}
     </p>
 </a>

@@ -16,7 +16,6 @@
   "dependencies": {
     "@docsearch/js": "^3.1.1",
     "axios": "^0.27.2",
-    "medium-zoom": "^1.0.6",
     "vue": "^3.2.37"
   }
 }
