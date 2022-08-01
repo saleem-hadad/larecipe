@@ -7,6 +7,7 @@ use BinaryTorch\LaRecipe\Models\Documentation;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use BinaryTorch\LaRecipe\Traits\HasDocumentationAttributes;
 use Symfony\Component\Process\Process;
+use BinaryTorch\LaRecipe\Services\GitService;
 
 class DocumentationRepository
 {
@@ -124,13 +125,15 @@ class DocumentationRepository
 
     protected function prepareAuthors()
     {
+        $gitService = new GitService();
+
+        if (!$gitService->isGitInstalled()) {
+            return $this;
+        }
+        
         $pagePath = base_path(config('larecipe.docs.path').'/'.$this->version.'/'.$this->sectionPage.'.md');
-        $process = new Process(['git', 'shortlog', '-sn', 'HEAD', '--', $pagePath]);
-        $process->run();
-        $this->authors = collect(explode("\n", $process->getOutput()))->slice(0, -1)->map(function ($logLine) {
-            [$commits, $name] = explode("\t", trim($logLine));
-            return compact('commits', 'name');
-        });
+
+        $this->authors = $gitService->getFileShortLog($pagePath);
 
         return $this;
     }
