@@ -32,12 +32,6 @@
             <link rel="shortcut icon" type="image/png" href="{{ asset(config('larecipe.ui.fav')) }}"/>
         @endif
 
-        <!-- FontAwesome -->
-        <link rel="stylesheet" href="{{ larecipe_assets('css/font-awesome.css') }}">
-        @if (config('larecipe.ui.fa_v4_shims', true))
-            <link rel="stylesheet" href="{{ larecipe_assets('css/font-awesome-v4-shims.css') }}">
-        @endif
-
         <!-- Dynamic Colors -->
         @include('larecipe::style')
 

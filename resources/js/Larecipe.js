@@ -1,11 +1,7 @@
-import "../sass/vendor/nucleo/css/nucleo.css";
-
-import Vue from "vue";
+import { createApp } from 'vue'
 import mediumZoom from "medium-zoom";
 import LaRecipeComponents from "./components";
 
-Vue.use(LaRecipeComponents);
-Vue.config.productionTip = false;
 const noDelimiter = { replace: () => "(?!x)x" };
 
 export default class LaRecipe {
@@ -19,7 +15,7 @@ export default class LaRecipe {
   }
 
   boot() {
-      this.bootingCallbacks.forEach(callback => callback(Vue));
+      // this.bootingCallbacks.forEach(callback => callback());
 
       this.bootingCallbacks = [];
   }
@@ -27,8 +23,7 @@ export default class LaRecipe {
   run() {
     this.boot();
 
-    this.app = new Vue({
-      el: "#app",
+    this.app = createApp({
       delimiters: [noDelimiter, noDelimiter],
       data() {
         return {
@@ -43,12 +38,12 @@ export default class LaRecipe {
         }
       },
       mounted() {
-        this.handleSidebarVisibility();
-        this.addLinksToHeaders();
-        this.setupSmoothScrolling();
-        this.activateCurrentSection();
-        this.parseDocsContent();
-        mediumZoom(".documentation img");
+        // this.handleSidebarVisibility();
+        // this.addLinksToHeaders();
+        // this.setupSmoothScrolling();
+        // this.activateCurrentSection();
+        // this.parseDocsContent();
+        // mediumZoom(".documentation img");
       },
       methods: {
         handleSidebarVisibility() {
@@ -172,6 +167,8 @@ export default class LaRecipe {
           });
         }
       }
-    });
+    })
+    .use(LaRecipeComponents)
+    .mount('#app');
   }
 }

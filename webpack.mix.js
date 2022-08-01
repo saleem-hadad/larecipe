@@ -1,13 +1,7 @@
-const { mix } = require('laravel-mix');
+let mix = require('laravel-mix');
 
-var tailwindcss = require('tailwindcss');
-
-mix.options({
-		processCssUrls: false,
-		postCss: [ tailwindcss('./tailwind.config.js') ],
-	})
-	.sass('resources/sass/app.scss', 'publishable/assets/css')
-    .sass('resources/sass/font-awesome.scss', 'publishable/assets/css')
-    .sass('resources/sass/font-awesome-v4-shims.scss', 'publishable/assets/css')
-	.js('resources/js/app.js', 'publishable/assets/js')
+mix.postCss("resources/css/app.css", "publishable/assets/css", [
+		require("tailwindcss")
+	])
+	.js('resources/js/app.js', 'publishable/assets/js').vue()
 	.copy('publishable/assets', '../dev/public/vendor/binarytorch/larecipe/assets');

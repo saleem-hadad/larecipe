@@ -1,12 +1,12 @@
 <div class="fixed top-0 left-0 right-0 z-40">
     <div class="bg-gradient-primary text-white h-1"></div>
 
-    <nav class="flex items-center justify-between text-black bg-navbar shadow-xs h-16">
+    <nav class="flex items-center justify-between text-slate-900 bg-navbar shadow h-16">
         <div class="flex items-center flex-no-shrink">
-            <a href="{{ url('/') }}" class="flex items-center flex-no-shrink text-black mx-4">
+            <a href="{{ url('/') }}" class="flex items-center flex-no-shrink text-slate-900 mx-4">
                 @include("larecipe::partials.logo")
 
-                <p class="inline-block font-semibold mx-1 text-gray-600">
+                <p class="inline-block font-bold uppercase mx-2 text-slate-900">
                     {{ config('app.name') }}
                 </p>
             </a>
@@ -23,7 +23,6 @@
             </larecipe-button>
 
             @auth
-                {{-- account --}}
                 <larecipe-dropdown>
                     <larecipe-button type="white" class="ml-2">
                         {{ auth()->user()->name ?? 'Account' }} <i class="fa fa-angle-down"></i>
@@ -37,7 +36,6 @@
                         </form>
                     </template>
                 </larecipe-dropdown>
-                {{-- /account --}}
             @endauth
         </div>
     </nav>

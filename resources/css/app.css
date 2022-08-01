@@ -2,15 +2,17 @@
 
 @tailwind components;
 
-@import "./components/alerts";
-@import "./components/badges";
-@import "./components/search";
-@import "./components/switch";
-@import "./components/back-to-top";
+@layer components {
+    @import "./components/alerts";
+    @import "./components/badges";
+    @import "./components/search";
+    @import "./components/switch";
+    @import "./components/back-to-top";
 
-@import "./vendor/prism/dark";
-@import "./vendor/prism/light";
-@import "./vendor/prism/code-toolbar";
+    @import "./vendor/prism/dark";
+    @import "./vendor/prism/light";
+    @import "./vendor/prism/code-toolbar";
+}
 
 /**************************************/
 /**************** Root ****************/
@@ -123,7 +125,7 @@ a {
 /**************** Cards ***************/
 /**************************************/
 .card {
-    @apply p-6 my-4 shadow-xs rounded;
+    @apply p-6 my-4 shadow-sm rounded;
 
     &.is-default { @apply bg-white text-gray-800 border border-gray-200; }
     &.is-white { @apply bg-gray-100 text-gray-800; }
@@ -199,7 +201,7 @@ table {
 /********** Documentation *************/
 /**************************************/
 .documentation {
-    @apply bg-documentation static my-32 pl-50 w-3/4;
+    @apply bg-documentation static my-32 pl-20 w-3/4;
     transition: padding-left 0.2s;
 
     &.expanded {

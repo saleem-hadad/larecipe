@@ -95,7 +95,7 @@ export default {
     }
   },
   mounted() {
-    $(".internal-search-input").focus();
+    // $(".internal-search-input").focus();
 
     axios
       .get(this.searchUrl)
