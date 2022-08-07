@@ -1,5 +1,5 @@
 <h6 align="center">
-    <img src="https://larecipe.binarytorch.com.my/images/logo.svg"/>
+    <img src="https://larecipe.saleem.dev/images/logo.svg"/>
 </h6>
 
 <h2 align="center">
@@ -25,16 +25,16 @@
 
 **LaRecipe** is simply a code-driven package provides an easy way to create beautiful documentation for your product or application inside your Laravel app.
 
-![LaRecipe Screenshot](https://larecipe.binarytorch.com.my/images/screenshot.png#)
+![LaRecipe Screenshot](https://larecipe.saleem.dev/images/screenshot.png#)
 
 ## Official tools and assets support
 
 | Title | v1.x | v2.x |
 | :- | :-: | :-: |
-| [LaRecipe Dark Theme](https://larecipe.binarytorch.com.my/packages/binarytorch/larecipe-dark-theme) | ❌ | ✅ |
-| [LaRecipe RTL Support](https://larecipe.binarytorch.com.my/packages/binarytorch/larecipe-rtl) | ❌ | ✅ |
-| [LaRecipe Feedback](https://larecipe.binarytorch.com.my/packages/binarytorch/larecipe-feedback) | ❌ | ✅ |
-| [LaRecipe Swagger](https://larecipe.binarytorch.com.my/packages/binarytorch/larecipe-swagger) | ❌ | ✅ |
+| [LaRecipe Dark Theme](https://larecipe.saleem.dev/packages/binarytorch/larecipe-dark-theme) | ❌ | ✅ |
+| [LaRecipe RTL Support](https://larecipe.saleem.dev/packages/binarytorch/larecipe-rtl) | ❌ | ✅ |
+| [LaRecipe Feedback](https://larecipe.saleem.dev/packages/binarytorch/larecipe-feedback) | ❌ | ✅ |
+| [LaRecipe Swagger](https://larecipe.saleem.dev/packages/binarytorch/larecipe-swagger) | ❌ | ✅ |
 
 ## Getting Started
 
@@ -48,7 +48,7 @@
 
 Visit your app domain with `/docs` endpoint. That's it.
 
-#### See [full documentation](https://larecipe.binarytorch.com.my/)
+#### See [full documentation](https://larecipe.saleem.dev/)
 
 
 ## Examples
