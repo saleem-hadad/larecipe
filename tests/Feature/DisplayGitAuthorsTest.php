@@ -46,6 +46,14 @@ class DisplayGitAuthorsTest extends TestCase
     /** @test */
     public function if_git_is_installed_but_no_authors_are_found_page_will_be_displayed_without_errors()
     {
-        # code...
+        Config::set('larecipe.git.enabled', true);
+
+        App::instance(GitServiceContract::class, new DummyGitService(true, []));
+
+        $response = $this->get('/docs/1.0');
+        $response->assertOk();
+        $response->assertViewHas('authors', function($authors) {
+            return $authors->isEmpty();
+        });
     }
 }
