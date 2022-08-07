@@ -26,7 +26,9 @@ class DisplayGitAuthorsTest extends TestCase
 
         $this->get('/docs/1.0')
             ->assertOk()
-            ->assertViewHas('authors', null);
+            ->assertViewHas('authors', function($authors) {
+                return is_null($authors);
+            });
     }
 
     /** @test */
@@ -36,7 +38,9 @@ class DisplayGitAuthorsTest extends TestCase
 
         $this->get('/docs/1.0')
             ->assertOk()
-            ->assertViewHas('authors', null);
+            ->assertViewHas('authors', function($authors) {
+                return is_null($authors);
+            });
     }
 
     /** @test */
