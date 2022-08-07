@@ -133,7 +133,10 @@ class DocumentationRepository
         
         $pagePath = base_path(config('larecipe.docs.path').'/'.$this->version.'/'.$this->sectionPage.'.md');
 
-        $this->authors = $this->gitService->getFileShortLog($pagePath);
+        $this->authors = $this->gitService
+            ->getFileShortLog($pagePath)
+            ->sortByDesc('commits')
+            ->values();
 
         return $this;
     }
