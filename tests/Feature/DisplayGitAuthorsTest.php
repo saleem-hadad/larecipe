@@ -56,7 +56,7 @@ class DisplayGitAuthorsTest extends TestCase
     }
     
     /** @test */
-    public function check_if_one_author_displayed_on_view() {
+    public function check_if_one_author_is_displayed_on_the_view() {
         App::instance(GitServiceContract::class, new DummyGitService(true, [
             [
                 'name' => 'The Tester',
@@ -67,5 +67,27 @@ class DisplayGitAuthorsTest extends TestCase
         $this->get('/docs/1.0')
             ->assertOk()
             ->assertSee('By The Tester');
+    }
+
+    /** @test */
+    public function check_if_multiple_authors_are_displayed_on_the_view() {
+        App::instance(GitServiceContract::class, new DummyGitService(true, [
+            [
+                'name' => 'The Tester',
+                'commits' => 5,
+            ],
+            [
+                'name' => 'Best Contributer',
+                'commits' => 10,
+            ],
+            [
+                'name' => 'The Documenter',
+                'commits' => 7,
+            ],
+        ]));
+
+        $this->get('/docs/1.0')
+            ->assertOk()
+            ->assertSee('3 authors (Best Contributer and others)');
     }
 }
