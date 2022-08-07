@@ -8,7 +8,7 @@
 		@if($authors && !$authors->isEmpty())
 			<div class="text-xs text-grey-darker mb-6">
 				@if(($authorsCount = count($authors)) > 1)
-					{{$authorsCount}} authors ($authors[0]['name'] and others)
+					{{$authorsCount}} authors ({{$authors[0]['name']}} and others)
 				@else
 					By {{$authors[0]['name']}}
 				@endif
