@@ -10,6 +10,13 @@ use BinaryTorch\LaRecipe\Tests\Fixtures\DummyGitService;
 
 class DisplayGitAuthorsTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+        Config::set('larecipe.docs.path', 'tests/views/docs');
+        Config::set('larecipe.docs.landing', 'foo');
+    }
+
     /** @test */
     public function if_git_config_is_not_enabled_page_will_be_displayed_without_errors()
     {
@@ -18,13 +25,18 @@ class DisplayGitAuthorsTest extends TestCase
         App::instance(GitServiceContract::class, new DummyGitService(true, []));
 
         $this->get('/docs/1.0')
+            ->assertOk()
             ->assertViewHas('authors', null);
     }
 
     /** @test */
     public function if_git_is_not_installed_page_will_be_displayed_without_errors()
     {
-        # code...
+        App::instance(GitServiceContract::class, new DummyGitService(false, []));
+
+        $this->get('/docs/1.0')
+            ->assertOk()
+            ->assertViewHas('authors', null);
     }
 
     /** @test */
