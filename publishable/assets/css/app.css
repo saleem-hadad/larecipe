@@ -372,7 +372,7 @@ html.dark {
     line-height: 1.25rem
 }
 
-    .badge.is-white {
+    .badge.white {
 
     --tw-bg-opacity: 1;
 
@@ -383,7 +383,7 @@ html.dark {
     color: rgb(31 41 55 / var(--tw-text-opacity))
 }
 
-    .badge.is-black {
+    .badge.black {
 
     --tw-bg-opacity: 1;
 
@@ -394,7 +394,7 @@ html.dark {
     color: rgb(255 255 255 / var(--tw-text-opacity))
 }
 
-    .badge.is-primary {
+    .badge.primary {
 
     background-color: var(--primary);
 
@@ -403,7 +403,7 @@ html.dark {
     color: rgb(255 255 255 / var(--tw-text-opacity))
 }
 
-    .badge.is-secondary {
+    .badge.secondary {
 
     background-color: var(--secondary);
 
@@ -412,7 +412,7 @@ html.dark {
     color: rgb(255 255 255 / var(--tw-text-opacity))
 }
 
-    .badge.is-success {
+    .badge.success {
 
     background-color: var(--success);
 
@@ -421,7 +421,7 @@ html.dark {
     color: rgb(255 255 255 / var(--tw-text-opacity))
 }
 
-    .badge.is-info {
+    .badge.info {
 
     background-color: var(--info);
 
@@ -430,7 +430,7 @@ html.dark {
     color: rgb(255 255 255 / var(--tw-text-opacity))
 }
 
-    .badge.is-warning {
+    .badge.warning {
 
     background-color: var(--warning);
 
@@ -439,7 +439,7 @@ html.dark {
     color: rgb(255 255 255 / var(--tw-text-opacity))
 }
 
-    .badge.is-danger {
+    .badge.danger {
 
     background-color: var(--danger);
 
@@ -628,7 +628,7 @@ html.dark {
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
 }
 
-    .card.is-default {
+    .card.default {
 
     border-width: 1px;
 
@@ -645,7 +645,7 @@ html.dark {
     color: rgb(30 41 59 / var(--tw-text-opacity))
 }
 
-    .dark .card.is-default {
+    .dark .card.default {
 
     border-style: none;
 
@@ -658,7 +658,7 @@ html.dark {
     color: rgb(148 163 184 / var(--tw-text-opacity))
 }
 
-    .card.is-white {
+    .card.white {
 
     --tw-bg-opacity: 1;
 
@@ -669,7 +669,7 @@ html.dark {
     color: rgb(30 41 59 / var(--tw-text-opacity))
 }
 
-    .card.is-black {
+    .card.black {
 
     --tw-bg-opacity: 1;
 
@@ -680,7 +680,7 @@ html.dark {
     color: rgb(255 255 255 / var(--tw-text-opacity))
 }
 
-    .card.is-primary {
+    .card.primary {
 
     background-color: var(--primary);
 
@@ -689,7 +689,7 @@ html.dark {
     color: rgb(255 255 255 / var(--tw-text-opacity))
 }
 
-    .card.is-secondary {
+    .card.secondary {
 
     background-color: var(--secondary);
 
@@ -698,7 +698,7 @@ html.dark {
     color: rgb(255 255 255 / var(--tw-text-opacity))
 }
 
-    .card.is-success {
+    .card.success {
 
     background-color: var(--success);
 
@@ -707,7 +707,7 @@ html.dark {
     color: rgb(255 255 255 / var(--tw-text-opacity))
 }
 
-    .card.is-info {
+    .card.info {
 
     background-color: var(--info);
 
@@ -716,7 +716,7 @@ html.dark {
     color: rgb(255 255 255 / var(--tw-text-opacity))
 }
 
-    .card.is-warning {
+    .card.warning {
 
     background-color: var(--warning);
 
@@ -725,7 +725,7 @@ html.dark {
     color: rgb(255 255 255 / var(--tw-text-opacity))
 }
 
-    .card.is-danger {
+    .card.danger {
 
     background-color: var(--danger);
 
@@ -846,6 +846,32 @@ table {
 
     table td,  table th {
     padding: 1rem
+}
+.progress-bar.white {
+    --tw-bg-opacity: 1;
+    background-color: rgb(241 245 249 / var(--tw-bg-opacity))
+}
+    .progress-bar.black {
+    --tw-bg-opacity: 1;
+    background-color: rgb(15 23 42 / var(--tw-bg-opacity))
+}
+    .progress-bar.primary {
+    background-color: var(--primary)
+}
+    .progress-bar.secondary {
+    background-color: var(--secondary)
+}
+    .progress-bar.success {
+    background-color: var(--success)
+}
+    .progress-bar.info {
+    background-color: var(--info)
+}
+    .progress-bar.warning {
+    background-color: var(--warning)
+}
+    .progress-bar.danger {
+    background-color: var(--danger)
 }
 /*
 ! tailwindcss v3.1.7 | MIT License | https://tailwindcss.com

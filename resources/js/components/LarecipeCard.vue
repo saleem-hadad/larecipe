@@ -28,7 +28,7 @@ export default {
       return [
         {'shadow': this.shadow},
         {[`shadow-${this.shadowSize}`]: this.shadowSize},
-        `is-${this.type}`
+        `${this.type}`
       ];
     }
   }

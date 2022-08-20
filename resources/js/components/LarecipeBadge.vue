@@ -39,7 +39,7 @@ export default {
   computed: {
     classes() {
       return [
-        `is-${this.type}`,
+        `${this.type}`,
         this.rounded && 'rounded',
         this.circle && 'rounded-full h-8 w-8 flex items-center justify-center'
       ];
