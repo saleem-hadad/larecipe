@@ -12,27 +12,36 @@ export default class LaRecipe {
 
   init() {
     this.app = createApp();
+
+    return this;
   }
+
   setup() {
     this.app.use(LaRecipeComponents);
 
-    const noDelimiter = { replace: () => "(?!x)x" };
-    this.app.config.compilerOptions.delimiters = [noDelimiter, noDelimiter];
+    this.app.config.compilerOptions.delimiters = [{ replace: () => "(?!x)x" }];
+
+    return this;
   }
 
   boot() {
       this.bootingCallbacks.forEach(callback => callback(this.app));
 
       this.bootingCallbacks = [];
+
+      return this;
+  }
+
+  mount() {
+    this.app.mount('#app');
+
+    return this;
   }
 
   run() {
-    this.init();
-
-    this.setup();
-
-    this.boot();
-
-    this.app.mount('#app');
+    this.init()
+        .setup()
+        .boot()
+        .mount();
   }
 }

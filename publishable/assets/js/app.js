@@ -19994,22 +19994,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "larecipe-back-to-top",
-  mounted: function mounted() {// $(window).on("scroll", function() {
-    //   if ($(window).scrollTop() >= 300) {
-    //     $("#backtotop").addClass("visible");
-    //   } else {
-    //     $("#backtotop").removeClass("visible");
-    //   }
-    // });
-    // $("#backtotop a").on("click", function() {
-    //   $("html, body").animate(
-    //     {
-    //       scrollTop: 0
-    //     },
-    //     500
-    //   );
-    //   return false;
-    // });
+  mounted: function mounted() {
+    var backToTop = document.getElementById("backtotop");
+
+    window.onscroll = function () {
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        backToTop.classList.remove("opacity-0");
+        backToTop.classList.remove("-mb-20");
+      } else {
+        backToTop.classList.add("opacity-0");
+        backToTop.classList.add("-mb-20");
+      }
+    };
+
+    backToTop.addEventListener('click', function () {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
   }
 });
 
@@ -20384,12 +20387,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  id: "backtotop"
+  id: "backtotop",
+  "class": "fixed bottom-4 right-4 opacity-0 cursor-pointer z-50 rounded-full bg-primary h-12 w-12 -mb-20 flex items-center justify-center transition-all duration-300 ease-in-out"
 };
 
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-  href: "#"
-}, null, -1
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  "class": "h-8 w-8 text-white",
+  viewBox: "0 0 20 20",
+  fill: "currentColor"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  "fill-rule": "evenodd",
+  d: "M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z",
+  "clip-rule": "evenodd"
+})], -1
 /* HOISTED */
 );
 
@@ -20589,17 +20600,18 @@ var LaRecipe = /*#__PURE__*/function () {
     key: "init",
     value: function init() {
       this.app = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)();
+      return this;
     }
   }, {
     key: "setup",
     value: function setup() {
       this.app.use(_components__WEBPACK_IMPORTED_MODULE_1__["default"]);
-      var noDelimiter = {
+      this.app.config.compilerOptions.delimiters = [{
         replace: function replace() {
           return "(?!x)x";
         }
-      };
-      this.app.config.compilerOptions.delimiters = [noDelimiter, noDelimiter];
+      }];
+      return this;
     }
   }, {
     key: "boot",
@@ -20610,14 +20622,18 @@ var LaRecipe = /*#__PURE__*/function () {
         return callback(_this.app);
       });
       this.bootingCallbacks = [];
+      return this;
+    }
+  }, {
+    key: "mount",
+    value: function mount() {
+      this.app.mount('#app');
+      return this;
     }
   }, {
     key: "run",
     value: function run() {
-      this.init();
-      this.setup();
-      this.boot();
-      this.app.mount('#app');
+      this.init().setup().boot().mount();
     }
   }]);
 
@@ -20657,9 +20673,7 @@ __webpack_require__(/*! ./bootsrap */ "./resources/js/bootsrap.js");
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-window.axios.defaults.headers.common['X-CSRF-TOKEN'] = document.head.querySelector('meta[name="csrf-token"]').content; // require('./vendor/prism.js');
-// Prism.plugins.autoloader.use_minified = true;
-// Prism.plugins.autoloader.languages_path = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/';
+window.axios.defaults.headers.common['X-CSRF-TOKEN'] = document.head.querySelector('meta[name="csrf-token"]').content;
 
 /***/ }),
 

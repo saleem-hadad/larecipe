@@ -14,7 +14,6 @@
     @import "./components/cards";
     @import "./components/buttons";
     @import "./components/tables";
-    @import "./components/back-to-top";
 }
 
 @tailwind utilities;
