@@ -9,9 +9,11 @@ use BinaryTorch\LaRecipe\Commands\AssetCommand;
 use BinaryTorch\LaRecipe\Commands\ThemeCommand;
 use BinaryTorch\LaRecipe\Commands\InstallCommand;
 use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
+use BinaryTorch\LaRecipe\Contracts\ISidebarFinder;
 use BinaryTorch\LaRecipe\Contracts\IDocumentFinder;
 use BinaryTorch\LaRecipe\Contracts\IDocumentService;
 use BinaryTorch\LaRecipe\BusinessLogic\DocumentService;
+use BinaryTorch\LaRecipe\BusinessLogic\FileSidebarFinder;
 use BinaryTorch\LaRecipe\BusinessLogic\GetDocumentRequest;
 use BinaryTorch\LaRecipe\BusinessLogic\FileDocumentFinder;
 use BinaryTorch\LaRecipe\Services\CommonMarkMarkdownParser;
@@ -70,8 +72,9 @@ class LaRecipeServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(GetDocumentRequestContract::class, GetDocumentRequest::class);
-        $this->app->bind(IDocumentFinder::class, FileDocumentFinder::class);
         $this->app->bind(IDocumentService::class, DocumentService::class);
+        $this->app->bind(ISidebarFinder::class, FileSidebarFinder::class);
+        $this->app->bind(IDocumentFinder::class, FileDocumentFinder::class);
         $this->app->bind(MarkdownParser::class, CommonMarkMarkdownParser::class);
         $this->app->bind(SEOParserContract::class, SEOParser::class);
     }

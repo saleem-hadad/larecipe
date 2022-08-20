@@ -2,8 +2,12 @@
 
 namespace BinaryTorch\LaRecipe\Models;
 
+use BinaryTorch\LaRecipe\Traits\HasMarkdownParser;
+
 class Sidebar extends Model
 {
+    use HasMarkdownParser;
+    
     /**
      * @var string[]
      */
@@ -15,7 +19,7 @@ class Sidebar extends Model
     public function toArray()
     {
         return [
-            'content' => $this->content,
+            'content' => $this->parseMarkdown($this->content),
         ];
     }
 }
