@@ -39,7 +39,7 @@ div.code-toolbar > .toolbar a,
 div.code-toolbar > .toolbar button,
 div.code-toolbar > .toolbar span {
     @apply text-white bg-primary p-2 shadow rounded-lg text-sm;
-    transition: box-shadow 0.2s;
+    transition: box-shadow 0.1s;
 }
 
 div.code-toolbar > .toolbar a:hover,

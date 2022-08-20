@@ -1,6 +1,6 @@
 .search-box {
     @apply w-full h-24 flex items-center z-50 shadow;
-    transition: all 0.2s;
+    transition: all 0.1s;
     margin-top: 4.25rem;
 
   input {
@@ -8,7 +8,7 @@
       font-size: 2rem;
       text-transform: uppercase;
       background: #f4f5f7;
-      transition: all 0.2s;
+      transition: all 0.1s;
 
       &:focus {
         @apply bg-white;
@@ -28,7 +28,7 @@
   top: 7rem;
   right: 10px;
   border-radius: 10px;
-  transition: all 0.2s;
+  transition: all 0.1s;
   z-index: 100;
   overflow: scroll;
 

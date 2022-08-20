@@ -4,7 +4,7 @@
 <div>
 	@include('larecipe::partials.sidebar')
 	
-	<div class="documentation is-{{ config('larecipe.ui.code_theme') }}" :class="{'expanded': ! sidebar}">
+	<div class="documentation" :class="{'expanded': sidebar}">
 		{!! $document['content'] !!}
 	</div>
 </div>

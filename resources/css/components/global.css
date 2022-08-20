@@ -1,0 +1,7 @@
+html, body {
+    @apply bg-documentation-light dark:bg-documentation-dark;
+}
+
+html.dark {
+    @apply bg-documentation-dark;
+}

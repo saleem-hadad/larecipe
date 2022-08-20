@@ -8,7 +8,7 @@
     @apply hidden;
 }
 .switch-label {
-    @apply block overflow-hidden cursor-pointer bg-slate-200 rounded-full h-6 shadow-inner border-2 border-white;
+    @apply block overflow-hidden cursor-pointer bg-slate-300 dark:bg-slate-400 rounded-full h-6 shadow-inner border-2 border-white dark:border-navbar-dark;
     transition: background-color 0.1s ease-in;
 }
 .switch-label:before {

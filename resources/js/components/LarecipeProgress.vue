@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-400 h-2 rounded overflow-hidden my-4">
+  <div class="bg-slate-300 h-2 rounded overflow-hidden my-4">
     <div class="h-full" :class="computedClasses" :style="`width: ${value}%;`"></div>
   </div>
 </template>

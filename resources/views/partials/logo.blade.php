@@ -13,7 +13,7 @@
         </g>
     </svg>
 
-    <p class="inline-block font-bold mx-2 text-slate-700">
+    <p class="inline-block font-bold mx-2 text-slate-700 dark:text-slate-400">
         {{ config('app.name') }}
     </p>
 </a>

@@ -1,6 +1,3 @@
-/**************************************/
-/************** Alerts ****************/
-/**************************************/
 .alert {
     @apply relative bg-primary shadow-lg my-8 p-6 rounded-lg overflow-hidden;
     transition: box-shadow 0.1s;

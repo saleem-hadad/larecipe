@@ -45,6 +45,13 @@
                 <link rel="stylesheet" href="{{ route('larecipe.styles', $name) }}">
             @endif
         @endforeach
+        <script>
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark')
+            } else {
+                document.documentElement.classList.remove('dark')
+            }
+        </script>
 
     </head>
     <body>
@@ -72,6 +79,17 @@
 
         <script>
             LaRecipe.run()
+
+            document.getElementById('switchTheme').addEventListener('click', function() {
+                let htmlClasses = document.querySelector('html').classList;
+                if(localStorage.theme == 'dark') {
+                    htmlClasses.remove('dark');
+                    localStorage.removeItem('theme')
+                } else {
+                    htmlClasses.add('dark');
+                    localStorage.theme = 'dark';
+                }
+            });
         </script>
     </body>
 </html>
