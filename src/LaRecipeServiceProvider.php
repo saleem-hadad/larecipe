@@ -9,15 +9,15 @@ use BinaryTorch\LaRecipe\Commands\AssetCommand;
 use BinaryTorch\LaRecipe\Commands\ThemeCommand;
 use BinaryTorch\LaRecipe\Commands\InstallCommand;
 use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
-use BinaryTorch\LaRecipe\BusinessLogic\DocumentFinder;
-use BinaryTorch\LaRecipe\BusinessLogic\DocumentRepository;
+use BinaryTorch\LaRecipe\Contracts\IDocumentFinder;
+use BinaryTorch\LaRecipe\Contracts\IDocumentService;
+use BinaryTorch\LaRecipe\BusinessLogic\DocumentService;
 use BinaryTorch\LaRecipe\BusinessLogic\GetDocumentRequest;
-use BinaryTorch\LaRecipe\Services\ParseDownMarkdownParser;
+use BinaryTorch\LaRecipe\BusinessLogic\FileDocumentFinder;
+use BinaryTorch\LaRecipe\Services\CommonMarkMarkdownParser;
 use BinaryTorch\LaRecipe\Facades\LaRecipe as LaRecipeFacade;
 use BinaryTorch\LaRecipe\Commands\GenerateDocumentationCommand;
 use BinaryTorch\LaRecipe\Contracts\SEOParser as SEOParserContract;
-use BinaryTorch\LaRecipe\Contracts\DocumentFinder as DocumentFinderContract;
-use BinaryTorch\LaRecipe\Contracts\DocumentRepository as DocumentRepositoryContract;
 use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest as GetDocumentRequestContract;
 
 class LaRecipeServiceProvider extends ServiceProvider
@@ -70,9 +70,9 @@ class LaRecipeServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(GetDocumentRequestContract::class, GetDocumentRequest::class);
-        $this->app->bind(DocumentFinderContract::class, DocumentFinder::class);
-        $this->app->bind(DocumentRepositoryContract::class, DocumentRepository::class);
-        $this->app->bind(MarkdownParser::class, ParseDownMarkdownParser::class);
+        $this->app->bind(IDocumentFinder::class, FileDocumentFinder::class);
+        $this->app->bind(IDocumentService::class, DocumentService::class);
+        $this->app->bind(MarkdownParser::class, CommonMarkMarkdownParser::class);
         $this->app->bind(SEOParserContract::class, SEOParser::class);
     }
 

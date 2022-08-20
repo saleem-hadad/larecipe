@@ -53,7 +53,7 @@ class Cache
         $app_version = explode('.', app()->version());
 
         if (((int) $app_version[0] == 5 && (int) $app_version[1] >= 8) || $app_version[0] > 5) {
-            return config('larecipe.cache.period') * 60;
+            return config('larecipe.cache.duration') * 60;
         }
 
         return $ttl;

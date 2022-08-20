@@ -2,7 +2,7 @@
 
 namespace BinaryTorch\LaRecipe\Contracts;
 
-interface DocumentRepository
+interface IDocumentService
 {
     /**
      * @return mixed

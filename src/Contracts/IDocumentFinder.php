@@ -2,7 +2,7 @@
 
 namespace BinaryTorch\LaRecipe\Contracts;
 
-interface DocumentFinder
+interface IDocumentFinder
 {
     /**
      * @return mixed

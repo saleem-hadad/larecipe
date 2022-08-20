@@ -6,6 +6,10 @@
         @apply pl-20;
     }
 
+    a{
+        @apply text-sky-500 border-b border-dashed border-sky-500;
+    }
+
     h1:first-of-type {
         @apply mb-6 font-bold text-3xl text-slate-800 dark:text-slate-200;
     }

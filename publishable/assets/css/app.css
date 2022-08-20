@@ -153,6 +153,15 @@ html.dark {
     padding-left: 5rem;
 }
 
+    .documentation a {
+    border-bottom-width: 1px;
+    border-style: dashed;
+    --tw-border-opacity: 1;
+    border-color: rgb(14 165 233 / var(--tw-border-opacity));
+    --tw-text-opacity: 1;
+    color: rgb(14 165 233 / var(--tw-text-opacity));
+}
+
     .documentation h1:first-of-type {
     margin-bottom: 1.5rem;
     font-size: 1.875rem;
@@ -545,9 +554,6 @@ html.dark {
     font-weight: 700;
 }
 
-/**************************************/
-/*************** Switch ***************/
-/**************************************/
 .switch {
     position: relative;
     margin-right: 0.5rem;
@@ -756,7 +762,7 @@ html.dark {
     outline-offset: 2px
 }
 
-    .button.is-link {
+    .button.link {
     background-color: transparent;
     --tw-text-opacity: 1;
     color: rgb(107 114 128 / var(--tw-text-opacity));
@@ -765,51 +771,51 @@ html.dark {
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
 }
 
-    .button.is-white {
+    .button.white {
     --tw-bg-opacity: 1;
     background-color: rgb(243 244 246 / var(--tw-bg-opacity));
     --tw-text-opacity: 1;
     color: rgb(31 41 55 / var(--tw-text-opacity))
 }
 
-    .button.is-black {
+    .button.black {
     --tw-bg-opacity: 1;
     background-color: rgb(31 41 55 / var(--tw-bg-opacity));
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity))
 }
 
-    .button.is-primary {
+    .button.primary {
     background-color: var(--primary);
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity))
 }
 
-    .button.is-secondary {
+    .button.secondary {
     background-color: var(--secondary);
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity))
 }
 
-    .button.is-success {
+    .button.success {
     background-color: var(--success);
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity))
 }
 
-    .button.is-info {
+    .button.info {
     background-color: var(--info);
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity))
 }
 
-    .button.is-warning {
+    .button.warning {
     background-color: var(--warning);
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity))
 }
 
-    .button.is-danger {
+    .button.danger {
     background-color: var(--danger);
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity))

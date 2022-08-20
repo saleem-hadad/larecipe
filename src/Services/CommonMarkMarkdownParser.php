@@ -5,7 +5,7 @@ namespace BinaryTorch\LaRecipe\Services;
 use League\CommonMark\CommonMarkConverter;
 use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
 
-class ParseDownMarkdownParser implements MarkdownParser
+class CommonMarkMarkdownParser implements MarkdownParser
 {
     /**
      * @param $source

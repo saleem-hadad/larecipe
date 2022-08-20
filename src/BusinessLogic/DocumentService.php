@@ -3,24 +3,22 @@
 namespace BinaryTorch\LaRecipe\BusinessLogic;
 
 use BinaryTorch\LaRecipe\Cache;
-use Illuminate\Filesystem\Filesystem;
-use BinaryTorch\LaRecipe\Models\Model;
 use BinaryTorch\LaRecipe\Models\Sidebar;
 use BinaryTorch\LaRecipe\Models\Document;
-use BinaryTorch\LaRecipe\Contracts\DocumentFinder;
+use BinaryTorch\LaRecipe\Contracts\IDocumentFinder;
+use BinaryTorch\LaRecipe\Contracts\IDocumentService;
 use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
 use BinaryTorch\LaRecipe\Http\Responses\DocumentationResponse;
-use BinaryTorch\LaRecipe\Contracts\DocumentRepository as DocumentRepositoryContract;
 
-class DocumentRepository implements DocumentRepositoryContract
+class DocumentService implements IDocumentService
 {
     protected $cache;
     protected $documentFinder;
 
     /**
-     * DocumentFinder constructor.
+     * DocumentService constructor.
      */
-    public function __construct(Cache $cache, DocumentFinder $documentFinder)
+    public function __construct(Cache $cache, IDocumentFinder $documentFinder)
     {
         $this->cache = $cache;
         $this->documentFinder = $documentFinder;

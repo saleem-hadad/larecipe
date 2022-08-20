@@ -20118,7 +20118,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     classes: function classes() {
       var btnClasses = [{
         "w-full": this.block
-      }, _defineProperty({}, "text-".concat(this.textColor), this.textColor), "is-".concat(this.type), "rounded-".concat(this.radius), "text-".concat(this.size)];
+      }, _defineProperty({}, "text-".concat(this.textColor), this.textColor), "".concat(this.type), "rounded-".concat(this.radius), "text-".concat(this.size)];
       return btnClasses;
     }
   },

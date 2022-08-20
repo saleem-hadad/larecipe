@@ -181,7 +181,7 @@ class GenerateDocumentationCommand extends Command
         );
 
         $content = str_replace(
-            '{{LANDINGSMALL}}',
+            '{{LANDING_SLUG}}',
             trim(config('larecipe.landing'), '/'),
             $content
         );

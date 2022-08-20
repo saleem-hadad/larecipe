@@ -10,13 +10,13 @@
         @apply outline-none;
     }
 
-    &.is-link { @apply bg-transparent text-gray-500 shadow-none; }
-    &.is-white { @apply bg-gray-100 text-gray-800; }
-    &.is-black { @apply bg-gray-800 text-white; }
-    &.is-primary { @apply bg-primary text-white; }
-    &.is-secondary { @apply bg-secondary text-white; }
-    &.is-success { @apply bg-success text-white; }
-    &.is-info { @apply bg-info text-white; }
-    &.is-warning { @apply bg-warning text-white; }
-    &.is-danger { @apply bg-danger text-white; }
+    &.link { @apply bg-transparent text-gray-500 shadow-none; }
+    &.white { @apply bg-gray-100 text-gray-800; }
+    &.black { @apply bg-gray-800 text-white; }
+    &.primary { @apply bg-primary text-white; }
+    &.secondary { @apply bg-secondary text-white; }
+    &.success { @apply bg-success text-white; }
+    &.info { @apply bg-info text-white; }
+    &.warning { @apply bg-warning text-white; }
+    &.danger { @apply bg-danger text-white; }
 }

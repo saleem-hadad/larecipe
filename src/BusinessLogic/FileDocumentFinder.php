@@ -3,10 +3,10 @@
 namespace BinaryTorch\LaRecipe\BusinessLogic;
 
 use Illuminate\Filesystem\Filesystem;
+use BinaryTorch\LaRecipe\Contracts\IDocumentFinder;
 use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
-use BinaryTorch\LaRecipe\Contracts\DocumentFinder as DocumentFinderContract;
 
-class DocumentFinder implements DocumentFinderContract
+class FileDocumentFinder implements IDocumentFinder
 {
     /**
      * @var Filesystem
