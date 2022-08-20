@@ -1,16 +1,15 @@
 <!doctype html>
 <html>
     <head>
-        <!-- META Tags -->
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>{{ isset($title) ? $title . ' | ' : null }}{{ config('app.name') }}</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- SEO -->
-        <meta name="author" content="{{ config('larecipe.seo.author') }}">
-        <meta name="description" content="{{ config('larecipe.seo.description') }}">
-        <meta name="keywords" content="{{ config('larecipe.seo.keywords') }}">
+        <meta name="author" content="author">
+        <meta name="description" content="description">
+        <meta name="keywords" content="keywords">
         <meta name="twitter:card" value="summary">
         @if (isset($canonical) && $canonical)
             <link rel="canonical" href="{{ url($canonical) }}" />
@@ -35,9 +34,6 @@
         <!-- Dynamic Colors -->
         @include('larecipe::style')
 
-        <!-- CSRF Token -->
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-
         @foreach(LaRecipe::allStyles() as $name => $path)
             @if (preg_match('/^https?:\/\//', $path))
                 <link rel="stylesheet" href="{{ $path }}">
@@ -45,6 +41,7 @@
                 <link rel="stylesheet" href="{{ route('larecipe.styles', $name) }}">
             @endif
         @endforeach
+
         <script>
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark')
@@ -52,7 +49,6 @@
                 document.documentElement.classList.remove('dark')
             }
         </script>
-
     </head>
     <body>
         <div id="app" v-cloak>
