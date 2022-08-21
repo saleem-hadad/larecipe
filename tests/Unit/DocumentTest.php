@@ -24,16 +24,6 @@ class DocumentTest extends TestCase
     }
 
     /** @test */
-    public function it_check_if_has_content()
-    {
-        $sut = Document::create();
-        $this->assertFalse($sut->hasContent());
-
-        $sut = Document::create(['content' => 'test content here']);
-        $this->assertTrue($sut->hasContent());
-    }
-
-    /** @test */
     public function it_parses_content_markdown()
     {
         $sut = Document::create();

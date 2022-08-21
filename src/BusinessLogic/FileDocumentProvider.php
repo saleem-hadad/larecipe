@@ -3,6 +3,7 @@
 namespace BinaryTorch\LaRecipe\BusinessLogic;
 
 use Illuminate\Filesystem\Filesystem;
+use BinaryTorch\LaRecipe\Models\Document;
 use BinaryTorch\LaRecipe\Contracts\IDocumentProvider;
 use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
 
@@ -28,10 +29,11 @@ class FileDocumentProvider implements IDocumentProvider
         $relativePath = trim(implode('/', [$larecipeSourcePath,  "$filePath.md"]), '/');
         $basePath = base_path($relativePath);
 
-        if ($this->filesystem->exists($basePath)) { 
-            return $this->filesystem->get($basePath);
+        if (! $this->filesystem->exists($basePath)) { 
+            return null;
         }
-        
-        return null;
+
+        $documentContent = $this->filesystem->get($basePath);
+        return Document::create(['content' => $documentContent]);
     }
 }

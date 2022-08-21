@@ -3,6 +3,7 @@
 namespace BinaryTorch\LaRecipe\BusinessLogic;
 
 use Illuminate\Filesystem\Filesystem;
+use BinaryTorch\LaRecipe\Models\Sidebar;
 use BinaryTorch\LaRecipe\Contracts\ISidebarProvider;
 use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
 
@@ -31,10 +32,11 @@ class FileSidebarProvider implements ISidebarProvider
             'sidebar.md'
         ]), '/'));
 
-        if ($this->filesystem->exists($basePath)) { 
-            return $this->filesystem->get($basePath);
+        if (! $this->filesystem->exists($basePath)) { 
+            return null;
         }
-        
-        return null;
+
+        $sidebarContent = $this->filesystem->get($basePath);
+        return Sidebar::create(['content' => $sidebarContent]);
     }
 }

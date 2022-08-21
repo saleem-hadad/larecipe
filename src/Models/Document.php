@@ -16,14 +16,6 @@ class Document extends Model
     protected $fillable = ['path', 'title', 'content', 'version'];
 
     /**
-     * @return bool
-     */
-    public function hasContent(): bool
-    {
-        return !! $this->content;
-    }
-
-    /**
      * @return array
      */
     public function toArray(): array

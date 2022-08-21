@@ -21,16 +21,17 @@ class DocumentationController extends Controller
 
         $documentationResponse = $documentationService->get($getDocumentRequest);
 
-        $this->ensureSuccessResponse($documentationResponse->document);
+        $this->ensureSuccessResponse($documentationResponse);
 
         $this->authorizeShow($documentationResponse->document);
 
         return response()->view('larecipe::docs', $documentationResponse->toArray());
     }
 
-    private function ensureSuccessResponse($document)
+    private function ensureSuccessResponse($documentationResponse)
     {
-        abort_unless($document->hasContent(), 404);
+        $hasContent = $documentationResponse->document != null && $documentationResponse->sidebar != null;
+        abort_unless($hasContent, 404);
     }
 
     private function authorizeShow($document)
