@@ -3,8 +3,8 @@
 namespace BinaryTorch\LaRecipe\Http\Controllers;
 
 use Illuminate\Support\Facades\Gate;
-use BinaryTorch\LaRecipe\Contracts\IDocumentService;
 use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
+use BinaryTorch\LaRecipe\Contracts\IDocumentationService;
 
 class DocumentationController extends Controller
 {
@@ -15,11 +15,11 @@ class DocumentationController extends Controller
         return redirect()->route('larecipe.show', ['path' => $landingPath]);
     }
 
-    public function show($path, GetDocumentRequest $getDocumentRequest, IDocumentService $documentService)
+    public function show($path, GetDocumentRequest $getDocumentRequest, IDocumentationService $documentationService)
     {
         $getDocumentRequest->parse($path);
 
-        $documentationResponse = $documentService->find($getDocumentRequest);
+        $documentationResponse = $documentationService->get($getDocumentRequest);
 
         $this->ensureSuccessResponse($documentationResponse->document);
 

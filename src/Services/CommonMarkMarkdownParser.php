@@ -26,7 +26,6 @@ class ExternalLinkProcessor
         while ($event = $walker->next()) {
             $node = $event->getNode();
 
-            // Only stop at Link nodes when we first encounter them
             if (!($node instanceof Link) || !$event->isEntering()) {
                 continue;
             }

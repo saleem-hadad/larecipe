@@ -3,10 +3,10 @@
 namespace BinaryTorch\LaRecipe\BusinessLogic;
 
 use Illuminate\Filesystem\Filesystem;
-use BinaryTorch\LaRecipe\Contracts\ISidebarFinder;
+use BinaryTorch\LaRecipe\Contracts\ISidebarProvider;
 use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
 
-class FileSidebarFinder implements ISidebarFinder
+class FileSidebarFinder implements ISidebarProvider
 {
     /**
      * @var Filesystem
@@ -21,7 +21,7 @@ class FileSidebarFinder implements ISidebarFinder
         $this->filesystem = $filesystem;
     }
 
-    public function find(GetDocumentRequest $getDocumentRequest)
+    public function get(GetDocumentRequest $getDocumentRequest)
     {
         $larecipePath = config('larecipe.source');
         $basePath = base_path(trim(implode('/', [

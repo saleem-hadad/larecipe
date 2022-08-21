@@ -20,7 +20,7 @@ class DocumentationControllerTest extends TestCase
     {
         Config::set('larecipe.source', 'tests/Fixture/docs');
         Config::set('larecipe.landing', 'custom-landing');
-
+        
         $this->get('/docs/en/1.0/custom-landing')
             ->assertSee('<h1>Custom Landing Page</h1>', false)
             ->assertStatus(200);

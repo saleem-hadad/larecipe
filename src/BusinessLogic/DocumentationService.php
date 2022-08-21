@@ -5,32 +5,32 @@ namespace BinaryTorch\LaRecipe\BusinessLogic;
 use BinaryTorch\LaRecipe\Cache;
 use BinaryTorch\LaRecipe\Models\Sidebar;
 use BinaryTorch\LaRecipe\Models\Document;
-use BinaryTorch\LaRecipe\Contracts\ISidebarFinder;
-use BinaryTorch\LaRecipe\Contracts\IDocumentFinder;
-use BinaryTorch\LaRecipe\Contracts\IDocumentService;
+use BinaryTorch\LaRecipe\Contracts\ISidebarProvider;
+use BinaryTorch\LaRecipe\Contracts\IDocumentProvider;
 use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
+use BinaryTorch\LaRecipe\Contracts\IDocumentationService;
 use BinaryTorch\LaRecipe\Http\Responses\DocumentationResponse;
 
-class DocumentService implements IDocumentService
+class DocumentationService implements IDocumentationService
 {
     protected $cache;
     protected $documentFinder;
 
     /**
-     * DocumentService constructor.
+     * DocumentationService constructor.
      */
-    public function __construct(Cache $cache, ISidebarFinder $sidebarFinder, IDocumentFinder $documentFinder)
+    public function __construct(Cache $cache, ISidebarProvider $sidebarFinder, IDocumentProvider $documentFinder)
     {
         $this->cache = $cache;
         $this->sidebarFinder = $sidebarFinder;
         $this->documentFinder = $documentFinder;
     }
 
-    public function find(GetDocumentRequest $getDocumentRequest)
+    public function get(GetDocumentRequest $getDocumentRequest)
     {
         return $this->cache->remember(function() use($getDocumentRequest) {
-            $sidebarContent = $this->sidebarFinder->find($getDocumentRequest);
-            $documentContent = $this->documentFinder->find($getDocumentRequest);
+            $sidebarContent = $this->sidebarFinder->get($getDocumentRequest);
+            $documentContent = $this->documentFinder->get($getDocumentRequest);
 
             return DocumentationResponse::create([
                 'sidebar' => Sidebar::create(['content' => $sidebarContent]),

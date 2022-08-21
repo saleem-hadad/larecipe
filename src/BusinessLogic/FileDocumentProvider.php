@@ -3,10 +3,10 @@
 namespace BinaryTorch\LaRecipe\BusinessLogic;
 
 use Illuminate\Filesystem\Filesystem;
-use BinaryTorch\LaRecipe\Contracts\IDocumentFinder;
+use BinaryTorch\LaRecipe\Contracts\IDocumentProvider;
 use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
 
-class FileDocumentFinder implements IDocumentFinder
+class FileDocumentProvider implements IDocumentProvider
 {
     /**
      * @var Filesystem
@@ -21,11 +21,12 @@ class FileDocumentFinder implements IDocumentFinder
         $this->filesystem = $filesystem;
     }
 
-    public function find(GetDocumentRequest $getDocumentRequest)
+    public function get(GetDocumentRequest $getDocumentRequest)
     {
-        $larecipePath = config('larecipe.source');
+        $larecipeSourcePath = config('larecipe.source');
         $filePath = $getDocumentRequest->getPath();
-        $basePath = base_path(trim(implode('/', [$larecipePath, $filePath . '.md']), '/'));
+        $relativePath = trim(implode('/', [$larecipeSourcePath,  "$filePath.md"]), '/');
+        $basePath = base_path($relativePath);
 
         if ($this->filesystem->exists($basePath)) { 
             return $this->filesystem->get($basePath);
