@@ -6,7 +6,7 @@ use Illuminate\Filesystem\Filesystem;
 use BinaryTorch\LaRecipe\Contracts\ISidebarProvider;
 use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
 
-class FileSidebarFinder implements ISidebarProvider
+class FileSidebarProvider implements ISidebarProvider
 {
     /**
      * @var Filesystem
