@@ -7,6 +7,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;700&display=swap" rel="stylesheet">
+        <style>
+            h1,h2,h3,h4,h5,h6,p,a,span,li {
+                font-family: 'Lexend', sans-serif;
+            }
+        </style>
+
         <meta name="author" content="author">
         <meta name="description" content="description">
         <meta name="keywords" content="keywords">

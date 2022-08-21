@@ -1,5 +1,5 @@
 .sidebar {
-    @apply bg-sidebar-light dark:bg-sidebar-dark border-r border-slate-100 dark:border-none w-64 fixed z-10 text-base inset-y-0 left-0 mt-16 overflow-y-auto py-8;
+    @apply bg-sidebar-light dark:bg-sidebar-dark border-r border-slate-100 dark:border-none w-64 fixed z-10 inset-y-0 left-0 overflow-y-auto pt-28 pb-16 text-sm font-thin;
     transition: padding-left 0.1s;
 
     &.is-hidden {
@@ -7,64 +7,25 @@
     }
 
     > ul {
-        @apply list-none p-0;
+        @apply p-0 space-y-8;
 
         > li {
+            @apply px-6 text-slate-900 mb-0;
             > h2 {
-                @apply p-5 text-gray-800 text-base mb-0;
+                @apply font-medium text-slate-900 dark:text-white;
             }
 
             > ul {
-                @apply list-none p-0 leading-loose;
+                @apply mt-2 space-y-2 border-l-2 border-slate-100 dark:border-slate-800 lg:mt-4 lg:space-y-4 lg:border-slate-200;
 
                 > li {
-                    &.is-active {
-                        @apply pl-2;
+                    @apply relative;
 
-                        &::before {
-                            content: "";
-                            position: absolute;
-                            left: 0;
-                            z-index: 100; 
-                            width: 2px;
-                            height: 35px;
-                            background: var(--primary);
-                        }
-
-                        a {
-                            @apply font-bold;
-                        }
-
-                        > ul > li {
-                            @apply -ml-2;
-                            a {
-                                @apply font-normal;
-                            }
-                        }
-                    }
-
-                    a {
-                        @apply text-base font-thin text-gray-600 py-0 px-8 block;
-
-                        transition: padding-left 0.3s;
-
-                        &:hover {
-                            padding-left: 2.25rem;
-                        }
-                    }
-
-                    ul {
-                        @apply list-none p-0;
-                        > li {
-                            @apply pl-4;
-
-                            &.is-active {
-                                @apply border-l-2 border-primary;
-        
-                                a {
-                                    @apply font-bold;
-                                }
-                            }
+                    > a {
+                        @apply block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full text-slate-500 before:hidden before:bg-slate-300 hover:text-slate-600 hover:before:block dark:text-slate-400 dark:before:bg-slate-700 dark:hover:text-slate-300;
+                        
+                        &.active {
+                            @apply text-sky-500 before:bg-sky-500;
                         }
                     }
                 }

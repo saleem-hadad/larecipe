@@ -1,5 +1,5 @@
 .documentation {
-    @apply bg-documentation-light dark:bg-documentation-dark static my-32 pl-80 w-3/4;
+    @apply bg-documentation-light dark:bg-documentation-dark static pt-28 pb-16 pl-80 w-3/4;
     transition: padding-left 0.1s;
 
     &.expanded {
@@ -11,11 +11,11 @@
     }
 
     h1:first-of-type {
-        @apply mb-6 font-bold text-3xl text-slate-800 dark:text-slate-200;
+        @apply font-bold mb-4 text-3xl text-slate-800 dark:text-slate-200;
     }
 
     h2 {
-        @apply mt-10 mb-4 font-bold text-2xl text-slate-800 dark:text-slate-200;
+        @apply mt-6 mb-4 text-xl text-slate-800 dark:text-slate-200;
 
         a, a:hover {
             @apply text-gray-700 no-underline;
@@ -28,7 +28,11 @@
     }
 
     h3 {
-        @apply mt-10 mb-4 text-2xl text-slate-800 dark:text-slate-200;
+        @apply mt-6 mb-4 text-2xl text-slate-800 dark:text-slate-200;
+    }
+
+    p {
+        @apply font-thin leading-relaxed text-slate-600 dark:text-slate-400 mb-4;
     }
 
     hr {
@@ -64,10 +68,6 @@
 
     ul > li , ol > li {
         @apply py-2;
-    }
-
-    p {
-        @apply text-base text-slate-700 dark:text-slate-400 mb-4;
     }
 }
 
