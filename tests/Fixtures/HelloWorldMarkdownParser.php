@@ -11,6 +11,11 @@ class HelloWorldMarkdownParser implements MarkdownParser
     {
         $this->suffix = $suffix;
     }
+    
+    public function addExtension($extension)
+    {
+        //
+    }
 
     public function parse($source)
     {

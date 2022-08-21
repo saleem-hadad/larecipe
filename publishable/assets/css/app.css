@@ -176,6 +176,7 @@ html.dark {
 }
 
     .sidebar > ul > li > ul > li > a.active::before {
+    display: block;
     content: var(--tw-content);
     --tw-bg-opacity: 1;
     background-color: rgb(14 165 233 / var(--tw-bg-opacity));

@@ -4,6 +4,7 @@ namespace BinaryTorch\LaRecipe\BusinessLogic;
 
 use Illuminate\Filesystem\Filesystem;
 use BinaryTorch\LaRecipe\Models\Sidebar;
+use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
 use BinaryTorch\LaRecipe\Contracts\ISidebarProvider;
 use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
 
@@ -13,13 +14,15 @@ class FileSidebarProvider implements ISidebarProvider
      * @var Filesystem
      */
     protected $filesystem;
+    protected $markdownParser;
 
     /**
      * DocumentFinder constructor.
      */
-    public function __construct(Filesystem $filesystem)
+    public function __construct(Filesystem $filesystem, MarkdownParser $markdownParser)
     {
         $this->filesystem = $filesystem;
+        $this->markdownParser = $markdownParser;
     }
 
     public function get(GetDocumentRequest $getDocumentRequest)
@@ -36,7 +39,11 @@ class FileSidebarProvider implements ISidebarProvider
             return null;
         }
 
-        $sidebarContent = $this->filesystem->get($basePath);
-        return Sidebar::create(['content' => $sidebarContent]);
+        $this->markdownParser->addExtension(new SidebarSectionActivator($getDocumentRequest));
+
+        $sidebarMarkdownContent = $this->filesystem->get($basePath);
+        $sidebarParsedContent = $this->markdownParser->parse($sidebarMarkdownContent);
+
+        return Sidebar::create(['content' => $sidebarParsedContent]);
     }
 }
