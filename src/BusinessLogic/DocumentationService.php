@@ -12,6 +12,7 @@ use BinaryTorch\LaRecipe\Http\Responses\DocumentationResponse;
 class DocumentationService implements IDocumentationService
 {
     protected $cache;
+    protected $sidebarFinder;
     protected $documentFinder;
 
     /**
