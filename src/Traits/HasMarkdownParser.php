@@ -10,10 +10,13 @@ trait HasMarkdownParser
     /**
      * @param $text
      * @return null|string|string[]
-     * @throws \Exception
      */
-    public function parse($text)
+    protected function parseMarkdown($text)
     {
-        return App::make(MarkdownParser::class)->parse($text);
+        try {
+            return App::make(MarkdownParser::class)->parse($text);
+        }catch (\Exception $exception) {
+            return null;
+        }
     }
 }

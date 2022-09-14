@@ -1,16 +1,24 @@
 <!doctype html>
 <html>
     <head>
-        <!-- META Tags -->
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>{{ isset($title) ? $title . ' | ' : null }}{{ config('app.name') }}</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- SEO -->
-        <meta name="author" content="{{ config('larecipe.seo.author') }}">
-        <meta name="description" content="{{ config('larecipe.seo.description') }}">
-        <meta name="keywords" content="{{ config('larecipe.seo.keywords') }}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;700&display=swap" rel="stylesheet">
+        <style>
+            h1,h2,h3,h4,h5,h6,p,a,span,li {
+                font-family: 'Lexend', sans-serif;
+            }
+        </style>
+
+        <meta name="author" content="author">
+        <meta name="description" content="description">
+        <meta name="keywords" content="keywords">
         <meta name="twitter:card" value="summary">
         @if (isset($canonical) && $canonical)
             <link rel="canonical" href="{{ url($canonical) }}" />
@@ -26,23 +34,14 @@
         <!-- CSS -->
         <link rel="stylesheet" href="{{ larecipe_assets('css/app.css') }}">
 
-        @if (config('larecipe.ui.fav'))
-            <!-- Favicon -->
-            <link rel="apple-touch-icon" href="{{ asset(config('larecipe.ui.fav')) }}">
-            <link rel="shortcut icon" type="image/png" href="{{ asset(config('larecipe.ui.fav')) }}"/>
-        @endif
-
-        <!-- FontAwesome -->
-        <link rel="stylesheet" href="{{ larecipe_assets('css/font-awesome.css') }}">
-        @if (config('larecipe.ui.fa_v4_shims', true))
-            <link rel="stylesheet" href="{{ larecipe_assets('css/font-awesome-v4-shims.css') }}">
+        <!-- Favicon -->
+        @if (config('larecipe.branding.favicon'))
+            <link rel="apple-touch-icon" href="{{ asset(config('larecipe.branding.favicon')) }}">
+            <link rel="shortcut icon" type="image/png" href="{{ asset(config('larecipe.branding.favicon')) }}"/>
         @endif
 
         <!-- Dynamic Colors -->
         @include('larecipe::style')
-
-        <!-- CSRF Token -->
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         @foreach(LaRecipe::allStyles() as $name => $path)
             @if (preg_match('/^https?:\/\//', $path))
@@ -52,47 +51,28 @@
             @endif
         @endforeach
 
+        <script>
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark')
+            } else {
+                document.documentElement.classList.remove('dark')
+            }
+        </script>
     </head>
     <body>
         <div id="app" v-cloak>
             @include('larecipe::partials.nav')
-
-            @include('larecipe::plugins.search')
 
             @yield('content')
 
             <larecipe-back-to-top></larecipe-back-to-top>
         </div>
 
-
-        <script>
-            window.config = @json([]);
-        </script>
-
-        <script type="text/javascript">
-            if(localStorage.getItem('larecipeSidebar') == null) {
-                localStorage.setItem('larecipeSidebar', !! {{ config('larecipe.ui.show_side_bar') ?: 0 }});
-            }
-        </script>
-
         <script src="{{ larecipe_assets('js/app.js') }}"></script>
 
         <script>
-            window.LaRecipe = new CreateLarecipe(config)
+            window.LaRecipe = new CreateLarecipe()
         </script>
-
-        <!-- Google Analytics -->
-        @if(config('larecipe.settings.ga_id'))
-            <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('larecipe.settings.ga_id') }}"></script>
-            <script>
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-
-                gtag('config', "{{ config('larecipe.settings.ga_id') }}");
-            </script>
-        @endif
-        <!-- /Google Analytics -->
 
         @foreach (LaRecipe::allScripts() as $name => $path)
             @if (preg_match('/^https?:\/\//', $path))
@@ -104,6 +84,17 @@
 
         <script>
             LaRecipe.run()
+
+            document.getElementById('switchTheme').addEventListener('click', function() {
+                let htmlClasses = document.querySelector('html').classList;
+                if(localStorage.theme == 'dark') {
+                    htmlClasses.remove('dark');
+                    localStorage.removeItem('theme')
+                } else {
+                    htmlClasses.add('dark');
+                    localStorage.theme = 'dark';
+                }
+            });
         </script>
     </body>
 </html>

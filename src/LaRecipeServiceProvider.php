@@ -4,13 +4,23 @@ namespace BinaryTorch\LaRecipe;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use BinaryTorch\LaRecipe\Services\SEOParser;
 use BinaryTorch\LaRecipe\Commands\AssetCommand;
 use BinaryTorch\LaRecipe\Commands\ThemeCommand;
 use BinaryTorch\LaRecipe\Commands\InstallCommand;
 use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
-use BinaryTorch\LaRecipe\Services\ParseDownMarkdownParser;
+use BinaryTorch\LaRecipe\Contracts\ISidebarProvider;
+use BinaryTorch\LaRecipe\Contracts\IDocumentProvider;
+use BinaryTorch\LaRecipe\Contracts\IDocumentationService;
+use BinaryTorch\LaRecipe\BusinessLogic\GetDocumentRequest;
+use BinaryTorch\LaRecipe\BusinessLogic\FileSidebarProvider;
+use BinaryTorch\LaRecipe\Services\CommonMarkMarkdownParser;
+use BinaryTorch\LaRecipe\BusinessLogic\DocumentationService;
+use BinaryTorch\LaRecipe\BusinessLogic\FileDocumentProvider;
 use BinaryTorch\LaRecipe\Facades\LaRecipe as LaRecipeFacade;
 use BinaryTorch\LaRecipe\Commands\GenerateDocumentationCommand;
+use BinaryTorch\LaRecipe\Contracts\SEOParser as SEOParserContract;
+use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest as GetDocumentRequestContract;
 
 class LaRecipeServiceProvider extends ServiceProvider
 {
@@ -24,7 +34,7 @@ class LaRecipeServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'larecipe');
 
         Route::group($this->routesConfig(), function () {
-            $this->loadRoutesFrom(__DIR__.'/../routes/LaRecipe.php');
+            $this->loadRoutesFrom(__DIR__.'/../src/Http/routes.php');
         });
     }
 
@@ -34,11 +44,10 @@ class LaRecipeServiceProvider extends ServiceProvider
     protected function routesConfig()
     {
         return [
-            'prefix'     => config('larecipe.docs.route'),
+            'prefix'     => config('larecipe.path'),
             'namespace'  => 'BinaryTorch\LaRecipe\Http\Controllers',
-            'domain'     => config('larecipe.domain', null),
             'as'         => 'larecipe.',
-            'middleware' => config('larecipe.docs.middleware'),
+            'middleware' => config('larecipe.middleware'),
         ];
     }
 
@@ -56,13 +65,18 @@ class LaRecipeServiceProvider extends ServiceProvider
             $this->registerConsoleCommands();
         }
 
-        $this->app->bind(MarkdownParser::class, ParseDownMarkdownParser::class);
-
         $this->app->alias('LaRecipe', LaRecipeFacade::class);
 
         $this->app->singleton('LaRecipe', function () {
             return new LaRecipe();
         });
+
+        $this->app->bind(GetDocumentRequestContract::class, GetDocumentRequest::class);
+        $this->app->bind(IDocumentationService::class, DocumentationService::class);
+        $this->app->bind(ISidebarProvider::class, FileSidebarProvider::class);
+        $this->app->bind(IDocumentProvider::class, FileDocumentProvider::class);
+        $this->app->bind(MarkdownParser::class, CommonMarkMarkdownParser::class);
+        $this->app->bind(SEOParserContract::class, SEOParser::class);
     }
 
     /**

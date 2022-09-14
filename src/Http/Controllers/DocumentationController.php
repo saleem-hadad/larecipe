@@ -2,88 +2,42 @@
 
 namespace BinaryTorch\LaRecipe\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use BinaryTorch\LaRecipe\DocumentationRepository;
+use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
+use BinaryTorch\LaRecipe\Contracts\IDocumentationService;
 
 class DocumentationController extends Controller
 {
-    /**
-     * @var DocumentationRepository
-     */
-    protected $documentationRepository;
-
-    /**
-     * DocumentationController constructor.
-     * @param DocumentationRepository $documentationRepository
-     */
-    public function __construct(DocumentationRepository $documentationRepository)
+    public function index(GetDocumentRequest $getDocumentRequest)
     {
-        $this->documentationRepository = $documentationRepository;
+        $landingPath = $getDocumentRequest->getLandingPath();
 
-        if (config('larecipe.settings.guard')) {
-            Auth::shouldUse(config('larecipe.settings.guard'));
-        }
-
-        if (config('larecipe.settings.auth')) {
-            $this->middleware(['auth']);
-        }else{
-            if(config('larecipe.settings.middleware')){
-                $this->middleware(config('larecipe.settings.middleware'));
-            }
-        }
+        return redirect()->route('larecipe.show', ['path' => $landingPath]);
     }
 
-    /**
-     * Redirect the index page of docs to the default version.
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function index()
+    public function show($path, GetDocumentRequest $getDocumentRequest, IDocumentationService $documentationService)
     {
-        return redirect()->route(
-            'larecipe.show',
-            [
-                'version' => config('larecipe.versions.default'),
-                'page' => config('larecipe.docs.landing')
-            ]
-        );
+        $getDocumentRequest->parse($path);
+
+        $documentationResponse = $documentationService->get($getDocumentRequest);
+
+        $this->ensureSuccessResponse($documentationResponse);
+
+        $this->authorizeShow($documentationResponse->document);
+
+        return response()->view('larecipe::docs', $documentationResponse->toArray());
     }
 
-    /**
-     * Show a documentation page.
-     *
-     * @param $version
-     * @param null $page
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     */
-    public function show($version, $page = null)
+    private function ensureSuccessResponse($documentationResponse)
     {
-        $documentation = $this->documentationRepository->get($version, $page);
-        
+        $hasContent = $documentationResponse->document != null && $documentationResponse->sidebar != null;
+        abort_unless($hasContent, 404);
+    }
+
+    private function authorizeShow($document)
+    {
         if (Gate::has('viewLarecipe')) {
-            $this->authorize('viewLarecipe', $documentation);
+            $this->authorize('viewLarecipe', $document);
         }
-
-        if ($this->documentationRepository->isNotPublishedVersion($version)) {
-            return redirect()->route(
-                'larecipe.show',
-                [
-                    'version' => config('larecipe.versions.default'),
-                    'page' => config('larecipe.docs.landing')
-                ]
-            );
-        }
-
-        return response()->view('larecipe::docs', [
-            'title'          => $documentation->title,
-            'index'          => $documentation->index,
-            'content'        => $documentation->content,
-            'currentVersion' => $version,
-            'versions'       => $documentation->publishedVersions,
-            'currentSection' => $documentation->currentSection,
-            'canonical'      => $documentation->canonical,
-        ], $documentation->statusCode);
     }
 }

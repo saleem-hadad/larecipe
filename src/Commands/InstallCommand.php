@@ -29,20 +29,30 @@ class InstallCommand extends Command
      */
     public function handle()
     {
-        $this->line('Publishing assets and congigurations.. 🍪');
+        $this->newLine();
+        $this->line('STEP 1/3: Publishing assets and congigurations.. 🍪');
         $this->call('vendor:publish', ['--provider' => LaRecipeServiceProvider::class, '--tag' => ['larecipe_assets', 'larecipe_config', 'larecipe_views']]);
+        $this->newLine(2);
+        sleep(2);
 
-        $this->line('Setup initial documentations structure under '.config('larecipe.docs.path').'.. 🍪');
+        $this->line('STEP 2/3: Setup initial docs structure under ' . config('larecipe.source') . '.. 🍪');
         $this->call('larecipe:docs');
+        $this->newLine(2);
+        sleep(2);
 
-        $this->line('Dumping the autoloaded files and reloading all new files.. 🍪');
+        $this->line('STEP 3/3: Finishing up.. 🍪');
         $composer = $this->findComposer();
         $process = new Process(app()::VERSION[0]>6  ? [$composer.' dump-autoload'] : $composer.' dump-autoload') ;
         $process->setTimeout(null);
         $process->setWorkingDirectory(base_path())->run();
 
-        $this->info('LaRecipe successfully installed! Enjoy 😍');
-        $this->info('Visit /docs in your browser 👻');
+        $this->info('LaRecipe has been successfully installed! Enjoy 😍');
+        $this->info('Visit ' . config('larecipe.path') . ' in your browser 👻');
+        $this->newLine(2);
+
+        $this->line('Support the project if you love it 👻');
+        $this->info('https://opencollective.com/larecipe');
+        $this->newLine();
     }
 
     /**

@@ -1,0 +1,10 @@
+.progress-bar {
+    &.white { @apply bg-slate-100; }
+    &.black { @apply bg-slate-900; }
+    &.primary { @apply bg-primary; }
+    &.secondary { @apply bg-secondary; }
+    &.success { @apply bg-success; }
+    &.info { @apply bg-info; }
+    &.warning { @apply bg-warning; }
+    &.danger { @apply bg-danger; }
+}

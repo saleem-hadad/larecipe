@@ -14,30 +14,16 @@ class InterchangeableMarkdownParserTest extends TestCase
     /** @test */
     public function a_parser_is_accepted_as_long_as_the_contract_matches()
     {
-        // set the docs path and landing
-        Config::set('larecipe.docs.path', 'tests/views/docs');
-        Config::set('larecipe.docs.landing', 'foo');
-
-        // set auth to false
-        Config::set('larecipe.settings.auth', false);
+        Config::set('larecipe.source', 'tests/Fixture/docs');
+        Config::set('larecipe.landing', 'custom-landing');
 
         // Provide a dummy parser
         $randomId = (string) Str::uuid();
         App::instance(MarkdownParser::class, new HelloWorldMarkdownParser($randomId));
 
-        // guest can view foo page
-        $this->get('/docs/1.0')
-            ->assertViewHasAll([
-                'title',
-                'index',
-                'content',
-                'currentVersion',
-                'versions',
-                'currentSection',
-                'canonical'
-            ])
+        $this->get('/docs/en/1.0/custom-landing')
             ->assertSee("<h1>{$randomId}</h1>", false)
-            ->assertDontSee('<h1>Foo</h1>', false)
+            ->assertDontSee('<h1>Custom Landing Page</h1>', false)
             ->assertStatus(200);
     }
 }

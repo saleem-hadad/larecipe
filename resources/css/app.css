@@ -1,0 +1,20 @@
+@tailwind base;
+
+@tailwind components;
+
+@layer components {
+    @import "./components/variables";
+    @import "./components/global";
+    @import "./components/sidebar";
+    @import "./components/documentation";
+    @import "./components/alerts";
+    @import "./components/badges";
+    @import "./components/search";
+    @import "./components/switch";
+    @import "./components/cards";
+    @import "./components/buttons";
+    @import "./components/tables";
+    @import "./components/progress-bar";
+}
+
+@tailwind utilities;

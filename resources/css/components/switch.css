@@ -1,0 +1,23 @@
+.switch {
+    @apply relative select-none w-12 mr-2 leading-normal;
+}
+.switch-checkbox {
+    @apply hidden;
+}
+.switch-label {
+    @apply block overflow-hidden cursor-pointer bg-slate-300 dark:bg-slate-400 rounded-full h-6 shadow-inner border-2 border-white dark:border-navbar-dark;
+    transition: background-color 0.1s ease-in;
+}
+.switch-label:before {
+    @apply absolute block bg-white border shadow inset-y-0 w-6 rounded-full -ml-1;
+    
+    right: 50%;
+    content: "";
+    transition: all 0.1s ease-in;
+}
+.switch-checkbox:checked + .switch-label {
+    @apply bg-primary shadow-none;
+}
+.switch-checkbox:checked + .switch-label:before {
+    @apply right-0;
+}

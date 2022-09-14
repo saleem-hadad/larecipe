@@ -1,0 +1,13 @@
+.card {
+    @apply p-6 my-4 shadow-sm rounded-lg;
+
+    &.default { @apply bg-white text-slate-800 border border-slate-200 dark:bg-slate-900 dark:text-slate-400 dark:border-none; }
+    &.white { @apply bg-slate-100 text-slate-800; }
+    &.black { @apply bg-slate-900 text-white; }
+    &.primary { @apply bg-primary text-white; }
+    &.secondary { @apply bg-secondary text-white; }
+    &.success { @apply bg-success text-white; }
+    &.info { @apply bg-info text-white; }
+    &.warning { @apply bg-warning text-white; }
+    &.danger { @apply bg-danger text-white; }
+}

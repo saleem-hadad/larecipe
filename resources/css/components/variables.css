@@ -1,0 +1,14 @@
+:root {
+    --primary: #787AF6;
+    --secondary: #2b9cf2;
+    --info: #03a9f4;
+    --warning: #fb6340;
+    --success: #21b978;
+    --danger: #f5365c;
+    --sidebar-light: #F7FAFC;
+    --documentation-light: rgb(254, 254, 254);
+    --navbar-light: white;
+    --sidebar-dark: #11152C;
+    --documentation-dark: #191E38;
+    --navbar-dark: rgb(28, 35, 68);
+}

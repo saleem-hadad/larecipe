@@ -44,7 +44,7 @@ export default {
       let btnClasses = [
         { "w-full": this.block },
         { [`text-${this.textColor}`]: this.textColor },
-        `is-${this.type}`,
+        `${this.type}`,
         `rounded-${this.radius}`,
         `text-${this.size}`,
       ];

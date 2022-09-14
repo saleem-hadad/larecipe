@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-grey-light h-2 rounded overflow-hidden my-4">
-    <div class="h-full" :class="computedClasses" :style="`width: ${value}%;`"></div>
+  <div class="bg-slate-300 h-2 rounded overflow-hidden my-4">
+    <div class="h-full progress-bar" :class="computedClasses" :style="`width: ${value}%;`"></div>
   </div>
 </template>
 
@@ -24,7 +24,7 @@ export default {
   },
   computed: {
     computedClasses() {
-      return [{ [`bg-${this.type}`]: this.type }];
+      return [{ [`${this.type}`]: this.type }];
     }
   }
 };

@@ -1,0 +1,22 @@
+.button {
+    @apply py-3 px-6 rounded shadow;
+    transition: all 0.1s;
+
+    &:hover {
+        @apply shadow-lg;
+    }
+
+    &:focus {
+        @apply outline-none;
+    }
+
+    &.link { @apply bg-transparent text-gray-500 shadow-none; }
+    &.white { @apply bg-gray-100 text-gray-800; }
+    &.black { @apply bg-gray-800 text-white; }
+    &.primary { @apply bg-primary text-white; }
+    &.secondary { @apply bg-secondary text-white; }
+    &.success { @apply bg-success text-white; }
+    &.info { @apply bg-info text-white; }
+    &.warning { @apply bg-warning text-white; }
+    &.danger { @apply bg-danger text-white; }
+}

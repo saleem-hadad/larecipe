@@ -1,6 +1,7 @@
 {
     "/publishable/assets/js/app.js": "/publishable/assets/js/app.js",
-    "/publishable/assets/css/app.css": "/publishable/assets/css/app.css",
-    "/publishable/assets/css/font-awesome.css": "/publishable/assets/css/font-awesome.css",
-    "/publishable/assets/css/font-awesome-v4-shims.css": "/publishable/assets/css/font-awesome-v4-shims.css"
+    "/dev/public/vendor/binarytorch/larecipe/assets/css/app.css": "/dev/public/vendor/binarytorch/larecipe/assets/css/app.css",
+    "/dev/public/vendor/binarytorch/larecipe/assets/js/app.js": "/dev/public/vendor/binarytorch/larecipe/assets/js/app.js",
+    "/dev/public/vendor/binarytorch/larecipe/assets/js/react/app.js": "/dev/public/vendor/binarytorch/larecipe/assets/js/react/app.js",
+    "/publishable/assets/css/app.css": "/publishable/assets/css/app.css"
 }
