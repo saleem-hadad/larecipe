@@ -1,6 +1,6 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\BusinessLogic;
+namespace BinaryTorch\LaRecipe\Extensions;
 
 use League\CommonMark\Event\DocumentParsedEvent;
 use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;

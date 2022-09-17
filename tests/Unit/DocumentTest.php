@@ -31,6 +31,6 @@ class DocumentTest extends TestCase
         $this->assertStringContainsString('<h1>hello</h1>', $sut->toArray()['content']);
 
         $sut->fill(['content' => '## hello']);
-        $this->assertStringContainsString('<h2>hello</h2>', $sut->toArray()['content']);
+        $this->assertStringContainsString('<h2><a id="hello" href="#hello" class="heading-permalink" aria-hidden="true" title="Permalink">#</a>hello</h2>', $sut->toArray()['content']);
     }
 }
