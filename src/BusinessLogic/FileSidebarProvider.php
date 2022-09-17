@@ -32,7 +32,7 @@ class FileSidebarProvider implements ISidebarProvider
             $larecipePath, 
             $getDocumentRequest->getLanguage(),
             $getDocumentRequest->getVersion(),
-            'sidebar.md'
+            'index.md'
         ]), '/'));
 
         if (! $this->filesystem->exists($basePath)) { 
