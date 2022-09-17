@@ -6,9 +6,9 @@
     "prod": "mix --production"
   },
   "devDependencies": {
-    "laravel-mix": "^6.0.49",
-    "resolve-url-loader": "^5.0.0",
-    "sass": "^1.54.9",
-    "sass-loader": "^12.1.0"
+    "laravel-mix": "^6.0.49"
+  },
+  "dependencies": {
+    "@larecipe/larecipe-ui": "0.0.1"
   }
 }
