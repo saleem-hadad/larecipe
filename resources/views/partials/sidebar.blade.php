@@ -1,3 +1,3 @@
-<div class="sidebar" :class="[{'is-hidden': sidebar}]">
+<div class="sidebar" :class="[{'active': sidebar}]">
     {!! $sidebar['content'] !!}
 </div>

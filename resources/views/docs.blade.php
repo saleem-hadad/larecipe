@@ -4,7 +4,7 @@
 <div>
 	@include('larecipe::partials.sidebar')
 
-	<div id="documentation" class="documentation" :class="{'expanded': sidebar}">
+	<div id="documentation" class="documentation" :class="{'shrink': sidebar}">
 		{!! $document['content'] !!}
 
 	    @include('larecipe::partials.footer')

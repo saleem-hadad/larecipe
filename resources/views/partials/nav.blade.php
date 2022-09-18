@@ -6,8 +6,8 @@
             @include("larecipe::partials.logo")
 
             <div class="switch">
-                <input type="checkbox" name="1" id="1" class="switch-checkbox" />
-                <label class="switch-label" for="1"></label>
+                <input type="checkbox" name="sidebar-switch" id="sidebar-switch" v-model="sidebar" class="switch-checkbox" />
+                <label class="switch-label" for="sidebar-switch"></label>
             </div>
         </div>
 
