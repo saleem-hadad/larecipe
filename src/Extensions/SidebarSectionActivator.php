@@ -28,6 +28,9 @@ class SidebarSectionActivator
             }
 
             $url = $node->getUrl();
+
+            $node->setUrl(url($this->getDocumentRequest->getBasePath($url)));
+
             if (str_contains($this->getDocumentRequest->getPath(), $url)) {
                 $node->data->append('attributes/class', 'active');
             }

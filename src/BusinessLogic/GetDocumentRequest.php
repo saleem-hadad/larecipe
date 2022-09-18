@@ -74,7 +74,29 @@ class GetDocumentRequest implements GetDocumentRequestContract
         return $this->path;
     }
 
-    public function getLandingPath()
+    public function getLandingPath(): string
+    {
+        $parts = $this->getPathParts();
+
+        $parts[] = config('larecipe.landing');
+
+        $path = trim(implode('/', $parts), '/');
+
+        return route('larecipe.show', $path);
+    }
+
+    public function getBasePath($url): string
+    {
+        $parts = $this->getPathParts();
+
+        if($url) $parts[] = $url;
+
+        $path = trim(implode('/', $parts), '/');
+
+        return route('larecipe.show', $path);
+    }
+
+    private function getPathParts(): array
     {
         $parts = [];
 
@@ -86,8 +108,6 @@ class GetDocumentRequest implements GetDocumentRequestContract
             $parts[] = config('larecipe.versions.default');
         }
 
-        $parts[] = config('larecipe.landing');
-
-        return trim(implode('/', $parts), '/');
+        return $parts;
     }
 }

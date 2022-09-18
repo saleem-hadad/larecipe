@@ -10,4 +10,5 @@ interface GetDocumentRequest
     public function getVersion();
     public function getPath();
     public function getLandingPath();
+    public function getBasePath($url);
 }

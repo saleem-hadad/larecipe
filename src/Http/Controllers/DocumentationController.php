@@ -12,7 +12,7 @@ class DocumentationController extends Controller
     {
         $landingPath = $getDocumentRequest->getLandingPath();
 
-        return redirect()->route('larecipe.show', ['path' => $landingPath]);
+        return redirect($landingPath);
     }
 
     public function show($path, GetDocumentRequest $getDocumentRequest, IDocumentationService $documentationService)
