@@ -5,7 +5,7 @@ namespace BinaryTorch\LaRecipe\BusinessLogic;
 use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
 use BinaryTorch\LaRecipe\Contracts\ISidebarProvider;
 use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
-use BinaryTorch\LaRecipe\Extensions\SidebarSectionActivator;
+use BinaryTorch\LaRecipe\Extensions\SidebarLinksModifierExtension;
 use BinaryTorch\LaRecipe\Models\Sidebar;
 use Illuminate\Filesystem\Filesystem;
 
@@ -40,7 +40,7 @@ class FileSidebarProvider implements ISidebarProvider
             return null;
         }
 
-        $this->markdownParser->addExtension(new SidebarSectionActivator($getDocumentRequest));
+        $this->markdownParser->addExtension(new SidebarLinksModifierExtension($getDocumentRequest));
 
         $sidebarMarkdownContent = $this->filesystem->get($basePath);
         $sidebarParsedContent = $this->markdownParser->parse($sidebarMarkdownContent);

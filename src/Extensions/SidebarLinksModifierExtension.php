@@ -6,7 +6,7 @@ use League\CommonMark\Event\DocumentParsedEvent;
 use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
 
-class SidebarSectionActivator
+class SidebarLinksModifierExtension
 {
     private $getDocumentRequest;
 
@@ -19,6 +19,7 @@ class SidebarSectionActivator
     {
         $document = $event->getDocument();
         $walker = $document->walker();
+
         // TODO: change to query based search
         while ($event = $walker->next()) {
             $node = $event->getNode();
@@ -30,10 +31,6 @@ class SidebarSectionActivator
             $url = $node->getUrl();
 
             $node->setUrl(url($this->getDocumentRequest->getBasePath($url)));
-
-            if (str_contains($this->getDocumentRequest->getPath(), $url)) {
-                $node->data->append('attributes/class', 'active');
-            }
         }
     }
 }
