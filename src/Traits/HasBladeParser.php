@@ -63,6 +63,9 @@ trait HasBladeParser
      */
     private function stripCodeBlocks($content)
     {
+        return $content;
+
+        // TODO fix preg
         return preg_replace(
             config('larecipe.blade-parser.regex.code-blocks.match'),
             config('larecipe.blade-parser.regex.code-blocks.replacement'),
