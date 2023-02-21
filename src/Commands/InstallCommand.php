@@ -37,7 +37,8 @@ class InstallCommand extends Command
 
         $this->line('Dumping the autoloaded files and reloading all new files.. 🍪');
         $composer = $this->findComposer();
-        $process = new Process(app()::VERSION[0]>6  ? [$composer.' dump-autoload'] : $composer.' dump-autoload') ;
+        $appVersion = explode('.', app()::VERSION);
+        $process = new Process($appVersion[0]>6  ? [$composer.' dump-autoload'] : $composer.' dump-autoload') ;
         $process->setTimeout(null);
         $process->setWorkingDirectory(base_path())->run();
 
