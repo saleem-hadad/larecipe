@@ -80,7 +80,7 @@ class LaRecipeServiceProvider extends ServiceProvider
                 "{$publishablePath}/assets/" => public_path('vendor/binarytorch/larecipe/assets'),
             ],
             'larecipe_views' => [
-                dirname(__DIR__) . "/resources/views/partials" => resource_path('views/vendor/larecipe/partials'),
+                dirname(__DIR__) . "/resources/views" => resource_path('views/vendor/larecipe'),
             ],
         ];
 
