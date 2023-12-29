@@ -44,13 +44,6 @@ Visit your app domain with `/docs` endpoint. That's it.
 
 ## 🩷 Sponsors
 
-## Cyclone - An instant coding playground embedded in your documentation pages
-Thank you, Cyclone for your sponsorship ❤️
-
-<a href="https://usecyclone.dev/?utm_source=larecipe" target="__blank">
-<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/12780866/275704844-77e7f7cc-0bd0-4317-bbd6-a083ce6bffd8.png" width="250px" />
-</a>
-
 ## JetBrains
 Thank you, JetBrains for sponsoring the license ❤️
 
