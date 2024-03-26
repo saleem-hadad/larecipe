@@ -158,20 +158,20 @@ return [
         ]
     ],
 
-   /*
-   |--------------------------------------------------------------------------
-   | Forum
-   |--------------------------------------------------------------------------
-   |
-   | Giving a chance to your users to post their questions or feedback
-   | directly on your docs, is pretty nice way to engage them more.
-   | However, you can also enable/disable the forum's visibility.
-   |
-   | Supported Services: 'disqus'
-   |
-   */
+    /*
+    |--------------------------------------------------------------------------
+    | Forum
+    |--------------------------------------------------------------------------
+    |
+    | Giving a chance to your users to post their questions or feedback
+    | directly on your docs, is pretty nice way to engage them more.
+    | However, you can also enable/disable the forum's visibility.
+    |
+    | Supported Services: 'disqus'
+    |
+    */
 
-  'forum'                   => [
+    'forum'                 => [
         'enabled'           => false,
         'default'           => 'disqus',
         'services'          => [
