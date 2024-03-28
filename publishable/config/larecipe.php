@@ -35,6 +35,6 @@ return [
 
     'cache'        => [
         'enabled'  => false,
-        'duration' => 5
+        'duration' => 5,
     ],
 ];
