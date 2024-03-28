@@ -1,5 +1,5 @@
 {
-    "name": "the-code-brew/larecipe",
+    "name": "saleem-hadad/larecipe",
     "description": "Write and ship beautiful documentation with your Laravel applications using MarkDown",
     "keywords": [
         "laravel",
@@ -37,22 +37,22 @@
             "src/Helpers/helpers.php"
         ],
         "psr-4": {
-            "TheCodeBrew\\LaRecipe\\": "src/"
+            "SaleemHadad\\LaRecipe\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "TheCodeBrew\\LaRecipe\\Tests\\": "tests/"
+            "SaleemHadad\\LaRecipe\\Tests\\": "tests/"
         }
     },
     "minimum-stability": "stable",
     "extra": {
         "laravel": {
             "providers": [
-                "TheCodeBrew\\LaRecipe\\LaRecipeServiceProvider"
+                "SaleemHadad\\LaRecipe\\LaRecipeServiceProvider"
             ],
             "aliases": {
-                "LaRecipe": "TheCodeBrew\\LaRecipe\\LaRecipe"
+                "LaRecipe": "SaleemHadad\\LaRecipe\\LaRecipe"
             }
         }
     }
