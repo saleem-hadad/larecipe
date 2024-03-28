@@ -42,7 +42,8 @@ class InstallCommand extends Command
 
         $this->line('STEP 3/3: Finishing up.. 🍪');
         $composer = $this->findComposer();
-        $process = new Process(app()::VERSION[0]>6  ? [$composer.' dump-autoload'] : $composer.' dump-autoload') ;
+        $appVersion = explode('.', app()::VERSION);
+        $process = new Process($appVersion[0]>6  ? [$composer.' dump-autoload'] : $composer.' dump-autoload') ;
         $process->setTimeout(null);
         $process->setWorkingDirectory(base_path())->run();
 
