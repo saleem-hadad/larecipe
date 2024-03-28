@@ -66,8 +66,8 @@ Get $200 DigitalOcean Credit
 - [LaRecipe Feedback](https://larecipe.saleem.dev/packages/binarytorch/larecipe-feedback)
 - [LaRecipe Swagger](https://larecipe.saleem.dev/packages/binarytorch/larecipe-swagger)
 
-## Used by [WooSignal](https://woosignal.com/docs/api/1.0/overview) - Fastest WooCommerce
-App Templates.
+## Used by 
+* [WooSignal](https://woosignal.com/docs/api/1.0/overview) - Fastest WooCommerce App Templates.
 * [AddChat](https://addchat-docs.classiebit.com/docs/1.0/introduction) - All-in-one multi-purpose Chat Widget For Laravel & Codeigniter websites.
 * [RoadLeagues](https://roadleagues.com/docs/1.0/overview) - A cycling league management system with an API to allow data distrubution externally.
 * [Raileo](https://raileo.com/docs/1.0/overview) - Raileo helps you to monitor your website's uptime, performance and SEO
