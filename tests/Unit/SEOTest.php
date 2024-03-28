@@ -1,10 +1,10 @@
 <?php
 
 
-namespace BinaryTorch\LaRecipe\Tests\Unit;
+namespace SaleemHadad\LaRecipe\Tests\Unit;
 
-use BinaryTorch\LaRecipe\Models\SEO;
-use BinaryTorch\LaRecipe\Tests\TestCase;
+use SaleemHadad\LaRecipe\Models\SEO;
+use SaleemHadad\LaRecipe\Tests\TestCase;
 
 class SEOTest extends TestCase
 {

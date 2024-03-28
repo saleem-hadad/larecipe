@@ -1,9 +1,9 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Tests\Unit;
+namespace SaleemHadad\LaRecipe\Tests\Unit;
 
-use BinaryTorch\LaRecipe\Models\Model;
-use BinaryTorch\LaRecipe\Tests\TestCase;
+use SaleemHadad\LaRecipe\Models\Model;
+use SaleemHadad\LaRecipe\Tests\TestCase;
 
 class ModelTest extends TestCase
 {

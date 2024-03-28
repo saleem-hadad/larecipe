@@ -1,9 +1,9 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Traits;
+namespace SaleemHadad\LaRecipe\Traits;
 
 use Illuminate\Support\Facades\App;
-use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
+use SaleemHadad\LaRecipe\Interfaces\MarkdownParser;
 
 trait HasMarkdownParser
 {

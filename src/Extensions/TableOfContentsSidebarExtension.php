@@ -1,6 +1,6 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Extensions;
+namespace SaleemHadad\LaRecipe\Extensions;
 
 use League\CommonMark\Environment\EnvironmentBuilderInterface;
 use League\CommonMark\Extension\CommonMark\Renderer\Block\ListBlockRenderer;

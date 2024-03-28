@@ -1,13 +1,13 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\BusinessLogic;
+namespace SaleemHadad\LaRecipe\BusinessLogic;
 
-use BinaryTorch\LaRecipe\Cache;
-use BinaryTorch\LaRecipe\Contracts\ISidebarProvider;
-use BinaryTorch\LaRecipe\Contracts\IDocumentProvider;
-use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
-use BinaryTorch\LaRecipe\Contracts\IDocumentationService;
-use BinaryTorch\LaRecipe\Http\Responses\DocumentationResponse;
+use SaleemHadad\LaRecipe\Cache;
+use SaleemHadad\LaRecipe\Interfaces\ISidebarProvider;
+use SaleemHadad\LaRecipe\Interfaces\IDocumentProvider;
+use SaleemHadad\LaRecipe\Interfaces\GetDocumentRequest;
+use SaleemHadad\LaRecipe\Interfaces\IDocumentationService;
+use SaleemHadad\LaRecipe\Http\Responses\DocumentationResponse;
 
 class DocumentationService implements IDocumentationService
 {

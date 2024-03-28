@@ -1,9 +1,9 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Extensions;
+namespace SaleemHadad\LaRecipe\Extensions;
 
 use League\CommonMark\Event\DocumentParsedEvent;
-use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
+use SaleemHadad\LaRecipe\Interfaces\GetDocumentRequest;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
 
 class SidebarLinksModifierExtension

@@ -1,6 +1,6 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Contracts;
+namespace SaleemHadad\LaRecipe\Interfaces;
 
 interface ISidebarProvider
 {

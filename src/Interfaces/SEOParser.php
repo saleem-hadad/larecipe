@@ -1,8 +1,8 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Contracts;
+namespace SaleemHadad\LaRecipe\Interfaces;
 
-use BinaryTorch\LaRecipe\Models\SEO;
+use SaleemHadad\LaRecipe\Models\SEO;
 
 interface SEOParser
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\BusinessLogic;
+namespace SaleemHadad\LaRecipe\BusinessLogic;
 
-use BinaryTorch\LaRecipe\Models\Model;
+use SaleemHadad\LaRecipe\Models\Model;
 use Illuminate\Filesystem\Filesystem;
-use BinaryTorch\LaRecipe\Models\Document;
-use BinaryTorch\LaRecipe\Contracts\IDocumentProvider;
-use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
+use SaleemHadad\LaRecipe\Models\Document;
+use SaleemHadad\LaRecipe\Interfaces\IDocumentProvider;
+use SaleemHadad\LaRecipe\Interfaces\GetDocumentRequest;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class FileDocumentProvider implements IDocumentProvider

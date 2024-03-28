@@ -1,10 +1,10 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Http\Controllers;
+namespace SaleemHadad\LaRecipe\Http\Controllers;
 
 use Illuminate\Support\Facades\Gate;
-use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
-use BinaryTorch\LaRecipe\Contracts\IDocumentationService;
+use SaleemHadad\LaRecipe\Interfaces\GetDocumentRequest;
+use SaleemHadad\LaRecipe\Interfaces\IDocumentationService;
 
 class DocumentationController extends Controller
 {

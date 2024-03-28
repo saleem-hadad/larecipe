@@ -1,8 +1,8 @@
 <?php 
 
-namespace BinaryTorch\LaRecipe\Http\Responses;
+namespace SaleemHadad\LaRecipe\Http\Responses;
 
-use BinaryTorch\LaRecipe\Models\Model;
+use SaleemHadad\LaRecipe\Models\Model;
 
 class DocumentationResponse extends Model
 {

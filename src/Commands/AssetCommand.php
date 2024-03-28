@@ -1,11 +1,11 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Commands;
+namespace SaleemHadad\LaRecipe\Commands;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use BinaryTorch\LaRecipe\Traits\RunProcess;
+use SaleemHadad\LaRecipe\Traits\RunProcess;
 
 class AssetCommand extends Command
 {

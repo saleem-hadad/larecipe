@@ -1,11 +1,11 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Services;
+namespace SaleemHadad\LaRecipe\Services;
 
-use BinaryTorch\LaRecipe\Extensions\TableOfContentsSidebarExtension;
+use SaleemHadad\LaRecipe\Extensions\TableOfContentsSidebarExtension;
 use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Event\DocumentParsedEvent;
-use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
+use SaleemHadad\LaRecipe\Interfaces\MarkdownParser;
 use League\CommonMark\Extension\Attributes\AttributesExtension;
 use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
 use League\CommonMark\Extension\Table\TableExtension;

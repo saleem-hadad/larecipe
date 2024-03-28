@@ -1,18 +1,18 @@
 <?php
 
-namespace BinaryTorch\LaRecipe;
+namespace SaleemHadad\LaRecipe;
 
 class LaRecipe
 {
     /**
-     * All of the registered LaRecipe packages scripts.
+     * All the registered LaRecipe packages scripts.
      *
      * @var array
      */
     public static $scripts = [];
 
     /**
-     * All of the registered LaRecipe packages CSS.
+     * All the registered LaRecipe packages CSS.
      *
      * @var array
      */
@@ -47,7 +47,7 @@ class LaRecipe
     }
 
     /**
-     * Get all of the additional scripts.
+     * Get all the additional scripts.
      *
      * @return array
      */
@@ -57,7 +57,7 @@ class LaRecipe
     }
 
     /**
-     * Get all of the additional stylesheets.
+     * Get all the additional stylesheets.
      *
      * @return array
      */

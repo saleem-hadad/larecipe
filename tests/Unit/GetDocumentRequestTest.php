@@ -1,11 +1,11 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Tests\Unit;
+namespace SaleemHadad\LaRecipe\Tests\Unit;
 
 use Illuminate\Support\Facades\Config;
-use BinaryTorch\LaRecipe\Tests\TestCase;
-use BinaryTorch\LaRecipe\BusinessLogic\GetDocumentRequest;
-use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest as GetDocumentRequestContract;
+use SaleemHadad\LaRecipe\Tests\TestCase;
+use SaleemHadad\LaRecipe\BusinessLogic\GetDocumentRequest;
+use SaleemHadad\LaRecipe\Interfaces\GetDocumentRequest as GetDocumentRequestContract;
 
 class GetDocumentRequestTest extends TestCase
 {

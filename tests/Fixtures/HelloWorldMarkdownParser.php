@@ -1,7 +1,7 @@
 <?php
-namespace BinaryTorch\LaRecipe\Tests\Fixtures;
+namespace SaleemHadad\LaRecipe\Tests\Fixtures;
 
-use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
+use SaleemHadad\LaRecipe\Interfaces\MarkdownParser;
 
 class HelloWorldMarkdownParser implements MarkdownParser
 {

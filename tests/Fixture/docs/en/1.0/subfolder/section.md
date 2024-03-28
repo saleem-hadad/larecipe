@@ -1,5 +1,5 @@
-# It support sub dir as well
+# It supports sub dir as well
 
 ## Section title
 
-some awesome content goes here.. maybe..
+some awesome content goes here. maybe.

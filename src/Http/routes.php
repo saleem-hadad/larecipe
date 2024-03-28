@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use BinaryTorch\LaRecipe\Http\Controllers\DocumentationController;
+use SaleemHadad\LaRecipe\Http\Controllers\DocumentationController;
 
 // Styles & Scripts..
 Route::get('/styles/{style}', 'StyleController')->name('styles');

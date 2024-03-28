@@ -1,9 +1,9 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Http\Controllers;
+namespace SaleemHadad\LaRecipe\Http\Controllers;
 
 use Illuminate\Http\Request;
-use BinaryTorch\LaRecipe\LaRecipe;
+use SaleemHadad\LaRecipe\LaRecipe;
 
 class StyleController extends Controller
 {

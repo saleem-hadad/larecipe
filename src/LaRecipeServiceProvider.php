@@ -1,26 +1,26 @@
 <?php
 
-namespace BinaryTorch\LaRecipe;
+namespace SaleemHadad\LaRecipe;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use BinaryTorch\LaRecipe\Services\SEOParser;
-use BinaryTorch\LaRecipe\Commands\AssetCommand;
-use BinaryTorch\LaRecipe\Commands\ThemeCommand;
-use BinaryTorch\LaRecipe\Commands\InstallCommand;
-use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
-use BinaryTorch\LaRecipe\Contracts\ISidebarProvider;
-use BinaryTorch\LaRecipe\Contracts\IDocumentProvider;
-use BinaryTorch\LaRecipe\Contracts\IDocumentationService;
-use BinaryTorch\LaRecipe\BusinessLogic\GetDocumentRequest;
-use BinaryTorch\LaRecipe\BusinessLogic\FileSidebarProvider;
-use BinaryTorch\LaRecipe\Services\CommonMarkMarkdownParser;
-use BinaryTorch\LaRecipe\BusinessLogic\DocumentationService;
-use BinaryTorch\LaRecipe\BusinessLogic\FileDocumentProvider;
-use BinaryTorch\LaRecipe\Facades\LaRecipe as LaRecipeFacade;
-use BinaryTorch\LaRecipe\Commands\GenerateDocumentationCommand;
-use BinaryTorch\LaRecipe\Contracts\SEOParser as SEOParserContract;
-use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest as GetDocumentRequestContract;
+use SaleemHadad\LaRecipe\Services\SEOParser;
+use SaleemHadad\LaRecipe\Commands\AssetCommand;
+use SaleemHadad\LaRecipe\Commands\ThemeCommand;
+use SaleemHadad\LaRecipe\Commands\InstallCommand;
+use SaleemHadad\LaRecipe\Interfaces\MarkdownParser;
+use SaleemHadad\LaRecipe\Interfaces\ISidebarProvider;
+use SaleemHadad\LaRecipe\Interfaces\IDocumentProvider;
+use SaleemHadad\LaRecipe\Interfaces\IDocumentationService;
+use SaleemHadad\LaRecipe\BusinessLogic\GetDocumentRequest;
+use SaleemHadad\LaRecipe\BusinessLogic\FileSidebarProvider;
+use SaleemHadad\LaRecipe\Services\CommonMarkMarkdownParser;
+use SaleemHadad\LaRecipe\BusinessLogic\DocumentationService;
+use SaleemHadad\LaRecipe\BusinessLogic\FileDocumentProvider;
+use SaleemHadad\LaRecipe\Facades\LaRecipe as LaRecipeFacade;
+use SaleemHadad\LaRecipe\Commands\GenerateDocumentationCommand;
+use SaleemHadad\LaRecipe\Interfaces\SEOParser as SEOParserContract;
+use SaleemHadad\LaRecipe\Interfaces\GetDocumentRequest as GetDocumentRequestContract;
 
 class LaRecipeServiceProvider extends ServiceProvider
 {
@@ -45,7 +45,7 @@ class LaRecipeServiceProvider extends ServiceProvider
     {
         return [
             'prefix'     => config('larecipe.path'),
-            'namespace'  => 'BinaryTorch\LaRecipe\Http\Controllers',
+            'namespace'  => 'SaleemHadad\LaRecipe\Http\Controllers',
             'as'         => 'larecipe.',
             'middleware' => config('larecipe.middleware'),
         ];
@@ -91,7 +91,7 @@ class LaRecipeServiceProvider extends ServiceProvider
                 "{$publishablePath}/config/larecipe.php" => config_path('larecipe.php'),
             ],
             'larecipe_assets' => [
-                "{$publishablePath}/assets/" => public_path('vendor/binarytorch/larecipe/assets'),
+                "{$publishablePath}/assets/" => public_path('vendor/saleem-hadad/larecipe/assets'),
             ],
             'larecipe_views' => [
                 dirname(__DIR__) . "/resources/views/partials" => resource_path('views/vendor/larecipe/partials'),

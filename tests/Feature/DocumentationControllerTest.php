@@ -1,10 +1,10 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Tests\Feature;
+namespace SaleemHadad\LaRecipe\Tests\Feature;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Config;
-use BinaryTorch\LaRecipe\Tests\TestCase;
+use SaleemHadad\LaRecipe\Tests\TestCase;
 
 class DocumentationControllerTest extends TestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Models;
+namespace SaleemHadad\LaRecipe\Models;
 
 use Illuminate\Contracts\Support\Arrayable;
 

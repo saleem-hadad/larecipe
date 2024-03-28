@@ -1,13 +1,13 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Tests\Feature;
+namespace SaleemHadad\LaRecipe\Tests\Feature;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
-use BinaryTorch\LaRecipe\Tests\TestCase;
-use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
-use BinaryTorch\LaRecipe\Tests\Fixtures\HelloWorldMarkdownParser;
+use SaleemHadad\LaRecipe\Tests\TestCase;
+use SaleemHadad\LaRecipe\Interfaces\MarkdownParser;
+use SaleemHadad\LaRecipe\Tests\Fixtures\HelloWorldMarkdownParser;
 
 class InterchangeableMarkdownParserTest extends TestCase
 {

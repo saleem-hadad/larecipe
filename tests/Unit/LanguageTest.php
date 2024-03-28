@@ -1,10 +1,10 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Tests\Unit;
+namespace SaleemHadad\LaRecipe\Tests\Unit;
 
-use BinaryTorch\LaRecipe\Models\Language;
-use BinaryTorch\LaRecipe\Tests\TestCase;
-use BinaryTorch\LaRecipe\Models\Version;
+use SaleemHadad\LaRecipe\Models\Language;
+use SaleemHadad\LaRecipe\Tests\TestCase;
+use SaleemHadad\LaRecipe\Models\Version;
 
 class LanguageTest extends TestCase
 {

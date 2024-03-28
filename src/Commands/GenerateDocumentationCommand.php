@@ -1,6 +1,6 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Commands;
+namespace SaleemHadad\LaRecipe\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -212,6 +212,6 @@ class GenerateDocumentationCommand extends Command
      */
     protected function getStub($stub)
     {
-        return $this->filesystem->get(base_path('/vendor/binarytorch/larecipe/stubs/'.$stub.'.stub'));
+        return $this->filesystem->get(base_path('/vendor/saleem-hadad/larecipe/stubs/'.$stub.'.stub'));
     }
 }

@@ -1,8 +1,8 @@
 {
     "/publishable/assets/js/app.js": "/publishable/assets/js/app.js",
     "/publishable/assets/css/app.css": "/publishable/assets/css/app.css",
-    "/dev/public/vendor/binarytorch/larecipe/assets/css/app.css": "/dev/public/vendor/binarytorch/larecipe/assets/css/app.css",
-    "/dev/public/vendor/binarytorch/larecipe/assets/js/app.js": "/dev/public/vendor/binarytorch/larecipe/assets/js/app.js",
-    "/dev/public/vendor/binarytorch/larecipe/assets/js/app.js.LICENSE.txt": "/dev/public/vendor/binarytorch/larecipe/assets/js/app.js.LICENSE.txt",
-    "/dev/public/vendor/binarytorch/larecipe/assets/js/manifest.js": "/dev/public/vendor/binarytorch/larecipe/assets/js/manifest.js"
+    "/dev/public/vendor/saleem-hadad/larecipe/assets/css/app.css": "/dev/public/vendor/saleem-hadad/larecipe/assets/css/app.css",
+    "/dev/public/vendor/saleem-hadad/larecipe/assets/js/app.js": "/dev/public/vendor/saleem-hadad/larecipe/assets/js/app.js",
+    "/dev/public/vendor/saleem-hadad/larecipe/assets/js/app.js.LICENSE.txt": "/dev/public/vendor/saleem-hadad/larecipe/assets/js/app.js.LICENSE.txt",
+    "/dev/public/vendor/saleem-hadad/larecipe/assets/js/manifest.js": "/dev/public/vendor/saleem-hadad/larecipe/assets/js/manifest.js"
 }

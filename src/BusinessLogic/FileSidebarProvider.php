@@ -1,12 +1,12 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\BusinessLogic;
+namespace SaleemHadad\LaRecipe\BusinessLogic;
 
-use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest;
-use BinaryTorch\LaRecipe\Contracts\ISidebarProvider;
-use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
-use BinaryTorch\LaRecipe\Extensions\SidebarLinksModifierExtension;
-use BinaryTorch\LaRecipe\Models\Sidebar;
+use SaleemHadad\LaRecipe\Interfaces\GetDocumentRequest;
+use SaleemHadad\LaRecipe\Interfaces\ISidebarProvider;
+use SaleemHadad\LaRecipe\Interfaces\MarkdownParser;
+use SaleemHadad\LaRecipe\Extensions\SidebarLinksModifierExtension;
+use SaleemHadad\LaRecipe\Models\Sidebar;
 use Illuminate\Filesystem\Filesystem;
 
 class FileSidebarProvider implements ISidebarProvider

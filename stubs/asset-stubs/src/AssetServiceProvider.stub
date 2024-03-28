@@ -2,7 +2,7 @@
 
 namespace {{ namespace }};
 
-use BinaryTorch\LaRecipe\LaRecipe;
+use SaleemHadad\LaRecipe\LaRecipe;
 use Illuminate\Support\ServiceProvider;
 
 class AssetServiceProvider extends ServiceProvider

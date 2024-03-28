@@ -1,10 +1,10 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Models;
+namespace SaleemHadad\LaRecipe\Models;
 
-use BinaryTorch\LaRecipe\Traits\HasCanonical;
-use BinaryTorch\LaRecipe\Traits\HasSEOParser;
-use BinaryTorch\LaRecipe\Traits\HasMarkdownParser;
+use SaleemHadad\LaRecipe\Traits\HasCanonical;
+use SaleemHadad\LaRecipe\Traits\HasSEOParser;
+use SaleemHadad\LaRecipe\Traits\HasMarkdownParser;
 
 class Document extends Model
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\BusinessLogic;
+namespace SaleemHadad\LaRecipe\BusinessLogic;
 
-use BinaryTorch\LaRecipe\Contracts\GetDocumentRequest as GetDocumentRequestContract;
+use SaleemHadad\LaRecipe\Interfaces\GetDocumentRequest as GetDocumentRequestContract;
 
 class GetDocumentRequest implements GetDocumentRequestContract
 {

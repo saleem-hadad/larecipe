@@ -1,6 +1,6 @@
 <?php
 
-namespace BinaryTorch\LaRecipe;
+namespace SaleemHadad\LaRecipe;
 
 use Illuminate\Contracts\Cache\Repository;
 

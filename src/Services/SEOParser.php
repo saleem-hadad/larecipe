@@ -1,9 +1,9 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Services;
+namespace SaleemHadad\LaRecipe\Services;
 
-use BinaryTorch\LaRecipe\Models\SEO;
-use \BinaryTorch\LaRecipe\Contracts\SEOParser as SEOParserContract;
+use SaleemHadad\LaRecipe\Models\SEO;
+use SaleemHadad\LaRecipe\Interfaces\SEOParser as SEOParserContract;
 
 class SEOParser implements SEOParserContract
 {
