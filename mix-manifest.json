@@ -1,6 +1,8 @@
 {
     "/publishable/assets/js/app.js": "/publishable/assets/js/app.js",
     "/publishable/assets/css/app.css": "/publishable/assets/css/app.css",
-    "/publishable/assets/css/font-awesome.css": "/publishable/assets/css/font-awesome.css",
-    "/publishable/assets/css/font-awesome-v4-shims.css": "/publishable/assets/css/font-awesome-v4-shims.css"
+    "/dev/public/vendor/saleem-hadad/larecipe/assets/css/app.css": "/dev/public/vendor/saleem-hadad/larecipe/assets/css/app.css",
+    "/dev/public/vendor/saleem-hadad/larecipe/assets/js/app.js": "/dev/public/vendor/saleem-hadad/larecipe/assets/js/app.js",
+    "/dev/public/vendor/saleem-hadad/larecipe/assets/js/app.js.LICENSE.txt": "/dev/public/vendor/saleem-hadad/larecipe/assets/js/app.js.LICENSE.txt",
+    "/dev/public/vendor/saleem-hadad/larecipe/assets/js/manifest.js": "/dev/public/vendor/saleem-hadad/larecipe/assets/js/manifest.js"
 }

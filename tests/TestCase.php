@@ -1,10 +1,10 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Tests;
+namespace SaleemHadad\LaRecipe\Tests;
 
 use Illuminate\Support\Facades\Config;
-use BinaryTorch\LaRecipe\Facades\LaRecipe;
-use BinaryTorch\LaRecipe\LaRecipeServiceProvider;
+use SaleemHadad\LaRecipe\Facades\LaRecipe;
+use SaleemHadad\LaRecipe\LaRecipeServiceProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {

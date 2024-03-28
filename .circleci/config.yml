@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: cimg/php:8.0.17-node
+
+    steps:
+      - checkout
+      - run: composer install -n --prefer-dist
+      - run: ./vendor/bin/phpunit
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+    - test
