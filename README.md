@@ -2,9 +2,9 @@
     <img src="https://larecipe.saleem.dev/images/logo.svg"/>
 </h6>
 
-<h2 align="center">
+<h1 align="center">
     LaRecipe
-</h2>
+</h1>
 
 
 <h6 align="center">
@@ -21,7 +21,7 @@
 </p>
 <br/>
 
-# LaRecipe 🍪
+---
 
 **LaRecipe** is simply a code-driven package provides an easy way to create beautiful documentation for your product or application inside your Laravel app.
 
