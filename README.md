@@ -8,7 +8,7 @@
 
 
 <h6 align="center">
-    Write gorgeous documentations for your products using Markdown inside your Laravel app.
+    Write gorgeous documentation for your products using Markdown inside your Laravel app.
 </h6>
     
 
@@ -19,11 +19,12 @@
 <a href="https://github.com/saleem-hadad/larecipe"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
  <a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/larecipe/sponsors/badge.svg" /></a> 
 </p>
-<br/>
 
 ---
 
-**LaRecipe** is simply a code-driven package provides an easy way to create beautiful documentation for your product or application inside your Laravel app.
+
+**LaRecipe** is simply a code-driven package that provides an easy way to create beautiful documentation for your product or application inside your Laravel app. 
+> We are working on dotnet version as well. Check it out [LaRecipe Dotnet](https://github.com/larecipe/larecipe-dotnet)
 
 ![LaRecipe Screenshot](https://larecipe.saleem.dev/images/screenshot.png#)
 
