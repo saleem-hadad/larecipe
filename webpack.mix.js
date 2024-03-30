@@ -1,13 +1,5 @@
-const { mix } = require('laravel-mix');
+let mix = require('laravel-mix');
 
-var tailwindcss = require('tailwindcss');
-
-mix.options({
-		processCssUrls: false,
-		postCss: [ tailwindcss('./tailwind.js') ],
-	})
-	.sass('resources/sass/app.scss', 'publishable/assets/css')
-    .sass('resources/sass/font-awesome.scss', 'publishable/assets/css')
-    .sass('resources/sass/font-awesome-v4-shims.scss', 'publishable/assets/css')
-	.js('resources/js/app.js', 'publishable/assets/js')
-	.copy('publishable/assets', '../dev/public/vendor/binarytorch/larecipe/assets');
+mix.copy('node_modules/@larecipe/larecipe-ui/dist/app.js', 'publishable/assets/js')
+	.copy('node_modules/@larecipe/larecipe-ui/dist/app.css', 'publishable/assets/css')
+	.copy('publishable/assets', '../dev/public/vendor/saleem-hadad/larecipe/assets');

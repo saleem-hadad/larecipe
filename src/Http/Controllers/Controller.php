@@ -1,6 +1,6 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Http\Controllers;
+namespace SaleemHadad\LaRecipe\Http\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;

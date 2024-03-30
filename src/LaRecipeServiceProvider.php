@@ -1,16 +1,26 @@
 <?php
 
-namespace BinaryTorch\LaRecipe;
+namespace SaleemHadad\LaRecipe;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use BinaryTorch\LaRecipe\Commands\AssetCommand;
-use BinaryTorch\LaRecipe\Commands\ThemeCommand;
-use BinaryTorch\LaRecipe\Commands\InstallCommand;
-use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
-use BinaryTorch\LaRecipe\Services\ParseDownMarkdownParser;
-use BinaryTorch\LaRecipe\Facades\LaRecipe as LaRecipeFacade;
-use BinaryTorch\LaRecipe\Commands\GenerateDocumentationCommand;
+use SaleemHadad\LaRecipe\Services\SEOParser;
+use SaleemHadad\LaRecipe\Commands\AssetCommand;
+use SaleemHadad\LaRecipe\Commands\ThemeCommand;
+use SaleemHadad\LaRecipe\Commands\InstallCommand;
+use SaleemHadad\LaRecipe\Interfaces\MarkdownParser;
+use SaleemHadad\LaRecipe\Interfaces\ISidebarProvider;
+use SaleemHadad\LaRecipe\Interfaces\IDocumentProvider;
+use SaleemHadad\LaRecipe\Interfaces\IDocumentationService;
+use SaleemHadad\LaRecipe\BusinessLogic\GetDocumentRequest;
+use SaleemHadad\LaRecipe\BusinessLogic\FileSidebarProvider;
+use SaleemHadad\LaRecipe\Services\CommonMarkMarkdownParser;
+use SaleemHadad\LaRecipe\BusinessLogic\DocumentationService;
+use SaleemHadad\LaRecipe\BusinessLogic\FileDocumentProvider;
+use SaleemHadad\LaRecipe\Facades\LaRecipe as LaRecipeFacade;
+use SaleemHadad\LaRecipe\Commands\GenerateDocumentationCommand;
+use SaleemHadad\LaRecipe\Interfaces\SEOParser as SEOParserContract;
+use SaleemHadad\LaRecipe\Interfaces\GetDocumentRequest as GetDocumentRequestContract;
 
 class LaRecipeServiceProvider extends ServiceProvider
 {
@@ -24,7 +34,7 @@ class LaRecipeServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'larecipe');
 
         Route::group($this->routesConfig(), function () {
-            $this->loadRoutesFrom(__DIR__.'/../routes/LaRecipe.php');
+            $this->loadRoutesFrom(__DIR__.'/../src/Http/routes.php');
         });
     }
 
@@ -34,11 +44,10 @@ class LaRecipeServiceProvider extends ServiceProvider
     protected function routesConfig()
     {
         return [
-            'prefix'     => config('larecipe.docs.route'),
-            'namespace'  => 'BinaryTorch\LaRecipe\Http\Controllers',
-            'domain'     => config('larecipe.domain', null),
+            'prefix'     => config('larecipe.path'),
+            'namespace'  => 'SaleemHadad\LaRecipe\Http\Controllers',
             'as'         => 'larecipe.',
-            'middleware' => config('larecipe.docs.middleware'),
+            'middleware' => config('larecipe.middleware'),
         ];
     }
 
@@ -56,13 +65,18 @@ class LaRecipeServiceProvider extends ServiceProvider
             $this->registerConsoleCommands();
         }
 
-        $this->app->bind(MarkdownParser::class, ParseDownMarkdownParser::class);
-
         $this->app->alias('LaRecipe', LaRecipeFacade::class);
 
         $this->app->singleton('LaRecipe', function () {
             return new LaRecipe();
         });
+
+        $this->app->bind(GetDocumentRequestContract::class, GetDocumentRequest::class);
+        $this->app->bind(IDocumentationService::class, DocumentationService::class);
+        $this->app->bind(ISidebarProvider::class, FileSidebarProvider::class);
+        $this->app->bind(IDocumentProvider::class, FileDocumentProvider::class);
+        $this->app->bind(MarkdownParser::class, CommonMarkMarkdownParser::class);
+        $this->app->bind(SEOParserContract::class, SEOParser::class);
     }
 
     /**
@@ -77,7 +91,7 @@ class LaRecipeServiceProvider extends ServiceProvider
                 "{$publishablePath}/config/larecipe.php" => config_path('larecipe.php'),
             ],
             'larecipe_assets' => [
-                "{$publishablePath}/assets/" => public_path('vendor/binarytorch/larecipe/assets'),
+                "{$publishablePath}/assets/" => public_path('vendor/saleem-hadad/larecipe/assets'),
             ],
             'larecipe_views' => [
                 dirname(__DIR__) . "/resources/views/partials" => resource_path('views/vendor/larecipe/partials'),
