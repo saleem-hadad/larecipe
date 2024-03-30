@@ -43,98 +43,98 @@ class GenerateDocumentationCommand extends Command
     /**
      * Execute the console command.
      *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function handle()
+    {
+        $this->processLanguages()
+            ->processVersions()
+            ->processDocumentation();
+    }
+
+    /**
+     * @return void
+     */
+    public function processLanguages(): GenerateDocumentationCommand
     {
         $isLanguageEnabled = config('larecipe.languages.enabled');
         $publishedLanguages = config('larecipe.languages.published');
 
-        if($isLanguageEnabled) {
-            $this->info('Lanugages enabled. Reading all supported languages, found: '.implode(',', $publishedLanguages));
-            foreach($publishedLanguages as $language) {
-                $this->renderVersions();
+        if ($isLanguageEnabled) {
+            foreach ($publishedLanguages as $language) {
+                $languageDir = base_path(config('larecipe.source') . '/' . $language);
+                if (!$this->filesystem->isDirectory($languageDir)) {
+                    $this->filesystem->makeDirectory($languageDir, 0755, true);
+                }
             }
-
-            return;
         }
 
-        $this->renderVersions();
+        return $this;
     }
 
-    protected function renderVersions()
+    protected function processVersions(): GenerateDocumentationCommand
     {
         $isVersionEnabled = config('larecipe.versions.enabled');
         $publishedVersions = config('larecipe.versions.published');
+        $isLanguageEnabled = config('larecipe.languages.enabled');
+        $publishedLanguages = config('larecipe.languages.published');
 
-        if($isVersionEnabled){ 
-            $this->info('Versioning enabled. Reading all supported versions, found: '.implode(',', $publishedVersions));
-
-            foreach($publishedVersions as $version) {
-                $this->renderDocs();
+        if($isVersionEnabled){
+            if ($isLanguageEnabled) {
+                foreach ($publishedLanguages as $language) {
+                    $languageDir = config('larecipe.source') . '/' . $language . '/';
+                    foreach($publishedVersions as $version) {
+                        $dir = base_path($languageDir . '/' . $version);
+                        if (!$this->filesystem->isDirectory($dir)) {
+                            $this->filesystem->makeDirectory($dir, 0755, true);
+                        }
+                    }
+                }
+            }else {
+                foreach($publishedVersions as $version) {
+                    $dir = base_path(config('larecipe.source') . '/' . $version);
+                    if (!$this->filesystem->isDirectory($dir)) {
+                        $this->filesystem->makeDirectory($dir, 0755, true);
+                    }
+                }
             }
-
-            return;
         }
 
-        $this->renderDocs();
+        return $this;
     }
 
-    protected function renderDocs()
+    protected function processDocumentation(): GenerateDocumentationCommand
     {
-        $this->line('');
-        $this->info('---------------- Version '.$version.' ----------------');
-        // check if the version directory not exists => create one
-        if ($this->createVersionDirectory(base_path($versionDirectory))) {
-            $this->line('Docs folder created for v'.$version.' under '.$versionDirectory);
-        } else {
-            $this->line('Docs folder for <info>v'.$version.'</info> already exists.');
+        $isVersionEnabled = config('larecipe.versions.enabled');
+        $publishedVersions = config('larecipe.versions.published');
+        $isLanguageEnabled = config('larecipe.languages.enabled');
+        $publishedLanguages = config('larecipe.languages.published');
+
+        if($isVersionEnabled){
+            if ($isLanguageEnabled) {
+                foreach ($publishedLanguages as $language) {
+                    $languageDir = config('larecipe.source') . '/' . $language . '/';
+                    foreach($publishedVersions as $version) {
+                        $dir = base_path($languageDir . '/' . $version);
+                        $this->createVersionIndex($dir);
+                        $this->createVersionLanding($dir);
+                    }
+                }
+            }else {
+                foreach($publishedVersions as $version) {
+                    $dir = base_path(config('larecipe.source') . '/' . $version);
+                    $this->createVersionIndex($dir);
+                    $this->createVersionLanding($dir);
+                }
+            }
         }
 
-        // check if the version index.md not exists => create one
-        if ($this->createVersionIndex(base_path($versionDirectory))) {
-            $this->line('index.md created under '.$versionDirectory);
-        } else {
-            $this->line('<info>index.md</info> for <info>v'.$version.'</info> already exists.');
-        }
-
-        // // check if the version landing page not exists => create one
-        if ($this->createVersionLanding(base_path($versionDirectory))) {
-            $this->line(config('larecipe.landing').'.md created under '.$versionDirectory);
-        } else {
-            $this->line('<info>'.config('larecipe.landing').'.md</info> for <info>v'.$version.'</info> already exists.');
-        }
-
-        $this->info('--------------- /Version '.$version.' ----------------');
-        $this->line('');
+        return $this;
     }
 
-    /**
-     * Create a new directory for the given version if not exists.
-     *
-     * @return bool
-     */
-    protected function createVersionDirectory($versionDirectory)
+
+    protected function createVersionIndex($dir)
     {
-        if (! $this->filesystem->isDirectory($versionDirectory)) {
-            $this->filesystem->makeDirectory($versionDirectory, 0755, true);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Create index.md for the given version if it's not exists.
-     *
-     * @param $versionDirectory
-     * @return bool
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    protected function createVersionIndex($versionDirectory)
-    {
-        $indexPath = $versionDirectory.'/index.md';
+        $indexPath = $dir.'/index.md';
 
         if (! $this->filesystem->exists($indexPath)) {
             $content = $this->generateIndexContent($this->getStub('index'));
@@ -146,14 +146,7 @@ class GenerateDocumentationCommand extends Command
         return false;
     }
 
-    /**
-     * Create {landing}.md for the given version if it's not exists.
-     *
-     * @param $versionDirectory
-     * @return bool
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    protected function createVersionLanding($versionDirectory)
+    protected function createVersionLanding($versionDirectory): bool
     {
         $landingPath = $versionDirectory.'/'.config('larecipe.landing').'.md';
 
@@ -167,11 +160,6 @@ class GenerateDocumentationCommand extends Command
         return false;
     }
 
-    /**
-     * replace stub placeholders.
-     *
-     * @return string
-     */
     protected function generateIndexContent($stub)
     {
         $content = str_replace(
@@ -189,11 +177,6 @@ class GenerateDocumentationCommand extends Command
         return $content;
     }
 
-    /**
-     * replace stub placeholders.
-     *
-     * @return string
-     */
     protected function generateLandingContent($stub)
     {
         return str_replace(
@@ -203,13 +186,6 @@ class GenerateDocumentationCommand extends Command
         );
     }
 
-    /**
-     * Get the stub file for the generator.
-     *
-     * @param $stub
-     * @return string
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
     protected function getStub($stub)
     {
         return $this->filesystem->get(base_path('/vendor/saleem-hadad/larecipe/stubs/'.$stub.'.stub'));

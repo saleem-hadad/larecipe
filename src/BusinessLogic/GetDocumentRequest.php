@@ -100,11 +100,15 @@ class GetDocumentRequest implements GetDocumentRequestContract
     {
         $parts = [];
 
-        if(config('larecipe.languages.enabled') && config('larecipe.languages.default') && in_array(config('larecipe.languages.default'), config('larecipe.languages.published'))) {
+        if($this->language) {
+            $parts[] = $this->language;
+        } else if(config('larecipe.languages.enabled') && config('larecipe.languages.default') && in_array(config('larecipe.languages.default'), config('larecipe.languages.published'))) {
             $parts[] = config('larecipe.languages.default');
         }
 
-        if(config('larecipe.versions.enabled') && config('larecipe.versions.default') && in_array(config('larecipe.versions.default'), config('larecipe.versions.published'))) {
+        if($this->version) {
+            $parts[] = $this->version;
+        } else if(config('larecipe.versions.enabled') && config('larecipe.versions.default') && in_array(config('larecipe.versions.default'), config('larecipe.versions.published'))) {
             $parts[] = config('larecipe.versions.default');
         }
 
