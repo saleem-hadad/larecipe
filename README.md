@@ -26,6 +26,8 @@
 **LaRecipe** is simply a code-driven package that provides an easy way to create beautiful documentation for your product or application inside your Laravel app. 
 > We are working on dotnet version as well. Check it out [LaRecipe Dotnet](https://github.com/larecipe/larecipe-dotnet)
 
+Follow me on [LinkedIn](https://www.linkedin.com/in/saleem-hadad/) for updates and the latest news.
+
 ![LaRecipe Screenshot](https://larecipe.saleem.dev/images/screenshot.png#)
 
 ## Getting Started
