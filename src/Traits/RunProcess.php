@@ -1,6 +1,6 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Traits;
+namespace SaleemHadad\LaRecipe\Traits;
 
 use Symfony\Component\Process\Process;
 

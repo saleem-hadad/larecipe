@@ -1,6 +1,6 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Facades;
+namespace SaleemHadad\LaRecipe\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

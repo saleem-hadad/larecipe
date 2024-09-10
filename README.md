@@ -8,7 +8,7 @@
 
 
 <h6 align="center">
-    Write gorgeous documentation for your products using Markdown inside your Laravel app.
+    Write gorgeous documentations for your products using Markdown inside your Laravel app powered by ChatGPT.
 </h6>
     
 
@@ -34,13 +34,15 @@ Follow me on [LinkedIn](https://www.linkedin.com/in/saleem-hadad/) for updates a
 
 ☝️ Install the package via composer.
 
-    composer require binarytorch/larecipe
+    composer require saleem-hadad/larecipe
 
-✌️ Run the install command.
+✌️ Run the installation command.
 
     php artisan larecipe:install
 
-Visit your app domain with `/docs` endpoint. That's it.
+Now, access the documentation UI via `/docs` endpoint. 
+
+That's it. Enjoy documenting!
 
 #### See [full documentation](https://larecipe.saleem.dev/)
 

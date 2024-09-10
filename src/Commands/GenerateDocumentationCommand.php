@@ -1,6 +1,6 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Commands;
+namespace SaleemHadad\LaRecipe\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -19,7 +19,7 @@ class GenerateDocumentationCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Generate docs structure with indexes for all your documentation\'s versions';
+    protected $description = 'Generate docs structure';
 
     /**
      * The Filesystem instance.
@@ -43,71 +43,98 @@ class GenerateDocumentationCommand extends Command
     /**
      * Execute the console command.
      *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function handle()
     {
+        $this->processLanguages()
+            ->processVersions()
+            ->processDocumentation();
+    }
+
+    /**
+     * @return void
+     */
+    public function processLanguages(): GenerateDocumentationCommand
+    {
+        $isLanguageEnabled = config('larecipe.languages.enabled');
+        $publishedLanguages = config('larecipe.languages.published');
+
+        if ($isLanguageEnabled) {
+            foreach ($publishedLanguages as $language) {
+                $languageDir = base_path(config('larecipe.source') . '/' . $language);
+                if (!$this->filesystem->isDirectory($languageDir)) {
+                    $this->filesystem->makeDirectory($languageDir, 0755, true);
+                }
+            }
+        }
+
+        return $this;
+    }
+
+    protected function processVersions(): GenerateDocumentationCommand
+    {
+        $isVersionEnabled = config('larecipe.versions.enabled');
         $publishedVersions = config('larecipe.versions.published');
+        $isLanguageEnabled = config('larecipe.languages.enabled');
+        $publishedLanguages = config('larecipe.languages.published');
 
-        $this->info('Reading all docs versions, found: '.implode(',', $publishedVersions));
-        foreach ($publishedVersions as $version) {
-            $versionDirectory = config('larecipe.docs.path').'/'.$version;
-
-            $this->line('');
-            $this->info('---------------- Version '.$version.' ----------------');
-            // check if the version directory not exists => create one
-            if ($this->createVersionDirectory(base_path($versionDirectory))) {
-                $this->line('Docs folder created for v'.$version.' under '.$versionDirectory);
-            } else {
-                $this->line('Docs folder for <info>v'.$version.'</info> already exists.');
+        if($isVersionEnabled){
+            if ($isLanguageEnabled) {
+                foreach ($publishedLanguages as $language) {
+                    $languageDir = config('larecipe.source') . '/' . $language . '/';
+                    foreach($publishedVersions as $version) {
+                        $dir = base_path($languageDir . '/' . $version);
+                        if (!$this->filesystem->isDirectory($dir)) {
+                            $this->filesystem->makeDirectory($dir, 0755, true);
+                        }
+                    }
+                }
+            }else {
+                foreach($publishedVersions as $version) {
+                    $dir = base_path(config('larecipe.source') . '/' . $version);
+                    if (!$this->filesystem->isDirectory($dir)) {
+                        $this->filesystem->makeDirectory($dir, 0755, true);
+                    }
+                }
             }
-
-            // check if the version index.md not exists => create one
-            if ($this->createVersionIndex(base_path($versionDirectory))) {
-                $this->line('index.md created under '.$versionDirectory);
-            } else {
-                $this->line('<info>index.md</info> for <info>v'.$version.'</info> already exists.');
-            }
-
-            // // check if the version landing page not exists => create one
-            if ($this->createVersionLanding(base_path($versionDirectory))) {
-                $this->line(config('larecipe.docs.landing').'.md created under '.$versionDirectory);
-            } else {
-                $this->line('<info>'.config('larecipe.docs.landing').'.md</info> for <info>v'.$version.'</info> already exists.');
-            }
-
-            $this->info('--------------- /Version '.$version.' ----------------');
-            $this->line('');
-        }
-        $this->info('Done.');
-    }
-
-    /**
-     * Create a new directory for the given version if not exists.
-     *
-     * @return bool
-     */
-    protected function createVersionDirectory($versionDirectory)
-    {
-        if (! $this->filesystem->isDirectory($versionDirectory)) {
-            $this->filesystem->makeDirectory($versionDirectory, 0755, true);
-
-            return true;
         }
 
-        return false;
+        return $this;
     }
 
-    /**
-     * Create index.md for the given version if it's not exists.
-     *
-     * @param $versionDirectory
-     * @return bool
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    protected function createVersionIndex($versionDirectory)
+    protected function processDocumentation(): GenerateDocumentationCommand
     {
-        $indexPath = $versionDirectory.'/index.md';
+        $isVersionEnabled = config('larecipe.versions.enabled');
+        $publishedVersions = config('larecipe.versions.published');
+        $isLanguageEnabled = config('larecipe.languages.enabled');
+        $publishedLanguages = config('larecipe.languages.published');
+
+        if($isVersionEnabled){
+            if ($isLanguageEnabled) {
+                foreach ($publishedLanguages as $language) {
+                    $languageDir = config('larecipe.source') . '/' . $language . '/';
+                    foreach($publishedVersions as $version) {
+                        $dir = base_path($languageDir . '/' . $version);
+                        $this->createVersionIndex($dir);
+                        $this->createVersionLanding($dir);
+                    }
+                }
+            }else {
+                foreach($publishedVersions as $version) {
+                    $dir = base_path(config('larecipe.source') . '/' . $version);
+                    $this->createVersionIndex($dir);
+                    $this->createVersionLanding($dir);
+                }
+            }
+        }
+
+        return $this;
+    }
+
+
+    protected function createVersionIndex($dir)
+    {
+        $indexPath = $dir.'/index.md';
 
         if (! $this->filesystem->exists($indexPath)) {
             $content = $this->generateIndexContent($this->getStub('index'));
@@ -119,16 +146,9 @@ class GenerateDocumentationCommand extends Command
         return false;
     }
 
-    /**
-     * Create {landing}.md for the given version if it's not exists.
-     *
-     * @param $versionDirectory
-     * @return bool
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    protected function createVersionLanding($versionDirectory)
+    protected function createVersionLanding($versionDirectory): bool
     {
-        $landingPath = $versionDirectory.'/'.config('larecipe.docs.landing').'.md';
+        $landingPath = $versionDirectory.'/'.config('larecipe.landing').'.md';
 
         if (! $this->filesystem->exists($landingPath)) {
             $content = $this->generateLandingContent($this->getStub('landing'));
@@ -140,51 +160,34 @@ class GenerateDocumentationCommand extends Command
         return false;
     }
 
-    /**
-     * replace stub placeholders.
-     *
-     * @return string
-     */
     protected function generateIndexContent($stub)
     {
         $content = str_replace(
             '{{LANDING}}',
-            ucwords(config('larecipe.docs.landing')),
+            ucwords(config('larecipe.landing')),
             $stub
         );
 
         $content = str_replace(
-            '{{LANDINGSMALL}}',
-            trim(config('larecipe.docs.landing'), '/'),
+            '{{LANDING_SLUG}}',
+            trim(config('larecipe.landing'), '/'),
             $content
         );
 
         return $content;
     }
 
-    /**
-     * replace stub placeholders.
-     *
-     * @return string
-     */
     protected function generateLandingContent($stub)
     {
         return str_replace(
             '{{TITLE}}',
-            ucwords(config('larecipe.docs.landing')),
+            ucwords(config('larecipe.landing')),
             $stub
         );
     }
 
-    /**
-     * Get the stub file for the generator.
-     *
-     * @param $stub
-     * @return string
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
     protected function getStub($stub)
     {
-        return $this->filesystem->get(base_path('/vendor/binarytorch/larecipe/stubs/'.$stub.'.stub'));
+        return $this->filesystem->get(base_path('/vendor/saleem-hadad/larecipe/stubs/'.$stub.'.stub'));
     }
 }

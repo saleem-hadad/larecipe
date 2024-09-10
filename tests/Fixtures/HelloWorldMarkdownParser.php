@@ -1,7 +1,7 @@
 <?php
-namespace BinaryTorch\LaRecipe\Tests\Fixtures;
+namespace SaleemHadad\LaRecipe\Tests\Fixtures;
 
-use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
+use SaleemHadad\LaRecipe\Interfaces\MarkdownParser;
 
 class HelloWorldMarkdownParser implements MarkdownParser
 {
@@ -10,6 +10,11 @@ class HelloWorldMarkdownParser implements MarkdownParser
     public function __construct(string $suffix)
     {
         $this->suffix = $suffix;
+    }
+    
+    public function addExtension($extension)
+    {
+        //
     }
 
     public function parse($source)
