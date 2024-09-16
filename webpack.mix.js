@@ -1,8 +1,33 @@
-const { mix } = require('laravel-mix');
+const mix = require("laravel-mix");
 
 var tailwindcss = require('tailwindcss');
 
+mix.vue({
+	version: 2,
+	extractVueStyles: false,
+	transformToRequire: {
+		image: ["xlink:href", "href"]
+	}
+});
+
 mix.options({
+		resolve: {
+			extensions: [
+				"*",
+				".js",
+				".jsx",
+				".json",
+				".vue",
+				".ts",
+				".tsx",
+				".sass",
+				".scss",
+				".css",
+				".mp3",
+				".woff2",
+				".woff"
+			]
+		},
 		processCssUrls: false,
 		postCss: [ tailwindcss('./tailwind.js') ],
 	})
