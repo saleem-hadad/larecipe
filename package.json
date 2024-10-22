@@ -12,11 +12,11 @@
   },
   "devDependencies": {
     "cross-env": "^5.1",
-    "laravel-mix": "^2.0",
+    "laravel-mix": "^6.0",
     "tar": "^4.4.10",
     "opencollective": "^1.0.3",
     "opencollective-postinstall": "^2.0.2",
-    "webpack-dev-server": "^3.7.2"
+    "webpack-dev-server": "^5.1.0"
   },
   "dependencies": {
     "axios": "^0.21.1",
