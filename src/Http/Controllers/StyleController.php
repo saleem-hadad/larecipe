@@ -14,8 +14,9 @@ class StyleController extends Controller
     public function __invoke(Request $request)
     {
         return response(
-            file_get_contents(LaRecipe::allStyles()[$request->style]),
-            200, ['Content-Type' => 'text/css']
+            file_get_contents(LaRecipe::allStyles()[$request->style] ?? abort(404)),
+            200,
+            ['Content-Type' => 'text/css']
         );
     }
 }
