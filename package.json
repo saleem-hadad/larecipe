@@ -22,10 +22,10 @@
     "axios": "^0.21.1",
     "clipboard": "^2.0.4",
     "docsearch.js": "^2.6.3",
+    "jquery": "^3.7.1",
     "medium-zoom": "^1.0.4",
-    "vue": "^2.6.10",
-    "jquery": "^3.4.0",
     "tailwindcss": "^0.7.4",
+    "vue": "^2.6.10",
     "vue2-transitions": "0.2.3"
   },
   "collective": {
