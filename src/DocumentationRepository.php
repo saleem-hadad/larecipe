@@ -6,6 +6,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use BinaryTorch\LaRecipe\Models\Documentation;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use BinaryTorch\LaRecipe\Traits\HasDocumentationAttributes;
+use BinaryTorch\LaRecipe\Contracts\GitService;
 
 class DocumentationRepository
 {
@@ -18,14 +19,17 @@ class DocumentationRepository
      */
     private $documentation;
 
+    private $gitService;
+
     /**
      * DocumentationController constructor.
      *
      * @param Documentation $documentation
      */
-    public function __construct(Documentation $documentation)
+    public function __construct(Documentation $documentation, GitService $gitService)
     {
         $this->documentation = $documentation;
+        $this->gitService = $gitService;
 
         $this->docsRoute = route('larecipe.index');
         $this->defaultVersion = config('larecipe.versions.default');
@@ -53,6 +57,7 @@ class DocumentationRepository
 
         $this->prepareTitle()
             ->prepareCanonical()
+            ->prepareAuthors()
             ->prepareSection($version, $page);
 
         return $this;
@@ -116,6 +121,22 @@ class DocumentationRepository
                 'page' => $this->sectionPage
             ]);
         }
+
+        return $this;
+    }
+
+    protected function prepareAuthors()
+    {
+        if (!$this->gitService->isGitInstalled() || !config('larecipe.git.enabled')) {
+            return $this;
+        }
+        
+        $pagePath = base_path(config('larecipe.docs.path').'/'.$this->version.'/'.$this->sectionPage.'.md');
+
+        $this->authors = $this->gitService
+            ->getFileShortLog($pagePath)
+            ->sortByDesc('commits')
+            ->values();
 
         return $this;
     }
