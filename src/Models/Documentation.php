@@ -97,7 +97,7 @@ class Documentation
 
         $content = str_replace('{{route}}', trim(config('larecipe.docs.route'), '/'), $content);
 
-        $content = str_replace('"#', '"'.request()->getRequestUri().'#', $content);
+        $content = str_replace('"#', '"'.request()->getPathInfo().'#', $content);
 
         return $content;
     }
