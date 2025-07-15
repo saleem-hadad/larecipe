@@ -14,8 +14,9 @@ class ScriptController extends Controller
     public function __invoke(Request $request)
     {
         return response(
-            file_get_contents(LaRecipe::allScripts()[$request->script]),
-            200, ['Content-Type' => 'application/javascript']
+            file_get_contents(LaRecipe::allScripts()[$request->script] ?? abort(404)),
+            200,
+            ['Content-Type' => 'application/javascript']
         );
     }
 }
