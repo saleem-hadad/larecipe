@@ -24,7 +24,7 @@
 
 
 **LaRecipe** is simply a code-driven package that provides an easy way to create beautiful documentation for your product or application inside your Laravel app. 
-> We are working on dotnet version as well. Check it out [LaRecipe Dotnet](https://github.com/larecipe/larecipe-dotnet)
+> We are working on a dotnet version as well. Check it out [LaRecipe Dotnet](https://github.com/larecipe/larecipe-dotnet)
 
 Follow me on [LinkedIn](https://www.linkedin.com/in/saleem-hadad/) for updates and the latest news.
 
@@ -71,9 +71,7 @@ Get $200 DigitalOcean Credit
 
 ## Used by 
 * [WooSignal](https://woosignal.com/docs/api/1.0/overview) - Fastest WooCommerce App Templates.
-* [AddChat](https://addchat-docs.classiebit.com/docs/1.0/introduction) - All-in-one multi-purpose Chat Widget For Laravel & Codeigniter websites.
 * [RoadLeagues](https://roadleagues.com/docs/1.0/overview) - A cycling league management system with an API to allow data distrubution externally.
-* [Raileo](https://raileo.com/docs/1.0/overview) - Raileo helps you to monitor your website's uptime, performance and SEO
 * Add your docs here 😍👌
 
 ## Contributors
