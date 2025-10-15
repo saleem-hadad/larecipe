@@ -8,7 +8,7 @@
 
 
 <h6 align="center">
-    **LaRecipe** is simply a code-driven package that provides an easy way to create beautiful documentation for your product or application directly inside your Laravel app. 
+    LaRecipe is simply a code-driven package that provides an easy way to create beautiful documentation for your product or application directly inside your Laravel app. 
 </h6>
     
 
