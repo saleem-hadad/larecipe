@@ -93,11 +93,18 @@ class Documentation
      */
     public static function replaceLinks($version, $content)
     {
+        // Replaces version
         $content = str_replace('{{version}}', $version, $content);
 
-        $content = str_replace('{{route}}', trim(config('larecipe.docs.route'), '/'), $content);
+        // Builds the actual URL of the documentation folder
+        $docsRoute = ltrim(config('larecipe.docs.route'), '/'); // "docs"
+        $fullDocsUrl = url($docsRoute); // manages APP_URL + subdirectory properly
 
-        $content = str_replace('"#', '"'.request()->getPathInfo().'#', $content);
+        // Replaces the route placeholder
+        $content = str_replace('/{{route}}', $fullDocsUrl, $content);
+
+        // Corrects local anchors “#”
+        $content = str_replace('"#', '"' . request()->getRequestUri() . '#', $content);
 
         return $content;
     }
