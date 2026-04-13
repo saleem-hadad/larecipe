@@ -24,7 +24,7 @@
     "docsearch.js": "^2.6.3",
     "medium-zoom": "^1.0.4",
     "vue": "^2.6.10",
-    "jquery": "^3.4.0",
+    "jquery": "^3.5.0",
     "tailwindcss": "^0.7.4",
     "vue2-transitions": "0.2.3"
   },
