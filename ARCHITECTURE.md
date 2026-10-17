@@ -810,7 +810,7 @@ The main cause of rotting docs is pasted values: a route URI, a command's option
 
 | Component | Resolves from | Renders |
 | --- | --- | --- |
-| `<Route name="orders.store" />` | the route collection | method, URI, middleware, and the FormRequest's rules when the action type-hints one |
+| `<Route name="orders.store" />` | the route collection | method, URI, middleware names, and the FormRequest's fields and rule names when the action type-hints one |
 | `<Artisan command="orders:prune" />` | the console kernel's command registry | signature, description, arguments and options |
 | `<Model name="Order" />` | Eloquent introspection, `Schema::getColumns()` | table, columns and types, casts, fillable, relations |
 | `<Event name="OrderShipped" />` | the event class and its registered listeners | payload properties and listeners |
@@ -832,7 +832,7 @@ interface ReferenceResolver
 - **Validation.** `larecipe:validate` resolves every reference in every visible page. A null resolution is an error (`references.missing`) with a `fix` hint where possible (the closest route name, the renamed command). Renaming a route without updating the docs fails CI.
 - **Snapshots for CI and export.** Routes and commands resolve whenever the app boots. `<Model>` needs a database schema; CI usually has one (migrations on SQLite or the test database). Where it does not, `php artisan larecipe:references:snapshot` writes `bootstrap/cache/larecipe/references.json`, and resolvers fall back to it. Static export resolves at export time.
 - **Caching.** Fingerprints come from the route cache file when present, otherwise from a hash of the resolved surface, so `route:cache` invalidates affected pages automatically.
-- **Scope.** `<Model>` is limited to `references.models.allow` namespaces. `<Route>` shows only what the route definition declares; it never executes the route. Resolvers never read config or environment values.
+- **Scope.** `<Model>` is limited to `references.models.allow` namespaces. `<Route>` is limited to `references.routes.allow` (route names or URIs; by default every route the app defines, leaving out package routes from `vendor/` except LaRecipe's own). It shows only what the route definition declares, by name: rule and middleware names without their arguments (which are often built from config), and never the domain. It never executes the route. `<Artisan>` skips hidden commands and shows a default only when it is a literal in the command's signature. Resolvers never read config or environment values.
 - **Agents prefer references.** The `larecipe-write-docs` and `larecipe-update-docs` skills tell agents to write `<Route name="...">` instead of pasting a URI, and `larecipe:sources:suggest` proposes references for pasted values it recognizes. Pages that use references also get automatic `sources:` entries for drift detection.
 
 ### 6.8 Gate blocks: per-role content

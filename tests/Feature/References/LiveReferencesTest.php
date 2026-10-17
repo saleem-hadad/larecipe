@@ -32,7 +32,8 @@ it('renders a command with its usage, arguments and options', function () {
     expect($reference->description)->toBe('Prune old orders')
         ->and($reference->usage)->toStartWith('php artisan orders:prune')->toContain('<tenant>')
         ->and($reference->tables[0]->rows)->toBe([['tenant', 'The tenant to prune (required)', '']])
-        ->and($reference->tables[1]->rows[0])->toBe(['--days=DAYS', 'Keep orders newer than this many days', '30'])
+        // A closure command's signature is built at runtime, so its defaults are not shown.
+        ->and($reference->tables[1]->rows[0])->toBe(['--days=DAYS', 'Keep orders newer than this many days', ''])
         ->and($reference->tables[1]->rows[1])->toBe(['--dry-run', 'Only report what would be pruned', '']);
 });
 
