@@ -1,35 +1,22 @@
 {
+  "name": "larecipe-workspace",
   "private": true,
+  "packageManager": "pnpm@10.30.3",
+  "engines": {
+    "node": ">=20.19"
+  },
   "scripts": {
-    "dev": "npm run development",
-    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch-poll": "npm run watch -- --watch-poll",
-    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "prod": "npm run production",
-    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "postinstall": "opencollective-postinstall"
+    "build": "pnpm --filter @larecipe/app build",
+    "dev": "pnpm --filter @larecipe/app dev",
+    "test": "pnpm -r --if-present test",
+    "typecheck": "pnpm -r --if-present typecheck"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   },
   "devDependencies": {
-    "cross-env": "^5.1",
-    "laravel-mix": "^2.0",
-    "tar": "^4.4.10",
-    "opencollective": "^1.0.3",
-    "opencollective-postinstall": "^2.0.2",
-    "webpack-dev-server": "^3.7.2"
-  },
-  "dependencies": {
-    "axios": "^0.30.2",
-    "clipboard": "^2.0.4",
-    "docsearch.js": "^2.6.3",
-    "medium-zoom": "^1.0.4",
-    "vue": "^2.6.10",
-    "jquery": "^3.4.0",
-    "tailwindcss": "^0.7.4",
-    "vue2-transitions": "0.2.3"
-  },
-  "collective": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/larecipe"
+    "@playwright/test": "^1.64.1"
   }
 }

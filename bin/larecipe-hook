@@ -1,0 +1,5 @@
+#!/usr/bin/env php
+<?php
+
+// Agent hook entry point. Implemented by the Sync domain (ARCHITECTURE.md 14.3).
+exit(0);

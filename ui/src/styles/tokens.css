@@ -1,0 +1,87 @@
+/*
+ * The Pass: design tokens (DESIGN.md, DESIGN.json).
+ * Paper and ink, one violet for state. Teams override --lr-accent, fonts and
+ * radius through larecipe.json; everything else is structure.
+ */
+:root {
+  --lr-font-sans: var(--lr-font-sans-custom, 'Inter Variable', 'Inter', 'Thmanyah Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif);
+  --lr-font-mono: var(--lr-font-mono-custom, 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace);
+
+  --lr-paper: #fafaf8;
+  --lr-ink: rgb(28 27 34 / 0.92);
+  --lr-ink-muted: rgb(28 27 34 / 0.66);
+  --lr-ink-faint: rgb(28 27 34 / 0.44);
+  --lr-surface: #f2f1f4;
+  --lr-surface-2: #eae9ed;
+  --lr-hairline: #e7e6ea;
+  --lr-hairline-strong: #d6d5db;
+
+  --lr-accent: oklch(0.55 0.2 279);
+  --lr-accent-dark: oklch(0.74 0.14 279);
+  --lr-accent-current: var(--lr-accent);
+  --lr-accent-soft: color-mix(in oklch, var(--lr-accent-current) 9%, var(--lr-paper));
+  --lr-accent-foreground: #ffffff;
+
+  --lr-code: #17161c;
+  --lr-code-foreground: #e8e7ee;
+  --lr-code-line: #2a2932;
+
+  --lr-success: oklch(0.56 0.13 155);
+  --lr-warning: oklch(0.6 0.15 70);
+  --lr-danger: oklch(0.56 0.2 25);
+
+  --lr-radius-xs: 3px;
+  --lr-radius-sm: 4px;
+  --lr-radius-md: 6px;
+  --lr-radius-lg: 10px;
+
+  --lr-shadow-float: 0 12px 32px -8px rgb(17 16 22 / 0.22), 0 0 0 1px var(--lr-hairline);
+  --lr-shadow-overlay: 0 30px 80px -20px rgb(17 16 22 / 0.35), 0 0 0 1px var(--lr-hairline);
+
+  --lr-ease: cubic-bezier(0.2, 0, 0, 1);
+  --lr-duration-hover: 120ms;
+  --lr-duration-state: 180ms;
+  --lr-duration-panel: 240ms;
+
+  --lr-header-height: 60px;
+  --lr-sidebar-width: 248px;
+  --lr-rail-width: 240px;
+  --lr-prose-width: 720px;
+
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --lr-paper: #111016;
+  --lr-ink: rgb(244 243 248 / 0.92);
+  --lr-ink-muted: rgb(244 243 248 / 0.64);
+  --lr-ink-faint: rgb(244 243 248 / 0.42);
+  --lr-surface: #1b1a21;
+  --lr-surface-2: #24232b;
+  --lr-hairline: #26252d;
+  --lr-hairline-strong: #34333c;
+
+  --lr-accent-current: var(--lr-accent-dark);
+  --lr-accent-soft: color-mix(in oklch, var(--lr-accent-current) 18%, var(--lr-paper));
+  --lr-accent-foreground: #111016;
+
+  --lr-code: #0b0a0f;
+  --lr-code-line: #23222a;
+
+  --lr-success: oklch(0.8 0.14 155);
+  --lr-warning: oklch(0.82 0.15 75);
+  --lr-danger: oklch(0.78 0.17 25);
+
+  --lr-shadow-float: 0 12px 32px -8px rgb(0 0 0 / 0.5), 0 0 0 1px var(--lr-hairline);
+  --lr-shadow-overlay: 0 30px 80px -20px rgb(0 0 0 / 0.6), 0 0 0 1px var(--lr-hairline);
+
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --lr-duration-hover: 0ms;
+    --lr-duration-state: 0ms;
+    --lr-duration-panel: 0ms;
+  }
+}

@@ -1,113 +1,63 @@
 <?php
 
-namespace BinaryTorch\LaRecipe;
+namespace LaRecipe;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use BinaryTorch\LaRecipe\Commands\AssetCommand;
-use BinaryTorch\LaRecipe\Commands\ThemeCommand;
-use BinaryTorch\LaRecipe\Commands\InstallCommand;
-use BinaryTorch\LaRecipe\Contracts\MarkdownParser;
-use BinaryTorch\LaRecipe\Services\ParseDownMarkdownParser;
-use BinaryTorch\LaRecipe\Facades\LaRecipe as LaRecipeFacade;
-use BinaryTorch\LaRecipe\Commands\GenerateDocumentationCommand;
+use LaRecipe\Support\Contracts\Clock;
+use LaRecipe\Support\Contracts\Dispatcher;
+use LaRecipe\Support\Laravel\LaravelDispatcher;
+use LaRecipe\Support\Laravel\SystemClock;
+use LaRecipe\Support\Paths;
 
-class LaRecipeServiceProvider extends ServiceProvider
+/**
+ * Registers LaRecipe: the shared support bindings, then each domain's own
+ * provider. A domain wires itself up entirely inside its provider, so this list
+ * is the only place that knows every domain exists.
+ */
+final class LaRecipeServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap the application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'larecipe');
+    /** @var list<class-string<ServiceProvider>> in dependency order */
+    public const DOMAINS = [
+        Domains\Content\ContentServiceProvider::class,
+        Domains\Sources\SourcesServiceProvider::class,
+        Domains\Markdown\MarkdownServiceProvider::class,
+        Domains\References\ReferencesServiceProvider::class,
+        Domains\Access\AccessServiceProvider::class,
+        Domains\Search\SearchServiceProvider::class,
+        Domains\Validation\ValidationServiceProvider::class,
+        Domains\Delivery\DeliveryServiceProvider::class,
+        Domains\Agents\AgentsServiceProvider::class,
+        Domains\Sync\SyncServiceProvider::class,
+        Domains\Onboarding\OnboardingServiceProvider::class,
+        Domains\Ask\AskServiceProvider::class,
+        Domains\Admin\AdminServiceProvider::class,
+        Domains\Upgrade\UpgradeServiceProvider::class,
+        Domains\Export\ExportServiceProvider::class,
+    ];
 
-        Route::group($this->routesConfig(), function () {
-            $this->loadRoutesFrom(__DIR__.'/../routes/LaRecipe.php');
-        });
+    public function register(): void
+    {
+        $this->mergeConfigFrom(Paths::package('config/larecipe.php'), 'larecipe');
+
+        $this->app->singleton(LaRecipe::class);
+        $this->app->bind(Dispatcher::class, LaravelDispatcher::class);
+        $this->app->singleton(Clock::class, SystemClock::class);
+
+        foreach (self::DOMAINS as $provider) {
+            $this->app->register($provider);
+        }
     }
 
-    /**
-     * @return array
-     */
-    protected function routesConfig()
+    public function boot(): void
     {
-        return [
-            'prefix'     => config('larecipe.docs.route'),
-            'namespace'  => 'BinaryTorch\LaRecipe\Http\Controllers',
-            'domain'     => config('larecipe.domain', null),
-            'as'         => 'larecipe.',
-            'middleware' => config('larecipe.docs.middleware'),
-        ];
-    }
-
-    /**
-     * Register the application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->registerConfigs();
-
         if ($this->app->runningInConsole()) {
-            $this->registerPublishableResources();
-            $this->registerConsoleCommands();
+            $this->publishes([
+                Paths::package('config/larecipe.php') => config_path('larecipe.php'),
+            ], 'larecipe-config');
+
+            $this->publishes([
+                Paths::dist() => public_path('vendor/larecipe'),
+            ], 'larecipe-assets');
         }
-
-        $this->app->bind(MarkdownParser::class, ParseDownMarkdownParser::class);
-
-        $this->app->alias('LaRecipe', LaRecipeFacade::class);
-
-        $this->app->singleton('LaRecipe', function () {
-            return new LaRecipe();
-        });
-    }
-
-    /**
-     * Register the publishable files.
-     */
-    protected function registerPublishableResources()
-    {
-        $publishablePath = dirname(__DIR__) . '/publishable';
-
-        $publishable = [
-            'larecipe_config' => [
-                "{$publishablePath}/config/larecipe.php" => config_path('larecipe.php'),
-            ],
-            'larecipe_assets' => [
-                "{$publishablePath}/assets/" => public_path('vendor/binarytorch/larecipe/assets'),
-            ],
-            'larecipe_views' => [
-                dirname(__DIR__) . "/resources/views/partials" => resource_path('views/vendor/larecipe/partials'),
-            ],
-        ];
-
-        foreach ($publishable as $group => $paths) {
-            $this->publishes($paths, $group);
-        }
-    }
-
-    /**
-     * Register the commands accessible from the Console.
-     */
-    protected function registerConsoleCommands()
-    {
-        $this->commands(AssetCommand::class);
-        $this->commands(ThemeCommand::class);
-        $this->commands(InstallCommand::class);
-        $this->commands(GenerateDocumentationCommand::class);
-    }
-
-    /**
-     * Register the package configs.
-     */
-    protected function registerConfigs()
-    {
-        $this->mergeConfigFrom(
-            dirname(__DIR__).'/publishable/config/larecipe.php',
-            'larecipe'
-        );
     }
 }

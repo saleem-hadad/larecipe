@@ -1,0 +1,6 @@
+{
+  "name": "Acme",
+  "description": "Billing infrastructure for Laravel apps.",
+  "repository": { "url": "https://github.com/acme/acme", "branch": "main", "docsPath": "docs" },
+  "agents": { "llmsTxt": { "description": "Acme is a billing package for Laravel." } }
+}

@@ -1,88 +1,180 @@
 <?php
 
-namespace BinaryTorch\LaRecipe;
+namespace LaRecipe;
 
-class LaRecipe
+use Closure;
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Support\HtmlString;
+use LaRecipe\Domains\Content\DTOs\DocSet;
+use LaRecipe\Domains\Content\Services\SetRegistry;
+use LaRecipe\Domains\Markdown\Components\ComponentBuilder;
+use LaRecipe\Domains\Markdown\Components\ComponentRegistry;
+use LaRecipe\Domains\Markdown\Services\MarkdownEnvironmentFactory;
+use LaRecipe\Domains\Sources\Laravel\SourceManager;
+
+/**
+ * The host app's door into LaRecipe: every public extension point lives here,
+ * behind the LaRecipe facade. Each method delegates to the domain that owns it.
+ */
+final class LaRecipe
 {
-    /**
-     * All of the registered LaRecipe packages scripts.
-     *
-     * @var array
-     */
-    public static $scripts = [];
+    public const VERSION = '3.0.0-dev';
+
+    /** Replaced with the request's CSRF token when a page is sent. */
+    public const CSRF_PLACEHOLDER = '__LARECIPE_CSRF_TOKEN__';
+
+    /** @var list<Closure> */
+    private array $routes = [];
+
+    /** @var list<Closure> */
+    private array $globalRoutes = [];
+
+    /** @var list<Closure> */
+    private array $head = [];
+
+    /** @var array<class-string, array{author: bool}> */
+    private array $mcpTools = [];
+
+    /** @var array<string, Closure> */
+    private array $searchDrivers = [];
+
+    private ?Closure $userResolver = null;
+
+    private ?string $cspNonce = null;
+
+    public function __construct(private readonly Container $app) {}
 
     /**
-     * All of the registered LaRecipe packages CSS.
-     *
-     * @var array
+     * Define a component the docs may use, with its props, its server fallback
+     * (works without JavaScript) and its Markdown form (what agents read).
      */
-    public static $styles = [];
-
-    /**
-     * Get the current Larecipe version.
-     *
-     * @return string
-     */
-    public static function version()
+    public function component(string $name): ComponentBuilder
     {
-        return '2.0.0';
+        return $this->app->make(ComponentRegistry::class)->define($name, 'host');
+    }
+
+    /** @param Closure(\League\CommonMark\Environment\EnvironmentBuilderInterface, \LaRecipe\Domains\Markdown\Services\RenderState): void $extender */
+    public function extendMarkdown(Closure $extender): void
+    {
+        $this->app->make(MarkdownEnvironmentFactory::class)->extend($extender);
+    }
+
+    /** @param Closure(Container, \LaRecipe\Domains\Content\DTOs\SetConfig): \LaRecipe\Domains\Sources\Contracts\ContentSource $factory */
+    public function extendSources(string $driver, Closure $factory): void
+    {
+        $this->app->make(SourceManager::class)->extend($driver, $factory);
+    }
+
+    /** @param Closure(Container, array): \LaRecipe\Domains\Search\Contracts\SearchDriver $factory */
+    public function extendSearch(string $driver, Closure $factory): void
+    {
+        $this->searchDrivers[$driver] = $factory;
+    }
+
+    /** @return array<string, Closure> */
+    public function searchDrivers(): array
+    {
+        return $this->searchDrivers;
     }
 
     /**
-     * Register the given script file with LaReipce.
+     * Choose which fields of the signed-in user reach the browser (for custom
+     * components). Nothing is shared unless the host opts in.
      *
-     * @param  string  $name
-     * @param  string  $path
-     * @return static
+     * @param  Closure(object): array  $resolver
      */
-    public static function script($name, $path)
+    public function shareUser(Closure $resolver): void
     {
-        static::$scripts[$name] = $path;
+        $this->userResolver = $resolver;
+    }
 
-        return new static;
+    public function sharedUser(?object $user): ?array
+    {
+        return $user !== null && $this->userResolver !== null ? ($this->userResolver)($user) : null;
+    }
+
+    /** @param Closure(DocSet): mixed $callback returns HTML, a View or Htmlable for the <head> */
+    public function head(Closure $callback): void
+    {
+        $this->head[] = $callback;
+    }
+
+    /** @return list<Closure> */
+    public function headCallbacks(): array
+    {
+        return $this->head;
     }
 
     /**
-     * Register the given CSS file with LaRecipe.
-     *
-     * @param  string  $name
-     * @param  string  $path
-     * @return static
+     * A hidden CSRF input for component fallbacks. Rendered pages are cached and
+     * shared, so the token is filled in when each response is sent.
      */
-    public static function style($name, $path)
+    public function csrfField(): HtmlString
     {
-        static::$styles[$name] = $path;
+        return new HtmlString('<input type="hidden" name="_token" value="'.self::CSRF_PLACEHOLDER.'">');
+    }
 
-        return new static;
+    public function useCspNonce(?string $nonce): void
+    {
+        $this->cspNonce = $nonce;
+    }
+
+    public function cspNonce(): ?string
+    {
+        return $this->cspNonce;
+    }
+
+    public function set(?string $key = null): DocSet
+    {
+        $registry = $this->app->make(SetRegistry::class);
+
+        return $key === null ? $registry->default() : $registry->get($key);
     }
 
     /**
-     * Get all of the additional scripts.
+     * Add routes inside every doc set's route group, before the page catch-all.
+     * Used by LaRecipe's own domains (llms.txt, MCP, search, admin) and by hosts.
      *
-     * @return array
+     * @param  Closure(\Illuminate\Routing\Router, \LaRecipe\Domains\Content\DTOs\SetConfig): void  $callback
      */
-    public static function allScripts()
+    public function routes(Closure $callback): void
     {
-        return static::$scripts;
+        $this->routes[] = $callback;
+    }
+
+    /** @return list<Closure> */
+    public function routeCallbacks(): array
+    {
+        return $this->routes;
+    }
+
+    /** @param Closure(\Illuminate\Routing\Router): void $callback routes outside any set */
+    public function globalRoutes(Closure $callback): void
+    {
+        $this->globalRoutes[] = $callback;
+    }
+
+    /** @return list<Closure> */
+    public function globalRouteCallbacks(): array
+    {
+        return $this->globalRoutes;
     }
 
     /**
-     * Get all of the additional stylesheets.
+     * Register an MCP tool class with the docs server. Author tools (writes) are
+     * exposed on the local server, and on the web only for database sets with
+     * mcp.web.author_tools enabled.
      *
-     * @return array
+     * @param  class-string<\Laravel\Mcp\Server\Tool>  $tool
      */
-    public static function allStyles()
+    public function mcpTool(string $tool, bool $author = false): void
     {
-        $styles = static::$styles;
+        $this->mcpTools[$tool] = ['author' => $author];
+    }
 
-        if (config('larecipe.ui.theme_order')) {
-            $newStyleOrder = [];
-            foreach (config('larecipe.ui.theme_order') as $styleName) {
-                $newStyleOrder[$styleName] = $styles[$styleName];
-            }
-            $styles = $newStyleOrder;
-        }
-
-        return $styles;
+    /** @return array<class-string, array{author: bool}> */
+    public function mcpTools(): array
+    {
+        return $this->mcpTools;
     }
 }

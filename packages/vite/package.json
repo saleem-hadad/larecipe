@@ -1,0 +1,15 @@
+{
+  "name": "@larecipe/vite",
+  "version": "3.0.0-dev",
+  "description": "Builds LaRecipe extensions (custom React components) in a host Laravel app, sharing LaRecipe's React.",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "peerDependencies": {
+    "vite": "^6.0.0 || ^7.0.0"
+  },
+  "license": "MIT"
+}
