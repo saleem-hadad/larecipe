@@ -19,6 +19,14 @@ final class MediaPlaceholderRule implements PageRule
 
     public function check(PageSnapshot $page, PageContext $context): array
     {
+        // A renderer that reports placeholders itself (as media.placeholder) has
+        // already been heard through ComponentsRule.
+        foreach ($page->rendered->issues ?? [] as $issue) {
+            if (($issue['rule'] ?? null) === 'media.placeholder') {
+                return [];
+            }
+        }
+
         $issues = [];
 
         foreach ($this->scanner->tags($page->page->body, 'Video') as $tag) {

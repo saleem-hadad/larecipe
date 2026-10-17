@@ -4,11 +4,17 @@ use Illuminate\Support\Facades\Artisan;
 use LaRecipe\Domains\Content\DTOs\Frontmatter;
 use LaRecipe\Domains\Content\DTOs\Page;
 use LaRecipe\Domains\Content\DTOs\PageRef;
+use LaRecipe\Domains\Markdown\DTOs\RenderedPage;
 use LaRecipe\Domains\Sources\Drivers\RepositorySource;
 use LaRecipe\Domains\Sources\Laravel\SourceManager;
 use LaRecipe\Domains\Validation\Actions\ValidateDocsAction;
 use LaRecipe\Domains\Validation\Actions\ValidatePageAction;
+use LaRecipe\Domains\Validation\Contracts\DocsInspector;
+use LaRecipe\Domains\Validation\DTOs\PageSnapshot;
 use LaRecipe\Domains\Validation\DTOs\ValidationIssue;
+use LaRecipe\Domains\Validation\Rules\ComponentsRule;
+use LaRecipe\Domains\Validation\Rules\MediaPlaceholderRule;
+use LaRecipe\Domains\Validation\Rules\SnippetsRule;
 use LaRecipe\Domains\Validation\Services\SchemaValidator;
 use LaRecipe\Tests\Feature\Agents\Support\Sets;
 use LaRecipe\Tests\TestCase;
@@ -123,7 +129,7 @@ it('checks hand-written skills against the Agent Skills spec', function () {
 });
 
 it('warns about budgets: agent Markdown size and the search index', function () {
-    useBrokenSet(['agents' => ['markdown_budget' => 100, 'search_budget' => 50]]);
+    useBrokenSet(['agents' => ['markdown_budget' => 100], 'search' => ['budget_kb' => 0.01]]);
 
     $issues = brokenIssues();
 
@@ -184,4 +190,24 @@ it('checks one page before a write, with link problems as warnings', function ()
     $empty = Page::make(new PageRef('nowhere', 'current', 'en', 'x'), new Frontmatter(['description' => 'Nothing here.']), '');
 
     expect(app(ValidatePageAction::class)->execute($empty)->issues[0]->rule)->toBe('page.empty');
+});
+
+it('maps renderer issues that carry their own rule, level and line', function () {
+    $page = Page::make(new PageRef('broken', 'current', 'en', 'p'), new Frontmatter(['description' => 'x']), "# P\n\nText\n");
+    $rendered = new RenderedPage('<p>Text</p>', [], 'P', issues: [
+        ['rule' => 'snippets.missing', 'level' => 'error', 'message' => 'Snippet @/Gone.php could not be included: the file does not exist.', 'line' => 3],
+        ['rule' => 'media.placeholder', 'level' => 'warning', 'message' => 'Video placeholder "Demo" has no src yet.', 'component' => 'Video', 'line' => 5],
+        ['rule' => 'components.invalid', 'level' => 'error', 'message' => '<Callout type="x"> must be one of: note.', 'component' => 'Callout'],
+    ]);
+    $snapshot = new PageSnapshot($page, 'p.md', rendered: $rendered, lineOffset: 4);
+    $context = app(DocsInspector::class)->context($page);
+
+    $issues = collect((new ComponentsRule)->check($snapshot, $context))->map->toArray();
+
+    expect($issues[0])->toMatchArray(['rule' => 'snippets.missing', 'level' => 'error', 'line' => 7])
+        ->and($issues[1])->toMatchArray(['rule' => 'media.placeholder', 'level' => 'warning', 'line' => 9, 'fix' => 'Add src="..." when the video exists.'])
+        ->and($issues[2])->toMatchArray(['rule' => 'components.props', 'fix' => 'Fix the props of <Callout>.']);
+
+    expect(app(MediaPlaceholderRule::class)->check($snapshot, $context))->toBe([])
+        ->and(app(SnippetsRule::class)->check($snapshot, $context))->toBe([]);
 });

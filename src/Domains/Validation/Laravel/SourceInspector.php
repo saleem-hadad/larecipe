@@ -297,7 +297,7 @@ final class SourceInspector implements DocsInspector
     {
         $store = $this->config->get('larecipe.cache.store') ?? $this->config->get('cache.default');
         $driver = $set?->config->driver ?? 'repository';
-        $snippets = $set?->config->setting('snippets.root');
+        $snippets = $set?->config->setting('snippets.root') ?? $this->config->get('larecipe.snippets.root');
 
         return new ValidationSettings(
             prefix: $set?->config->prefix ?? '',
@@ -305,7 +305,7 @@ final class SourceInspector implements DocsInspector
             cacheStore: is_string($store) ? $this->config->get("cache.stores.{$store}.driver", $store) : null,
             searchDriver: (string) ($set?->config->setting('search.driver', 'client') ?? 'client'),
             markdownBudget: (int) ($set?->config->setting('agents.markdown_budget', 50000) ?? 50000),
-            searchBudget: (int) ($set?->config->setting('agents.search_budget', 300000) ?? 300000),
+            searchBudget: (int) round(1024 * (float) ($set?->config->setting('search.budget_kb', 300) ?? 300)),
             knownComponents: array_keys($this->components->all()),
             snippetRoot: is_string($snippets) ? $snippets : ($driver === 'repository' ? $this->app->basePath() : null),
             testing: $this->app->environment('testing'),

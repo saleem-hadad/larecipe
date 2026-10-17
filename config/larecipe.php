@@ -125,8 +125,6 @@ return [
         'llms_full_limit' => 400000,
         // larecipe:validate warns when a page's agent Markdown is larger.
         'markdown_budget' => 50000,
-        // larecipe:validate warns when a client search index would be larger (gzip bytes).
-        'search_budget' => 300000,
     ],
 
     // The "Was this page helpful?" widget and the submit_feedback MCP tool.

@@ -22,6 +22,13 @@ final class SnippetsRule implements PageRule
 
     public function check(PageSnapshot $page, PageContext $context): array
     {
+        // A renderer that resolves includes replaces them in the HTML and reports
+        // missing ones itself (through ComponentsRule); only check them here when
+        // the include lines are still there as text.
+        if ($page->rendered !== null && ! str_contains($page->rendered->html, '&lt;&lt;&lt; @/')) {
+            return [];
+        }
+
         $issues = [];
         $id = $context->pageId($page->page->ref->path);
         $root = $context->settings->snippetRoot;
