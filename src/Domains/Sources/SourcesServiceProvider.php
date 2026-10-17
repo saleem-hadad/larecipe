@@ -7,10 +7,13 @@ use Illuminate\Support\ServiceProvider;
 use LaRecipe\Domains\Content\Contracts\ManifestProvider;
 use LaRecipe\Domains\Content\DTOs\SetConfig;
 use LaRecipe\Domains\Sources\Commands\CacheWarmCommand;
+use LaRecipe\Domains\Sources\Commands\ProvenanceCommand;
+use LaRecipe\Domains\Sources\Contracts\ProvenanceResolver;
 use LaRecipe\Domains\Sources\Contracts\SourceFactory;
 use LaRecipe\Domains\Sources\Contracts\SourceResolver;
 use LaRecipe\Domains\Sources\Events\ContentChanged;
 use LaRecipe\Domains\Sources\Laravel\DatabaseSourceFactory;
+use LaRecipe\Domains\Sources\Laravel\GitProvenanceResolver;
 use LaRecipe\Domains\Sources\Laravel\ProvenanceIndexPath;
 use LaRecipe\Domains\Sources\Laravel\SourceDrivers;
 use LaRecipe\Domains\Sources\Laravel\SourceManager;
@@ -46,6 +49,7 @@ final class SourcesServiceProvider extends ServiceProvider
         $this->app->alias(SourceManager::class, SourceFactory::class);
 
         $this->app->singleton(SourceModels::class, fn ($app) => SourceModels::fromConfig((array) $app['config']->get('larecipe.models', [])));
+        $this->app->bind(ProvenanceResolver::class, GitProvenanceResolver::class);
         $this->app->singleton(ProvenanceIndexPath::class, fn ($app) => new ProvenanceIndexPath($app->bootstrapPath('cache/larecipe')));
         $this->app->scoped(ReviewPolicy::class, fn ($app) => new ReviewPolicy($app->make('larecipe.set-configs')));
     }
@@ -65,6 +69,7 @@ final class SourcesServiceProvider extends ServiceProvider
 
             $this->commands([
                 CacheWarmCommand::class,
+                ProvenanceCommand::class,
             ]);
         }
     }

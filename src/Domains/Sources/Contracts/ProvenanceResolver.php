@@ -10,6 +10,9 @@ use LaRecipe\Domains\Sources\DTOs\ResolvedProvenance;
  */
 interface ProvenanceResolver
 {
-    /** @param list<string> $files paths relative to $root */
-    public function resolve(string $root, array $files): ResolvedProvenance;
+    /**
+     * @param  list<string>  $files  paths relative to $root
+     * @param  string|null  $repositoryUrl  the manifest's repository.url, to link pull requests
+     */
+    public function resolve(string $root, array $files, ?string $repositoryUrl = null): ResolvedProvenance;
 }
