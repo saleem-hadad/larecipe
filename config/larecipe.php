@@ -64,8 +64,19 @@ return [
 
     // client (default): MiniSearch in the browser. server: the PHP ranker.
     // Any other value is a custom driver registered with LaRecipe::extendSearch().
+    // budget_kb: a client index over this size (gzipped) is reported, so a set
+    // that outgrows the browser index can move to the server driver.
     'search' => [
         'driver' => 'client',
+        'budget_kb' => 300,
+    ],
+
+    // Snippet includes (<<< @/app/Billing/Invoice.php#refund) resolve inside this
+    // folder. null means the app's base path for repository sets. Database sets
+    // include nothing unless a set sets its own sets.{key}.snippets.root.
+    // Dotfiles (.env), keys, storage/ and auth.json are never included.
+    'snippets' => [
+        'root' => null,
     ],
 
     'migrations' => [

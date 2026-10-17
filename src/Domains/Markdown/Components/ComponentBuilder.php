@@ -28,7 +28,7 @@ final class ComponentBuilder
         return $this;
     }
 
-    /** @param Closure(array, string): string $markdown */
+    /** @param Closure(array, string, RenderedComponent): string $markdown */
     public function markdown(Closure $markdown): self
     {
         $this->definition->markdown = $markdown;
@@ -39,6 +39,14 @@ final class ComponentBuilder
     public function island(bool $island = true): self
     {
         $this->definition->island = $island;
+
+        return $this;
+    }
+
+    /** Keep the tag's content as literal text instead of parsing it as Markdown. */
+    public function raw(bool $raw = true): self
+    {
+        $this->definition->raw = $raw;
 
         return $this;
     }

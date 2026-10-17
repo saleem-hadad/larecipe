@@ -57,6 +57,7 @@ final class PageRenderer
             issues: $this->state->issues,
             hasLiveReferences: $this->state->hasLiveReferences,
             abilities: array_keys($this->state->abilities),
+            dependencies: $this->state->dependencies,
         );
     }
 

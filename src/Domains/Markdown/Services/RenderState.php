@@ -13,11 +13,20 @@ use LaRecipe\Domains\Markdown\DTOs\TocItem;
  */
 final class RenderState
 {
+    public const ERROR = 'error';
+
+    public const WARNING = 'warning';
+
     public ?PageRef $ref = null;
 
     public ?LinkResolver $links = null;
 
-    /** @var array<string, mixed> anything extensions need (abilities, the viewer, flags) */
+    /**
+     * Anything extensions need (abilities, the viewer, flags). Known keys:
+     * snippets_root overrides the doc set's snippet root for this render.
+     *
+     * @var array<string, mixed>
+     */
     public array $context = [];
 
     /** @var list<TocItem> */
@@ -31,13 +40,21 @@ final class RenderState
     /** @var list<array{href: string, line: ?int}> */
     public array $internalLinks = [];
 
-    /** @var list<array{component: string, message: string}> */
+    /** @var list<array{rule: string, level: string, message: string, component?: string, line?: int}> */
     public array $issues = [];
 
     public bool $hasLiveReferences = false;
 
     /** @var array<string, true> abilities that <Can> blocks on the page asked about */
     public array $abilities = [];
+
+    /**
+     * Files outside the page that the render read (snippet includes), with a
+     * hash of their contents. A cached render is stale when one of them changes.
+     *
+     * @var array<string, string>
+     */
+    public array $dependencies = [];
 
     public function reset(?PageRef $ref, ?LinkResolver $links, array $context = []): void
     {
@@ -51,6 +68,7 @@ final class RenderState
         $this->issues = [];
         $this->hasLiveReferences = false;
         $this->abilities = [];
+        $this->dependencies = [];
     }
 
     public function usedComponent(string $name): void
@@ -58,8 +76,25 @@ final class RenderState
         $this->components[$name] = true;
     }
 
+    /** A problem found while rendering, with a stable rule id validation and agents can act on. */
+    public function issue(string $rule, string $message, string $level = self::WARNING, ?string $component = null, ?int $line = null): void
+    {
+        $this->issues[] = array_filter([
+            'rule' => $rule,
+            'level' => $level,
+            'message' => $message,
+            'component' => $component,
+            'line' => $line,
+        ], fn ($value) => $value !== null);
+    }
+
     public function componentIssue(string $component, string $message): void
     {
-        $this->issues[] = ['component' => $component, 'message' => $message];
+        $this->issue('components.invalid', $message, self::ERROR, $component);
+    }
+
+    public function dependsOn(string $file, string $hash): void
+    {
+        $this->dependencies[$file] = $hash;
     }
 }
