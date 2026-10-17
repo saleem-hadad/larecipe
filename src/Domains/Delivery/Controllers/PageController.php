@@ -13,6 +13,7 @@ use LaRecipe\Domains\Content\DTOs\Page;
 use LaRecipe\Domains\Content\DTOs\PageRef;
 use LaRecipe\Domains\Content\Services\SetRegistry;
 use LaRecipe\Domains\Delivery\DTOs\DocsRequest;
+use LaRecipe\Domains\Delivery\Events\MarkdownServed;
 use LaRecipe\Domains\Delivery\Events\PageViewed;
 use LaRecipe\Domains\Delivery\Services\DocsUrls;
 use LaRecipe\Domains\Delivery\Services\PageCatalog;
@@ -109,7 +110,12 @@ final class PageController
             return $this->notFound->respond($set, $docs, $request);
         }
 
-        event(new PageViewed($set->key, $page->ref, $docs->format, $request));
+        $viewed = new PageViewed($set->key, $page->ref, $docs->format, $request);
+        event($viewed);
+
+        if ($docs->isMarkdown()) {
+            event(new MarkdownServed($set->key, $page->ref, $viewed->kind, $viewed->userAgent, $docs->explicitMarkdown));
+        }
 
         return match ($docs->format) {
             DocsRequest::MARKDOWN => $this->markdownResponse($set, $page, $request),
