@@ -21,6 +21,9 @@ final class KernelSiteClient implements SiteClient
 {
     public const USER_AGENT = 'LaRecipe-Export/3 (static export)';
 
+    /** The request attribute that marks a page as rendered for the static site. */
+    public const ATTRIBUTE = 'larecipe.static_export';
+
     public function __construct(
         private readonly Kernel $kernel,
         private readonly DocsUrls $urls,
@@ -35,6 +38,7 @@ final class KernelSiteClient implements SiteClient
             'HTTP_ACCEPT' => $accept,
             'HTTP_USER_AGENT' => self::USER_AGENT,
         ]);
+        $request->attributes->set(self::ATTRIBUTE, true);
 
         try {
             $response = $this->kernel->handle($request);

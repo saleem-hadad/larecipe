@@ -121,3 +121,16 @@ it('resolves live references at export time', function () {
 it('refuses a set it does not know', function () {
     $this->artisan('larecipe:export', ['--out' => $this->out, '--set' => ['nope']])->assertFailed();
 });
+
+it('does not offer feedback, Ask AI or MCP, which a static host cannot serve', function () {
+    $live = $this->get('/docs/installation')->getContent();
+
+    exportSite(['--out' => $this->out, '--set' => ['docs']]);
+
+    $html = file_get_contents($this->out.'/docs/installation/index.html');
+    $boot = fn (string $page) => preg_match('#"features":\{[^}]*\}#', $page, $match) ? $match[0] : '';
+
+    expect($live)->toContain('class="lr-feedback')->toContain('>Connect MCP<')
+        ->and($html)->not->toContain('class="lr-feedback')->not->toContain('>Connect MCP<')
+        ->and($boot($html))->toContain('"ask":false')->toContain('"feedback":false');
+});
