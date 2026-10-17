@@ -138,6 +138,9 @@ return [
         'you' => 'You',
         'answer' => 'Answer',
         'search_instead' => 'Search for “:query”',
+        'rate' => 'Did this answer help?',
+        'helpful' => 'This answer helped',
+        'not_helpful' => 'This answer did not help',
     ],
 
     'code' => [

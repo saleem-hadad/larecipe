@@ -21,6 +21,19 @@ it('takes page feedback, dispatches FeedbackSubmitted and stores nothing', funct
     Event::assertDispatched(FeedbackSubmitted::class, fn (FeedbackSubmitted $event) => $event->set === 'handbook' && $event->page->version === '2.x' && ! $event->helpful && $event->comment === null);
 });
 
+it('tags thumbs on an Ask AI answer as Ask feedback, with the question it answered', function () {
+    Event::fake([FeedbackSubmitted::class]);
+
+    $this->postJson('/billing/_feedback', ['path' => 'guides/invoices', 'helpful' => false, 'question' => '  Can I download invoices?  '])->assertNoContent();
+
+    Event::assertDispatched(FeedbackSubmitted::class, fn (FeedbackSubmitted $event) => $event->source === 'ask'
+        && $event->question === 'Can I download invoices?'
+        && $event->page->path === 'guides/invoices'
+        && ! $event->helpful);
+
+    $this->postJson('/billing/_feedback', ['path' => 'guides/invoices', 'helpful' => true, 'question' => str_repeat('a', 2001)])->assertUnprocessable();
+});
+
 it('answers feedback on hidden or missing pages with a 404, and bad input with a 422', function () {
     Event::fake([FeedbackSubmitted::class]);
 
