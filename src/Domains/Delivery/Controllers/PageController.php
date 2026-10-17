@@ -30,6 +30,7 @@ use LaRecipe\Domains\Delivery\Support\Assets;
 use LaRecipe\Domains\Delivery\Support\DocsLinkResolver;
 use LaRecipe\Domains\Delivery\Support\NotFoundResponder;
 use LaRecipe\Domains\Delivery\Support\ResponseHeaders;
+use LaRecipe\Domains\Delivery\Support\SetFromRequest;
 use LaRecipe\Domains\Markdown\Actions\RenderPageAction;
 use LaRecipe\Domains\Markdown\DTOs\RenderedPage;
 use LaRecipe\Domains\Markdown\Services\AgentMarkdownRenderer;
@@ -47,7 +48,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 final class PageController
 {
     public function __construct(
-        private readonly \LaRecipe\Domains\Delivery\Support\SetFromRequest $current,
+        private readonly SetFromRequest $current,
         private readonly SetRegistry $sets,
         private readonly RequestResolver $resolver,
         private readonly PageCatalog $catalog,
@@ -110,7 +111,7 @@ final class PageController
         $summary = $summaries[$docs->path] ?? null;
 
         if ($summary === null) {
-            return $this->redirectFor($set, $docs) ?? $this->notFound->respond($set, $docs, $request);
+            return $this->redirectFor($set, $docs, $request) ?? $this->notFound->respond($set, $docs, $request);
         }
 
         if (! $shared && ! $this->access->canView($set, $summary)) {
@@ -262,18 +263,36 @@ final class PageController
             : $target;
     }
 
-    /** redirect_from in frontmatter and redirects in larecipe.json keep old URLs alive. */
-    private function redirectFor(DocSet $set, DocsRequest $docs): ?SymfonyResponse
+    /**
+     * redirect_from in frontmatter and redirects in larecipe.json keep old URLs alive.
+     *
+     * On a versioned set, a redirect whose "from" has no version applies in every
+     * version: /docs/setup matches /docs/2.x/setup, and a target without a version
+     * stays in the reader's version. Only pages the reader may see are searched
+     * for redirect_from, so a redirect never reveals a private page's URL.
+     */
+    private function redirectFor(DocSet $set, DocsRequest $docs, Request $request): ?SymfonyResponse
     {
-        $requested = '/'.trim(request()->path(), '/');
+        $requested = '/'.trim($request->path(), '/');
+        $unversioned = $set->isVersioned() ? $this->withoutVersion($set, $docs) : null;
 
         foreach ($set->manifest->redirects() as $redirect) {
-            if (rtrim($redirect['from'], '/') === rtrim($requested, '/')) {
+            $from = rtrim($redirect['from'], '/');
+
+            if ($from === rtrim($requested, '/')) {
                 return redirect()->to($redirect['to'], $redirect['status']);
+            }
+
+            if ($from === $unversioned) {
+                return redirect()->to($this->inVersion($set, $redirect['to'], $docs->version), $redirect['status']);
             }
         }
 
         foreach ($this->catalog->summaries($set, $docs->version, $docs->locale) as $summary) {
+            if (! $this->access->canView($set, $summary)) {
+                continue;
+            }
+
             $page = $this->pages->execute($summary->ref);
 
             foreach ($page?->frontmatter->redirectFrom() ?? [] as $from) {
@@ -286,5 +305,37 @@ final class PageController
         }
 
         return null;
+    }
+
+    /** The requested page's URL path without its version segment: /docs/3.x/setup becomes /docs/setup. */
+    private function withoutVersion(DocSet $set, DocsRequest $docs): string
+    {
+        $locale = $set->isMultilingual() && $docs->locale !== $set->defaultLocale()->code ? $docs->locale : '';
+        $segments = [trim($set->config->prefix, '/'), $locale, $docs->path === 'index' ? '' : $docs->path];
+
+        return '/'.implode('/', array_filter($segments, fn (string $s) => $s !== ''));
+    }
+
+    /** A redirect target inside this set that names no version, moved into the reader's version. */
+    private function inVersion(DocSet $set, string $target, string $version): string
+    {
+        $prefix = trim($set->config->prefix, '/');
+        $path = trim((string) parse_url($target, PHP_URL_PATH), '/');
+        $inSet = $prefix === '' || $path === $prefix || str_starts_with($path, $prefix.'/');
+
+        if (! str_starts_with($target, '/') || str_starts_with($target, '//') || ! $inSet) {
+            return $target;
+        }
+
+        $segments = array_values(array_filter(explode('/', substr($path, strlen($prefix))), fn (string $s) => $s !== ''));
+        $locale = $segments !== [] && $set->isMultilingual() && $set->locale($segments[0]) !== null ? array_shift($segments) : '';
+
+        if ($segments !== [] && $set->version($segments[0]) !== null) {
+            return $target;
+        }
+
+        $rest = substr($target, strlen('/'.$path));
+
+        return '/'.implode('/', array_filter([$prefix, $locale, $version, ...$segments], fn (string $s) => $s !== '')).$rest;
     }
 }
