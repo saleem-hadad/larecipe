@@ -245,7 +245,7 @@ final class PagePresenter
                 'url' => $this->switchUrl($set, $ref->withLocale($locale->code)),
                 'translated' => isset($this->catalog->summaries($set, $ref->version, $locale->code)[$ref->path]),
             ], $set->isMultilingual() ? $set->locales() : []),
-            'integrations' => (array) $manifest->get('integrations', []),
+            'integrations' => $set->manifestIntegrations(),
         ];
     }
 

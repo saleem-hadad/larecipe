@@ -11,6 +11,8 @@ use LaRecipe\Domains\Validation\Services\Suggest;
 /**
  * manifest.schema: larecipe.json that is not valid JSON or does not match the
  * schema, plus top-level keys that look like typos of known ones.
+ * manifest.integrations: integrations in a database set's larecipe.json,
+ * which are ignored (its analytics come from config/larecipe.php).
  */
 final class ManifestSchemaRule implements SetRule
 {
@@ -32,6 +34,10 @@ final class ManifestSchemaRule implements SetRule
 
         foreach ($this->schemas->errors(SchemaValidator::MANIFEST, $docs->manifest === [] ? new \stdClass : $docs->manifest) as $error) {
             $issues[] = ValidationIssue::error('manifest.schema', 'larecipe.json '.$error, file: $file, fix: 'See the manifest schema: '.SchemaValidator::MANIFEST.'.schema.json.');
+        }
+
+        if ($docs->settings->driver !== 'repository' && isset($docs->manifest['integrations'])) {
+            $issues[] = ValidationIssue::warning('manifest.integrations', 'A database set ignores integrations in larecipe.json, so these analytics are not loaded.', file: $file, fix: "Move them to sets.{$docs->set}.integrations in config/larecipe.php, then remove them from larecipe.json.");
         }
 
         $known = $this->schemas->knownKeys(SchemaValidator::MANIFEST);
