@@ -19,11 +19,11 @@ final class CacheStoreCheck implements Check
             return DoctorCheck::skip('cache-store', 'Cache store', 'Repository sets read from files; no cache store is needed.');
         }
 
-        $store = $this->config->get('larecipe.cache.store') ?? $this->config->get('cache.default');
+        $store = $context->set->config->cacheStore() ?? $this->config->get('cache.default');
         $driver = $this->config->get("cache.stores.{$store}.driver", $store);
 
         return in_array($driver, ['array', 'null'], true)
-            ? DoctorCheck::fail('cache-store', 'Cache store', "The database set runs on the \"{$driver}\" cache store, which keeps nothing.", 'Set larecipe.cache.store to redis, database or file.')
+            ? DoctorCheck::fail('cache-store', 'Cache store', "The database set runs on the \"{$driver}\" cache store, which keeps nothing.", "Point sets.{$context->set->key}.source.cache (or larecipe.cache.store) at redis, database or file.")
             : DoctorCheck::pass('cache-store', 'Cache store', "The database set is cached in the \"{$store}\" store.");
     }
 }
