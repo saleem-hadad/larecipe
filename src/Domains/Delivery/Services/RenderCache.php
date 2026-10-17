@@ -52,8 +52,12 @@ final class RenderCache
 
         $rendered = $render();
 
-        if ($rendered->issues !== []) {
-            return $rendered;
+        // Warnings are cached with the render; an error (a broken reference, an
+        // invalid component) is rendered fresh until it is fixed.
+        foreach ($rendered->issues as $issue) {
+            if (($issue['level'] ?? 'error') === 'error') {
+                return $rendered;
+            }
         }
 
         if ($rendered->hasLiveReferences) {

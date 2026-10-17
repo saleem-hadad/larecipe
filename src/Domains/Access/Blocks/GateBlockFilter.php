@@ -16,7 +16,9 @@ use League\CommonMark\Extension\CommonMark\Node\Block\BlockQuote;
  * the document itself (not hidden with CSS), every projection of it agrees: the
  * article HTML, its table of contents and heading ids, agent Markdown, search
  * records and the links validation sees. The reader comes from the render
- * context (Audience::CONTEXT_KEY); without one the reader is a guest.
+ * context (Audience::CONTEXT_KEY); without one the reader is a guest. A search
+ * parse (purpose "search") keeps every block, because search splits records at
+ * the gate nodes and filters each audience's index itself.
  *
  * Every ability the page asks about is recorded in RenderState::$abilities,
  * including those nested in removed blocks, so callers can evaluate them all and

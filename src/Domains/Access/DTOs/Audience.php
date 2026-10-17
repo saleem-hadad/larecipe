@@ -18,6 +18,12 @@ final readonly class Audience
     public const CONTEXT_KEY = 'audience';
 
     /**
+     * Render purposes that must see every gate block: search record extraction
+     * splits records at <Can>/<Cannot> nodes and filters them per audience itself.
+     */
+    public const PURPOSES_SEEING_EVERY_BLOCK = ['search'];
+
+    /**
      * @param  array<string, bool>  $abilities  ability => granted, for the abilities that were evaluated
      * @param  bool  $unrestricted  keep every gate block (validation and authoring previews only, never readers)
      */
@@ -47,9 +53,16 @@ final readonly class Audience
         return new self(array_fill_keys($granted, true));
     }
 
-    /** The audience a render was asked for, or a guest when none was given (fail closed). */
+    /**
+     * The audience a render was asked for, or a guest when none was given (fail
+     * closed). A search parse (context purpose "search") keeps every block.
+     */
     public static function fromContext(array $context): self
     {
+        if (in_array($context['purpose'] ?? null, self::PURPOSES_SEEING_EVERY_BLOCK, true)) {
+            return self::unrestricted();
+        }
+
         $audience = $context[self::CONTEXT_KEY] ?? null;
 
         return $audience instanceof self ? $audience : self::guest();

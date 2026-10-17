@@ -159,6 +159,16 @@ it('records every ability a page asks about, nested ones included', function () 
     expect($rendered->abilities)->toEqualCanonicalizing(['view-billing', 'manage-billing']);
 });
 
+it('keeps every gate block for a search parse, which filters per audience itself', function () {
+    $page = app(GetPageAction::class)->execute(new PageRef('gated', '2.x', 'en', 'index'));
+    $search = app(RenderPageAction::class)->execute($page, null, ['purpose' => 'search']);
+
+    expect($search->html)->toContain('EXPORT-SECRET', 'MANAGER-SECRET', 'GUEST-ONLY', 'QUOTE-SECRET')
+        ->and($search->abilities)->toEqualCanonicalizing(['view-billing', 'manage-billing']);
+
+    expect(app(RenderPageAction::class)->execute($page, null, ['purpose' => 'html'])->html)->not->toContain('EXPORT-SECRET');
+});
+
 it('warns about abilities the host never defined, with the closest one as the fix', function () {
     $issues = app(CheckGateBlocksAction::class)->execute(['view-biling', 'view-billing', 'launch-rockets']);
 
