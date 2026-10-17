@@ -9,6 +9,9 @@ use LaRecipe\Domains\Content\DTOs\Page;
 use LaRecipe\Domains\Content\DTOs\PageRef;
 use LaRecipe\Domains\Markdown\Actions\RenderPageAction;
 use LaRecipe\Domains\Sources\Actions\GetPageAction;
+use LaRecipe\Domains\Validation\Actions\ValidateDocsAction;
+use LaRecipe\Domains\Validation\Actions\ValidatePageAction;
+use LaRecipe\Domains\Validation\DTOs\ValidationIssue;
 use LaRecipe\Facades\LaRecipe;
 use LaRecipe\Tests\Support\TrackG;
 use League\CommonMark\Event\DocumentParsedEvent;
@@ -170,6 +173,27 @@ it('keeps every gate block for a search parse, which filters per audience itself
         ->and($search->abilities)->toEqualCanonicalizing(['view-billing', 'manage-billing']);
 
     expect(app(RenderPageAction::class)->execute($page, null, ['purpose' => 'html'])->html)->not->toContain('EXPORT-SECRET');
+});
+
+it('reports gate blocks with an undefined ability in larecipe:validate, on their line', function () {
+    $rules = collect(app(ValidateDocsAction::class)->execute('gated')->issues)->pluck('rule');
+
+    expect($rules)->not->toContain(GateIssue::UNKNOWN_ABILITY);
+
+    $page = Page::make(
+        new PageRef('gated', '2.x', 'en', 'exports'),
+        new Frontmatter(['title' => 'Exports', 'description' => 'Billing exports.']),
+        "# Exports\n\n<Can ability=\"view-biling\">\nExport invoices as CSV.\n</Can>\n\n<Cannot ability=\"launch-rockets\">\nAsk your owner.\n</Cannot>\n",
+    );
+
+    $issues = collect(app(ValidatePageAction::class)->execute($page)->issues)
+        ->where('rule', GateIssue::UNKNOWN_ABILITY)
+        ->map(fn (ValidationIssue $issue) => $issue->toArray())
+        ->values();
+
+    expect($issues)->toHaveCount(2)
+        ->and($issues[0])->toMatchArray(['level' => 'warning', 'set' => 'gated', 'page' => '2.x/exports', 'line' => 3, 'fix' => 'Use "view-billing", or define "view-biling" with Gate::define() in a service provider.'])
+        ->and($issues[1])->toMatchArray(['line' => 7, 'fix' => 'Define "launch-rockets" with Gate::define() in a service provider.']);
 });
 
 it('warns about abilities the host never defined, with the closest one as the fix', function () {

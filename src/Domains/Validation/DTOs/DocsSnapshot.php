@@ -2,6 +2,8 @@
 
 namespace LaRecipe\Domains\Validation\DTOs;
 
+use LaRecipe\Domains\Sources\DTOs\Revision;
+
 /**
  * A whole doc set, read once for validation: its manifest as written, every
  * version and locale with its pages, and its hand-written skills.
@@ -12,6 +14,7 @@ final readonly class DocsSnapshot
      * @param  ?array  $manifest  the decoded larecipe.json, null when the set has none
      * @param  list<VersionSnapshot>  $versions
      * @param  list<SkillSnapshot>  $skills
+     * @param  list<Revision>  $conflicts  docs-migration conflicts waiting for a decision (database sets)
      */
     public function __construct(
         public string $set,
@@ -21,6 +24,7 @@ final readonly class DocsSnapshot
         public array $skills = [],
         public ?string $manifestError = null,
         public string $manifestFile = 'larecipe.json',
+        public array $conflicts = [],
     ) {}
 
     public function pageCount(): int
