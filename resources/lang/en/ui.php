@@ -155,6 +155,7 @@ return [
 
     'video' => [
         'play' => 'Play video',
+        'placeholder' => 'Demo video coming soon',
     ],
 
     'mermaid' => [

@@ -152,6 +152,7 @@ return [
 
     'video' => [
         'play' => 'تشغيل الفيديو',
+        'placeholder' => 'العرض المصوّر قريبًا',
     ],
 
     'mermaid' => [

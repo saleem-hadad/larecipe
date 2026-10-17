@@ -2,8 +2,10 @@
 
 namespace LaRecipe\Domains\Markdown\Components\BuiltIn;
 
+use Closure;
 use LaRecipe\Domains\Markdown\Components\ComponentDefinition;
 use LaRecipe\Domains\Markdown\Components\Markup;
+use LaRecipe\Domains\Markdown\Components\RenderedComponent;
 
 /**
  * Captioned media, video, diagrams and math. Each one has a readable fallback
@@ -12,10 +14,14 @@ use LaRecipe\Domains\Markdown\Components\Markup;
  */
 final class Media
 {
+    /** The placeholder label in English, for a language without UI strings. */
     public const PLACEHOLDER = 'Demo video coming soon';
 
-    /** @return list<ComponentDefinition> */
-    public static function definitions(): array
+    /**
+     * @param  (Closure(string, ?string): ?string)|null  $strings  a UI string by key, in a page's language
+     * @return list<ComponentDefinition>
+     */
+    public static function definitions(?Closure $strings = null): array
     {
         return [
             new ComponentDefinition(
@@ -45,7 +51,10 @@ final class Media
                     'duration' => ['type' => 'string', 'description' => 'Length, for example 2:40'],
                     'placeholder' => ['type' => 'string', 'description' => 'Label for the frame shown until src is set'],
                 ],
-                fallback: fn (array $props) => self::video($props),
+                fallback: fn (array $props, string $children, RenderedComponent $component) => self::video(
+                    $props,
+                    ($strings !== null ? $strings('video.placeholder', $component->locale) : null) ?? self::PLACEHOLDER,
+                ),
                 markdown: function (array $props) {
                     $src = Markup::string($props, 'src');
                     $label = Markup::caption(Markup::string($props, 'title'), Markup::string($props, 'duration'));
@@ -87,7 +96,8 @@ final class Media
         ];
     }
 
-    private static function video(array $props): string
+    /** @param string $placeholder the label for a frame without src, when the author did not write one */
+    private static function video(array $props, string $placeholder): string
     {
         $src = Markup::string($props, 'src');
         $poster = Markup::string($props, 'poster');
@@ -95,7 +105,7 @@ final class Media
         $figcaption = $caption !== '' ? '<figcaption>'.Markup::e($caption).'</figcaption>' : '';
 
         if ($src === '') {
-            $label = Markup::string($props, 'placeholder') ?: self::PLACEHOLDER;
+            $label = Markup::string($props, 'placeholder') ?: $placeholder;
 
             return '<figure class="lr-video lr-video-placeholder"><div class="lr-video-frame"><span>'.Markup::e($label).'</span></div>'.$figcaption.'</figure>';
         }

@@ -5,6 +5,10 @@
  * UI styles (Components/COMPONENTS.md) and the agent Markdown form.
  */
 
+use LaRecipe\Domains\Content\DTOs\Frontmatter;
+use LaRecipe\Domains\Content\DTOs\Page;
+use LaRecipe\Domains\Content\DTOs\PageRef;
+use LaRecipe\Domains\Markdown\Actions\RenderPageAction;
 use LaRecipe\Tests\Unit\Markdown\Render;
 
 it('renders a Callout as an aside and a GitHub alert', function () {
@@ -144,6 +148,19 @@ it('renders a Video without src as a labelled placeholder and reports it', funct
         ->and($rendered->hasErrors())->toBeFalse()
         ->and(Render::html('<Video />')->html)->toContain('<span>Demo video coming soon</span>')
         ->and(Render::markdown('<Video placeholder="Demo (2 min)" />'))->toBe('*Video coming soon: Demo (2 min)*');
+});
+
+it('labels a Video placeholder with the UI strings of the page language', function () {
+    $render = fn (string $locale) => app(RenderPageAction::class)->execute(
+        Page::make(new PageRef('docs', 'current', $locale, 'demo'), new Frontmatter(['title' => 'Demo']), '<Video />'),
+    )->html;
+
+    expect($render('ar'))->toContain('<span>العرض المصوّر قريبًا</span>')
+        ->and($render('fr'))->toContain('<span>Demo video coming soon</span>');
+
+    app('translator')->addLines(['ui.video.placeholder' => 'A demo is on its way'], 'en', 'larecipe');
+
+    expect($render('en'))->toContain('<span>A demo is on its way</span>');
 });
 
 it('renders Mermaid from a tag and from a fence, keeping the source as text', function () {

@@ -17,9 +17,9 @@ final class MarkdownServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->singleton(ComponentRegistry::class, function () {
+        $this->app->singleton(ComponentRegistry::class, function ($app) {
             $registry = new ComponentRegistry;
-            BuiltInComponents::register($registry);
+            BuiltInComponents::register($registry, fn (string $key, ?string $locale) => $this->uiString($app, $key, $locale));
 
             return $registry;
         });
@@ -42,6 +42,14 @@ final class MarkdownServiceProvider extends ServiceProvider
 
         $this->app->scoped(PageRenderer::class);
         $this->app->scoped(AgentMarkdownRenderer::class);
+    }
+
+    /** A reader-facing string from resources/lang/{locale}/ui.php in a page's language, or null when no language file has it. */
+    private function uiString(Application $app, string $key, ?string $locale): ?string
+    {
+        $line = $app['translator']->get("larecipe::ui.{$key}", [], $locale ?? 'en');
+
+        return is_string($line) && $line !== "larecipe::ui.{$key}" ? $line : null;
     }
 
     /**

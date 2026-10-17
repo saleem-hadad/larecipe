@@ -51,7 +51,7 @@ Directives nest with longer fences (`::::tabs` around `:::tab`); equal fences cl
 
 - **File** (`src` is not YouTube or Vimeo): `<figure class="lr-video"><video controls preload="none" src="..." [poster="..."]></video><figcaption>Title · 2:40</figcaption></figure>`
 - **YouTube or Vimeo**: a click-to-load link, nothing third-party loads until the reader asks: `<figure class="lr-video"><a class="lr-video-link" href="{src}">[<img src="{poster}" alt="" loading="lazy">]<span class="lr-video-link-label">Watch on YouTube</span></a><figcaption>...</figcaption></figure>`. Props carry `embed` (`https://www.youtube-nocookie.com/embed/{id}` or `https://player.vimeo.com/video/{id}`) and `provider` (`youtube` or `vimeo`) for the island's player.
-- **No src**: `<figure class="lr-video lr-video-placeholder"><div class="lr-video-frame"><span>{placeholder, or "Demo video coming soon"}</span></div>[<figcaption>...</figcaption>]</figure>`, and the render reports a `media.placeholder` warning.
+- **No src**: `<figure class="lr-video lr-video-placeholder"><div class="lr-video-frame"><span>{placeholder, or the video.placeholder UI string in the page's language ("Demo video coming soon")}</span></div>[<figcaption>...</figcaption>]</figure>`, and the render reports a `media.placeholder` warning.
 
 The figcaption is `title · duration`, leaving out what is empty, and is omitted when both are.
 
