@@ -183,6 +183,54 @@ final class GitCli implements Vcs
         return $this->prefix ??= trim((string) $this->git(['rev-parse', '--show-prefix']));
     }
 
+    public function diff(?string $base, string $head, bool $uncommitted, array $files): ?string
+    {
+        if ($files === []) {
+            return '';
+        }
+
+        if (! $this->available()) {
+            return null;
+        }
+
+        $parts = [];
+
+        if ($base !== null) {
+            $parts[] = $this->git(['diff', '--no-renames', '--relative', "{$base}...{$head}", '--', ...$files]);
+        }
+
+        if ($uncommitted || $base === null) {
+            // Before the first commit there is no HEAD to compare with: show what is staged.
+            $parts[] = $this->headSha() === null
+                ? $this->git(['diff', '--no-renames', '--relative', '--cached', '--', ...$files])
+                : $this->git(['diff', '--no-renames', '--relative', 'HEAD', '--', ...$files]);
+        }
+
+        if (in_array(null, $parts, true)) {
+            return null;
+        }
+
+        return implode('', $parts);
+    }
+
+    public function commit(array $files, string $message): ?string
+    {
+        if ($files === [] || ! $this->available()) {
+            return null;
+        }
+
+        // -A stages deletions too; --only commits these paths and nothing else that was staged.
+        if ($this->git(['add', '-A', '--', ...$files]) === null) {
+            return null;
+        }
+
+        if ($this->git(['commit', '-q', '--only', '-m', $message, '--', ...$files]) === null) {
+            return null;
+        }
+
+        return $this->headSha();
+    }
+
     /**
      * Glob sources become git "glob" pathspecs; plain paths stay literal so a
      * folder name still matches everything inside it.
