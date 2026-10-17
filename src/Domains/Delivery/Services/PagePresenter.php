@@ -52,19 +52,23 @@ final class PagePresenter
      */
     public function present(DocSet $set, Page $page, RenderedPage $rendered, array $visible, ?string $fallbackFromLocale = null): array
     {
+        // A fallback page keeps the reader in their language: the chrome, navigation and
+        // links stay in the requested locale, only the article is in the original one.
         $ref = $page->ref;
-        $navigation = $this->navigation($set, $ref, $visible);
+        $reader = $fallbackFromLocale !== null ? $ref->withLocale($fallbackFromLocale) : $ref;
+        $navigation = $this->navigation($set, $reader, $visible);
         $sequence = $this->catalog->sequence($navigation);
         $position = array_search($ref->path, $sequence, true);
 
         $payload = [
-            'set' => $this->set($set, $ref),
+            'set' => $this->set($set, $reader),
             'page' => [
                 'path' => $ref->path,
                 'title' => $page->title,
                 'description' => $page->description,
                 'url' => $this->urls->page($set, $ref),
-                'path_url' => $this->urls->pagePath($set, $ref),
+                'path_url' => $this->urls->pagePath($set, $reader),
+                'alternates' => $this->alternates($set, $ref),
                 'markdown_url' => $this->urls->page($set, $ref, true),
                 'edit_url' => $this->editUrl($set, $ref),
                 'updated_at' => $page->updatedAt?->format(DATE_ATOM),
@@ -76,16 +80,20 @@ final class PagePresenter
                 'inserts' => $page->frontmatter->inserts(),
                 'toc' => array_map(fn (TocItem $item) => $item->toArray(), $rendered->toc),
                 'components' => $rendered->components,
-                'previous' => $position !== false && $position > 0 ? $this->neighbour($set, $ref, $sequence[$position - 1], $visible) : null,
-                'next' => $position !== false && isset($sequence[$position + 1]) ? $this->neighbour($set, $ref, $sequence[$position + 1], $visible) : null,
+                'previous' => $position !== false && $position > 0 ? $this->neighbour($set, $reader, $sequence[$position - 1], $visible) : null,
+                'next' => $position !== false && isset($sequence[$position + 1]) ? $this->neighbour($set, $reader, $sequence[$position + 1], $visible) : null,
                 'fallback_from_locale' => $fallbackFromLocale,
+                'content_locale' => [
+                    'code' => $ref->locale,
+                    'dir' => ($set->locale($ref->locale) ?? $set->defaultLocale())->dir->value,
+                ],
                 'noindex' => $page->frontmatter->noindex(),
             ],
             'navigation' => $navigation,
             'version' => $ref->version,
             'locale' => [
-                'code' => $ref->locale,
-                'dir' => ($set->locale($ref->locale) ?? $set->defaultLocale())->dir->value,
+                'code' => $reader->locale,
+                'dir' => ($set->locale($reader->locale) ?? $set->defaultLocale())->dir->value,
             ],
             'urls' => [
                 'base' => $this->urls->base($set),
@@ -146,30 +154,62 @@ final class PagePresenter
             ], $set->isVersioned() ? $set->versions() : []),
             'locales' => array_map(fn ($locale) => $locale->toArray() + [
                 'url' => $this->switchUrl($set, $ref->withLocale($locale->code)),
+                'translated' => isset($this->catalog->summaries($set, $ref->version, $locale->code)[$ref->path]),
             ], $set->isMultilingual() ? $set->locales() : []),
             'integrations' => (array) $manifest->get('integrations', []),
         ];
     }
 
-    /** The same page in another version or locale, or that version's landing page when it does not exist there. */
+    /**
+     * The same page in another version or locale, or that version's landing page
+     * when it does not exist there. An untranslated page still exists in every
+     * locale (it falls back to the original), so switching language keeps the page.
+     */
     private function switchUrl(DocSet $set, PageRef $ref): string
     {
-        $pages = $this->catalog->summaries($set, $ref->version, $ref->locale);
+        $pages = $this->catalog->localized($set, $ref->version, $ref->locale);
 
         return isset($pages[$ref->path])
             ? $this->urls->pagePath($set, $ref)
             : $this->urls->pagePath($set, $ref->withPath($set->landingPath()));
     }
 
+    /**
+     * hreflang alternates: the page in every locale it is written in, plus
+     * x-default for the original. Fallbacks are not alternates: they are the
+     * original, which is the canonical URL.
+     *
+     * @return list<array{hreflang: string, url: string}>
+     */
+    private function alternates(DocSet $set, PageRef $ref): array
+    {
+        if (! $set->isMultilingual()) {
+            return [];
+        }
+
+        $alternates = [];
+
+        foreach ($set->locales() as $locale) {
+            if (isset($this->catalog->summaries($set, $ref->version, $locale->code)[$ref->path])) {
+                $alternates[] = ['hreflang' => $locale->code, 'url' => $this->urls->page($set, $ref->withLocale($locale->code))];
+            }
+        }
+
+        $alternates[] = ['hreflang' => 'x-default', 'url' => $this->urls->page($set, $ref->withLocale($set->defaultLocale()->code))];
+
+        return $alternates;
+    }
+
     private function navigation(DocSet $set, PageRef $ref, array $visible): array
     {
         $tabs = $this->catalog->navigation($set, $ref->version, $ref->locale, $visible);
 
-        $withUrls = function (array $items) use (&$withUrls, $set, $ref): array {
-            return array_map(function (array $item) use (&$withUrls, $set, $ref) {
+        $withUrls = function (array $items) use (&$withUrls, $set, $ref, $visible): array {
+            return array_map(function (array $item) use (&$withUrls, $set, $ref, $visible) {
                 if ($item['type'] === 'page') {
                     $item['url'] = $this->urls->pagePath($set, $ref->withPath($item['path']));
                     $item['active'] = $item['path'] === $ref->path;
+                    $item['fallback'] = isset($visible[$item['path']]) && $visible[$item['path']]->ref->locale !== $ref->locale;
                 } elseif ($item['type'] === 'group') {
                     $item['items'] = $withUrls($item['items']);
                 }

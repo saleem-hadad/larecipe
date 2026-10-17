@@ -131,6 +131,13 @@ final class PageController
         $view = new ReaderView($audience, $guest->abilities !== [], $this->access->isPublicPage($set, $summary), $shared);
         $rendered = $audience->isGuest() ? $guest : $this->rendered($set, $page, $audience);
 
+        // Navigation lists every page of the reader's locale, translated or falling back.
+        $summaries = $this->catalog->localized($set, $docs->version, $fallbackFrom ?? $docs->locale);
+
+        if ($fallbackFrom !== null) {
+            $rendered = $this->inOriginalLanguage($rendered, $set);
+        }
+
         return match ($docs->format) {
             DocsRequest::MARKDOWN => $this->markdownResponse($set, $page, $request, $view),
             DocsRequest::JSON => $this->jsonResponse($set, $page, $summaries, $request, $fallbackFrom, $rendered, $view),
@@ -224,6 +231,16 @@ final class PageController
         }
 
         return $response;
+    }
+
+    /** A fallback article keeps its own language and direction inside the reader's chrome. */
+    private function inOriginalLanguage(RenderedPage $rendered, DocSet $set): RenderedPage
+    {
+        $original = $set->defaultLocale();
+
+        return RenderedPage::fromArray([
+            'html' => '<div class="lr-fallback-content" lang="'.e($original->code).'" dir="'.$original->dir->value.'">'.$rendered->html.'</div>',
+        ] + $rendered->toArray());
     }
 
     /** An unversioned share link redirects to the versioned URL with its token intact. */
