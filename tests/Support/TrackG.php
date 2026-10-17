@@ -2,7 +2,10 @@
 
 namespace LaRecipe\Tests\Support;
 
+use Composer\Autoload\ClassLoader;
+use Illuminate\Support\Facades\Artisan;
 use LaRecipe\Domains\Delivery\Laravel\RouteRegistrar;
+use LaRecipe\Domains\References\Services\ReferenceRegistry;
 
 /**
  * Test helpers for the access, references, i18n, upgrade and export suites.
@@ -38,6 +41,49 @@ final class TrackG
             'source' => ['driver' => 'repository', 'path' => self::fixture($folder)],
             'access' => ['mode' => $mode],
         ];
+    }
+
+    /**
+     * A small fixture app (models, events, a controller and a form request) under
+     * the TrackGApp namespace, plus the routes, command, tables and listeners live
+     * references read. Resolvers are rebuilt so they see this app's config.
+     */
+    public static function bootFixtureApp(): void
+    {
+        foreach (ClassLoader::getRegisteredLoaders() as $loader) {
+            $loader->addPsr4('TrackGApp\\', self::fixture('app'));
+
+            break;
+        }
+
+        $app = app();
+        $app['config']->set('larecipe.references.models.allow', ['TrackGApp\\Models\\*']);
+        $app['config']->set('larecipe.references.events.namespaces', ['TrackGApp\\Events']);
+        $app['config']->set('database.default', 'testing');
+        $app['config']->set('database.connections.testing', ['driver' => 'sqlite', 'database' => ':memory:', 'prefix' => '']);
+        $app->forgetInstance(ReferenceRegistry::class);
+
+        $schema = $app['db']->connection()->getSchemaBuilder();
+        $schema->create('orders', function ($table) {
+            $table->id();
+            $table->string('number')->unique();
+            $table->unsignedInteger('total');
+            $table->foreignId('customer_id')->nullable();
+            $table->text('internal_note')->nullable();
+            $table->timestamp('shipped_at')->nullable();
+            $table->timestamps();
+        });
+
+        $router = $app['router'];
+        $router->post('orders', ['TrackGApp\Http\Controllers\OrderController', 'store'])->middleware(['web', 'auth'])->name('orders.store');
+        $router->get('orders/{order}', fn () => 'order')->middleware('web')->name('orders.show');
+        $router->getRoutes()->refreshNameLookups();
+
+        Artisan::command('orders:prune {tenant : The tenant to prune} {--days=30 : Keep orders newer than this many days} {--dry-run : Only report what would be pruned}', fn () => 0)
+            ->purpose('Prune old orders');
+
+        $app['events']->listen('TrackGApp\Events\OrderShipped', 'TrackGApp\Listeners\SendShipmentEmail');
+        $app['events']->listen('TrackGApp\Events\OrderShipped', ['TrackGApp\Listeners\UpdateWarehouse', 'handle']);
     }
 
     /** A copy of a fixture folder in a temporary directory, for tests that write. */
