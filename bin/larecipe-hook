@@ -1,5 +1,152 @@
 #!/usr/bin/env php
 <?php
 
-// Agent hook entry point. Implemented by the Sync domain (ARCHITECTURE.md 14.3).
-exit(0);
+/*
+ * LaRecipe's agent hook entry point (ARCHITECTURE.md 14.3).
+ *
+ *   vendor/bin/larecipe-hook pre-push [--client=claude|codex]
+ *   vendor/bin/larecipe-hook session-start [--client=claude|codex]
+ *
+ * Claude Code and Codex call this on every Bash tool call, so it is plain PHP
+ * with no dependencies: it reads the hook payload from stdin and exits in a
+ * few milliseconds unless the command pushes code or opens a pull request.
+ * Only then does it boot the app with `php artisan larecipe:hook`, which runs
+ * the deterministic docs check. It never calls an LLM and never blocks on its
+ * own errors: anything unexpected lets the command through.
+ */
+
+if (getenv('LARECIPE_HOOKS') === 'off') {
+    exit(0);
+}
+
+$event = $argv[1] ?? 'pre-push';
+$client = 'claude';
+
+foreach (array_slice($argv, 2) as $argument) {
+    if (str_starts_with($argument, '--client=')) {
+        $client = substr($argument, 9);
+    }
+}
+
+if (! in_array($event, ['pre-push', 'session-start'], true)) {
+    exit(0);
+}
+
+$input = '';
+
+if (! stream_isatty(STDIN)) {
+    $input = (string) stream_get_contents(STDIN);
+}
+
+$payload = json_decode($input, true);
+$payload = is_array($payload) ? $payload : [];
+
+$root = larecipe_hook_project_root($payload);
+
+if ($root === null) {
+    exit(0);
+}
+
+$compiled = [];
+$compiledFile = $root.'/bootstrap/cache/larecipe/hooks.php';
+
+if (is_file($compiledFile)) {
+    $loaded = include $compiledFile;
+    $compiled = is_array($loaded) ? $loaded : [];
+}
+
+if (($compiled['enabled'] ?? true) === false) {
+    exit(0);
+}
+
+if ($event === 'pre-push') {
+    $command = $payload['tool_input']['command'] ?? null;
+
+    if (is_array($command)) {
+        $command = implode(' ', array_map('strval', $command));
+    }
+
+    if (! is_string($command) || $command === '') {
+        exit(0);
+    }
+
+    require_once __DIR__.'/../src/Domains/Sync/Support/PushCommandDetector.php';
+
+    $patterns = $compiled['push_commands'] ?? LaRecipe\Domains\Sync\Support\PushCommandDetector::DEFAULT_PATTERNS;
+    $detector = new LaRecipe\Domains\Sync\Support\PushCommandDetector(is_array($patterns) ? $patterns : []);
+
+    if (! $detector->matches($command)) {
+        exit(0);
+    }
+}
+
+exit(larecipe_hook_run($root, $event, $client, $input));
+
+/**
+ * The Laravel app the agent is working in: the nearest folder with an artisan
+ * file, starting from the project dir the agent reports.
+ */
+function larecipe_hook_project_root(array $payload): ?string
+{
+    $candidates = array_filter([
+        getenv('CLAUDE_PROJECT_DIR') ?: null,
+        is_string($payload['cwd'] ?? null) ? $payload['cwd'] : null,
+        getcwd() ?: null,
+    ]);
+
+    foreach ($candidates as $directory) {
+        $directory = rtrim((string) $directory, '/');
+
+        for ($depth = 0; $depth < 8 && $directory !== '' && $directory !== '/'; $depth++) {
+            if (is_file($directory.'/artisan')) {
+                return $directory;
+            }
+
+            $parent = dirname($directory);
+
+            if ($parent === $directory) {
+                break;
+            }
+
+            $directory = $parent;
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Run `php artisan larecipe:hook` with the same payload and relay its answer.
+ * A failure (LaRecipe not installed in this app, a broken bootstrap) allows
+ * the command: the check reinforces the instructions, it must never trap the
+ * agent.
+ */
+function larecipe_hook_run(string $root, string $event, string $client, string $input): int
+{
+    $process = proc_open(
+        [PHP_BINARY, 'artisan', 'larecipe:hook', $event, '--client='.$client],
+        [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
+        $pipes,
+        $root,
+    );
+
+    if (! is_resource($process)) {
+        return 0;
+    }
+
+    fwrite($pipes[0], $input);
+    fclose($pipes[0]);
+
+    $output = (string) stream_get_contents($pipes[1]);
+    stream_get_contents($pipes[2]);
+    fclose($pipes[1]);
+    fclose($pipes[2]);
+
+    if (proc_close($process) !== 0) {
+        return 0;
+    }
+
+    fwrite(STDOUT, $output);
+
+    return 0;
+}
