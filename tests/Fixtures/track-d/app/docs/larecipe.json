@@ -1,0 +1,8 @@
+{
+  "name": "Acme",
+  "description": "Billing for Laravel apps.",
+  "locales": [
+    { "code": "en", "default": true },
+    { "code": "ar" }
+  ]
+}

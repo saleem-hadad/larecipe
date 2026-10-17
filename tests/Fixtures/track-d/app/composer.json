@@ -1,0 +1,13 @@
+{
+    "name": "acme/app",
+    "description": "Billing for Laravel apps.",
+    "require": {
+        "php": "^8.3",
+        "laravel/framework": "^13.0",
+        "laravel/sanctum": "^4.0",
+        "larecipe/larecipe": "^3.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^4.0"
+    }
+}

@@ -1,0 +1,3 @@
+[mcp_servers.larecipe]
+command = "php"
+args = ["artisan", "larecipe:mcp"]

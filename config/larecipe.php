@@ -140,13 +140,45 @@ return [
         'ask_endpoint' => false,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Keeping docs in sync with code
+    |--------------------------------------------------------------------------
+    |
+    | The pre-push check runs on commands that push code or open a pull
+    | request. `php artisan larecipe:agents` compiles these patterns into
+    | bootstrap/cache/larecipe/hooks.php, so ordinary shell commands never
+    | boot the framework. Set LARECIPE_HOOKS=off to turn the check off for
+    | a session.
+    |
+    */
+
     'hooks' => [
+        'enabled' => env('LARECIPE_HOOKS', 'on') !== 'off',
         'push_commands' => [
             'git push',
             'gh pr create',
             'glab mr create',
             'hub pull-request',
         ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Instructions for coding agents
+    |--------------------------------------------------------------------------
+    |
+    | The marker-delimited LaRecipe block in AGENTS.md: the before-you-push
+    | instructions plus a compact docs index. default_branch is detected
+    | from origin/HEAD when null.
+    |
+    */
+
+    'instructions' => [
+        'file' => 'AGENTS.md',
+        'index' => true,
+        'index_max_bytes' => 8192,
+        'default_branch' => env('LARECIPE_DEFAULT_BRANCH'),
     ],
 
     // Live references (<Route>, <Artisan>, <Model>, <Event>) read the app's public
