@@ -24,7 +24,11 @@
         <env name="APP_ENV" value="testing"/>
         <env name="APP_URL" value="http://localhost" force="true"/>
         <env name="APP_KEY" value="base64:2fl+Ktvkfl+Fuz4Qp/A75G2RTiWVA/ZoKZvp6fiiM10="/>
-        <env name="CACHE_STORE" value="array"/>
-        <env name="SESSION_DRIVER" value="array"/>
+        <env name="CACHE_STORE" value="array" force="true"/>
+        <env name="SESSION_DRIVER" value="array" force="true"/>
+        <env name="QUEUE_CONNECTION" value="sync" force="true"/>
+        <env name="DB_CONNECTION" value="testing" force="true"/>
+        <env name="MAIL_MAILER" value="array" force="true"/>
+        <env name="BROADCAST_CONNECTION" value="null" force="true"/>
     </php>
 </phpunit>
