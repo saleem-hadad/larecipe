@@ -12,6 +12,7 @@ use LaRecipe\Domains\Content\DTOs\DocSet;
 use LaRecipe\Domains\Content\DTOs\Page;
 use LaRecipe\Domains\Content\DTOs\PageRef;
 use LaRecipe\Domains\Content\DTOs\PageSummary;
+use LaRecipe\Domains\Content\DTOs\Version;
 use LaRecipe\Domains\Delivery\Support\Assets;
 use LaRecipe\Domains\Delivery\Support\InsertRenderer;
 use LaRecipe\Domains\Markdown\DTOs\RenderedPage;
@@ -240,33 +241,55 @@ final class PagePresenter
             'repository' => $manifest->repository()['url'],
             'versions' => array_map(fn ($version) => $version->toArray() + [
                 'url' => $this->switchUrl($set, $ref->withVersion($version->id)),
-            ], $set->isVersioned() ? $set->versions() : []),
+            ], $this->readableVersions($set)),
             'locales' => array_map(fn ($locale) => $locale->toArray() + [
                 'url' => $this->switchUrl($set, $ref->withLocale($locale->code)),
-                'translated' => isset($this->catalog->summaries($set, $ref->version, $locale->code)[$ref->path]),
+                'translated' => $this->readable($set, $this->catalog->summaries($set, $ref->version, $locale->code)[$ref->path] ?? null),
             ], $set->isMultilingual() ? $set->locales() : []),
             'integrations' => $set->manifestIntegrations(),
         ];
     }
 
     /**
+     * The versions the version switcher offers: only those the reader may
+     * read, so a guest never learns a private version's id or label.
+     *
+     * @return list<Version>
+     */
+    private function readableVersions(DocSet $set): array
+    {
+        $versions = $set->isVersioned() ? $set->versions() : [];
+
+        return array_values(array_filter($versions, fn (Version $version) => $this->access->canViewVersion($set, $version->id)));
+    }
+
+    /**
+     * True when the page exists and the reader may see it. The switchers and
+     * hreflang alternates ask this, so they reveal no more than the pages do.
+     */
+    private function readable(DocSet $set, ?PageSummary $page): bool
+    {
+        return $page !== null && $this->access->canView($set, $page);
+    }
+
+    /**
      * The same page in another version or locale, or that version's landing page
-     * when it does not exist there. An untranslated page still exists in every
-     * locale (it falls back to the original), so switching language keeps the page.
+     * when the reader cannot read it there. An untranslated page still exists in
+     * every locale (it falls back to the original), so switching language keeps the page.
      */
     private function switchUrl(DocSet $set, PageRef $ref): string
     {
-        $pages = $this->catalog->localized($set, $ref->version, $ref->locale);
+        $page = $this->catalog->localized($set, $ref->version, $ref->locale)[$ref->path] ?? null;
 
-        return isset($pages[$ref->path])
+        return $this->readable($set, $page)
             ? $this->urls->pagePath($set, $ref)
             : $this->urls->pagePath($set, $ref->withPath($set->landingPath()));
     }
 
     /**
-     * hreflang alternates: the page in every locale it is written in, plus
-     * x-default for the original. Fallbacks are not alternates: they are the
-     * original, which is the canonical URL.
+     * hreflang alternates: the page in every locale it is written in and the
+     * reader may read, plus x-default for the original. Fallbacks are not
+     * alternates: they are the original, which is the canonical URL.
      *
      * @return list<array{hreflang: string, url: string}>
      */
@@ -279,7 +302,7 @@ final class PagePresenter
         $alternates = [];
 
         foreach ($set->locales() as $locale) {
-            if (isset($this->catalog->summaries($set, $ref->version, $locale->code)[$ref->path])) {
+            if ($this->readable($set, $this->catalog->summaries($set, $ref->version, $locale->code)[$ref->path] ?? null)) {
                 $alternates[] = ['hreflang' => $locale->code, 'url' => $this->urls->page($set, $ref->withLocale($locale->code))];
             }
         }
