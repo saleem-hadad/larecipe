@@ -18,7 +18,7 @@ final class LinkPaths
      */
     public function relative(string $from, bool $folderIndex, string $href): ?array
     {
-        if (! preg_match('/^([^?#]*?)\.md(?:[?][^#]*)?(?:#(.*))?$/i', $href, $matches)) {
+        if (preg_match('#^([a-z][a-z0-9+.-]*:|//)#i', $href) || ! preg_match('/^([^?#]*?)\.md(?:[?][^#]*)?(?:#(.*))?$/i', $href, $matches)) {
             return null;
         }
 
