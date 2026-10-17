@@ -19,7 +19,7 @@
     <script{!! $nonceAttribute !!}>(function(){try{var d=document.documentElement,s=localStorage.getItem('larecipe:theme')||'system';var t=s==='system'?(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):s;d.setAttribute('data-theme',t)}catch(e){}})();</script>
     {{ $assets->tags('admin') }}
 </head>
-<body class="lr-admin-body">
+<body class="lr-body-root lr-admin-body">
     <div id="larecipe-admin" data-lr-admin>
         <noscript><p class="lr-admin-noscript">The LaRecipe admin needs JavaScript. The docs themselves work without it.</p></noscript>
     </div>
