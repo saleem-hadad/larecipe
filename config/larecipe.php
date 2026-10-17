@@ -73,6 +73,28 @@ return [
         'skip_in_tests' => false,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Database source models
+    |--------------------------------------------------------------------------
+    |
+    | A set with source.driver 'database' may also set source.connection (a
+    | database connection), source.cache (a persistent cache store; array and
+    | null are refused outside tests) and source.disk (the filesystem disk for
+    | assets). Point these keys at your own subclasses to add scopes, tenancy
+    | or observers to the tables LaRecipe uses.
+    |
+    */
+
+    'models' => [
+        'page' => 'LaRecipe\\Domains\\Sources\\Models\\Page',
+        'navigation' => 'LaRecipe\\Domains\\Sources\\Models\\Navigation',
+        'manifest' => 'LaRecipe\\Domains\\Sources\\Models\\Manifest',
+        'revision' => 'LaRecipe\\Domains\\Sources\\Models\\Revision',
+        'asset' => 'LaRecipe\\Domains\\Sources\\Models\\Asset',
+        'docs_migration' => 'LaRecipe\\Domains\\Sources\\Models\\DocsMigrationRecord',
+    ],
+
     'ai' => [
         'ask' => [
             'enabled' => env('LARECIPE_ASK', false),

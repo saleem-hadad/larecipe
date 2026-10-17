@@ -1,0 +1,19 @@
+{
+  "$schema": "https://larecipe.saleem.dev/schemas/3.x/larecipe.json",
+  "name": "Acme Guide",
+  "description": "Billing infrastructure for Laravel apps.",
+  "theme": {
+    "accent": "#6d5efc",
+    "radius": "sharp"
+  },
+  "versions": [
+    { "id": "2.x", "default": true },
+    { "id": "1.x", "status": "archived" }
+  ],
+  "locales": [
+    { "code": "en", "default": true },
+    { "code": "ar", "dir": "rtl" }
+  ],
+  "assets": { "css": ["theme.css"] },
+  "agents": { "llmsTxt": { "description": "Acme is a billing package for Laravel." } }
+}
