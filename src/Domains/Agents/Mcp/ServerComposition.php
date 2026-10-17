@@ -85,10 +85,11 @@ final class ServerComposition
     public function instructions(): string
     {
         $sets = $this->scope->isLocal() ? $this->docs->sets() : array_filter([$this->boundSet()]);
-        $names = implode(', ', array_map(fn (DocSet $set) => $set->manifest->name, $sets)) ?: 'this app';
+        $names = array_map(fn (DocSet $set) => $set->manifest->name, array_values($sets));
+        $names = count($names) > 1 ? implode(', ', array_slice($names, 0, -1)).' and '.end($names) : ($names[0] ?? 'this app');
 
         $lines = [
-            "The documentation for {$names}. Use it to answer questions about it and to keep the docs current.",
+            "The documentation for {$names}. Read it to answer questions, and keep it current when the code changes.",
             '',
             'How to work with these docs:',
             '1. Search first: call search_docs before you read or write anything.',
