@@ -96,8 +96,10 @@ function MobileToc() {
 }
 
 export function PageHeader() {
-  const { page, t } = useLaRecipe()
+  const { page, locale, t } = useLaRecipe()
   const crumbs = page.breadcrumb ?? []
+  // On a fallback page the title and lead belong to the original, like the article.
+  const content = page.content_locale && page.content_locale.code !== locale.code ? { lang: page.content_locale.code, dir: page.content_locale.dir } : {}
 
   return (
     <div className="lr-page-header" data-lr-region="PageHeader">
@@ -128,8 +130,14 @@ export function PageHeader() {
           ))}
         </p>
       )}
-      <h1 className="lr-title">{page.title}</h1>
-      {page.description && <p className="lr-lead">{page.description}</p>}
+      <h1 className="lr-title" {...content}>
+        {page.title}
+      </h1>
+      {page.description && (
+        <p className="lr-lead" {...content}>
+          {page.description}
+        </p>
+      )}
       <ProvenanceLine />
       <div className="lr-page-tools">
         <PageActionsSplit />

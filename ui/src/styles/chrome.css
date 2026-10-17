@@ -518,6 +518,11 @@
     line-height: 1.8;
   }
 
+  /* A lead in the original's direction (a fallback page) sits at its own start edge. */
+  .lr-lead[dir] {
+    margin-inline-end: auto;
+  }
+
   .lr-provenance {
     display: flex;
     flex-wrap: wrap;

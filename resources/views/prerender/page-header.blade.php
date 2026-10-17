@@ -20,6 +20,11 @@
         $parts[] = '<span>'.e($current['reading_label']).'</span>';
     }
 
+    $contentLocale = $current['content_locale'] ?? null;
+    $contentAttributes = $contentLocale !== null && $contentLocale['code'] !== $boot['locale']['code']
+        ? ' lang="'.e($contentLocale['code']).'" dir="'.e($contentLocale['dir']).'"'
+        : '';
+
     $tocItems = array_values(array_filter($current['toc'], fn ($item) => $item['level'] <= 3));
 @endphp
 <div class="lr-page-header" data-lr-region="PageHeader">
@@ -30,9 +35,9 @@
     @if (count($crumbs) > 0)
         <p class="lr-breadcrumb lr-label">@foreach ([...$crumbs, $current['title']] as $index => $crumb)@if ($index > 0)<span class="lr-breadcrumb-sep" aria-hidden="true">/</span>@endif<span>{{ $crumb }}</span>@endforeach</p>
     @endif
-    <h1 class="lr-title">{{ $current['title'] }}</h1>
+    <h1 class="lr-title"{!! $contentAttributes !!}>{{ $current['title'] }}</h1>
     @if ($current['description'])
-        <p class="lr-lead">{{ $current['description'] }}</p>
+        <p class="lr-lead"{!! $contentAttributes !!}>{{ $current['description'] }}</p>
     @endif
     @if (count($parts) > 0)
         <p class="lr-provenance">@if ($current['fresh'] && $current['updated_at'])<span class="lr-fresh-dot" aria-hidden="true"></span>@endif{!! implode('<span class="lr-sep" aria-hidden="true">·</span>', $parts) !!}</p>
