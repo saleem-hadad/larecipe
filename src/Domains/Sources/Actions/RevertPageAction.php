@@ -5,6 +5,7 @@ namespace LaRecipe\Domains\Sources\Actions;
 use LaRecipe\Domains\Sources\DTOs\RevertRequest;
 use LaRecipe\Domains\Sources\DTOs\WriteContext;
 use LaRecipe\Domains\Sources\DTOs\WriteResult;
+use LaRecipe\Domains\Sources\Exceptions\InvalidContentChange;
 use LaRecipe\Domains\Sources\Exceptions\RevisionNotFound;
 use LaRecipe\Domains\Sources\Services\ChangeEvents;
 use LaRecipe\Domains\Sources\Services\WritableSources;
@@ -28,10 +29,15 @@ final class RevertPageAction
         $source = $this->sources->draftable($request->set);
         $target = $source->revision($request->revisionId) ?? throw RevisionNotFound::withId($request->set, $request->revisionId);
 
-        $revision = $source->restore($target, $request->by, new WriteContext(
-            $request->channel,
-            $request->summary ?? "Revert to revision #{$target->id}",
-        ));
+        try {
+            $revision = $source->restore($target, $request->by, new WriteContext(
+                $request->channel,
+                $request->summary ?? "Revert to revision #{$target->id}",
+            ));
+        } catch (InvalidContentChange $exception) {
+            // The page's old path is taken by another page now.
+            return WriteResult::rejected(new ValidationReport, $exception->getMessage());
+        }
 
         $this->events->written($revision, $request->set);
 

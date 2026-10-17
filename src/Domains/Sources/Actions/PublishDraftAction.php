@@ -9,6 +9,7 @@ use LaRecipe\Domains\Sources\DTOs\WriteResult;
 use LaRecipe\Domains\Sources\Enums\RevisionOperation;
 use LaRecipe\Domains\Sources\Enums\SubjectType;
 use LaRecipe\Domains\Sources\Events\DraftPublished;
+use LaRecipe\Domains\Sources\Exceptions\InvalidContentChange;
 use LaRecipe\Domains\Sources\Exceptions\RevisionNotFound;
 use LaRecipe\Domains\Sources\Services\ChangeEvents;
 use LaRecipe\Domains\Sources\Services\WritableSources;
@@ -50,7 +51,13 @@ final class PublishDraftAction
             }
         }
 
-        $source->publish($draft, $decision->by);
+        try {
+            $source->publish($draft, $decision->by);
+        } catch (InvalidContentChange $exception) {
+            // A move whose new path got taken meanwhile: tell the reviewer instead of failing.
+            return WriteResult::rejected($report, $exception->getMessage());
+        }
+
         $published = $source->revision($decision->revisionId) ?? $draft;
 
         $this->events->dispatch(new DraftPublished($published, $decision->by));

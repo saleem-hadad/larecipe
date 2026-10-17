@@ -5,9 +5,11 @@ use LaRecipe\Domains\Content\DTOs\PageRef;
 use LaRecipe\Domains\Content\Enums\Actor;
 use LaRecipe\Domains\Sources\Actions\GetPageAction;
 use LaRecipe\Domains\Sources\Actions\ListConflictsAction;
+use LaRecipe\Domains\Sources\Actions\PublishDraftAction;
 use LaRecipe\Domains\Sources\Actions\UpdateManifestAction;
 use LaRecipe\Domains\Sources\Contracts\DocsMigrationRepository;
 use LaRecipe\Domains\Sources\DTOs\ManifestDraft;
+use LaRecipe\Domains\Sources\DTOs\ReviewDecision;
 use LaRecipe\Domains\Sources\Enums\Channel;
 use LaRecipe\Domains\Sources\Events\DocsMigrationConflicted;
 use LaRecipe\Domains\Sources\Exceptions\DocsMigrationFailed;
@@ -245,4 +247,20 @@ it('scaffolds a docs migration with the current content and hash of the pages na
     // The scaffold applies cleanly as written: nothing changed, so nothing to do.
     $this->artisan('migrate')->assertSuccessful();
     expect(app(ListConflictsAction::class)->execute('kb'))->toBe([]);
+});
+
+it('resolves a conflict from the review queue by taking the migration', function () use ($page, $migration, $document) {
+    $hash = $page('installation')->contentHash;
+    Fixtures::write('kb', 'installation', "# Installation\n\nEdited in production.\n", ['title' => 'Installation', 'description' => 'Add Acme to any Laravel app.'], Channel::AdminUi, Fixtures::human());
+    $migration('2026_10_17_141502_docs_document_agents_flag', $document, ['{{ hash }}' => $hash]);
+    $this->artisan('migrate')->assertSuccessful();
+    app()->forgetScopedInstances();
+
+    $conflict = app(ListConflictsAction::class)->execute('kb')[0];
+    $taken = app(PublishDraftAction::class)->execute(new ReviewDecision('kb', $conflict->id, Fixtures::human('Reviewer')));
+
+    expect($taken->isPublished())->toBeTrue()
+        ->and($page('installation')->body)->toContain('--agents=claude,codex')
+        ->and($page('installation')->provenance->approvedBy)->toBe('Reviewer')
+        ->and(app(ListConflictsAction::class)->execute('kb'))->toBe([]);
 });
