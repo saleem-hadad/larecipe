@@ -1,0 +1,3 @@
+      - name: Check the docs changed with the code
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip-docs') }}
+        run: php artisan larecipe:affected --base=origin/${{ github.base_ref }} --format=github --fail-on-stale --no-drift

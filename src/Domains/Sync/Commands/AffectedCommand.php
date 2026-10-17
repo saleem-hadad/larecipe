@@ -68,8 +68,8 @@ final class AffectedCommand extends Command
             $this->output->writeln($line, OutputInterface::OUTPUT_RAW);
         }
 
-        if ($format === AffectedFormat::Github) {
-            $this->writeGithubFiles($formatter->format($report, AffectedFormat::Markdown), count($report->stale()));
+        if (in_array($format, [AffectedFormat::Github, AffectedFormat::Markdown], true)) {
+            $this->writeGithubFiles($format === AffectedFormat::Github ? $formatter->format($report, AffectedFormat::Markdown) : null, count($report->stale()));
         }
 
         return $failOnStale && $report->hasStale() ? self::FAILURE : self::SUCCESS;
@@ -80,12 +80,12 @@ final class AffectedCommand extends Command
      * the stale count as a step output. These are the runner's files, not the
      * repository's: the check never writes to the repository.
      */
-    private function writeGithubFiles(string $markdown, int $stale): void
+    private function writeGithubFiles(?string $markdown, int $stale): void
     {
         $summary = getenv('GITHUB_STEP_SUMMARY');
         $output = getenv('GITHUB_OUTPUT');
 
-        if (is_string($summary) && $summary !== '') {
+        if ($markdown !== null && is_string($summary) && $summary !== '') {
             @file_put_contents($summary, $markdown."\n", FILE_APPEND);
         }
 
