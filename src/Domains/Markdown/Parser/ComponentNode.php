@@ -18,6 +18,9 @@ final class ComponentNode extends AbstractBlock
     /** The literal content of a raw component, set when its block closes. */
     public ?string $literal = null;
 
+    /** A container tag that ended without its closing tag (the end of the page, a quote or a list ended it). */
+    public bool $unclosed = false;
+
     /** @param array<string, mixed> $props */
     public function __construct(
         public readonly string $name,

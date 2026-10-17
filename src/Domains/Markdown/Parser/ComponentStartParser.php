@@ -22,9 +22,10 @@ use League\CommonMark\Parser\MarkdownParserStateInterface;
  */
 final class ComponentStartParser implements BlockStartParserInterface
 {
-    private const OPEN = '/^<([A-Z][A-Za-z0-9]*)((?:\s+[^>]*?)?)\s*(\/?)>\s*$/s';
+    // Attribute values may hold a ">" when they are quoted: ability="a>b".
+    private const OPEN = '/^<([A-Z][A-Za-z0-9]*)((?:\s+(?:"[^"]*"|\'[^\']*\'|[^"\'>])*?)?)\s*(\/?)>\s*$/s';
 
-    private const ONE_LINE = '/^<([A-Z][A-Za-z0-9]*)((?:\s+[^>]*?)?)>(.*)<\/\1>\s*$/s';
+    private const ONE_LINE = '/^<([A-Z][A-Za-z0-9]*)((?:\s+(?:"[^"]*"|\'[^\']*\'|[^"\'>])*?)?)>(.*)<\/\1>\s*$/s';
 
     public function __construct(
         private readonly ?ComponentRegistry $registry = null,
