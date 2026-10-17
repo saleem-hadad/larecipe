@@ -165,8 +165,8 @@ final class PageController
         ])->render();
 
         // Decide before substituting: a page carrying a CSRF token is personal to the session.
-        $perRequest = str_contains($html, LaRecipe::CSRF_PLACEHOLDER);
-        $html = str_replace(LaRecipe::CSRF_PLACEHOLDER, e(csrf_token() ?? ''), $html);
+        $perRequest = str_contains($html, LaRecipe::CSRF_FIELD);
+        $html = $this->withCsrfToken($html);
 
         return $this->finish(new Response($html, 200, ['Content-Type' => 'text/html; charset=UTF-8']), $set, $page, $request, 'html', $view, $perRequest);
     }
@@ -175,8 +175,8 @@ final class PageController
     {
         $payload = $this->presenter->present($set, $page, $rendered, $this->access->visible($set, $summaries), $fallbackFrom);
         $json = $this->presenter->json($payload, $rendered);
-        $perRequest = str_contains($json['page']['html'], LaRecipe::CSRF_PLACEHOLDER);
-        $json['page']['html'] = str_replace(LaRecipe::CSRF_PLACEHOLDER, e(csrf_token() ?? ''), $json['page']['html']);
+        $perRequest = str_contains($json['page']['html'], LaRecipe::CSRF_FIELD);
+        $json['page']['html'] = $this->withCsrfToken($json['page']['html']);
 
         return $this->finish(new JsonResponse($json, 200, ['Content-Type' => RequestResolver::JSON_TYPE]), $set, $page, $request, 'json', $view, $perRequest);
     }
@@ -241,6 +241,16 @@ final class PageController
         }
 
         return $response;
+    }
+
+    /**
+     * Fills the session's CSRF token into every field LaRecipe::csrfField()
+     * emitted. Only that exact field: the placeholder anywhere else (written
+     * by an author, in a link or an image URL) stays as it is.
+     */
+    private function withCsrfToken(string $html): string
+    {
+        return str_replace(LaRecipe::CSRF_FIELD, '<input type="hidden" name="_token" value="'.e(csrf_token() ?? '').'">', $html);
     }
 
     /** A fallback article keeps its own language and direction inside the reader's chrome. */

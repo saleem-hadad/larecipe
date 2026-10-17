@@ -27,8 +27,15 @@ final class LaRecipe
 {
     public const VERSION = '3.0.0-dev';
 
-    /** Replaced with the request's CSRF token when a page is sent. */
+    /** Stands in for the request's CSRF token inside the field csrfField() emits. */
     public const CSRF_PLACEHOLDER = '__LARECIPE_CSRF_TOKEN__';
+
+    /**
+     * The exact markup csrfField() emits. Only this whole field is filled in
+     * when a page is sent, never the placeholder on its own, so author content
+     * that names the placeholder (an image URL) never receives the token.
+     */
+    public const CSRF_FIELD = '<input type="hidden" name="_token" value="'.self::CSRF_PLACEHOLDER.'">';
 
     /** @var list<Closure> */
     private array $routes = [];
@@ -118,7 +125,7 @@ final class LaRecipe
      */
     public function csrfField(): HtmlString
     {
-        return new HtmlString('<input type="hidden" name="_token" value="'.self::CSRF_PLACEHOLDER.'">');
+        return new HtmlString(self::CSRF_FIELD);
     }
 
     public function useCspNonce(?string $nonce): void
