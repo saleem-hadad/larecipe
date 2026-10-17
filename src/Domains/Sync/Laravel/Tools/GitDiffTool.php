@@ -39,7 +39,8 @@ final class GitDiffTool implements Tool
         $uncommitted = $request->has('uncommitted') ? $request->boolean('uncommitted') : true;
 
         foreach ([$base, $head] as $ref) {
-            if ($ref !== null && ! preg_match('#^[A-Za-z0-9._/@^~-]+$#', $ref)) {
+            // Never a leading dash: git would read the ref as an option.
+            if ($ref !== null && ! preg_match('#^[A-Za-z0-9._/@^~][A-Za-z0-9._/@^~-]*$#', $ref)) {
                 return "[{$ref}] is not a branch or commit name.";
             }
         }

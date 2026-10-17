@@ -2,9 +2,12 @@
 
 use Illuminate\JsonSchema\JsonSchemaTypeFactory;
 use Illuminate\Support\Facades\Route;
+use Laravel\Ai\Tools\Request as AiToolRequest;
 use LaRecipe\Domains\Sync\Laravel\DocsMaintainer;
+use LaRecipe\Domains\Sync\Laravel\Tools\GitDiffTool;
 use LaRecipe\Domains\Sync\Services\CodeAccessPolicy;
 use LaRecipe\Domains\Sync\Services\CodeReader;
+use LaRecipe\Domains\Sync\Services\DiffReader;
 use LaRecipe\Tests\Feature\SyncAgent\Support\SyncAgent;
 
 /*
@@ -155,4 +158,11 @@ it('treats tool output as data and keeps the agent on its own set', function () 
 
     // The set argument is fixed to the run's set: the agent cannot reach another one.
     expect(SyncAgent::resultOf($results, 'read_page'))->toContain('# Billing');
+});
+
+it('never lets the model pass a git option as a ref', function () {
+    $tool = new GitDiffTool(app(DiffReader::class), 'main');
+
+    expect($tool->handle(new AiToolRequest(['base' => '--output=/tmp/diff'])))->toBe('[--output=/tmp/diff] is not a branch or commit name.')
+        ->and($tool->handle(new AiToolRequest(['head' => '-O/etc/passwd'])))->toBe('[-O/etc/passwd] is not a branch or commit name.');
 });
