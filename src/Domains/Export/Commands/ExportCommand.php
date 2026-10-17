@@ -2,9 +2,12 @@
 
 namespace LaRecipe\Domains\Export\Commands;
 
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Support\Facades\RateLimiter;
 use LaRecipe\Domains\Content\Services\SetRegistry;
+use LaRecipe\Domains\Delivery\Laravel\RouteRegistrar;
 use LaRecipe\Domains\Delivery\Services\DocsUrls;
 use LaRecipe\Domains\Delivery\Support\Assets;
 use LaRecipe\Domains\Export\Actions\ExportSiteAction;
@@ -44,6 +47,9 @@ final class ExportCommand extends Command
 
         // Each page is a request; nothing about it needs a stored session.
         $this->laravel['config']->set('session.driver', 'array');
+
+        // The export reads every docs asset in process, from one address: the reader rate limit does not apply.
+        RateLimiter::for(RouteRegistrar::ASSET_LIMITER, fn () => Limit::none());
 
         $client = new KernelSiteClient($this->laravel->make(Kernel::class), $this->laravel->make(DocsUrls::class), $this->laravel->make(Assets::class), $origin, $this->laravel->publicPath());
         $sets = array_map(fn (string $key) => $registry->get($key), $keys !== [] ? array_values($keys) : array_keys($registry->configs()));

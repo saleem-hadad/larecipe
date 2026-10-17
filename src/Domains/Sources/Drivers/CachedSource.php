@@ -141,6 +141,7 @@ final class CachedSource implements DraftableContentSource
                     ? $this->inner->asset($version, $path)
                     : new Asset($data['path'], $data['mime'], null, (string) base64_decode((string) $data['contents']), $data['size'], $data['hash']);
             },
+            keepMisses: false,
         );
     }
 
@@ -237,7 +238,9 @@ final class CachedSource implements DraftableContentSource
     /**
      * The cached value under the current fingerprint, decoded, or $resolve()'s
      * result stored there. Null results are cached too (a missing page,
-     * zero-config navigation), wrapped so they are told apart from a cache miss.
+     * zero-config navigation), wrapped so they are told apart from a cache miss,
+     * unless $keepMisses is off: asset paths come straight from request URLs, so
+     * caching every miss would let anyone fill the store with random paths.
      * An entry $decode cannot read (a shape this release does not write) is a miss.
      *
      * @template T
@@ -246,7 +249,7 @@ final class CachedSource implements DraftableContentSource
      * @param  Closure(mixed): T  $decode  the value as the source returns it
      * @return T
      */
-    private function remember(string $name, Closure $resolve, Closure $decode): mixed
+    private function remember(string $name, Closure $resolve, Closure $decode, bool $keepMisses = true): mixed
     {
         $key = CacheFormat::prefix().'source:'.$this->set.':'.$this->fingerprint().':'.hash('xxh128', $name);
         $cached = $this->cache->get($key);
@@ -260,7 +263,10 @@ final class CachedSource implements DraftableContentSource
         }
 
         $value = $resolve();
-        $this->cache->forever($key, ['value' => $value]);
+
+        if ($value !== null || $keepMisses) {
+            $this->cache->forever($key, ['value' => $value]);
+        }
 
         return $decode($value);
     }

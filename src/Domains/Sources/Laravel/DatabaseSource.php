@@ -34,6 +34,7 @@ use LaRecipe\Domains\Sources\Services\ContentHashes;
 use LaRecipe\Domains\Sources\Services\SetLayout;
 use LaRecipe\Domains\Sources\Support\MimeTypes;
 use LaRecipe\Domains\Sources\Support\PathGuard;
+use LaRecipe\Domains\Sources\Support\ServableAsset;
 use LaRecipe\Support\Contracts\Clock;
 
 /**
@@ -126,7 +127,12 @@ final class DatabaseSource implements DraftableContentSource
 
     public function asset(string $version, string $path): ?Asset
     {
-        $path = ltrim(str_replace('\\', '/', $path), '/');
+        $path = ServableAsset::path($path);
+
+        if ($path === null) {
+            return null;
+        }
+
         $candidates = [[$version, $path], [$version, '_assets/'.$path], [Version::IMPLICIT, '_assets/'.$path]];
 
         foreach ($candidates as [$candidateVersion, $candidatePath]) {

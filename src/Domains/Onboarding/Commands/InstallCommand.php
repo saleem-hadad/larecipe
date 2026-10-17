@@ -171,6 +171,15 @@ final class InstallCommand extends Command
             return null;
         }
 
+        // Every file in the docs folder can be served next to the pages, so it must be a folder of its own.
+        $path = trim((string) ($this->option('path') ?: 'docs'), '/');
+
+        if (array_intersect(explode('/', $path), ['', '.', '..']) !== []) {
+            $this->components->error("Choose a docs folder inside your app, such as docs. [{$this->option('path')}] is the app itself or outside it.");
+
+            return null;
+        }
+
         $agents = $this->agents($detected, $interactive);
         $hasHookAgent = array_filter($agents, fn (Agent $agent) => $agent->supportsHooks()) !== [];
 
@@ -203,7 +212,7 @@ final class InstallCommand extends Command
 
         return new InstallOptions(
             driver: $driver,
-            path: trim((string) ($this->option('path') ?: 'docs'), '/'),
+            path: $path,
             agents: $agents,
             hooks: $hooks,
             gitHook: in_array($gitHook, ['warn', 'strict'], true) ? $gitHook : null,

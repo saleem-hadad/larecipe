@@ -18,6 +18,9 @@ use LaRecipe\LaRecipe;
  */
 final class RouteRegistrar
 {
+    /** The rate limiter on the docs asset route (larecipe.assets.rate_limit). */
+    public const ASSET_LIMITER = 'larecipe-assets';
+
     public function __construct(
         private readonly Router $router,
         private readonly LaRecipe $larecipe,
@@ -66,6 +69,7 @@ final class RouteRegistrar
         $this->router->group($attributes, function (Router $router) use ($set) {
             $router->get('_assets/{version}/{file}', DocsAssetController::class)
                 ->where('file', '.*')
+                ->middleware('throttle:'.self::ASSET_LIMITER)
                 ->defaults('larecipeSet', $set->key)
                 ->name('asset');
 

@@ -178,6 +178,12 @@ return [
         'rate_limit' => '20,1',
     ],
 
+    // The images and files that live with the docs (/{prefix}/_assets/...).
+    // "requests,minutes" per reader, generous enough for image-heavy pages.
+    'assets' => [
+        'rate_limit' => '600,1',
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Keeping docs in sync with code

@@ -75,6 +75,18 @@ it('reads a cached entry in an unexpected shape again from the database', functi
     'a list of the wrong type' => [[1, 2, 3]],
 ]);
 
+it('never caches a missing asset, so random paths cannot fill the store', function () {
+    $this->get('/kb/guides/deploys')->assertOk();
+    $sourceKeys = fn () => array_filter(array_keys(Cache::getStore()->all(false)), fn (string $key) => str_starts_with($key, CacheFormat::prefix().'source:kb:'));
+    $before = $sourceKeys();
+
+    foreach (range(1, 5) as $i) {
+        $this->get("/kb/_assets/current/missing-{$i}.png")->assertNotFound();
+    }
+
+    expect($sourceKeys())->toBe($before);
+});
+
 it('refuses the array and null cache stores outside tests', function () {
     $this->app['env'] = 'production';
 
