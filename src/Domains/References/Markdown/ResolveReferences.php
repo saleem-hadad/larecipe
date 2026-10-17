@@ -54,14 +54,25 @@ final class ResolveReferences
     {
         $closest = $this->suggest->execute($kind, $target);
 
-        $this->state->issues[] = array_filter([
+        $this->state->issues[] = [
             'component' => $node->name,
             'message' => "<{$node->name} {$prop}=\"{$target}\"> does not resolve: nothing in the app has that name any more.",
             'rule' => self::RULE,
             'level' => 'error',
             'line' => $node->getStartLine(),
             'target' => $target,
-            'fix' => $closest !== null ? "Use {$prop}=\"{$closest}\"." : null,
-        ], fn ($value) => $value !== null);
+            'fix' => $closest !== null ? "Use {$prop}=\"{$closest}\"." : $this->fix($kind, $node->name),
+        ];
+    }
+
+    /** How to point a reference at something real when no existing name is close. */
+    private function fix(string $kind, string $component): string
+    {
+        return match ($kind) {
+            'route' => "Use the name of an existing route (php artisan route:list shows them), or remove the <{$component}>.",
+            'artisan' => "Use an existing command (php artisan list shows them), or remove the <{$component}>.",
+            'model' => "Use an Eloquent model that references.models.allow in config/larecipe.php allows, or remove the <{$component}>. In CI without a database, run php artisan larecipe:references:snapshot first so models resolve from the snapshot.",
+            default => "Use an existing event class (short names are looked up in references.events.namespaces in config/larecipe.php), or remove the <{$component}>.",
+        };
     }
 }
