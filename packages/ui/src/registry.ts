@@ -1,3 +1,4 @@
+import type { ComponentType } from 'react'
 import type { Extension, LaRecipeComponent } from './types'
 
 type Listener = () => void
@@ -8,8 +9,10 @@ type Listener = () => void
  */
 class Registry {
   components = new Map<string, LaRecipeComponent>()
-  slots = new Map<string, React.ComponentType<Record<string, unknown>>>()
+  slots = new Map<string, ComponentType<Record<string, unknown>>>()
   inserts: Record<string, string[]> = {}
+  /** Bumped on every registration, for useSyncExternalStore. */
+  version = 0
   private listeners = new Set<Listener>()
 
   register(extension: Extension): void {
@@ -22,12 +25,24 @@ class Registry {
     for (const [point, names] of Object.entries(extension.inserts ?? {})) {
       this.inserts[point] = names
     }
+    this.version++
     this.listeners.forEach((listener) => listener())
   }
 
   subscribe(listener: Listener): () => void {
     this.listeners.add(listener)
-    return () => this.listeners.delete(listener)
+    return () => {
+      this.listeners.delete(listener)
+    }
+  }
+
+  /** Forget everything (tests). */
+  reset(): void {
+    this.components.clear()
+    this.slots.clear()
+    this.inserts = {}
+    this.version++
+    this.listeners.forEach((listener) => listener())
   }
 }
 

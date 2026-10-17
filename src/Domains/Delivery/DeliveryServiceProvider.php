@@ -47,6 +47,7 @@ final class DeliveryServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(Paths::resources('views'), 'larecipe');
+        $this->loadTranslationsFrom(Paths::resources('lang'), 'larecipe');
 
         if ($this->app->runningInConsole()) {
             $this->commands([OptimizeCommand::class, ClearCommand::class]);

@@ -2,38 +2,63 @@
  * The Pass: design tokens (DESIGN.md, DESIGN.json).
  * Paper and ink, one violet for state. Teams override --lr-accent, fonts and
  * radius through larecipe.json; everything else is structure.
+ *
+ * Contrast notes (WCAG 2.2 AA): semantic hues keep DESIGN's hue and chroma but
+ * run a touch darker in light mode where they color small label text, code
+ * comments sit at 55% instead of 42%, and the focus ring is 75% violet so it
+ * clears 3:1 against paper.
  */
 :root {
-  --lr-font-sans: var(--lr-font-sans-custom, 'Inter Variable', 'Inter', 'Thmanyah Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif);
-  --lr-font-mono: var(--lr-font-mono-custom, 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace);
+  --lr-font-sans: var(--lr-font-sans-custom, 'Inter Variable', 'Inter'), var(--lr-font-arabic-custom, 'Thmanyah Sans'), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --lr-font-mono: var(--lr-font-mono-custom, 'JetBrains Mono'), ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --lr-paper: #fafaf8;
   --lr-ink: rgb(28 27 34 / 0.92);
   --lr-ink-muted: rgb(28 27 34 / 0.66);
   --lr-ink-faint: rgb(28 27 34 / 0.44);
+  --lr-ink-solid: #1c1b22;
   --lr-surface: #f2f1f4;
   --lr-surface-2: #eae9ed;
   --lr-hairline: #e7e6ea;
   --lr-hairline-strong: #d6d5db;
+  --lr-scrim: rgb(17 16 22 / 0.32);
 
   --lr-accent: oklch(0.55 0.2 279);
   --lr-accent-dark: oklch(0.74 0.14 279);
   --lr-accent-current: var(--lr-accent);
-  --lr-accent-soft: color-mix(in oklch, var(--lr-accent-current) 9%, var(--lr-paper));
+  --lr-accent-hover: oklch(0.5 0.2 279);
+  --lr-accent-soft: oklch(0.955 0.025 279);
   --lr-accent-foreground: #ffffff;
+  --lr-accent-ring: color-mix(in oklch, var(--lr-accent-current) 75%, transparent);
 
   --lr-code: #17161c;
   --lr-code-foreground: #e8e7ee;
+  --lr-code-muted: rgb(232 231 238 / 0.55);
   --lr-code-line: #2a2932;
+  --lr-code-keyword: #b4a7ff;
+  --lr-code-string: #9fddb4;
+  --lr-code-function: #f2c97d;
+  --lr-code-constant: #8fd3ff;
+  --lr-code-highlight: color-mix(in oklch, oklch(0.74 0.14 279) 14%, transparent);
+  --lr-code-marker: oklch(0.74 0.14 279);
 
-  --lr-success: oklch(0.56 0.13 155);
-  --lr-warning: oklch(0.6 0.15 70);
+  --lr-success: oklch(0.5 0.13 155);
+  --lr-warning: oklch(0.53 0.12 70);
   --lr-danger: oklch(0.56 0.2 25);
+  --lr-code-add: oklch(0.8 0.14 155);
+  --lr-code-remove: oklch(0.78 0.17 25);
 
   --lr-radius-xs: 3px;
   --lr-radius-sm: 4px;
   --lr-radius-md: 6px;
   --lr-radius-lg: 10px;
+
+  --lr-space-xs: 4px;
+  --lr-space-sm: 8px;
+  --lr-space-md: 16px;
+  --lr-space-lg: 24px;
+  --lr-space-xl: 40px;
+  --lr-space-2xl: 56px;
 
   --lr-shadow-float: 0 12px 32px -8px rgb(17 16 22 / 0.22), 0 0 0 1px var(--lr-hairline);
   --lr-shadow-overlay: 0 30px 80px -20px rgb(17 16 22 / 0.35), 0 0 0 1px var(--lr-hairline);
@@ -42,27 +67,49 @@
   --lr-duration-hover: 120ms;
   --lr-duration-state: 180ms;
   --lr-duration-panel: 240ms;
+  --lr-duration-swap: 160ms;
 
   --lr-header-height: 60px;
   --lr-sidebar-width: 248px;
   --lr-rail-width: 240px;
   --lr-prose-width: 720px;
+  --lr-article-gutter: 56px;
+  --lr-ask-panel-width: 420px;
+  --lr-palette-width: 640px;
+
+  /* Aliases for host extensions (ARCHITECTURE.md 9.4). */
+  --lr-accent-color: var(--lr-accent-current);
+  --lr-radius: var(--lr-radius-md);
 
   color-scheme: light;
 }
 
+/* Customer accents derive their soft and hover variants in OKLCH, so a team's
+   color keeps the same relationships violet has. */
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --lr-accent-soft: oklch(from var(--lr-accent-current) 0.955 0.025 h);
+    --lr-accent-hover: oklch(from var(--lr-accent-current) calc(l - 0.05) c h);
+  }
+}
+
+/* Dark: the kitchen after service. Applied when the reader or the set chose
+   dark, and when JavaScript is off and the system prefers dark. */
 :root[data-theme='dark'] {
   --lr-paper: #111016;
   --lr-ink: rgb(244 243 248 / 0.92);
   --lr-ink-muted: rgb(244 243 248 / 0.64);
   --lr-ink-faint: rgb(244 243 248 / 0.42);
+  --lr-ink-solid: #f4f3f8;
   --lr-surface: #1b1a21;
   --lr-surface-2: #24232b;
   --lr-hairline: #26252d;
   --lr-hairline-strong: #34333c;
+  --lr-scrim: rgb(0 0 0 / 0.55);
 
   --lr-accent-current: var(--lr-accent-dark);
-  --lr-accent-soft: color-mix(in oklch, var(--lr-accent-current) 18%, var(--lr-paper));
+  --lr-accent-hover: oklch(0.8 0.12 279);
+  --lr-accent-soft: oklch(0.28 0.06 279);
   --lr-accent-foreground: #111016;
 
   --lr-code: #0b0a0f;
@@ -72,10 +119,51 @@
   --lr-warning: oklch(0.82 0.15 75);
   --lr-danger: oklch(0.78 0.17 25);
 
-  --lr-shadow-float: 0 12px 32px -8px rgb(0 0 0 / 0.5), 0 0 0 1px var(--lr-hairline);
-  --lr-shadow-overlay: 0 30px 80px -20px rgb(0 0 0 / 0.6), 0 0 0 1px var(--lr-hairline);
+  --lr-shadow-float: 0 12px 32px -8px rgb(0 0 0 / 0.55), 0 0 0 1px var(--lr-hairline);
+  --lr-shadow-overlay: 0 30px 80px -20px rgb(0 0 0 / 0.65), 0 0 0 1px var(--lr-hairline-strong);
 
   color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --lr-paper: #111016;
+    --lr-ink: rgb(244 243 248 / 0.92);
+    --lr-ink-muted: rgb(244 243 248 / 0.64);
+    --lr-ink-faint: rgb(244 243 248 / 0.42);
+    --lr-ink-solid: #f4f3f8;
+    --lr-surface: #1b1a21;
+    --lr-surface-2: #24232b;
+    --lr-hairline: #26252d;
+    --lr-hairline-strong: #34333c;
+    --lr-scrim: rgb(0 0 0 / 0.55);
+    --lr-accent-current: var(--lr-accent-dark);
+    --lr-accent-hover: oklch(0.8 0.12 279);
+    --lr-accent-soft: oklch(0.28 0.06 279);
+    --lr-accent-foreground: #111016;
+    --lr-code: #0b0a0f;
+    --lr-code-line: #23222a;
+    --lr-success: oklch(0.8 0.14 155);
+    --lr-warning: oklch(0.82 0.15 75);
+    --lr-danger: oklch(0.78 0.17 25);
+    --lr-shadow-float: 0 12px 32px -8px rgb(0 0 0 / 0.55), 0 0 0 1px var(--lr-hairline);
+    --lr-shadow-overlay: 0 30px 80px -20px rgb(0 0 0 / 0.65), 0 0 0 1px var(--lr-hairline-strong);
+    color-scheme: dark;
+  }
+}
+
+@supports (color: oklch(from red l c h)) {
+  :root[data-theme='dark'] {
+    --lr-accent-soft: oklch(from var(--lr-accent-dark) 0.28 0.06 h);
+    --lr-accent-hover: oklch(from var(--lr-accent-dark) calc(l + 0.06) c h);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+      --lr-accent-soft: oklch(from var(--lr-accent-dark) 0.28 0.06 h);
+      --lr-accent-hover: oklch(from var(--lr-accent-dark) calc(l + 0.06) c h);
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -83,5 +171,6 @@
     --lr-duration-hover: 0ms;
     --lr-duration-state: 0ms;
     --lr-duration-panel: 0ms;
+    --lr-duration-swap: 0ms;
   }
 }

@@ -10,4 +10,5 @@ composer.lock
 /test-results
 /playwright-report
 *.log
+/workbench/public/build
 /.claude/worktrees
