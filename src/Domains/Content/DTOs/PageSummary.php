@@ -39,6 +39,44 @@ final readonly class PageSummary
         );
     }
 
+    /**
+     * Every field as plain values, for cache stores: Laravel 13 refuses to
+     * unserialize objects by default. fromCache() reverses it.
+     */
+    public function toCache(): array
+    {
+        return [
+            'ref' => $this->ref->toArray(),
+            'title' => $this->title,
+            'description' => $this->description,
+            'order' => $this->order,
+            'icon' => $this->icon,
+            'hidden' => $this->hidden,
+            'badge' => $this->badge,
+            'content_hash' => $this->contentHash,
+            'updated_at' => $this->updatedAt?->format('Y-m-d\TH:i:s.uP'),
+            'private' => $this->private,
+        ];
+    }
+
+    public static function fromCache(array $data): self
+    {
+        $ref = $data['ref'];
+
+        return new self(
+            ref: new PageRef($ref['set'], $ref['version'], $ref['locale'], $ref['path']),
+            title: $data['title'],
+            description: $data['description'],
+            order: $data['order'],
+            icon: $data['icon'],
+            hidden: $data['hidden'],
+            badge: $data['badge'],
+            contentHash: $data['content_hash'],
+            updatedAt: $data['updated_at'] === null ? null : new \DateTimeImmutable($data['updated_at']),
+            private: $data['private'],
+        );
+    }
+
     public function toArray(): array
     {
         return [

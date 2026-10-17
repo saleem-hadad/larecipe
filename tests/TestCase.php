@@ -17,6 +17,10 @@ abstract class TestCase extends Orchestra
         // Independent of whatever a local `testbench serve` wrote into the skeleton's .env.
         $app['config']->set('app.url', 'http://localhost');
 
+        // Laravel 13's defaults: cache stores serialize values and unserialize no classes.
+        $app['config']->set('cache.stores.array.serialize', true);
+        $app['config']->set('cache.serializable_classes', false);
+
         $app['config']->set('larecipe.sets', [
             'docs' => [
                 'route' => ['prefix' => 'docs', 'middleware' => ['web']],
