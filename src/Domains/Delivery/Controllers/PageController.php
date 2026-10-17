@@ -163,18 +163,21 @@ final class PageController
             'assets' => $this->assets,
         ])->render();
 
+        // Decide before substituting: a page carrying a CSRF token is personal to the session.
+        $perRequest = str_contains($html, LaRecipe::CSRF_PLACEHOLDER);
         $html = str_replace(LaRecipe::CSRF_PLACEHOLDER, e(csrf_token() ?? ''), $html);
 
-        return $this->finish(new Response($html, 200, ['Content-Type' => 'text/html; charset=UTF-8']), $set, $page, $request, 'html', $view);
+        return $this->finish(new Response($html, 200, ['Content-Type' => 'text/html; charset=UTF-8']), $set, $page, $request, 'html', $view, $perRequest);
     }
 
     private function jsonResponse(DocSet $set, Page $page, array $summaries, Request $request, ?string $fallbackFrom, RenderedPage $rendered, ReaderView $view): SymfonyResponse
     {
         $payload = $this->presenter->present($set, $page, $rendered, $this->access->visible($set, $summaries), $fallbackFrom);
         $json = $this->presenter->json($payload, $rendered);
+        $perRequest = str_contains($json['page']['html'], LaRecipe::CSRF_PLACEHOLDER);
         $json['page']['html'] = str_replace(LaRecipe::CSRF_PLACEHOLDER, e(csrf_token() ?? ''), $json['page']['html']);
 
-        return $this->finish(new JsonResponse($json, 200, ['Content-Type' => RequestResolver::JSON_TYPE]), $set, $page, $request, 'json', $view);
+        return $this->finish(new JsonResponse($json, 200, ['Content-Type' => RequestResolver::JSON_TYPE]), $set, $page, $request, 'json', $view, $perRequest);
     }
 
     private function markdownResponse(DocSet $set, Page $page, Request $request, ReaderView $view): SymfonyResponse
@@ -214,14 +217,14 @@ final class PageController
      * for one reader is never stored by a shared cache, never answers a conditional
      * request with another variant, and is never indexed.
      */
-    private function finish(SymfonyResponse $response, DocSet $set, Page $page, Request $request, string $format, ReaderView $view): SymfonyResponse
+    private function finish(SymfonyResponse $response, DocSet $set, Page $page, Request $request, string $format, ReaderView $view, bool $perRequest = false): SymfonyResponse
     {
         if ($view->isPersonal()) {
             $request->headers->remove('If-None-Match');
             $request->headers->remove('If-Modified-Since');
         }
 
-        $response = $this->headers->apply($response, $set, $page, $request, $format);
+        $response = $this->headers->apply($response, $set, $page, $request, $format, $perRequest);
 
         if ($view->isPersonal()) {
             $response->headers->set('Cache-Control', 'private, no-store');
