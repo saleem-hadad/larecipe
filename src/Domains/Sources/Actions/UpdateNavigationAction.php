@@ -56,6 +56,10 @@ final class UpdateNavigationAction
 
         $report = $this->validator->navigation($tree, array_keys($summaries), "navigation {$draft->version}/{$draft->locale}");
 
+        if ($report->hasErrors()) {
+            return WriteResult::rejected($report, 'The navigation has validation errors, so it was not written.');
+        }
+
         if ($current !== null && ContentHashes::navigation($tree) === $currentHash) {
             return WriteResult::unchanged($report);
         }

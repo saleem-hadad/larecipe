@@ -2,8 +2,11 @@
 
 namespace LaRecipe\Domains\Content\DTOs;
 
+use LaRecipe\Domains\Content\Support\SafeHref;
+
 /**
  * A top-level navigation tab. Most sets have one implicit tab with no label.
+ * A link tab whose href a page may not carry (SafeHref) loses its href.
  */
 final readonly class NavigationTab
 {
@@ -20,7 +23,7 @@ final readonly class NavigationTab
         return new self(
             label: isset($data['label']) ? (string) $data['label'] : null,
             items: NavigationNode::listFromJson(array_merge((array) ($data['groups'] ?? []), (array) ($data['pages'] ?? []))),
-            href: isset($data['href']) ? (string) $data['href'] : null,
+            href: isset($data['href']) ? SafeHref::of((string) $data['href']) : null,
             icon: isset($data['icon']) ? (string) $data['icon'] : null,
         );
     }

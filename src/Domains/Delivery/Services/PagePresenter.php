@@ -234,8 +234,8 @@ final class PagePresenter
             'logo' => $manifest->logo(),
             'favicon' => $manifest->favicon(),
             'theme' => ['mode' => $manifest->theme->mode],
-            'navbar' => (array) $manifest->get('navbar', []),
-            'footer' => (array) $manifest->get('footer', []),
+            'navbar' => $manifest->navbar(),
+            'footer' => $manifest->footer(),
             'credit' => (bool) $manifest->get('credit', true),
             'repository' => $manifest->repository()['url'],
             'versions' => array_map(fn ($version) => $version->toArray() + [
