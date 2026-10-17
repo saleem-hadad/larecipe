@@ -2,44 +2,17 @@
 
 namespace Workbench\App\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
- * Development stand-ins for the services other parts of LaRecipe provide, in
- * exactly their contracts, so the reading UI can be built and tested in the
- * workbench on its own:
- *
- *  - the client search index (Search domain): {fields, storeFields, searchOptions, records}
- *  - Ask AI (Ask domain): a POST answered in the AI SDK UI message stream protocol
- *  - page feedback (Delivery domain): POST {path, version, locale, helpful, comment?}
- *
- * They are wired only for the fixture doc set; real sets use the real services.
+ * A development stand-in for Ask AI, in exactly its contract (a POST answered
+ * in the AI SDK UI message stream protocol), so the Ask panel can be built and
+ * tested in the workbench without an AI provider key. Wired only for the
+ * showcase doc set; real sets use the Ask domain.
  */
 class FakeDocsServicesController
 {
-    public function searchIndex(string $locale): BinaryFileResponse
-    {
-        $file = dirname(__DIR__, 4).'/tests/Fixtures/track-b/_search.'.($locale === 'ar' ? 'ar' : 'en').'.json';
-
-        return response()->file($file, ['Content-Type' => 'application/json', 'Cache-Control' => 'public, max-age=60']);
-    }
-
-    public function feedback(Request $request): JsonResponse
-    {
-        $request->validate([
-            'path' => ['required', 'string'],
-            'version' => ['nullable', 'string'],
-            'locale' => ['nullable', 'string'],
-            'helpful' => ['required', 'boolean'],
-            'comment' => ['nullable', 'string', 'max:2000'],
-        ]);
-
-        return response()->json(['received' => true], 202);
-    }
-
     /**
      * A scripted answer streamed like the real one: text deltas, then the pages
      * it cites as source-url parts. Questions about pricing get the honest

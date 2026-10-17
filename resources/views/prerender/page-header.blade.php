@@ -24,7 +24,8 @@
 @endphp
 <div class="lr-page-header" data-lr-region="PageHeader">
     @if ($current['fallback_from_locale'])
-        <p class="lr-fallback-notice" role="note">@include('larecipe::partials.icon', ['name' => 'Languages', 'iconSize' => 16, 'iconClass' => '']){{ $t('page.fallback') }}</p>
+        @php($notice = $current['fallback_notice'] ?? ['text' => $t('page.fallback'), 'original' => null])
+        <p class="lr-fallback-notice" role="note">@include('larecipe::partials.icon', ['name' => 'Languages', 'iconSize' => 16, 'iconClass' => ''])<span class="lr-fallback-text"><span>{{ $notice['text'] }}</span>@if (! empty($notice['original']))<span class="lr-fallback-original" lang="{{ $notice['original_locale'] }}" dir="{{ $notice['original_dir'] }}">{{ $notice['original'] }}</span>@endif</span></p>
     @endif
     @if (count($crumbs) > 0)
         <p class="lr-breadcrumb lr-label">@foreach ([...$crumbs, $current['title']] as $index => $crumb)@if ($index > 0)<span class="lr-breadcrumb-sep" aria-hidden="true">/</span>@endif<span>{{ $crumb }}</span>@endforeach</p>

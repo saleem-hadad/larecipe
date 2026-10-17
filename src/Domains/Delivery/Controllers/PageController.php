@@ -7,12 +7,19 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\View;
+use LaRecipe\Domains\Access\Actions\FilterGatedSourceAction;
+use LaRecipe\Domains\Access\Actions\ResolveAudienceAction;
+use LaRecipe\Domains\Access\Actions\VerifyShareLinkAction;
+use LaRecipe\Domains\Access\DTOs\Audience;
+use LaRecipe\Domains\Access\DTOs\ReaderView;
+use LaRecipe\Domains\Access\DTOs\ShareLink;
 use LaRecipe\Domains\Access\Services\PageAccess;
 use LaRecipe\Domains\Content\DTOs\DocSet;
 use LaRecipe\Domains\Content\DTOs\Page;
 use LaRecipe\Domains\Content\DTOs\PageRef;
 use LaRecipe\Domains\Content\Services\SetRegistry;
 use LaRecipe\Domains\Delivery\DTOs\DocsRequest;
+use LaRecipe\Domains\Delivery\Events\MarkdownServed;
 use LaRecipe\Domains\Delivery\Events\PageViewed;
 use LaRecipe\Domains\Delivery\Services\DocsUrls;
 use LaRecipe\Domains\Delivery\Services\PageCatalog;
@@ -24,6 +31,7 @@ use LaRecipe\Domains\Delivery\Support\DocsLinkResolver;
 use LaRecipe\Domains\Delivery\Support\NotFoundResponder;
 use LaRecipe\Domains\Delivery\Support\ResponseHeaders;
 use LaRecipe\Domains\Markdown\Actions\RenderPageAction;
+use LaRecipe\Domains\Markdown\DTOs\RenderedPage;
 use LaRecipe\Domains\Markdown\Services\AgentMarkdownRenderer;
 use LaRecipe\Domains\Sources\Actions\GetPageAction;
 use LaRecipe\Domains\Sources\Contracts\SourceResolver;
@@ -54,6 +62,9 @@ final class PageController
         private readonly Assets $assets,
         private readonly ResponseHeaders $headers,
         private readonly NotFoundResponder $notFound,
+        private readonly ResolveAudienceAction $audiences,
+        private readonly FilterGatedSourceAction $gatedSource,
+        private readonly VerifyShareLinkAction $shareLinks,
     ) {}
 
     public function __invoke(Request $request): SymfonyResponse
@@ -65,10 +76,13 @@ final class PageController
         $docs = $this->resolver->resolve($set, $path, $request);
 
         if ($docs->redirect !== null) {
-            return redirect()->to($docs->redirect, 302);
+            return redirect()->to($this->keepShareToken($docs->redirect, $request), 302);
         }
 
-        if (! $this->access->canEnter($set)) {
+        // A share link (larecipe:share) opens exactly this one page for anyone holding it.
+        $shared = $this->shareLinks->execute($request->query(ShareLink::QUERY), new PageRef($set->key, $docs->version, $docs->locale, $docs->path));
+
+        if (! $shared && ! $this->access->canEnter($set)) {
             if ($set->config->accessMode === 'auth' && $this->access->user() === null) {
                 throw new AuthenticationException;
             }
@@ -76,7 +90,7 @@ final class PageController
             return $this->notFound->respond($set, $docs, $request);
         }
 
-        if ($set->version($docs->version) === null || ! $this->access->canViewVersion($set, $docs->version)) {
+        if ($set->version($docs->version) === null || (! $shared && ! $this->access->canViewVersion($set, $docs->version))) {
             return $this->notFound->respond($set, $docs, $request);
         }
 
@@ -99,7 +113,7 @@ final class PageController
             return $this->redirectFor($set, $docs) ?? $this->notFound->respond($set, $docs, $request);
         }
 
-        if (! $this->access->canView($set, $summary)) {
+        if (! $shared && ! $this->access->canView($set, $summary)) {
             return $this->notFound->respond($set, $docs, $request);
         }
 
@@ -109,18 +123,36 @@ final class PageController
             return $this->notFound->respond($set, $docs, $request);
         }
 
-        event(new PageViewed($set->key, $page->ref, $docs->format, $request));
+        $viewed = new PageViewed($set->key, $page->ref, $docs->format, $request);
+        event($viewed);
+
+        if ($docs->isMarkdown()) {
+            event(new MarkdownServed($set->key, $page->ref, $viewed->kind, $viewed->userAgent, $docs->explicitMarkdown));
+        }
+
+        // The guest render lists every ability the page's gate blocks ask about; the
+        // reader's are evaluated once, and readers who hold the same ones share a render.
+        $guest = $this->rendered($set, $page, Audience::guest());
+        $audience = $guest->abilities === [] ? Audience::guest() : $this->audiences->execute($guest->abilities);
+        $view = new ReaderView($audience, $guest->abilities !== [], $this->access->isPublicPage($set, $summary), $shared);
+        $rendered = $audience->isGuest() ? $guest : $this->rendered($set, $page, $audience);
+
+        // Navigation lists every page of the reader's locale, translated or falling back.
+        $summaries = $this->catalog->localized($set, $docs->version, $fallbackFrom ?? $docs->locale);
+
+        if ($fallbackFrom !== null) {
+            $rendered = $this->inOriginalLanguage($rendered, $set);
+        }
 
         return match ($docs->format) {
-            DocsRequest::MARKDOWN => $this->markdownResponse($set, $page, $request),
-            DocsRequest::JSON => $this->jsonResponse($set, $page, $summaries, $request, $fallbackFrom),
-            default => $this->htmlResponse($set, $page, $summaries, $request, $fallbackFrom),
+            DocsRequest::MARKDOWN => $this->markdownResponse($set, $page, $request, $view),
+            DocsRequest::JSON => $this->jsonResponse($set, $page, $summaries, $request, $fallbackFrom, $rendered, $view),
+            default => $this->htmlResponse($set, $page, $summaries, $request, $fallbackFrom, $rendered, $view),
         };
     }
 
-    private function htmlResponse(DocSet $set, Page $page, array $summaries, Request $request, ?string $fallbackFrom): SymfonyResponse
+    private function htmlResponse(DocSet $set, Page $page, array $summaries, Request $request, ?string $fallbackFrom, RenderedPage $rendered, ReaderView $view): SymfonyResponse
     {
-        $rendered = $this->rendered($set, $page);
         $payload = $this->presenter->present($set, $page, $rendered, $this->access->visible($set, $summaries), $fallbackFrom);
 
         $html = View::make('larecipe::page', [
@@ -133,21 +165,26 @@ final class PageController
 
         $html = str_replace(LaRecipe::CSRF_PLACEHOLDER, e(csrf_token() ?? ''), $html);
 
-        return $this->headers->apply(new Response($html, 200, ['Content-Type' => 'text/html; charset=UTF-8']), $set, $page, $request, 'html');
+        return $this->finish(new Response($html, 200, ['Content-Type' => 'text/html; charset=UTF-8']), $set, $page, $request, 'html', $view);
     }
 
-    private function jsonResponse(DocSet $set, Page $page, array $summaries, Request $request, ?string $fallbackFrom): SymfonyResponse
+    private function jsonResponse(DocSet $set, Page $page, array $summaries, Request $request, ?string $fallbackFrom, RenderedPage $rendered, ReaderView $view): SymfonyResponse
     {
-        $rendered = $this->rendered($set, $page);
         $payload = $this->presenter->present($set, $page, $rendered, $this->access->visible($set, $summaries), $fallbackFrom);
         $json = $this->presenter->json($payload, $rendered);
         $json['page']['html'] = str_replace(LaRecipe::CSRF_PLACEHOLDER, e(csrf_token() ?? ''), $json['page']['html']);
 
-        return $this->headers->apply(new JsonResponse($json, 200, ['Content-Type' => RequestResolver::JSON_TYPE]), $set, $page, $request, 'json');
+        return $this->finish(new JsonResponse($json, 200, ['Content-Type' => RequestResolver::JSON_TYPE]), $set, $page, $request, 'json', $view);
     }
 
-    private function markdownResponse(DocSet $set, Page $page, Request $request): SymfonyResponse
+    private function markdownResponse(DocSet $set, Page $page, Request $request, ReaderView $view): SymfonyResponse
     {
+        // Agent Markdown starts from the page source, so it gets the reader's view of
+        // the gate blocks, decided by the same AST filter as the HTML.
+        if ($view->gated) {
+            $page = $this->gatedSource->execute($page, $view->audience);
+        }
+
         $body = $this->markdown->render($page, [
             'url' => $this->urls->page($set, $page->ref),
             'version' => $set->isVersioned() ? $page->ref->version : null,
@@ -155,17 +192,71 @@ final class PageController
             'llms' => $set->config->setting('agents.llms_txt', true) ? $this->urls->llms($set, $set->isVersioned() ? $page->ref->version : null) : null,
             'mcp' => $set->config->setting('mcp.web.enabled', true) ? $this->urls->mcp($set) : null,
             'skill' => $set->config->setting('agents.skill_md', true) ? $this->urls->skill($set) : null,
-        ]);
+        ], new DocsLinkResolver($set, $this->urls, $this->sources->for($set->key), markdownTwins: true), $view->audience->toContext());
 
-        return $this->headers->apply(new Response($body, 200, ['Content-Type' => 'text/markdown; charset=UTF-8']), $set, $page, $request, 'markdown');
+        return $this->finish(new Response($body, 200, ['Content-Type' => 'text/markdown; charset=UTF-8']), $set, $page, $request, 'markdown', $view);
     }
 
-    private function rendered(DocSet $set, Page $page): \LaRecipe\Domains\Markdown\DTOs\RenderedPage
+    /** One cached render per audience variant (the abilities on the page), never per user. */
+    private function rendered(DocSet $set, Page $page, Audience $audience): RenderedPage
     {
-        return $this->cache->remember($page, $set->config->prefix.'|'.$set->config->domain, fn () => $this->render->execute(
+        $variant = $set->config->prefix.'|'.$set->config->domain.($audience->isGuest() ? '' : '|audience:'.$audience->key());
+
+        return $this->cache->remember($page, $variant, fn () => $this->render->execute(
             $page,
             new DocsLinkResolver($set, $this->urls, $this->sources->for($set->key)),
+            $audience->toContext(),
         ));
+    }
+
+    /**
+     * The shared response headers, then the access rules on top: a response meant
+     * for one reader is never stored by a shared cache, never answers a conditional
+     * request with another variant, and is never indexed.
+     */
+    private function finish(SymfonyResponse $response, DocSet $set, Page $page, Request $request, string $format, ReaderView $view): SymfonyResponse
+    {
+        if ($view->isPersonal()) {
+            $request->headers->remove('If-None-Match');
+            $request->headers->remove('If-Modified-Since');
+        }
+
+        $response = $this->headers->apply($response, $set, $page, $request, $format);
+
+        if ($view->isPersonal()) {
+            $response->headers->set('Cache-Control', 'private, no-store');
+            $response->headers->set('X-Robots-Tag', 'noindex');
+            $response->headers->remove('ETag');
+        } elseif ($view->gated) {
+            $response->headers->set('Vary', 'Accept, Cookie');
+        }
+
+        if ($view->shared) {
+            // The token is in the URL: never hand it to the next site in a Referer header.
+            $response->headers->set('Referrer-Policy', 'no-referrer');
+        }
+
+        return $response;
+    }
+
+    /** A fallback article keeps its own language and direction inside the reader's chrome. */
+    private function inOriginalLanguage(RenderedPage $rendered, DocSet $set): RenderedPage
+    {
+        $original = $set->defaultLocale();
+
+        return RenderedPage::fromArray([
+            'html' => '<div class="lr-fallback-content" lang="'.e($original->code).'" dir="'.$original->dir->value.'">'.$rendered->html.'</div>',
+        ] + $rendered->toArray());
+    }
+
+    /** An unversioned share link redirects to the versioned URL with its token intact. */
+    private function keepShareToken(string $target, Request $request): string
+    {
+        $token = $request->query(ShareLink::QUERY);
+
+        return is_string($token) && $token !== ''
+            ? $target.(str_contains($target, '?') ? '&' : '?').ShareLink::QUERY.'='.rawurlencode($token)
+            : $target;
     }
 
     /** redirect_from in frontmatter and redirects in larecipe.json keep old URLs alive. */

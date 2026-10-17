@@ -26,7 +26,8 @@ use Workbench\App\Support\TrustedFixtureHtml;
  * The "guide" set (tests/Fixtures/track-b) is the reading experience's
  * showcase: every component in its exact server HTML, provenance and tickets,
  * two versions, Arabic, the example Subscribe extension at article.after, and
- * development stand-ins for search, Ask and feedback.
+ * a development stand-in for Ask (the workbench has no AI provider). Search
+ * and feedback are LaRecipe's real ones.
  */
 class WorkbenchServiceProvider extends ServiceProvider
 {
@@ -66,14 +67,17 @@ class WorkbenchServiceProvider extends ServiceProvider
             ));
         });
 
-        $this->app->afterResolving(PagePresenter::class, function (PagePresenter $presenter) {
-            $presenter->extend(fn (DocSet $set, array $payload) => $this->showcaseServices($set, $payload));
-        });
     }
 
     public function boot(): void
     {
         $this->loadViewsFrom(dirname(__DIR__, 2).'/resources/views', 'workbench');
+
+        // Registered in boot, after LaRecipe's own domains, so the showcase's Ask
+        // stand-in is the last word for its set.
+        $this->app->afterResolving(PagePresenter::class, function (PagePresenter $presenter) {
+            $presenter->extend(fn (DocSet $set, array $payload) => $this->showcaseServices($set, $payload));
+        });
 
         // The showcase writes component HTML directly (see TrustedFixtureHtml).
         LaRecipe::extendMarkdown(function ($environment, $state) {
@@ -97,9 +101,7 @@ class WorkbenchServiceProvider extends ServiceProvider
             Route::post('/newsletter/subscribe', SubscribeController::class)->middleware('throttle:30,1');
             Route::view('/newsletter', 'workbench::newsletter');
 
-            Route::get('/_workbench/search/{locale}.json', [FakeDocsServicesController::class, 'searchIndex']);
             Route::post('/_workbench/ask', [FakeDocsServicesController::class, 'ask']);
-            Route::post('/_workbench/feedback', [FakeDocsServicesController::class, 'feedback']);
 
             Route::get('/build/larecipe/{file}', function (string $file) use ($build) {
                 $path = realpath($build.'/'.$file);
@@ -117,9 +119,9 @@ class WorkbenchServiceProvider extends ServiceProvider
     }
 
     /**
-     * Boot payload additions for the showcase set only, in the contracts the
-     * Search, Ask and Delivery domains use, plus the ticket details (number,
-     * summary, pages, lines) a git provenance resolver would add.
+     * Boot payload additions for the showcase set only: Ask in the contract
+     * the Ask domain uses, plus the ticket details (number, summary, pages,
+     * lines) a git provenance resolver would add.
      */
     private function showcaseServices(DocSet $set, array $payload): array
     {
@@ -129,10 +131,8 @@ class WorkbenchServiceProvider extends ServiceProvider
 
         $locale = $payload['locale']['code'];
         $additions = [
-            'features' => ['ask' => true, 'feedback' => true, 'search' => 'client'],
-            'search' => ['driver' => 'client', 'index_url' => "/_workbench/search/{$locale}.json", 'endpoint' => null],
+            'features' => ['ask' => true],
             'ask' => ['enabled' => true, 'endpoint' => '/_workbench/ask'],
-            'feedback' => ['endpoint' => '/_workbench/feedback'],
         ];
 
         $source = $this->app->make(SourceManager::class)->for($set->key);

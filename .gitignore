@@ -11,3 +11,4 @@ composer.lock
 /playwright-report
 *.log
 /workbench/public/build
+/.claude/worktrees

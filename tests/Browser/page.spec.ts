@@ -59,12 +59,21 @@ test('page feedback posts the vote and an optional comment once', async ({ page 
   await page.goto('/guide/3.x/installation')
   await waitForApp(page)
 
+  // Analytics integrations listen for the same detail as a DOM event.
+  await page.evaluate(() => {
+    document.addEventListener('larecipe:feedback', (event) => {
+      ;(window as Window & { __lrFeedback?: unknown }).__lrFeedback = (event as CustomEvent).detail
+    })
+  })
+
   const feedback = page.locator('.lr-feedback')
   await feedback.getByRole('button', { name: 'Yes' }).click()
   await feedback.getByRole('textbox').fill('Clear steps.')
-  const request = page.waitForRequest('**/_workbench/feedback')
+  const request = page.waitForRequest((candidate) => candidate.url().endsWith('/guide/_feedback') && candidate.method() === 'POST')
   await feedback.getByRole('button', { name: 'Send' }).click()
-  expect((await request).postDataJSON()).toEqual({ path: 'installation', version: '3.x', locale: 'en', helpful: true, comment: 'Clear steps.' })
+  const expected = { path: 'installation', version: '3.x', locale: 'en', helpful: true, comment: 'Clear steps.' }
+  expect((await request).postDataJSON()).toEqual(expected)
+  expect(await page.evaluate(() => (window as Window & { __lrFeedback?: unknown }).__lrFeedback)).toEqual(expected)
   await expect(page.locator('.lr-feedback')).toContainText('Thanks. Your feedback was sent.')
 })
 

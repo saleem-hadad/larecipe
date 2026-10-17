@@ -1,0 +1,23 @@
+{
+  "name": "larecipe",
+  "displayName": "LaRecipe",
+  "version": "3.0.0",
+  "description": "Docs that keep up with your code. LaRecipe's authoring skills, a pre-push check that holds a push once when it leaves docs pages stale, a docs map at session start, and the local docs MCP server.",
+  "author": {
+    "name": "Saleem Hadad",
+    "url": "https://larecipe.saleem.dev"
+  },
+  "homepage": "https://larecipe.saleem.dev",
+  "repository": "https://github.com/saleem-hadad/larecipe",
+  "license": "MIT",
+  "keywords": ["laravel", "docs", "documentation", "mcp", "skills", "agents"],
+  "skills": "./resources/boost/skills/",
+  "commands": "./claude-plugin/commands/",
+  "hooks": "./claude-plugin/hooks.json",
+  "mcpServers": {
+    "larecipe": {
+      "command": "php",
+      "args": ["${CLAUDE_PROJECT_DIR}/artisan", "larecipe:mcp"]
+    }
+  }
+}

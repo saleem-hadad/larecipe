@@ -1,0 +1,16 @@
+{
+  "groups": [
+    "index",
+    "installation",
+    {
+      "group": "Guides",
+      "pages": [
+        "guides/subscriptions",
+        "guides/invoices",
+        { "group": "Advanced", "pages": ["guides/advanced/proration", "guides/advanced/roadmap"] }
+      ]
+    },
+    { "group": "Reference", "pages": ["reference"] },
+    { "label": "Status", "href": "https://status.example.com" }
+  ]
+}

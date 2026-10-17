@@ -1,0 +1,64 @@
+# LaRecipe docs check (optional, no AI).
+#
+# Written by php artisan larecipe:install. On every pull request it validates
+# the docs and lists pages whose code changed while the page did not. It never
+# writes, commits or pushes, runs no AI agent and needs no secrets for docs in
+# the repository, so it is safe on pull requests from forks. Your coding agent
+# updates the docs before it pushes; this only checks that it did.
+#
+# Mode: comment. The check posts the list of stale pages and never fails.
+
+name: LaRecipe docs check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+permissions:
+  contents: read
+  pull-requests: write   # to post the comment, nothing else
+
+concurrency:
+  group: larecipe-docs-check-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  docs-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare the app
+        run: |
+          if [ ! -f .env ] && [ -f .env.example ]; then cp .env.example .env; fi
+          php artisan key:generate --force --no-interaction || true
+
+      - name: Validate the docs
+        run: php artisan larecipe:validate --json
+
+      - name: List docs pages this pull request leaves stale
+        id: affected
+        run: php artisan larecipe:affected --base=origin/${{ github.base_ref }} --format=markdown --no-drift > larecipe-docs-check.md
+
+      - name: Comment on the pull request
+        # Pull requests from forks get a read-only token, so the comment is skipped there.
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ steps.affected.outputs.stale }}" != "0" ]; then
+            gh pr comment "${{ github.event.pull_request.number }}" --body-file larecipe-docs-check.md --edit-last \
+              || gh pr comment "${{ github.event.pull_request.number }}" --body-file larecipe-docs-check.md
+          else
+            gh pr comment "${{ github.event.pull_request.number }}" --body-file larecipe-docs-check.md --edit-last || true
+          fi

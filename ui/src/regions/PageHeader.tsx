@@ -104,7 +104,14 @@ export function PageHeader() {
       {page.fallback_from_locale && (
         <p className="lr-fallback-notice" role="note">
           <Icon name="Languages" size={16} />
-          {t('page.fallback')}
+          <span className="lr-fallback-text">
+            <span>{page.fallback_notice?.text ?? t('page.fallback')}</span>
+            {page.fallback_notice?.original && (
+              <span className="lr-fallback-original" lang={page.fallback_notice.original_locale} dir={page.fallback_notice.original_dir}>
+                {page.fallback_notice.original}
+              </span>
+            )}
+          </span>
         </p>
       )}
       {crumbs.length > 0 && (

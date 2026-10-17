@@ -447,7 +447,7 @@
   .lr-fallback-notice {
     display: flex;
     gap: 10px;
-    align-items: center;
+    align-items: flex-start;
     margin: 0 0 24px;
     padding: 10px 14px;
     border: 1px solid var(--lr-hairline);
@@ -455,6 +455,20 @@
     background: var(--lr-surface);
     font-size: 14px;
     color: var(--lr-ink-muted);
+  }
+
+  .lr-fallback-notice > .lr-icon {
+    margin-top: 2px;
+  }
+
+  .lr-fallback-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .lr-fallback-original {
+    font-size: 13px;
   }
 
   .lr-breadcrumb {

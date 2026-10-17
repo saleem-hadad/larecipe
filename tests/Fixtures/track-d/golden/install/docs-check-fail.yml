@@ -1,0 +1,49 @@
+# LaRecipe docs check (optional, no AI).
+#
+# Written by php artisan larecipe:install. On every pull request it validates
+# the docs and lists pages whose code changed while the page did not. It never
+# writes, commits or pushes, runs no AI agent and needs no secrets for docs in
+# the repository, so it is safe on pull requests from forks. Your coding agent
+# updates the docs before it pushes; this only checks that it did.
+#
+# Mode: fail. Add the skip-docs label to a pull request that needs no docs change.
+
+name: LaRecipe docs check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: larecipe-docs-check-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  docs-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare the app
+        run: |
+          if [ ! -f .env ] && [ -f .env.example ]; then cp .env.example .env; fi
+          php artisan key:generate --force --no-interaction || true
+
+      - name: Validate the docs
+        run: php artisan larecipe:validate --json
+
+      - name: Check the docs changed with the code
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip-docs') }}
+        run: php artisan larecipe:affected --base=origin/${{ github.base_ref }} --format=github --fail-on-stale --no-drift

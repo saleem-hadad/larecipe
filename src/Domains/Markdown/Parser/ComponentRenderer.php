@@ -26,11 +26,11 @@ final class ComponentRenderer implements NodeRendererInterface
     {
         assert($node instanceof ComponentNode);
 
-        $children = $childRenderer->renderNodes($node->children());
+        $children = $node->isRaw() ? Xml::escape((string) $node->literal) : $childRenderer->renderNodes($node->children());
         $definition = $this->registry->get($node->name);
 
         if ($definition === null) {
-            $this->state->componentIssue($node->name, "Unknown component <{$node->name}>.");
+            $this->state->issue('components.unknown', "Unknown component <{$node->name}>.", RenderState::ERROR, $node->name, $node->getStartLine());
 
             return $this->escaped($node, $children);
         }
@@ -38,7 +38,7 @@ final class ComponentRenderer implements NodeRendererInterface
         $props = $definition->resolveProps($node->props);
 
         foreach ($definition->propErrors($props) as $error) {
-            $this->state->componentIssue($node->name, $error);
+            $this->state->issue('components.props', $error, RenderState::ERROR, $node->name, $node->getStartLine());
         }
 
         $this->state->usedComponent($node->name);

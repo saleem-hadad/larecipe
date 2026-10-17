@@ -1,0 +1,195 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://larecipe.saleem.dev/schemas/3.x/larecipe.json",
+  "title": "LaRecipe doc set manifest (larecipe.json)",
+  "description": "One per doc set, at the root of its content: presentation and content structure. Infrastructure (routes, source driver, cache, AI) lives in config/larecipe.php, and secrets never belong here.",
+  "type": "object",
+  "properties": {
+    "$schema": { "type": "string" },
+    "name": { "type": "string", "minLength": 1, "description": "The product or site name, shown in the header and in agent files." },
+    "description": { "type": "string", "description": "One sentence about the product. Used in meta tags and agent files." },
+    "logo": {
+      "description": "A logo URL, or one per color mode.",
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "properties": { "light": { "type": "string" }, "dark": { "type": "string" } },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "favicon": { "type": "string" },
+    "repository": {
+      "type": "object",
+      "properties": {
+        "url": { "type": "string", "pattern": "^https?://" },
+        "branch": { "type": "string" },
+        "docsPath": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "theme": {
+      "type": "object",
+      "properties": {
+        "accent": { "type": "string", "description": "Any CSS color, for example #6d5efc." },
+        "radius": { "enum": ["sharp", "soft"] },
+        "fonts": {
+          "type": "object",
+          "properties": { "sans": { "type": "string" }, "mono": { "type": "string" }, "arabic": { "type": "string" } },
+          "additionalProperties": false
+        },
+        "mode": { "enum": ["system", "light", "dark"] }
+      },
+      "additionalProperties": false
+    },
+    "versions": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "type": "string", "minLength": 1 },
+          {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "label": { "type": "string" },
+              "status": { "enum": ["current", "maintained", "deprecated", "archived"] },
+              "default": { "type": "boolean" },
+              "visibility": { "enum": ["public", "private"] }
+            },
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "locales": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "type": "string", "minLength": 2 },
+          {
+            "type": "object",
+            "required": ["code"],
+            "properties": {
+              "code": { "type": "string", "minLength": 2 },
+              "label": { "type": "string" },
+              "dir": { "enum": ["ltr", "rtl"] },
+              "default": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "landing": { "type": "string", "description": "The page path readers land on, for example introduction." },
+    "navbar": {
+      "type": "object",
+      "properties": {
+        "links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "href"],
+            "properties": { "label": { "type": "string" }, "href": { "type": "string" }, "icon": { "type": "string" } },
+            "additionalProperties": false
+          }
+        },
+        "cta": {
+          "type": "object",
+          "required": ["label", "href"],
+          "properties": { "label": { "type": "string" }, "href": { "type": "string" } },
+          "additionalProperties": false
+        }
+      }
+    },
+    "footer": { "type": "object" },
+    "redirects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["from", "to"],
+        "properties": {
+          "from": { "type": "string", "pattern": "^/" },
+          "to": { "type": "string", "minLength": 1 },
+          "status": { "enum": [301, 302, 307, 308] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "assets": {
+      "type": "object",
+      "properties": {
+        "css": { "type": "array", "items": { "type": "string" } },
+        "js": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "inserts": {
+      "type": "object",
+      "propertyNames": { "enum": ["header.actions", "sidebar.before", "sidebar.after", "article.before", "article.after", "toc.after", "footer"] },
+      "additionalProperties": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]*$" } }
+    },
+    "integrations": {
+      "type": "object",
+      "properties": {
+        "analytics": {
+          "type": "object",
+          "properties": {
+            "ga4": {
+              "type": "object",
+              "required": ["measurementId"],
+              "properties": { "measurementId": { "type": "string", "pattern": "^G-[A-Z0-9]{4,20}$" } },
+              "additionalProperties": false
+            },
+            "plausible": {
+              "type": "object",
+              "required": ["domain"],
+              "properties": { "domain": { "type": "string" }, "src": { "type": "string", "pattern": "^https://" } },
+              "additionalProperties": false
+            },
+            "fathom": {
+              "type": "object",
+              "required": ["siteId"],
+              "properties": { "siteId": { "type": "string", "pattern": "^[A-Z0-9]{4,20}$" }, "src": { "type": "string", "pattern": "^https://" } },
+              "additionalProperties": false
+            },
+            "posthog": {
+              "type": "object",
+              "required": ["apiKey"],
+              "properties": { "apiKey": { "type": "string", "pattern": "^phc_" }, "host": { "type": "string", "pattern": "^https://" } },
+              "additionalProperties": false
+            },
+            "custom": {
+              "type": "object",
+              "required": ["src"],
+              "properties": {
+                "src": { "type": "string", "pattern": "^https://" },
+                "defer": { "type": "boolean" },
+                "async": { "type": "boolean" },
+                "attributes": { "type": "object", "propertyNames": { "pattern": "^data-[a-z0-9-]+$" }, "additionalProperties": { "type": ["string", "number", "boolean"] } }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "agents": {
+      "type": "object",
+      "properties": {
+        "llmsTxt": {
+          "type": "object",
+          "properties": {
+            "description": { "type": "string", "description": "The one-line summary at the top of llms.txt." },
+            "instructions": { "type": "string", "description": "Instructions for agents, printed under the summary in llms.txt and skill.md." }
+          },
+          "additionalProperties": false
+        },
+        "skillMd": { "type": "boolean" }
+      }
+    },
+    "provenance": { "type": "boolean" }
+  }
+}

@@ -18,12 +18,14 @@ export function updateHead(json: PageJson, doc: Document = document): void {
   setLink(doc, 'link[rel="canonical"]', { rel: 'canonical', href: page.url })
   setLink(doc, 'link[rel="alternate"][type="text/markdown"]', { rel: 'alternate', type: 'text/markdown', href: page.markdown_url })
 
+  // hreflang alternates: the locales this page is written in, plus x-default.
   doc.head.querySelectorAll('link[rel="alternate"][hreflang]').forEach((node) => node.remove())
-  for (const locale of set.locales) {
+  const alternates = page.alternates ?? set.locales.filter((locale) => locale.translated !== false).map((locale) => ({ hreflang: locale.code, url: locale.url }))
+  for (const alternate of alternates) {
     const link = doc.createElement('link')
     link.rel = 'alternate'
-    link.hreflang = locale.code
-    link.href = new URL(locale.url, doc.location.origin).href
+    link.hreflang = alternate.hreflang
+    link.href = new URL(alternate.url, doc.location.origin).href
     doc.head.appendChild(link)
   }
 

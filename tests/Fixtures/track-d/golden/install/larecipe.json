@@ -1,0 +1,5 @@
+{
+  "$schema": "https://larecipe.saleem.dev/schemas/3.x/larecipe.json",
+  "name": "Acme Invoices",
+  "description": "Invoices for small teams."
+}

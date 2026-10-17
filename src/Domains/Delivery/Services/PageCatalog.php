@@ -7,6 +7,7 @@ use LaRecipe\Domains\Content\DTOs\DocSet;
 use LaRecipe\Domains\Content\DTOs\PageSummary;
 use LaRecipe\Domains\Content\Services\NavigationResolver;
 use LaRecipe\Domains\Sources\Actions\GetNavigationAction;
+use LaRecipe\Domains\Sources\Actions\ListLocalizedPagesAction;
 use LaRecipe\Domains\Sources\Actions\ListPageSummariesAction;
 use LaRecipe\Domains\Sources\Contracts\SourceResolver;
 
@@ -25,6 +26,7 @@ final class PageCatalog
         private readonly ListPageSummariesAction $summaries,
         private readonly GetNavigationAction $navigation,
         private readonly NavigationResolver $resolver,
+        private readonly ListLocalizedPagesAction $localized,
     ) {}
 
     public function fingerprint(DocSet $set, string $version): string
@@ -41,6 +43,23 @@ final class PageCatalog
     }
 
     /**
+     * The pages a locale serves: every default-locale page, translated where a
+     * translation exists. A summary whose ref keeps the default locale is a fallback.
+     *
+     * @return array<string, PageSummary>
+     */
+    public function localized(DocSet $set, string $version, string $locale): array
+    {
+        if ($locale === $set->defaultLocale()->code) {
+            return $this->summaries($set, $version, $locale);
+        }
+
+        $key = "larecipe:{$set->key}:{$version}:{$locale}:localized:".$this->fingerprint($set, $version);
+
+        return $this->memo[$key] ??= $this->cache->rememberForever($key, fn () => $this->localized->execute($set, $version, $locale));
+    }
+
+    /**
      * Navigation as readers see it, limited to the pages they may see.
      *
      * @param  array<string, PageSummary>  $visible
@@ -50,7 +69,7 @@ final class PageCatalog
         $treeKey = "larecipe:{$set->key}:{$version}:{$locale}:nav:".$this->fingerprint($set, $version);
         $tree = $this->memo[$treeKey] ??= $this->cache->rememberForever(
             $treeKey,
-            fn () => $this->navigation->execute($set->key, $version, $locale, $this->summaries($set, $version, $locale)),
+            fn () => $this->navigation->execute($set->key, $version, $locale, $this->localized($set, $version, $locale)),
         );
 
         return $this->resolver->resolve($tree, $visible);

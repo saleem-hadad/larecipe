@@ -58,6 +58,11 @@ export function createRouter({ store, fetch: fetcher, win = window, transition =
   let current = win.location.pathname + win.location.search
   let pending: string | null = null
 
+  /** A static export (larecipe:export) has no server to answer JSON: links load pages normally. */
+  function isStatic(): boolean {
+    return win.document.documentElement.hasAttribute('data-lr-static')
+  }
+
   function basePath(): string {
     return store.get().boot.set.base_path.replace(/\/$/, '')
   }
@@ -107,6 +112,7 @@ export function createRouter({ store, fetch: fetcher, win = window, transition =
   }
 
   function prefetch(href: string): void {
+    if (isStatic()) return
     try {
       const url = new URL(href, win.location.href)
       if (isDocsUrl(url) && key(url) !== current) void load(url.href)
@@ -125,7 +131,7 @@ export function createRouter({ store, fetch: fetcher, win = window, transition =
 
   async function navigate(href: string, options: NavigateOptions = {}): Promise<NavigateResult> {
     const url = new URL(href, win.location.href)
-    if (!isDocsUrl(url)) {
+    if (!isDocsUrl(url) || isStatic()) {
       loadFully(url.href)
       return 'full'
     }
@@ -239,6 +245,7 @@ export function createRouter({ store, fetch: fetcher, win = window, transition =
 
   function install(): () => void {
     const doc = win.document
+    if (isStatic()) return () => {}
     try {
       win.history.scrollRestoration = 'manual'
     } catch {

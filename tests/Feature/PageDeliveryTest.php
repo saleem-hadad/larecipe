@@ -6,7 +6,7 @@ it('serves a page as complete server HTML', function () {
         ->assertHeader('Content-Type', 'text/html; charset=UTF-8')
         ->assertSee('<h1 class="lr-title">Installation</h1>', false)
         ->assertSee('data-lr-article', false)
-        ->assertSee('composer require acme/acme')
+        ->assertSeeText('composer require acme/acme')
         ->assertSee('id="lr-boot"', false);
 });
 

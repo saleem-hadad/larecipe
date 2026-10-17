@@ -3,6 +3,8 @@
 namespace LaRecipe\Domains\Delivery;
 
 use Illuminate\Support\ServiceProvider;
+use LaRecipe\Domains\Delivery\Commands\ClearCommand;
+use LaRecipe\Domains\Delivery\Commands\OptimizeCommand;
 use LaRecipe\Domains\Delivery\Laravel\RouteRegistrar;
 use LaRecipe\Domains\Delivery\Services\DocsUrls;
 use LaRecipe\Domains\Delivery\Services\PageCatalog;
@@ -46,6 +48,13 @@ final class DeliveryServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(Paths::resources('views'), 'larecipe');
         $this->loadTranslationsFrom(Paths::resources('lang'), 'larecipe');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([OptimizeCommand::class, ClearCommand::class]);
+
+            // php artisan optimize and optimize:clear run these too, so deploy scripts need no new step.
+            $this->optimizes(optimize: 'larecipe:optimize', clear: 'larecipe:clear', key: 'larecipe');
+        }
 
         if (! $this->app->routesAreCached()) {
             $this->app->booted(function () {

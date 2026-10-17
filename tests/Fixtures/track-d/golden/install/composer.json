@@ -1,0 +1,23 @@
+{
+    "name": "acme/invoices",
+    "description": "Invoices for small teams.",
+    "require": {
+        "php": "^8.3",
+        "laravel/framework": "^13.0",
+        "laravel/sanctum": "^4.0",
+        "laravel/tinker": "^2.10",
+        "livewire/livewire": "^3.6",
+        "larecipe/larecipe": "^3.0",
+        "spatie/laravel-permission": "^6.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.18",
+        "pestphp/pest": "^4.0"
+    },
+    "scripts": {
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php artisan larecipe:agents --ansi"
+        ]
+    }
+}

@@ -22,6 +22,7 @@ final class DocsLinkResolver implements LinkResolver
         private readonly DocSet $set,
         private readonly DocsUrls $urls,
         private readonly ContentSource $source,
+        private readonly bool $markdownTwins = false,
     ) {}
 
     public function page(PageRef $from, string $target): ?string
@@ -35,7 +36,8 @@ final class DocsLinkResolver implements LinkResolver
             ? ltrim($matches[1], '/')
             : $this->join($this->directoryOf($from), $matches[1]);
 
-        $url = $this->urls->pagePath($this->set, $from->withPath($path));
+        // In a .md twin, page links point at the other pages' .md twins, so agents stay in Markdown.
+        $url = $this->urls->pagePath($this->set, $from->withPath($path), $this->markdownTwins);
 
         return $anchor !== null && $anchor !== '' ? $url.'#'.$anchor : $url;
     }

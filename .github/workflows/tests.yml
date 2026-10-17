@@ -1,0 +1,125 @@
+name: tests
+
+on:
+  push:
+    branches: [main, v3]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pest:
+    name: Pest (PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+        laravel: ['12.*', '13.*']
+        include:
+          - laravel: '12.*'
+            testbench: '10.*'
+          - laravel: '13.*'
+            testbench: '11.*'
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, intl, pdo_sqlite, zlib
+          coverage: none
+
+      - name: Install dependencies
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --dev --no-interaction --no-update
+          composer update --prefer-dist --no-interaction --no-progress
+
+      - name: Run Pest
+        run: vendor/bin/pest
+
+  ui:
+    name: UI build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The app build type checks the reader UI first (tsc --noEmit && vite build).
+      - name: Build
+        run: pnpm build
+
+      - name: Test
+        run: pnpm --filter @larecipe/app exec vitest run --passWithNoTests
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 1
+
+  afdocs:
+    name: Agent readiness (AFDocs)
+    needs: ui
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, intl, pdo_sqlite, zlib
+          coverage: none
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-interaction --no-progress
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Validate the workbench docs
+        run: vendor/bin/testbench larecipe:validate
+
+      - name: Serve the workbench
+        run: |
+          vendor/bin/testbench serve --port=8772 > serve.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            curl -sf http://127.0.0.1:8772/docs/llms.txt > /dev/null && exit 0
+            sleep 1
+          done
+          cat serve.log
+          exit 1
+
+      - name: Grade with larecipe:doctor
+        run: vendor/bin/testbench larecipe:doctor --set=docs
+
+      - name: Grade with AFDocs
+        run: npx --yes afdocs@0.22 check http://127.0.0.1:8772/docs --format scorecard --fixes --network-context ci
+
+      - name: Server log
+        if: failure()
+        run: cat serve.log

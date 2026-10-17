@@ -9,13 +9,16 @@ function containsActive(items: NavItem[]): boolean {
 }
 
 function NavEntry({ item, depth }: { item: NavItem; depth: number }) {
-  const { t } = useLaRecipe()
+  const { boot, t } = useLaRecipe()
 
   if (item.type === 'page') {
+    const original = item.fallback ? boot.set.locales.find((locale) => locale.default) : undefined
     return (
       <li>
         <a className="lr-nav-link" href={item.url} aria-current={item.active ? 'page' : undefined}>
-          <span className="lr-nav-text">{item.title}</span>
+          <span className="lr-nav-text" lang={original?.code}>
+            {item.title}
+          </span>
           {item.badge?.label && (
             <span className="lr-badge" data-tone={item.badge.tone ?? undefined}>
               {item.badge.label}

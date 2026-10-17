@@ -1,0 +1,10 @@
+{
+  "name": "Broken",
+  "descripton": "A set with one of every problem.",
+  "theme": { "radius": "round" },
+  "redirects": [
+    { "from": "/broken/old", "to": "/broken/older" },
+    { "from": "/broken/older", "to": "/broken/old" },
+    { "from": "/broken/guide", "to": "/broken/start" }
+  ]
+}

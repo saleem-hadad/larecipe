@@ -74,22 +74,26 @@ final class PagePresenter
      */
     public function present(DocSet $set, Page $page, RenderedPage $rendered, array $visible, ?string $fallbackFromLocale = null): array
     {
+        // A fallback page keeps the reader in their language: the chrome, navigation and
+        // links stay in the requested locale, only the article is in the original one.
         $ref = $page->ref;
-        $navigation = $this->navigation($set, $ref, $visible);
+        $reader = $fallbackFromLocale !== null ? $ref->withLocale($fallbackFromLocale) : $ref;
+        $navigation = $this->navigation($set, $reader, $visible);
         $sequence = $this->catalog->sequence($navigation);
         $position = array_search($ref->path, $sequence, true);
-        $locale = $ref->locale;
+        $locale = $reader->locale;
         $provenance = $set->manifest->showsProvenance() ? $page->provenance?->toArray() : null;
         $markdownUrl = $this->urls->page($set, $ref, true);
 
         $payload = [
-            'set' => $this->set($set, $ref),
+            'set' => $this->set($set, $reader),
             'page' => [
                 'path' => $ref->path,
                 'title' => $page->title,
                 'description' => $page->description,
                 'url' => $this->urls->page($set, $ref),
-                'path_url' => $this->urls->pagePath($set, $ref),
+                'path_url' => $this->urls->pagePath($set, $reader),
+                'alternates' => $this->alternates($set, $ref),
                 'markdown_url' => $markdownUrl,
                 'edit_url' => $this->editUrl($set, $ref),
                 'updated_at' => $page->updatedAt?->format(DATE_ATOM),
@@ -106,17 +110,22 @@ final class PagePresenter
                 'inserts' => $page->frontmatter->inserts(),
                 'toc' => array_map(fn (TocItem $item) => $item->toArray(), $rendered->toc),
                 'components' => $rendered->components,
-                'previous' => $position !== false && $position > 0 ? $this->neighbour($set, $ref, $sequence[$position - 1], $visible) : null,
-                'next' => $position !== false && isset($sequence[$position + 1]) ? $this->neighbour($set, $ref, $sequence[$position + 1], $visible) : null,
+                'previous' => $position !== false && $position > 0 ? $this->neighbour($set, $reader, $sequence[$position - 1], $visible) : null,
+                'next' => $position !== false && isset($sequence[$position + 1]) ? $this->neighbour($set, $reader, $sequence[$position + 1], $visible) : null,
                 'fallback_from_locale' => $fallbackFromLocale,
+                'fallback_notice' => $fallbackFromLocale !== null ? $this->fallbackNotice($set, $locale, $ref->locale) : null,
+                'content_locale' => [
+                    'code' => $ref->locale,
+                    'dir' => ($set->locale($ref->locale) ?? $set->defaultLocale())->dir->value,
+                ],
                 'noindex' => $page->frontmatter->noindex(),
                 'actions' => $this->agentActions($set, $markdownUrl, $locale),
             ],
             'navigation' => $navigation,
             'version' => $ref->version,
             'locale' => [
-                'code' => $locale,
-                'dir' => ($set->locale($locale) ?? $set->defaultLocale())->dir->value,
+                'code' => $reader->locale,
+                'dir' => ($set->locale($reader->locale) ?? $set->defaultLocale())->dir->value,
             ],
             'urls' => [
                 'base' => $this->urls->base($set),
@@ -234,15 +243,20 @@ final class PagePresenter
             ], $set->isVersioned() ? $set->versions() : []),
             'locales' => array_map(fn ($locale) => $locale->toArray() + [
                 'url' => $this->switchUrl($set, $ref->withLocale($locale->code)),
+                'translated' => isset($this->catalog->summaries($set, $ref->version, $locale->code)[$ref->path]),
             ], $set->isMultilingual() ? $set->locales() : []),
             'integrations' => (array) $manifest->get('integrations', []),
         ];
     }
 
-    /** The same page in another version or locale, or that version's landing page when it does not exist there. */
+    /**
+     * The same page in another version or locale, or that version's landing page
+     * when it does not exist there. An untranslated page still exists in every
+     * locale (it falls back to the original), so switching language keeps the page.
+     */
     private function switchUrl(DocSet $set, PageRef $ref): string
     {
-        $pages = $this->catalog->summaries($set, $ref->version, $ref->locale);
+        $pages = $this->catalog->localized($set, $ref->version, $ref->locale);
 
         return isset($pages[$ref->path])
             ? $this->urls->pagePath($set, $ref)
@@ -250,9 +264,36 @@ final class PagePresenter
     }
 
     /**
-     * Navigation as the reader sees it, with URLs, the active page and the fresh
+     * hreflang alternates: the page in every locale it is written in, plus
+     * x-default for the original. Fallbacks are not alternates: they are the
+     * original, which is the canonical URL.
+     *
+     * @return list<array{hreflang: string, url: string}>
+     */
+    private function alternates(DocSet $set, PageRef $ref): array
+    {
+        if (! $set->isMultilingual()) {
+            return [];
+        }
+
+        $alternates = [];
+
+        foreach ($set->locales() as $locale) {
+            if (isset($this->catalog->summaries($set, $ref->version, $locale->code)[$ref->path])) {
+                $alternates[] = ['hreflang' => $locale->code, 'url' => $this->urls->page($set, $ref->withLocale($locale->code))];
+            }
+        }
+
+        $alternates[] = ['hreflang' => 'x-default', 'url' => $this->urls->page($set, $ref->withLocale($set->defaultLocale()->code))];
+
+        return $alternates;
+    }
+
+    /**
+     * Navigation as the reader sees it, with URLs, the active page, the fresh
      * dot for pages changed within the last seven days (the sidebar's only
-     * decoration, and it is a state).
+     * decoration, and it is a state) and the fallback flag for pages shown in
+     * the original language.
      *
      * @param  array<string, PageSummary>  $visible
      */
@@ -266,6 +307,7 @@ final class PagePresenter
                     $item['url'] = $this->urls->pagePath($set, $ref->withPath($item['path']));
                     $item['active'] = $item['path'] === $ref->path;
                     $item['fresh'] = $this->isFresh($visible[$item['path']]->updatedAt ?? null);
+                    $item['fallback'] = isset($visible[$item['path']]) && $visible[$item['path']]->ref->locale !== $ref->locale;
                 } elseif ($item['type'] === 'group') {
                     $item['items'] = $withUrls($item['items']);
                 }
@@ -352,6 +394,26 @@ final class PagePresenter
             'additions' => isset($provenance['additions']) ? (int) $provenance['additions'] : null,
             'deletions' => isset($provenance['deletions']) ? (int) $provenance['deletions'] : null,
             'url' => $url,
+        ];
+    }
+
+    /**
+     * The notice on a page shown in its original language: worded in the
+     * reader's language, and repeated in the original's, since that is the
+     * language the rest of the page is in.
+     *
+     * @return array{text: string, original: ?string, original_locale: string, original_dir: string}
+     */
+    private function fallbackNotice(DocSet $set, string $readerLocale, string $contentLocale): array
+    {
+        $text = $this->strings($readerLocale)['page.fallback'] ?? '';
+        $original = $this->strings($contentLocale)['page.fallback'] ?? null;
+
+        return [
+            'text' => $text,
+            'original' => $original !== $text ? $original : null,
+            'original_locale' => $contentLocale,
+            'original_dir' => ($set->locale($contentLocale) ?? $set->defaultLocale())->dir->value,
         ];
     }
 

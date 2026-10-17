@@ -1,0 +1,5 @@
+{
+  "name": "Atlas",
+  "versions": [{ "id": "1.x", "default": true }],
+  "locales": [{ "code": "en", "default": true }, { "code": "ar" }, { "code": "fr" }]
+}

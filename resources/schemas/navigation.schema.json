@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://larecipe.saleem.dev/schemas/3.x/navigation.json",
+  "title": "LaRecipe navigation (navigation.json)",
+  "description": "The navigation of one version: tabs of groups and pages ({\"tabs\": [...]}), or the shorthands {\"groups\": [...]} and a bare list. Without this file, navigation is derived from folders and frontmatter.",
+  "if": { "type": "array" },
+  "then": { "$ref": "#/$defs/items" },
+  "else": {
+    "type": "object",
+    "if": { "required": ["tabs"] },
+    "then": {
+      "properties": {
+        "$schema": { "type": "string" },
+        "tabs": { "type": "array", "items": { "$ref": "#/$defs/tab" } }
+      },
+      "additionalProperties": false
+    },
+    "else": {
+      "properties": {
+        "$schema": { "type": "string" },
+        "groups": { "$ref": "#/$defs/items" },
+        "pages": { "$ref": "#/$defs/items" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "tab": {
+      "type": "object",
+      "properties": {
+        "label": { "type": "string" },
+        "icon": { "type": "string" },
+        "href": { "type": "string" },
+        "groups": { "$ref": "#/$defs/items" },
+        "pages": { "$ref": "#/$defs/items" }
+      },
+      "additionalProperties": false
+    },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/item" }
+    },
+    "item": {
+      "if": { "type": "string" },
+      "then": { "type": "string", "minLength": 1, "description": "A page path, for example billing/webhooks." },
+      "else": {
+        "type": "object",
+        "if": { "required": ["pages"] },
+        "then": { "$ref": "#/$defs/group" },
+        "else": {
+          "if": { "required": ["page"] },
+          "then": { "$ref": "#/$defs/page" },
+          "else": { "$ref": "#/$defs/link" }
+        }
+      }
+    },
+    "group": {
+      "type": "object",
+      "description": "A group of pages.",
+      "required": ["pages"],
+      "properties": {
+        "group": { "type": "string" },
+        "label": { "type": "string" },
+        "icon": { "type": "string" },
+        "collapsed": { "type": "boolean" },
+        "pages": { "$ref": "#/$defs/items" }
+      },
+      "additionalProperties": false
+    },
+    "page": {
+      "type": "object",
+      "description": "A page with its own label or icon.",
+      "required": ["page"],
+      "properties": {
+        "page": { "type": "string", "minLength": 1 },
+        "label": { "type": "string" },
+        "icon": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "link": {
+      "type": "object",
+      "description": "An external link.",
+      "required": ["href"],
+      "properties": {
+        "label": { "type": "string" },
+        "href": { "type": "string", "minLength": 1 },
+        "icon": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

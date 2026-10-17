@@ -3,7 +3,7 @@ import type { ComponentType, ReactNode } from 'react'
 export type NavBadge = { label: string; tone?: string } | null
 
 export type NavItem =
-  | { type: 'page'; path: string; title: string; url: string; icon?: string | null; badge?: NavBadge; active?: boolean; fresh?: boolean }
+  | { type: 'page'; path: string; title: string; url: string; icon?: string | null; badge?: NavBadge; active?: boolean; fresh?: boolean; fallback?: boolean }
   | { type: 'group'; label: string; icon?: string | null; collapsed?: boolean | null; items: NavItem[] }
   | { type: 'link'; label: string; href: string; icon?: string | null }
 
@@ -78,6 +78,12 @@ export interface PagePayload {
   previous: { title: string; url: string } | null
   next: { title: string; url: string } | null
   fallback_from_locale: string | null
+  /** The notice on a page shown in its original language, in the reader's language and the original's. */
+  fallback_notice?: { text: string; original: string | null; original_locale: string; original_dir: 'ltr' | 'rtl' } | null
+  /** The language the article is written in (differs from the chrome's on a fallback page). */
+  content_locale?: { code: string; dir: 'ltr' | 'rtl' }
+  /** hreflang alternates: the page in every locale it is written in, plus x-default. */
+  alternates?: Array<{ hreflang: string; url: string }>
   noindex: boolean
   /** "For agents" destinations, worded on the server. */
   actions?: { prompt: string; claude: string; chatgpt: string; cursor: string; mcp_command: string | null }
@@ -97,7 +103,7 @@ export interface SetPayload {
   credit?: boolean
   repository: string | null
   versions: { id: string; label: string; status: string; default: boolean; url: string }[]
-  locales: { code: string; label: string; dir: 'ltr' | 'rtl'; default: boolean; url: string }[]
+  locales: { code: string; label: string; dir: 'ltr' | 'rtl'; default: boolean; url: string; translated?: boolean }[]
   integrations: Record<string, unknown>
 }
 

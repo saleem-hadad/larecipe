@@ -25,7 +25,9 @@ export function Feedback() {
   useEffect(
     () => () => {
       if (pending.current && endpoint) {
-        void request(endpoint, { method: 'POST', body: { ...context.current, helpful: pending.current.helpful } }).catch(() => undefined)
+        const detail = { ...context.current, helpful: pending.current.helpful }
+        document.dispatchEvent(new CustomEvent('larecipe:feedback', { detail }))
+        void request(endpoint, { method: 'POST', body: detail }).catch(() => undefined)
       }
     },
     [endpoint],
@@ -41,8 +43,11 @@ export function Feedback() {
   async function send(helpful: boolean, text: string | null) {
     pending.current = null
     setState({ step: 'sending', helpful })
+    const detail = { ...context.current, helpful, ...(text ? { comment: text } : {}) }
+    // Analytics integrations configured in larecipe.json listen for this event.
+    document.dispatchEvent(new CustomEvent('larecipe:feedback', { detail }))
     try {
-      const response = await request(endpoint as string, { method: 'POST', body: { ...context.current, helpful, ...(text ? { comment: text } : {}) } })
+      const response = await request(endpoint as string, { method: 'POST', body: detail })
       if (response.ok) {
         setState({ step: 'done' })
         actions.announce(t('feedback.thanks'))
