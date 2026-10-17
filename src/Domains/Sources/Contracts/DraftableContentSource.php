@@ -35,4 +35,13 @@ interface DraftableContentSource extends WritableContentSource
 
     /** @return iterable<Revision> newest first, across moves of the same page */
     public function history(Subject $subject): iterable;
+
+    /**
+     * Every revision of the set, newest first, older than $before when given.
+     * The admin UI's activity and docs-migration export read it; deleted pages
+     * are included, which per-subject histories cannot reach.
+     *
+     * @return iterable<Revision>
+     */
+    public function revisions(?string $before = null, int $limit = 50): iterable;
 }
