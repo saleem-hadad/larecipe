@@ -61,7 +61,7 @@ it('keeps the reader in their language on a page that is not translated yet', fu
         ->assertSee('<html lang="ar" dir="rtl"', false)
         ->assertSee('not translated yet')
         ->assertSee('ENGLISH-ONLY')
-        ->assertSee('<link rel="canonical" href="http://localhost/atlas/1.x/guides/deploy">', false);
+        ->assertSee('<link rel="canonical" href="'.url('/atlas/1.x/guides/deploy').'">', false);
 });
 
 it('switches language without losing the page', function () {
@@ -82,9 +82,9 @@ it('emits hreflang alternates for the languages a page is written in, and x-defa
     $html = $this->get('/atlas/1.x/install')->assertOk()->getContent();
 
     expect($html)
-        ->toContain('<link rel="alternate" hreflang="en" href="http://localhost/atlas/1.x/install">')
-        ->toContain('<link rel="alternate" hreflang="ar" href="http://localhost/atlas/ar/1.x/install">')
-        ->toContain('<link rel="alternate" hreflang="x-default" href="http://localhost/atlas/1.x/install">')
+        ->toContain('<link rel="alternate" hreflang="en" href="'.url('/atlas/1.x/install').'">')
+        ->toContain('<link rel="alternate" hreflang="ar" href="'.url('/atlas/ar/1.x/install').'">')
+        ->toContain('<link rel="alternate" hreflang="x-default" href="'.url('/atlas/1.x/install').'">')
         ->not->toContain('hreflang="fr"');
 });
 
