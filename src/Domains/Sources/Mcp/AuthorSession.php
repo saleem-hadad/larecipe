@@ -24,6 +24,10 @@ use LaRecipe\Domains\Sources\Laravel\DocsMigrationWriter;
  * written into the branch's docs migration. On the web server (remote author
  * tools) changes happen outside any pull request: database sets only, behind
  * the manageLarecipe gate, under the set's review mode.
+ *
+ * The server-side docs agent (larecipe:sync) runs the same tools in the
+ * console and passes its own channel and author, so its changes follow the
+ * review mode for where they land and are attributed to the agent.
  */
 final class AuthorSession
 {
@@ -35,6 +39,8 @@ final class AuthorSession
         private readonly SourceResolver $sources,
         private readonly Authorizer $authorizer,
         private readonly ?bool $local = null,
+        private readonly ?Channel $channel = null,
+        private readonly ?Provenance $agent = null,
     ) {}
 
     /**
@@ -98,6 +104,10 @@ final class AuthorSession
     /** The agent making the change, named after the MCP client when it says who it is. */
     public function author(Request $request): Provenance
     {
+        if ($this->agent !== null) {
+            return $this->agent;
+        }
+
         $client = $request->meta()['io.modelcontextprotocol/clientInfo']['name'] ?? null;
         $name = is_string($client) && trim($client) !== ''
             ? trim((string) preg_replace('/[^a-z0-9]+/', '-', strtolower($client)), '-')
@@ -108,18 +118,18 @@ final class AuthorSession
 
     public function channel(): Channel
     {
-        return $this->isLocal() ? Channel::PullRequest : Channel::RemoteAgent;
+        return $this->channel ?? ($this->isLocal() ? Channel::PullRequest : Channel::RemoteAgent);
     }
 
     /**
-     * After a local change to a database set: add it to the branch's docs
-     * migration, so the change travels in the pull request.
+     * After a change to a database set that rides in the pull request: add
+     * it to the branch's docs migration, so the change travels with the code.
      *
      * @return string|null the migration file, relative to the app root
      */
     public function recordMigration(SetConfig $set, ?DocsMigrationOperation $operation, WriteResult $result, Provenance $author, ?string $summary): ?string
     {
-        if (! $this->isLocal() || $set->driver !== 'database' || $operation === null || ! $result->isPublished()) {
+        if ($this->channel() !== Channel::PullRequest || $set->driver !== 'database' || $operation === null || ! $result->isPublished()) {
             return null;
         }
 
