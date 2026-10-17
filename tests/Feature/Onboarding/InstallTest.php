@@ -1,5 +1,7 @@
 <?php
 
+use LaRecipe\Domains\Onboarding\DTOs\AppFacts;
+use LaRecipe\Domains\Onboarding\Services\IntroductionPage;
 use LaRecipe\Tests\Feature\Onboarding\FakeAgents;
 use LaRecipe\Tests\Feature\Sync\TemporaryProject;
 
@@ -62,6 +64,14 @@ it('sets up the docs and every detected agent, matching the golden files', funct
         ->and($this->project->read('bootstrap/cache/larecipe/hooks.php'))->toContain("'git push'")
         ->and($this->project->read('.git/hooks/pre-push'))->toContain('larecipe:hook git-pre-push')
         ->and($this->project->read('config/larecipe.php'))->toBeNull();
+});
+
+it('does not call a fresh skeleton "Laravel" a Laravel application', function () {
+    $page = app(IntroductionPage::class)->render(new AppFacts(
+        name: 'Laravel', laravelVersion: '13.37.0', php: '^8.3', packages: [], readmeIntro: null, description: null,
+    ));
+
+    expect($page)->toContain('This is a Laravel 13 application (PHP ^8.3).');
 });
 
 it('writes a real Introduction page from facts only', function () {

@@ -140,6 +140,20 @@
     margin: 6px 0 0;
   }
 
+  /* Tailwind's preflight removes list markers; Markdown lists (the ones with no
+     class) get them back. Component lists keep their own styles. */
+  .lr-prose ul:not([class]) {
+    list-style: disc;
+  }
+
+  .lr-prose ol:not([class]) {
+    list-style: decimal;
+  }
+
+  .lr-prose li > ul:not([class]) {
+    list-style: circle;
+  }
+
   .lr-prose ul > li::marker {
     color: var(--lr-ink-faint);
   }

@@ -63,7 +63,9 @@ final class IntroductionPage
 
         if ($facts->laravelVersion !== null) {
             $major = explode('.', $facts->laravelVersion)[0];
-            $lines[] = "{$facts->name} is a Laravel {$major} application".($facts->php !== null ? " (PHP {$facts->php})" : '').'.';
+            // A fresh skeleton is still named "Laravel"; "Laravel is a Laravel 13 application" reads as a typo.
+            $subject = $facts->name === 'Laravel' ? 'This' : $facts->name;
+            $lines[] = "{$subject} is a Laravel {$major} application".($facts->php !== null ? " (PHP {$facts->php})" : '').'.';
         }
 
         if ($facts->packages !== []) {
