@@ -95,7 +95,7 @@ Laravel 12 is in its security-only window. We support it at launch to avoid bloc
     "php": "^8.3",
     "illuminate/support": "^12.62|^13.0",
     "league/commonmark": "^2.10.3",      // security fixes; correct handling of <Callout>-style tags
-    "phiki/phiki": "^2.2",               // TextMate grammars, dual light/dark themes
+    "phiki/phiki": "^2.2",               // TextMate grammars, the larecipe-pass theme
     "laravel/mcp": "^1.0",               // MCP server, web + stdio; tool classes shared with Ask AI and larecipe:sync
     "symfony/yaml": "^7.2|^8.0",         // frontmatter
     "symfony/process": "^7.2|^8.0",      // git diff and log for affected pages and provenance; agent CLIs during onboarding
@@ -117,7 +117,7 @@ Laravel 12 is in its security-only window. We support it at launch to avoid bloc
 
 ### 2.3 Frontend toolchain (package development only)
 
-React 19, TypeScript (strict), Vite, Tailwind CSS v4 (CSS-first config, tokens as CSS variables), Radix primitives through shadcn/ui-style source components that we own, `cmdk` for the command palette, MiniSearch for client-side search (lazy chunk), CodeMirror 6 for the admin editor (admin bundle only), `@ai-sdk/react` for Ask AI (lazy chunk), Lucide icons through one `Icons` namespace. pnpm workspaces. None of this is installed in the host.
+React 19, TypeScript (strict), Vite, Tailwind CSS v4 (CSS-first config, tokens as CSS variables), Radix primitives through shadcn/ui-style source components that we own, a small command palette of our own (no `cmdk`: it needed only a list, arrow keys and grouped results), MiniSearch for client-side search (lazy chunk), CodeMirror 6 for the admin editor (admin bundle only), `@ai-sdk/react` for Ask AI (lazy chunk), Lucide icons through one `Icons` namespace. pnpm workspaces. None of this is installed in the host.
 
 ---
 
@@ -164,7 +164,7 @@ larecipe/
 ├── claude-plugin/            # hooks.json, slash commands and plugin assets
 ├── .claude-plugin/           # plugin.json + marketplace.json (the repo is a marketplace)
 ├── stubs/                    # docs scaffold, AGENTS.md block, hook settings, the optional no-AI CI check, docs migration stub
-├── database/migrations/      # database source tables (published only when the database driver is chosen)
+├── database/migrations/      # database source tables (loaded from the package; publish with --tag=larecipe-migrations to customize)
 ├── routes/{web.php,mcp.php,admin.php}
 ├── config/larecipe.php
 └── tests/{Unit,Feature,Contracts,Arch,Browser}
@@ -318,7 +318,7 @@ final readonly class PageDraft
 
 - A domain may use another domain's **Actions, Contracts, DTOs, Enums and Events**. Never its Services, Queries, Models or Support classes. If a domain needs something that is internal elsewhere, the owner adds an Action.
 - Dependencies point down this order and never form a cycle: Content → Markdown and References → Access → Sources → Search → Validation → Agents and Sync → Delivery, Ask, Admin, Onboarding, Upgrade, Export.
-- **MCP tools live in the domain that owns the behavior** (`Search/Mcp/SearchDocsTool`, `Content/Mcp/ReadPageTool`, `Sources/Mcp/WritePageTool`, `Sync/Mcp/AffectedPagesTool`, `Validation/Mcp/ValidateDocsTool`). The Agents domain composes them into the server; Ask and Sync reuse the same tool classes as laravel/ai tools. That keeps Agents, Ask and Sync from depending on each other.
+- **Write tools live in the domain that owns the behavior** (`Sources/Mcp/WritePageTool`, `Sync/Mcp/AffectedPagesTool`, `Validation/Mcp/ValidateDocsTool`); the read tools (`search_docs`, `read_page`, `list_pages`, `submit_feedback`) live with the server in `Agents/Mcp/Tools`, since they only compose Search and Content actions. Domains register their tools with `LaRecipe::mcpTool()`, and the Agents domain composes them into the server; Ask and Sync reuse the same actions as laravel/ai tools. That keeps Agents, Ask and Sync from depending on each other.
 - Domains talk through events for anything that is not a direct call: `ContentChanged` warms caches, `PageWritten`, `DraftPublished` and `DocsMigrationConflicted` feed the admin UI, and the traffic events reach the host's own listeners.
 - An arch test (`pestphp/pest-plugin-arch`) encodes the allowed-dependency matrix and fails CI on a violation.
 
@@ -572,8 +572,9 @@ larecipe_pages            id, set, version, locale, path, title, description, fr
                           content_hash, published_revision_id, timestamps
 larecipe_navigation       id, set, version, locale, tree (json), content_hash, published_revision_id, timestamps
 larecipe_manifest         id, set, manifest (json), content_hash, published_revision_id, timestamps
-larecipe_revisions        id, subject_type (page|navigation|manifest), subject_id, operation (write|move|delete),
-                          payload (json: frontmatter, body, tree or manifest), path_before, based_on_hash,
+larecipe_revisions        id, set, subject_type (page|navigation|manifest), subject_id, operation (write|move|delete),
+                          version, locale, path, path_before, payload (json: frontmatter, body, tree or manifest),
+                          content_hash, based_on_hash, replaces_id, conflict (json), migration, review_note,
                           status (draft|published|superseded|rejected|reverted|conflict),
                           actor (human|agent|migration), actor_name, actor_ref, channel (pull_request|admin_ui|remote_agent|sync),
                           summary, reviewed_by, reviewed_at, published_at, created_at
@@ -715,7 +716,7 @@ One parse, many renderers. The AST is the contract; HTML, agent Markdown, search
 | Callouts, portable form | GitHub alerts: `> [!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]` |
 | Callouts and layout, directive form | `:::name Title {key=value}` container directives (block start parser at priority 80, nested with longer fences) |
 | Components, MDX-like form | PascalCase tags on their own lines: `<Tabs>`, `<Callout type="warning">`, self-closing `<Video src="..." />` (custom block parser at priority 45, before `HtmlBlock` at 40) |
-| Code | Phiki, dual light and dark themes as CSS variables; info-string meta for `title="..."`, `{2,4-6}` highlights, `diff`, line numbers; consecutive fences inside `<CodeGroup>` become tabs |
+| Code | Phiki with one dark theme (`larecipe-pass`, from the design tokens), so code reads the same in light and dark pages; info-string meta for `title="..."`, `{2,4-6}` highlights, `diff`, line numbers; consecutive fences inside `<CodeGroup>` become tabs |
 | Snippet includes | `<<< @/app/Billing/Invoice.php#refund` pulls a region from real code (the Real-Code Rule below) |
 | Internal links | Relative `.md` links (`./installation.md#env`) resolve to routes, so docs render correctly on GitHub too. `{{version}}` still works for v2 content. |
 | Diagrams and math | ` ```mermaid ` and `$$` blocks render as lazy islands with a readable fallback (the source in a `<pre>`) |
@@ -1178,7 +1179,7 @@ Search is internal. There is no Algolia integration and no Scout driver; the def
 ### 10.2 The client index (default driver: `client`)
 
 - The server publishes a JSON index per `(set, version, locale, audience)`, fingerprinted and immutable: `/{prefix}/{version}/_search/{audience}.{fingerprint}.json`.
-- **The library is MiniSearch.** The maintainer named Fuse.js "or any alternative fuzzy"; MiniSearch is that alternative, for three reasons. It builds an inverted index, so queries stay fast past a few thousand sections where Fuse.js's linear scan slows down. It supports fuzzy and prefix matching together with field boosts (title over headings over tags over body), which is what docs search needs. And it is about 7 KB gzip. The index is serialized on the server in MiniSearch's format, so the browser loads it without re-indexing. Fuse.js would be acceptable for small sites; one library keeps the code simple, so we ship only MiniSearch.
+- **The library is MiniSearch.** The maintainer named Fuse.js "or any alternative fuzzy"; MiniSearch is that alternative, for three reasons. It builds an inverted index, so queries stay fast past a few thousand sections where Fuse.js's linear scan slows down. It supports fuzzy and prefix matching together with field boosts (title over headings over tags over body), which is what docs search needs. And it is about 7 KB gzip. The server ships the records; the browser indexes them with MiniSearch when the palette first opens (a few milliseconds for a typical set), which keeps the PHP side free of MiniSearch's internal format. Fuse.js would be acceptable for small sites; one library keeps the code simple, so we ship only MiniSearch.
 - The search chunk and the index load lazily on the first palette open, and are prefetched on idle after the first interaction.
 - **Budget.** An index stays under 300 KB gzip (about 2,000 sections). Indexes are already split per version and locale; past the budget, `larecipe:validate` warns and suggests the `server` driver or a custom one.
 
@@ -1245,16 +1246,16 @@ $this->loadRoutesFrom(__DIR__.'/../../../routes/mcp.php');                // Mcp
 
 | Tool | Owner domain | Annotations | Input | Output |
 | --- | --- | --- | --- | --- |
-| `search_docs` | Search | read-only | `query`, `version?`, `locale?`, `limit?` | results: title, path, url, snippet, score |
-| `read_page` | Content | read-only | `path`, `version?`, `locale?`, `section?` | agent Markdown (+ structured meta) |
-| `list_pages` | Content | read-only | `version?`, `locale?`, `group?` | navigation tree with titles, descriptions, paths |
-| `submit_feedback` | Delivery | write, non-destructive | `path`, `helpful`, `comment?`, `version?` | acknowledgement |
+| `search_docs` | Agents (over Search) | read-only | `query`, `version?`, `locale?`, `limit?` | results: title, path, url, snippet, score |
+| `read_page` | Agents (over Content) | read-only | `path`, `version?`, `locale?`, `section?` | agent Markdown (+ structured meta) |
+| `list_pages` | Agents (over Content) | read-only | `version?`, `locale?`, `group?` | navigation tree with titles, descriptions, paths |
+| `submit_feedback` | Agents (over Delivery) | write, non-destructive | `path`, `helpful`, `comment?`, `version?` | acknowledgement |
 | `write_page` | Sources | destructive | `path`, `version?`, `frontmatter`, `body`, `summary` | revision, validation result, docs migration path (database sets) |
 | `move_page` | Sources | destructive | `from`, `to`, `summary` | revision, validation result |
 | `delete_page` | Sources | destructive | `path`, `summary` | revision |
 | `update_navigation` | Sources | destructive | `version`, `tree` or `patch` | revision, validation result |
 | `update_manifest` | Sources | destructive | `patch` (JSON merge patch), `summary` | revision, validation result |
-| `affected_pages` | Sync | read-only | `base?`, `head?`, `uncommitted?` | pages with matched sources and reasons |
+| `affected_pages` | Sync | read-only, local server only | `base?`, `head?`, `uncommitted?` | pages with matched sources and reasons |
 | `validate_docs` | Validation | read-only | `version?` | the `larecipe:validate --json` payload |
 
 On the local server every tool also accepts `set?`. `submit_feedback` dispatches the same `FeedbackSubmitted` event as the page widget, tagged as agent feedback, so agents can report a page that misled them.
@@ -1360,7 +1361,7 @@ Four portable skills, canonical copies in `resources/boost/skills/`:
 
 `php artisan larecipe:install` is interactive (Laravel Prompts) and idempotent. Every step can be skipped, re-run or previewed with `--dry-run`.
 
-1. **Doc set and driver.** `repository` (recommended, `docs/`) or `database` (publishes migrations, registers `database/migrations/docs/`, checks the cache store).
+1. **Doc set and driver.** `repository` (recommended, `docs/`) or `database` (tells the owner to run `php artisan migrate`, since the tables load from the package; registers `database/migrations/docs/`; checks the cache store).
 2. **Scaffold.** `larecipe.json` (name from `APP_NAME`, the default theme), zero-config navigation, and a minimal but real Introduction page built from facts the installer can read deterministically: the app name, its Laravel version, the first-party packages in `composer.json`, and the README's opening section when there is one. Never lorem ipsum.
 3. **Agent instructions.** Detects installed agent CLIs (`claude`, `codex`, `cursor-agent`, `gemini`, `copilot`) on `PATH` and agent config folders in the repo. Writes the marker-delimited LaRecipe block into `AGENTS.md` at the repo root, which tells every AI coding session to update affected docs before it pushes (14.2), and adds `@AGENTS.md` to an existing `CLAUDE.md` only with consent; with Boost installed, it relies on the Boost guideline instead. Installs the four skills (13.2) and MCP config for detected agents only (`.mcp.json`, `.cursor/mcp.json`, `.codex/config.toml`, `.vscode/mcp.json`, each pointing at `php artisan larecipe:mcp`).
 4. **Hooks** (recommended): the pre-push and SessionStart hooks in Claude Code's `.claude/settings.json` and Codex's `.codex/hooks.json`, merged, never overwritten; optionally the git pre-push hook for people who push without an agent (14.3).
@@ -1716,7 +1717,7 @@ The skill then works through the manual items: rewriting custom Vue components a
 | Algolia DocSearch | Drop | Search is internal (client-side MiniSearch, server ranker for agents). Teams with an external engine write a custom `SearchDriver`. |
 | Internal search (h2/h3 index) | Replace | Records at H2 and H3, searched client-side with fuzzy and prefix matching, shared with MCP and Ask AI through the server ranker; tokenizer fixes the punctuation bugs (#262, #377). |
 | Dark theme (separate package) | Replace | Built in, follows system preference, both modes first-class. |
-| `code_theme` dark/light | Replace | Dual-theme Phiki output following the page mode. |
+| `code_theme` dark/light | Replace | One dark code slab (`larecipe-pass`) in both page modes, per DESIGN.md. |
 | `colors.primary` / `secondary` | Replace | Manifest theme tokens. |
 | `fav` | Keep | Manifest `favicon`. |
 | `show_side_bar` | Replace | Frontmatter `layout` and a collapsible sidebar. |

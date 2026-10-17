@@ -2,8 +2,10 @@
 
 namespace LaRecipe\Domains\Delivery\Services;
 
+use Closure;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use LaRecipe\Domains\Content\DTOs\DocSet;
+use LaRecipe\Domains\Content\DTOs\NavigationTree;
 use LaRecipe\Domains\Content\DTOs\PageSummary;
 use LaRecipe\Domains\Content\Services\NavigationResolver;
 use LaRecipe\Domains\Sources\Actions\GetNavigationAction;
@@ -14,6 +16,9 @@ use LaRecipe\Domains\Sources\Contracts\SourceResolver;
 /**
  * Page lists and navigation per set, version and locale, cached by the source's
  * fingerprint so any content change is picked up without a purge.
+ *
+ * Only plain arrays cross the cache: Laravel 13 stores unserialize no classes
+ * unless the host allows them (cache.serializable_classes).
  */
 final class PageCatalog
 {
@@ -39,7 +44,7 @@ final class PageCatalog
     {
         $key = "larecipe:{$set->key}:{$version}:{$locale}:summaries:".$this->fingerprint($set, $version);
 
-        return $this->memo[$key] ??= $this->cache->rememberForever($key, fn () => $this->summaries->execute($set->key, $version, $locale));
+        return $this->memo[$key] ??= $this->rememberSummaries($key, fn () => $this->summaries->execute($set->key, $version, $locale));
     }
 
     /**
@@ -56,7 +61,7 @@ final class PageCatalog
 
         $key = "larecipe:{$set->key}:{$version}:{$locale}:localized:".$this->fingerprint($set, $version);
 
-        return $this->memo[$key] ??= $this->cache->rememberForever($key, fn () => $this->localized->execute($set, $version, $locale));
+        return $this->memo[$key] ??= $this->rememberSummaries($key, fn () => $this->localized->execute($set, $version, $locale));
     }
 
     /**
@@ -67,7 +72,7 @@ final class PageCatalog
     public function navigation(DocSet $set, string $version, string $locale, array $visible): array
     {
         $treeKey = "larecipe:{$set->key}:{$version}:{$locale}:nav:".$this->fingerprint($set, $version);
-        $tree = $this->memo[$treeKey] ??= $this->cache->rememberForever(
+        $tree = $this->memo[$treeKey] ??= $this->rememberTree(
             $treeKey,
             fn () => $this->navigation->execute($set->key, $version, $locale, $this->localized($set, $version, $locale)),
         );
@@ -83,5 +88,40 @@ final class PageCatalog
     public function flush(): void
     {
         $this->memo = [];
+    }
+
+    /**
+     * @param  Closure(): array<string, PageSummary>  $resolve
+     * @return array<string, PageSummary>
+     */
+    private function rememberSummaries(string $key, Closure $resolve): array
+    {
+        $cached = $this->cache->get($key);
+
+        if (is_array($cached)) {
+            return array_map(fn (array $summary) => PageSummary::fromCache($summary), $cached);
+        }
+
+        $summaries = $resolve();
+        $this->cache->forever($key, array_map(fn (PageSummary $summary) => $summary->toCache(), $summaries));
+
+        return $summaries;
+    }
+
+    /** @param  Closure(): NavigationTree  $resolve */
+    private function rememberTree(string $key, Closure $resolve): NavigationTree
+    {
+        $cached = $this->cache->get($key);
+
+        if (is_array($cached) && isset($cached['tree'])) {
+            $tree = NavigationTree::fromJson($cached['tree']);
+
+            return new NavigationTree($tree->tabs, (bool) $cached['derived']);
+        }
+
+        $tree = $resolve();
+        $this->cache->forever($key, ['tree' => $tree->toJson(), 'derived' => $tree->derived]);
+
+        return $tree;
     }
 }
