@@ -12,3 +12,9 @@
 /pnpm-lock.yaml     export-ignore
 /pnpm-workspace.yaml export-ignore
 /composer.lock      export-ignore
+/.claude-plugin     export-ignore
+/ART_DIRECTION.md   export-ignore
+/COMPETITIVE_RESEARCH.md export-ignore
+/DESIGN.json        export-ignore
+/PRODUCT.md         export-ignore
+/ROADMAP.md         export-ignore
