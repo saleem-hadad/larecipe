@@ -96,7 +96,7 @@ final class SyncServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->app->make(LaRecipe::class)->mcpTool(AffectedPagesTool::class, author: true);
+        $this->app->make(LaRecipe::class)->mcpTool(AffectedPagesTool::class, local: true);
 
         if ($this->app->runningInConsole()) {
             $this->commands([

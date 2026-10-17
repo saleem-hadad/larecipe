@@ -31,9 +31,6 @@ use LaRecipe\Domains\Sources\Laravel\DocsMigrationWriter;
  */
 final class AuthorSession
 {
-    /** The bound set of a per-set web MCP endpoint, when the server binds one. */
-    public const BOUND_SET = 'larecipe.mcp.set';
-
     public function __construct(
         private readonly Container $app,
         private readonly SourceResolver $sources,
@@ -64,7 +61,7 @@ final class AuthorSession
     {
         /** @var array<string, SetConfig> $sets */
         $sets = $this->app->make('larecipe.set-configs');
-        $bound = $this->app->bound(self::BOUND_SET) ? (string) $this->app->make(self::BOUND_SET) : null;
+        $bound = $this->boundSet();
         $asked = $request->get('set');
 
         if ($bound !== null && $asked !== null && $asked !== $bound) {
@@ -84,6 +81,10 @@ final class AuthorSession
     /** Why this call may not write to the set, or null when it may. */
     public function denial(?SetConfig $set): ?string
     {
+        if ($set === null && ($bound = $this->boundSet()) !== null) {
+            return "This endpoint only serves the [{$bound}] docs. Leave out set, or connect to the other set's own MCP endpoint.";
+        }
+
         if ($set === null) {
             return 'Unknown doc set. Pass a set key from config/larecipe.php (sets.*), or omit it for the default set.';
         }
@@ -137,5 +138,18 @@ final class AuthorSession
         $base = rtrim($this->app->basePath(), '/').'/';
 
         return $file !== null && str_starts_with($file, $base) ? substr($file, strlen($base)) : $file;
+    }
+
+    /**
+     * The set of the web endpoint serving this call, read from its route the
+     * way every other set route finds its set (each /{prefix}/mcp route
+     * carries its set key). Null on the local server.
+     */
+    private function boundSet(): ?string
+    {
+        $route = $this->app->bound('request') ? $this->app->make('request')->route() : null;
+        $key = $route?->defaults['larecipeSet'] ?? null;
+
+        return is_string($key) && $key !== '' ? $key : null;
     }
 }

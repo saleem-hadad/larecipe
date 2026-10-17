@@ -4,13 +4,20 @@ namespace LaRecipe;
 
 use Closure;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Routing\Router;
 use Illuminate\Support\HtmlString;
+use Laravel\Mcp\Server\Tool;
 use LaRecipe\Domains\Content\DTOs\DocSet;
+use LaRecipe\Domains\Content\DTOs\SetConfig;
 use LaRecipe\Domains\Content\Services\SetRegistry;
 use LaRecipe\Domains\Markdown\Components\ComponentBuilder;
 use LaRecipe\Domains\Markdown\Components\ComponentRegistry;
 use LaRecipe\Domains\Markdown\Services\MarkdownEnvironmentFactory;
+use LaRecipe\Domains\Markdown\Services\RenderState;
+use LaRecipe\Domains\Search\Contracts\SearchDriver;
+use LaRecipe\Domains\Sources\Contracts\ContentSource;
 use LaRecipe\Domains\Sources\Laravel\SourceManager;
+use League\CommonMark\Environment\EnvironmentBuilderInterface;
 
 /**
  * The host app's door into LaRecipe: every public extension point lives here,
@@ -53,19 +60,19 @@ final class LaRecipe
         return $this->app->make(ComponentRegistry::class)->define($name, 'host');
     }
 
-    /** @param Closure(\League\CommonMark\Environment\EnvironmentBuilderInterface, \LaRecipe\Domains\Markdown\Services\RenderState): void $extender */
+    /** @param Closure(EnvironmentBuilderInterface, RenderState): void $extender */
     public function extendMarkdown(Closure $extender): void
     {
         $this->app->make(MarkdownEnvironmentFactory::class)->extend($extender);
     }
 
-    /** @param Closure(Container, \LaRecipe\Domains\Content\DTOs\SetConfig): \LaRecipe\Domains\Sources\Contracts\ContentSource $factory */
+    /** @param Closure(Container, SetConfig): ContentSource $factory */
     public function extendSources(string $driver, Closure $factory): void
     {
         $this->app->make(SourceManager::class)->extend($driver, $factory);
     }
 
-    /** @param Closure(Container, array): \LaRecipe\Domains\Search\Contracts\SearchDriver $factory */
+    /** @param Closure(Container, array): SearchDriver $factory */
     public function extendSearch(string $driver, Closure $factory): void
     {
         $this->searchDrivers[$driver] = $factory;
@@ -135,7 +142,7 @@ final class LaRecipe
      * Add routes inside every doc set's route group, before the page catch-all.
      * Used by LaRecipe's own domains (llms.txt, MCP, search, admin) and by hosts.
      *
-     * @param  Closure(\Illuminate\Routing\Router, \LaRecipe\Domains\Content\DTOs\SetConfig): void  $callback
+     * @param  Closure(Router, SetConfig): void  $callback
      */
     public function routes(Closure $callback): void
     {
@@ -148,7 +155,7 @@ final class LaRecipe
         return $this->routes;
     }
 
-    /** @param Closure(\Illuminate\Routing\Router): void $callback routes outside any set */
+    /** @param Closure(Router): void $callback routes outside any set */
     public function globalRoutes(Closure $callback): void
     {
         $this->globalRoutes[] = $callback;
@@ -163,16 +170,17 @@ final class LaRecipe
     /**
      * Register an MCP tool class with the docs server. Author tools (writes) are
      * exposed on the local server, and on the web only for database sets with
-     * mcp.web.author_tools enabled.
+     * mcp.web.author_tools enabled. Local tools (they read the developer's
+     * working tree) are exposed on the local server only.
      *
-     * @param  class-string<\Laravel\Mcp\Server\Tool>  $tool
+     * @param  class-string<Tool>  $tool
      */
-    public function mcpTool(string $tool, bool $author = false): void
+    public function mcpTool(string $tool, bool $author = false, bool $local = false): void
     {
-        $this->mcpTools[$tool] = ['author' => $author];
+        $this->mcpTools[$tool] = ['author' => $author, 'local' => $local];
     }
 
-    /** @return array<class-string, array{author: bool}> */
+    /** @return array<class-string, array{author: bool, local: bool}> */
     public function mcpTools(): array
     {
         return $this->mcpTools;

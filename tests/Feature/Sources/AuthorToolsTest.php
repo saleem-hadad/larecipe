@@ -49,7 +49,7 @@ it('registers the five author tools, destructive, with a set argument', function
     $tools = app(LaRecipe::class)->mcpTools();
 
     expect(array_keys($tools))->toContain(WritePageTool::class, MovePageTool::class, DeletePageTool::class, UpdateNavigationTool::class, UpdateManifestTool::class)
-        ->and($tools[WritePageTool::class])->toBe(['author' => true]);
+        ->and($tools[WritePageTool::class])->toBe(['author' => true, 'local' => false]);
 
     foreach ([WritePageTool::class, MovePageTool::class, DeletePageTool::class, UpdateNavigationTool::class, UpdateManifestTool::class] as $class) {
         $definition = app($class)->toArray();
