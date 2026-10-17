@@ -2,6 +2,7 @@
 
 use LaRecipe\Domains\References\Actions\ReferencesFingerprintAction;
 use LaRecipe\Domains\References\Actions\ResolveReferenceAction;
+use LaRecipe\Domains\References\Laravel\RouteAllowList;
 use LaRecipe\Domains\References\Laravel\RouteResolver;
 use LaRecipe\Domains\References\Services\ReferenceRegistry;
 use LaRecipe\Domains\References\Services\SnapshotStore;
@@ -88,7 +89,7 @@ it('uses the route cache file as the route fingerprint when routes are cached', 
     mkdir($this->snapshotDir, 0777, true);
     file_put_contents($cache, '<?php return [];');
 
-    $resolver = new RouteResolver(app('router'), app(), $cache);
+    $resolver = new RouteResolver(app('router'), app(), new RouteAllowList(null, base_path('vendor')), $cache);
     $first = $resolver->fingerprint();
 
     file_put_contents($cache, '<?php return ["changed"];');

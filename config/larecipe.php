@@ -237,7 +237,16 @@ return [
     // Live references (<Route>, <Artisan>, <Model>, <Event>) read the app's public
     // shape only. <Model> describes classes in these namespaces and nothing else;
     // <Event> looks up short names in these namespaces.
+    // <Route> shows a route's method, URI, middleware names and form request
+    // field and rule names, never rule arguments or the domain. routes.allow
+    // lists the routes it may describe, by name or URI ('orders.*', 'api/*').
+    // null means every route your app defines: routes registered by packages
+    // in vendor/ are left out, except LaRecipe's own. The snapshot command and
+    // larecipe:validate follow the same list.
     'references' => [
+        'routes' => [
+            'allow' => null,
+        ],
         'models' => [
             'allow' => ['App\\Models\\*'],
         ],

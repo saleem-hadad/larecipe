@@ -56,7 +56,7 @@ final class ResolveReferences
 
         $this->state->issues[] = array_filter([
             'component' => $node->name,
-            'message' => "<{$node->name} {$prop}=\"{$target}\"> does not resolve: nothing in the app has that name any more.",
+            'message' => "<{$node->name} {$prop}=\"{$target}\"> does not resolve: nothing in the app has that name any more, or the references settings in config/larecipe.php leave it out.",
             'rule' => self::RULE,
             'level' => 'error',
             'line' => $node->getStartLine(),

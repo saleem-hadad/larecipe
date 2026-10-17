@@ -12,7 +12,7 @@ beforeEach(function () {
     TrackG::useSets(['shop' => TrackG::set('references', 'shop')]);
 });
 
-it('renders a route with its method, URI, middleware and form request rules', function () {
+it('renders a route with its method, URI, middleware and the names of its form request rules', function () {
     $html = $this->get('/shop')->assertOk()->getContent();
 
     expect($html)
@@ -21,7 +21,9 @@ it('renders a route with its method, URI, middleware and form request rules', fu
         ->toContain('<code>web, auth</code>')
         ->toContain('Validation rules (StoreOrderRequest)')
         ->toContain('required, email')
-        ->toContain('in:&quot;usd&quot;,&quot;eur&quot;');
+        ->toContain('required, integer, min')
+        ->toContain('required, in')
+        ->not->toContain('usd');
 });
 
 it('renders a command with its usage, arguments and options', function () {
