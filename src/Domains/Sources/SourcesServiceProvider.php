@@ -124,17 +124,18 @@ final class SourcesServiceProvider extends ServiceProvider
             $this->publishes([
                 Paths::stubs('docs-migration.stub') => $this->app->basePath('stubs/docs-migration.stub'),
             ], 'larecipe-stubs');
-
-            $this->commands([
-                CacheWarmCommand::class,
-                MakeDocsMigrationCommand::class,
-                ProvenanceCommand::class,
-                PullCommand::class,
-                SourceExportCommand::class,
-                SourceImportCommand::class,
-                SourceMoveCommand::class,
-            ]);
         }
+
+        // Registered outside the console too, so <Artisan> sees them on web requests.
+        $this->commands([
+            CacheWarmCommand::class,
+            MakeDocsMigrationCommand::class,
+            ProvenanceCommand::class,
+            PullCommand::class,
+            SourceExportCommand::class,
+            SourceImportCommand::class,
+            SourceMoveCommand::class,
+        ]);
     }
 
     private function usesDatabaseSource(): bool

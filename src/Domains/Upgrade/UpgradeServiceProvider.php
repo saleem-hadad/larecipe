@@ -14,8 +14,7 @@ final class UpgradeServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        if ($this->app->runningInConsole()) {
-            $this->commands([UpgradeCommand::class]);
-        }
+        // Registered outside the console too, so <Artisan> sees them on web requests.
+        $this->commands([UpgradeCommand::class]);
     }
 }

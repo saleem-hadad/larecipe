@@ -24,14 +24,13 @@ final class OnboardingServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                InstallCommand::class,
-                OnboardCommand::class,
-                MakePageCommand::class,
-                MakeVersionCommand::class,
-                NavigationFreezeCommand::class,
-            ]);
-        }
+        // Registered outside the console too, so <Artisan> sees them on web requests.
+        $this->commands([
+            InstallCommand::class,
+            OnboardCommand::class,
+            MakePageCommand::class,
+            MakeVersionCommand::class,
+            NavigationFreezeCommand::class,
+        ]);
     }
 }

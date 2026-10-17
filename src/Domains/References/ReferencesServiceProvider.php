@@ -58,8 +58,7 @@ final class ReferencesServiceProvider extends ServiceProvider
             ),
         );
 
-        if ($this->app->runningInConsole()) {
-            $this->commands([SnapshotCommand::class]);
-        }
+        // Registered outside the console too, so <Artisan> sees them on web requests.
+        $this->commands([SnapshotCommand::class]);
     }
 }

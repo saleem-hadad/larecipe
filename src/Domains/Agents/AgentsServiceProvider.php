@@ -71,9 +71,8 @@ final class AgentsServiceProvider extends ServiceProvider
             $this->app->make(Registrar::class)->local('larecipe', DocsServer::class);
         }
 
-        if ($this->app->runningInConsole()) {
-            $this->commands([McpCommand::class, DoctorCommand::class]);
-        }
+        // Registered outside the console too, so <Artisan> sees them on web requests.
+        $this->commands([McpCommand::class, DoctorCommand::class]);
     }
 
     /** The feedback widget's part of the boot payload: whether to show it and where it posts. */
