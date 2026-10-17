@@ -28,16 +28,21 @@ final class LinksRule implements PageRule
 
         $issues = [];
         $from = $page->page->ref;
+        $checked = [];
 
         foreach ($page->rendered->links as $link) {
-            $target = $this->paths->relative($from->path, $page->folderIndex, (string) $link['href']);
+            $href = $checked[] = (string) $link['href'];
+
+            // A root .md link that spells out a page URL ("/3.x/index.md") reaches that page, as in the renderer.
+            $target = (str_starts_with($href, '/') ? $this->paths->absolute($context->settings->prefix, $context->label, $href) : null)
+                ?? $this->paths->relative($from->path, $page->folderIndex, $href);
 
             if ($target !== null) {
                 array_push($issues, ...$this->target($page, $context, (string) $link['href'], $target, $page->fileLine($link['line'] ?? null)));
             }
         }
 
-        foreach ($this->hrefs($page->rendered->html) as $href) {
+        foreach (array_diff($this->hrefs($page->rendered->html), $checked) as $href) {
             if (str_starts_with($href, '#')) {
                 $anchor = rawurldecode(substr($href, 1));
 

@@ -13,6 +13,10 @@ use LaRecipe\Domains\Sources\Drivers\RepositorySource;
  * Resolves the links authors write (relative .md files, so docs read well on
  * GitHub too) into reader URLs, relative to the page that contains them.
  *
+ * A link starting with "/" resolves from the version root, unless it spells
+ * out a page URL of this set: an optional prefix and locale, then a version
+ * ("/3.x/index.md", "/docs/ar/3.x/install.md"). Then it reaches that page.
+ *
  * It returns domain-relative paths, because rendered articles are cached and
  * shared across hosts; agent Markdown makes them absolute.
  */
@@ -32,12 +36,12 @@ final class DocsLinkResolver implements LinkResolver
         }
 
         $anchor = isset($matches[2]) ? ltrim($matches[2], '#') : null;
-        $path = str_starts_with($matches[1], '/')
-            ? ltrim($matches[1], '/')
-            : $this->join($this->directoryOf($from), $matches[1]);
+        $target = str_starts_with($matches[1], '/')
+            ? $this->fromRoot($from, $this->join('', $matches[1]))
+            : $from->withPath($this->join($this->directoryOf($from), $matches[1]));
 
         // In a .md twin, page links point at the other pages' .md twins, so agents stay in Markdown.
-        $url = $this->urls->pagePath($this->set, $from->withPath($path), $this->markdownTwins);
+        $url = $this->urls->pagePath($this->set, $target, $this->markdownTwins);
 
         return $anchor !== null && $anchor !== '' ? $url.'#'.$anchor : $url;
     }
@@ -54,6 +58,31 @@ final class DocsLinkResolver implements LinkResolver
         $path = preg_replace('#^_assets/#', '', $path) ?? $path;
 
         return $this->urls->assetPath($this->set, $from->version, $path);
+    }
+
+    /** A root link: a page URL of this set when it names a version, else a path from the version root. */
+    private function fromRoot(PageRef $from, string $path): PageRef
+    {
+        $segments = explode('/', $path);
+        $prefix = array_values(array_filter(explode('/', $this->set->config->prefix), fn ($s) => $s !== ''));
+
+        if ($prefix !== [] && array_slice($segments, 0, count($prefix)) === $prefix) {
+            $segments = array_slice($segments, count($prefix));
+        }
+
+        $locale = $this->set->defaultLocale()->code;
+
+        if ($this->set->isMultilingual() && isset($segments[0]) && $segments[0] !== $locale && $this->set->locale($segments[0]) !== null) {
+            $locale = array_shift($segments);
+        }
+
+        if (! $this->set->isVersioned() || ! isset($segments[0]) || $this->set->version($segments[0]) === null) {
+            return $from->withPath($path);
+        }
+
+        $version = array_shift($segments);
+
+        return new PageRef($from->set, $version, $locale, PageRef::normalizePath(implode('/', $segments)));
     }
 
     private function directoryOf(PageRef $ref): string
