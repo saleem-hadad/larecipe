@@ -123,3 +123,46 @@ jobs:
       - name: Server log
         if: failure()
         run: cat serve.log
+
+  browser:
+    name: Browser (Playwright)
+    needs: ui
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, intl, pdo_sqlite, zlib
+          coverage: none
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: |
+          composer update --prefer-dist --no-interaction --no-progress
+          pnpm install --frozen-lockfile
+          pnpm exec playwright install --with-deps chromium
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      # Global setup builds the workbench's example extension, then Playwright serves the workbench.
+      - name: Run the browser tests
+        run: pnpm test:browser
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 7
