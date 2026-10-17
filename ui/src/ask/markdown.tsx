@@ -144,7 +144,7 @@ export function Markdown({ source }: { source: string }) {
         switch (block.type) {
           case 'code':
             return (
-              <pre key={index} data-language={block.language || undefined}>
+              <pre key={index} data-language={block.language || undefined} tabIndex={0}>
                 <code>{block.text}</code>
               </pre>
             )

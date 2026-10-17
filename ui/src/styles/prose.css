@@ -35,7 +35,6 @@
   .lr-prose h4 {
     position: relative;
     color: var(--lr-ink);
-    scroll-margin-top: calc(var(--lr-header-height) + 24px);
     text-wrap: balance;
   }
 

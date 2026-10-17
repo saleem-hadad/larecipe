@@ -9,7 +9,10 @@
     "build": "pnpm --filter @larecipe/app build",
     "dev": "pnpm --filter @larecipe/app dev",
     "test": "pnpm -r --if-present test",
-    "typecheck": "pnpm -r --if-present typecheck"
+    "typecheck": "pnpm -r --if-present typecheck",
+    "test:browser": "playwright test -c tests/Browser/playwright.config.ts",
+    "test:ui": "pnpm --filter @larecipe/app test",
+    "icons": "node packages/ui/scripts/generate-icons.mjs"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

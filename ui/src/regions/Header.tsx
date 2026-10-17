@@ -110,7 +110,6 @@ export function SearchTrigger() {
     <button
       type="button"
       className="lr-search-trigger lr-js-only"
-      aria-label={t('search.label')}
       aria-haspopup="dialog"
       aria-keyshortcuts="Meta+K Control+K /"
       data-lr-search-trigger=""
@@ -118,7 +117,9 @@ export function SearchTrigger() {
     >
       <Icon name="Search" size={15} />
       <span className="lr-search-placeholder">{t('search.placeholder')}</span>
-      <kbd className="lr-kbd">{shortcutLabel('K')}</kbd>
+      <kbd className="lr-kbd" aria-hidden="true">
+        {shortcutLabel('K')}
+      </kbd>
     </button>
   )
 }

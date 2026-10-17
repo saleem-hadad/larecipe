@@ -1027,7 +1027,16 @@
       background: var(--lr-surface);
     }
 
-    .lr-search-trigger .lr-search-placeholder,
+    .lr-search-trigger .lr-search-placeholder {
+      position: absolute;
+      flex: none;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
     .lr-search-trigger .lr-kbd {
       display: none;
     }

@@ -48,6 +48,14 @@ export function Overlays() {
   const [askMounted, setAskMounted] = useState(false)
   useWarmSearch()
 
+  // Ask answers ⌘I instantly: its chunk loads once the page is idle.
+  const ask = askEnabled(boot)
+  useEffect(() => {
+    if (!ask) return
+    const handle = window.setTimeout(() => void loadAsk(), 1500)
+    return () => window.clearTimeout(handle)
+  }, [ask])
+
   useEffect(() => {
     if (paletteOpen) setPaletteMounted(true)
   }, [paletteOpen])

@@ -18,7 +18,7 @@
         @endif
     </div>
     <div class="lr-header-search">
-        <button type="button" class="lr-search-trigger lr-js-only" aria-label="{{ $t('search.label') }}" aria-haspopup="dialog" aria-keyshortcuts="Meta+K Control+K /" data-lr-search-trigger="">@include('larecipe::partials.icon', ['name' => 'Search', 'iconSize' => 15, 'iconClass' => ''])<span class="lr-search-placeholder">{{ $t('search.placeholder') }}</span><kbd class="lr-kbd">⌘K</kbd></button>
+        <button type="button" class="lr-search-trigger lr-js-only" aria-haspopup="dialog" aria-keyshortcuts="Meta+K Control+K /" data-lr-search-trigger="">@include('larecipe::partials.icon', ['name' => 'Search', 'iconSize' => 15, 'iconClass' => ''])<span class="lr-search-placeholder">{{ $t('search.placeholder') }}</span><kbd class="lr-kbd" aria-hidden="true">⌘K</kbd></button>
     </div>
     <div class="lr-header-end">
         @include('larecipe::prerender.inserts', ['point' => 'header.actions'])
