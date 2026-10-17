@@ -6,7 +6,7 @@ import { boxes, layoutShifts, recordLayoutShifts, waitForApp } from './support/h
  * it over in one commit without moving a single region (ARCHITECTURE.md 7.4,
  * budget CLS < 0.02).
  */
-const pages = ['/guide/3.x/installation', '/guide/3.x/components', '/guide/ar/3.x/installation', '/docs/installation']
+const pages = ['/guide/3.x/installation', '/guide/3.x/components', '/guide/3.x/guides/authoring', '/guide/ar/3.x/installation', '/docs/installation']
 
 for (const path of pages) {
   test(`React takes over ${path} without moving anything`, async ({ browser }) => {

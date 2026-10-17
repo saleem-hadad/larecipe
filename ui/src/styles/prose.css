@@ -350,6 +350,16 @@
     text-align: left;
   }
 
+  /* Code reads exactly as it is typed: no ligatures turning => into an arrow. */
+  .lr-prose pre,
+  .lr-prose code,
+  .lr-code,
+  .lr-ask-answer pre,
+  .lr-ask-answer code {
+    font-variant-ligatures: none;
+    font-feature-settings: 'liga' 0, 'calt' 0;
+  }
+
   .lr-prose pre {
     margin: 24px 0;
     padding: 14px 16px;
@@ -490,7 +500,8 @@
   }
 
   /* Highlighted lines: a violet band with a 2 px marker at the inline start. */
-  .lr-line[data-highlighted] {
+  .lr-prose pre .lr-line[data-highlighted],
+  .lr-code .lr-line[data-highlighted] {
     min-width: calc(100% + 32px);
     margin-inline: -16px;
     padding-inline: 14px 16px;
@@ -499,15 +510,17 @@
   }
 
   /* Diff lines: success and danger labels in the gutter only. */
-  .lr-line[data-diff='add'],
-  .lr-line[data-diff='remove'] {
+  .lr-prose pre .lr-line[data-diff='add'],
+  .lr-prose pre .lr-line[data-diff='remove'],
+  .lr-code .lr-line[data-diff='add'],
+  .lr-code .lr-line[data-diff='remove'] {
     position: relative;
     min-width: calc(100% + 32px);
     margin-inline: -16px;
     padding-inline: 28px 16px;
   }
 
-  .lr-pre[data-diff] .lr-line:not([data-diff='add'], [data-diff='remove']) {
+  .lr-prose .lr-pre[data-diff] .lr-line:not([data-diff='add'], [data-diff='remove']) {
     min-width: calc(100% + 32px);
     margin-inline: -16px;
     padding-inline: 28px 16px;
@@ -535,8 +548,21 @@
     opacity: 0.6;
   }
 
-  .lr-line[data-highlighted][data-diff] {
+  .lr-prose pre .lr-line[data-highlighted][data-diff] {
     padding-inline-start: 26px;
+  }
+
+  /* A ```diff block keeps its own +/- markers in the text: no gutter labels. */
+  .lr-code[data-language='diff'] .lr-line[data-diff]::after {
+    content: none;
+  }
+
+  .lr-prose .lr-code[data-language='diff'] .lr-line[data-diff],
+  .lr-prose .lr-code[data-language='diff'] .lr-pre[data-diff] .lr-line {
+    min-width: 100%;
+    margin-inline: 0;
+    padding-inline: 0;
+    opacity: 1;
   }
 
   /* Line numbers in ink faint, when the author asked for them. */

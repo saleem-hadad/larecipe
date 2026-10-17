@@ -27,7 +27,7 @@ class FakeDocsServicesController
         $base = $locale === 'en' ? '/guide/3.x' : "/guide/{$locale}/3.x";
 
         if (preg_match('/pric|cost|billing plan|not covered/i', $question) === 1) {
-            $answer = "The docs do not cover pricing. LaRecipe is an open-source package, and these pages describe how to install and use it.";
+            $answer = 'The docs do not cover pricing. LaRecipe is an open-source package, and these pages describe how to install and use it.';
             $sources = [];
         } else {
             $answer = "Add the MCP server to Claude Code with one command, then restart the session:\n\n```bash\nclaude mcp add --transport http larecipe https://larecipe.saleem.dev/docs/mcp\n```\n\nThe installer can do this for you: run `php artisan larecipe:install` and choose **Claude Code** when it asks which agents you use.";

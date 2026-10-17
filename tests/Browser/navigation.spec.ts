@@ -7,7 +7,7 @@ test('docs links swap the article in place and keep the head true', async ({ pag
   await markWindow(page)
 
   const request = page.waitForRequest((candidate) => candidate.url().endsWith('/guide/3.x/components') && (candidate.headers().accept ?? '').includes('application/vnd.larecipe.page+json'))
-  await page.locator('.lr-sidebar .lr-nav-link', { hasText: 'Components' }).click()
+  await page.locator('.lr-sidebar .lr-nav-link', { hasText: /^Components/ }).click()
   await request
 
   await expect(page).toHaveURL(/\/guide\/3\.x\/components$/)

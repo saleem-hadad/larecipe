@@ -37,5 +37,7 @@ export default defineConfig({
     timeout: 60_000,
     stdout: 'ignore',
     stderr: 'pipe',
+    // The PHP dev server answers one request at a time unless it has workers.
+    env: { PHP_CLI_SERVER_WORKERS: '6' },
   },
 })

@@ -105,7 +105,7 @@ test('on phones the navigation is a sheet and page tools sit under the title', a
   await expect(sheet).toBeHidden()
 
   await page.getByRole('button', { name: 'Open navigation' }).click()
-  await sheet.locator('.lr-nav-link', { hasText: 'Components' }).click()
+  await sheet.locator('.lr-nav-link', { hasText: /^Components/ }).click()
   await expect(page.locator('h1.lr-title')).toHaveText('Components')
   await expect(sheet).toBeHidden()
 

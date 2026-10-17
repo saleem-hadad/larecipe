@@ -6,7 +6,7 @@
       "pages": [
         "components",
         "guides/webhooks",
-        { "group": "Reference", "pages": ["guides/frontmatter", "guides/long-page"] }
+        { "group": "Reference", "pages": ["guides/authoring", "guides/frontmatter", "guides/long-page"] }
       ]
     },
     { "group": "Agents", "pages": ["agents"] },

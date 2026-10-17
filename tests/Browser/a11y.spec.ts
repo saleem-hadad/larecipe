@@ -6,6 +6,8 @@ import { waitForApp } from './support/helpers'
 const modifier = process.platform === 'darwin' ? 'Meta' : 'Control'
 
 async function audit(page: Page, include?: string) {
+  // Colors are measured at rest: let entry motion (the ticket print) finish first.
+  await page.waitForFunction(() => document.getAnimations().every((animation) => animation.playState !== 'running'))
   let builder = new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
   if (include) builder = builder.include(include)
   const results = await builder.analyze()
@@ -18,6 +20,7 @@ const pages: Array<{ path: string; scheme: 'light' | 'dark'; width?: number }> =
   { path: '/guide/3.x/installation', scheme: 'dark' },
   { path: '/guide/3.x/components', scheme: 'light' },
   { path: '/guide/3.x/components', scheme: 'dark' },
+  { path: '/guide/3.x/guides/authoring', scheme: 'light' },
   { path: '/guide/ar/3.x/installation', scheme: 'light' },
   { path: '/guide/3.x/installation', scheme: 'light', width: 390 },
   { path: '/docs/installation', scheme: 'light' },
