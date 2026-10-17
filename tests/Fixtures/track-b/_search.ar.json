@@ -1,0 +1,105 @@
+{
+ "fields": [
+  "title",
+  "heading",
+  "text",
+  "tags",
+  "terms"
+ ],
+ "storeFields": [
+  "title",
+  "heading",
+  "url",
+  "path",
+  "kind"
+ ],
+ "searchOptions": {
+  "prefix": true,
+  "fuzzy": 0.2,
+  "combineWith": "AND",
+  "boost": {
+   "title": 3,
+   "heading": 2,
+   "tags": 1.5
+  }
+ },
+ "records": [
+  {
+   "id": "index",
+   "title": "مقدمة",
+   "heading": null,
+   "tags": [],
+   "text": "يحوّل LaRecipe مجلدًا من ملفات Markdown داخل تطبيق Laravel إلى موقع توثيق يقرؤه الناس والوكلاء معًا. تُعرض الصفحات بصيغة HTML للقرّاء، وبصيغة Markdown للوكلاء، ومن خلال خادم MCP لأدوات البرمجة.",
+   "terms": "",
+   "path": "index",
+   "url": "/guide/ar/3.x",
+   "kind": "page"
+  },
+  {
+   "id": "index#ما-الذي-تحصل-عليه",
+   "title": "مقدمة",
+   "heading": "ما الذي تحصل عليه",
+   "tags": [],
+   "text": "- توثيق في المستودع نفسه الذي يضم الكود، يُراجَع في طلب الدمج نفسه. - صفحة تخبرك متى تغيّرت، وما الذي غيّرها، ومن اعتمد التغيير. - بحث يجيب أثناء الكتابة، وميزة السؤال لما لا يجده البحث. - كل صفحة متاحة بصيغة Markdown عبر الرابط .md ومدرجة في llms.txt . نصيحة أضف .md إلى أي رابط لتقرأ الصفحة كما يقرؤها الوكيل.",
+   "terms": "",
+   "path": "index",
+   "url": "/guide/ar/3.x#ما-الذي-تحصل-عليه",
+   "kind": "section"
+  },
+  {
+   "id": "index#الخطوة-التالية",
+   "title": "مقدمة",
+   "heading": "الخطوة التالية",
+   "tags": [],
+   "text": "ابدأ بـ التثبيت installation.md ، ثم اربط وكلاءك.",
+   "terms": "",
+   "path": "index",
+   "url": "/guide/ar/3.x#الخطوة-التالية",
+   "kind": "section"
+  },
+  {
+   "id": "installation",
+   "title": "التثبيت",
+   "heading": null,
+   "tags": [],
+   "text": "",
+   "terms": "",
+   "path": "installation",
+   "url": "/guide/ar/3.x/installation",
+   "kind": "page"
+  },
+  {
+   "id": "installation#المتطلبات",
+   "title": "التثبيت",
+   "heading": "المتطلبات",
+   "tags": [],
+   "text": "PHP 8.3+ Laravel 12 / 13 Composer 2 لا يحتاج LaRecipe إلى Node.js على خوادمك، فالواجهة تأتي جاهزة داخل الحزمة.",
+   "terms": "",
+   "path": "installation",
+   "url": "/guide/ar/3.x/installation#المتطلبات",
+   "kind": "section"
+  },
+  {
+   "id": "installation#ثبت-الحزمة",
+   "title": "التثبيت",
+   "heading": "ثبّت الحزمة",
+   "tags": [],
+   "text": "أضف الحزمة الطرفية $ composer require larecipe/larecipe شغّل المُثبّت يسألك أين يقع التوثيق وأي الوكلاء تستخدم، ثم يجهّز كل شيء. لا يُكتب شيء دون معاينة. الطرفية $ php artisan larecipe:install اربط وكلاءك Claude Code $ claude mcp add larecipe -- php artisan mcp:start larecipe Codex $ codex mcp add larecipe -- php artisan mcp:start larecipe ملاحظة كل صفحة متاحة أيضًا بصيغة Markdown على /docs/instal",
+   "terms": "",
+   "path": "installation",
+   "url": "/guide/ar/3.x/installation#ثبت-الحزمة",
+   "kind": "section"
+  },
+  {
+   "id": "installation#اختر-المصدر",
+   "title": "التثبيت",
+   "heading": "اختر المصدر",
+   "tags": [],
+   "text": "يعيش التوثيق في مستودعك افتراضيًا، ويمكن للفرق التي تريد واجهة إدارة أن تحفظه في قاعدة البيانات بدلًا من ذلك. اقرأ المكوّنات components.md لترى كيف تُعرض الصفحات.",
+   "terms": "",
+   "path": "installation",
+   "url": "/guide/ar/3.x/installation#اختر-المصدر",
+   "kind": "section"
+  }
+ ]
+}
