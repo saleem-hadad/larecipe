@@ -7,8 +7,8 @@ use LaRecipe\Domains\Admin\Queries\RecentAgentChangesQuery;
 use LaRecipe\Domains\Admin\Support\AdminJson;
 use LaRecipe\Domains\Content\DTOs\DocSet;
 use LaRecipe\Domains\Sources\DTOs\Revision;
-use LaRecipe\Domains\Sources\Enums\RevisionStatus;
 use LaRecipe\Domains\Sources\Enums\ReviewMode;
+use LaRecipe\Domains\Sources\Enums\RevisionStatus;
 
 /**
  * The pass: every change waiting for a person, in the order they matter.
@@ -33,7 +33,7 @@ final class BuildReviewQueueAction
             'mode' => $mode->value,
             'conflicts' => $this->tickets(array_filter($pending, fn (Revision $revision) => $revision->is(RevisionStatus::Conflict))),
             'drafts' => $this->tickets(array_filter($pending, fn (Revision $revision) => $revision->is(RevisionStatus::Draft))),
-            'recent' => $mode === ReviewMode::Auto ? $this->tickets($this->recent->get($set)) : [],
+            'recent' => $mode === ReviewMode::Auto ? $this->tickets($this->recent->get($set->key)) : [],
         ];
     }
 

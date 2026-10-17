@@ -3,6 +3,7 @@
 namespace LaRecipe\Domains\Admin\Laravel;
 
 use Illuminate\Routing\Router;
+use LaRecipe\Domains\Admin\Controllers\ActivityController;
 use LaRecipe\Domains\Admin\Controllers\AssetController;
 use LaRecipe\Domains\Admin\Controllers\ManifestController;
 use LaRecipe\Domains\Admin\Controllers\NavigationController;
@@ -64,6 +65,9 @@ final class AdminRoutes
                         $router->get('revisions', [RevisionController::class, 'index'])->name('revisions.index');
                         $router->get('revisions/{revision}', [RevisionController::class, 'show'])->whereNumber('revision')->name('revisions.show');
                         $router->post('revisions/{revision}/revert', [RevisionController::class, 'revert'])->whereNumber('revision')->name('revisions.revert');
+
+                        $router->get('activity', [ActivityController::class, 'index'])->name('activity');
+                        $router->post('export', [ActivityController::class, 'export'])->name('export');
 
                         $router->get('assets', [AssetController::class, 'index'])->name('assets.index');
                         $router->post('assets', [AssetController::class, 'store'])->name('assets.store');
