@@ -16,7 +16,7 @@ use LaRecipe\Domains\Sources\Services\PageAddresses;
 
 #[Name('move_page')]
 #[Title('Move a docs page')]
-#[Description('Move one docs page to another path (or version, or locale) in the same set. Refused when the new path is taken. Update links and the navigation afterwards (update_navigation with a rename patch).')]
+#[Description('Move one docs page to another path (or version, or locale) in the same set. Refused when the new path is taken. Update links and the navigation afterwards (update_navigation with a rename patch). Pass the content_hash read_page returned as based_on.')]
 #[IsDestructive]
 final class MovePageTool extends AuthorTool
 {

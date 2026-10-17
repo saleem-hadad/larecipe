@@ -16,7 +16,7 @@ use LaRecipe\Domains\Sources\Services\PageAddresses;
 
 #[Name('delete_page')]
 #[Title('Delete a docs page')]
-#[Description('Delete one docs page. Remove it from the navigation too (update_navigation with a remove patch). On a database set the page stays in the revision history and can be restored.')]
+#[Description('Delete one docs page. Remove it from the navigation too (update_navigation with a remove patch). On a database set the page stays in the revision history and can be restored. Pass the content_hash read_page returned as based_on.')]
 #[IsDestructive]
 final class DeletePageTool extends AuthorTool
 {

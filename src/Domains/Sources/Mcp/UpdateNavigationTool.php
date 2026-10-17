@@ -27,7 +27,7 @@ final class UpdateNavigationTool extends AuthorTool
             ...$this->scopeArguments($schema),
             'tree' => $schema->object()->description('A whole navigation.json: {"groups": [...]} or {"tabs": [...]}.'),
             'patch' => $schema->array()->items($schema->object())->description('Operations applied in order: add, move, remove, rename.'),
-            ...$this->changeArguments($schema),
+            ...$this->changeArguments($schema, 'The revision.content_hash your last update_navigation for this version and locale returned. The change is refused if the navigation changed since. Leave it out to change the navigation as it is now.'),
             ...$this->setArgument($schema),
         ];
     }

@@ -19,6 +19,7 @@ Each call does two things: it applies the change to your local database, so the 
 ## Rules
 
 - Never write SQL, never edit docs rows directly, never hand-write or hand-edit a docs migration. The tools record the content hash each change was based on, which is what keeps a migration from overwriting an edit someone made in production.
+- Pass `based_on` with every change. `read_page` ends with the page's `content_hash`: pass it to `write_page`, `move_page` or `delete_page`, and the change is refused if someone edited the page since you read it. For `update_navigation` and `update_manifest`, pass the `revision.content_hash` your last call returned, or leave `based_on` out. Leave it out for a new page.
 - The docs migration is part of the change: commit it with the code and push them together. The pre-push check looks for it.
 - Run `php artisan larecipe:validate` after writing. For database sets it also reports unresolved migration conflicts.
 - If your local docs look older than production, ask the user to run `php artisan larecipe:pull --set=<set>` before you start, so the migration is based on what is live.

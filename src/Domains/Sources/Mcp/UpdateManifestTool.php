@@ -23,7 +23,7 @@ final class UpdateManifestTool extends AuthorTool
     {
         return [
             'patch' => $schema->object()->description('A JSON merge patch (RFC 7386) for larecipe.json.')->required(),
-            ...$this->changeArguments($schema),
+            ...$this->changeArguments($schema, 'The revision.content_hash your last update_manifest returned. The change is refused if the manifest changed since. Leave it out to change the manifest as it is now.'),
             ...$this->setArgument($schema),
         ];
     }
