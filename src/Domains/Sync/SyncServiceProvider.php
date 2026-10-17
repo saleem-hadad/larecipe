@@ -51,8 +51,8 @@ final class SyncServiceProvider extends ServiceProvider
 
         $this->app->bind(DocsCatalog::class, fn ($app) => new SourcesDocsCatalog(
             $app->make(LaRecipe::class),
-            $app->make(SourceResolver::class),
-            $app->make('larecipe.set-configs'),
+            fn () => $app->make(SourceResolver::class),
+            fn () => $app->make('larecipe.set-configs'),
             $app->basePath(),
             (string) ($app['config']->get('larecipe.migrations.path') ?: $app->basePath('database/migrations/docs')),
         ));

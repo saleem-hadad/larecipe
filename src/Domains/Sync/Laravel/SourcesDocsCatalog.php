@@ -2,6 +2,7 @@
 
 namespace LaRecipe\Domains\Sync\Laravel;
 
+use Closure;
 use LaRecipe\Domains\Content\DTOs\DocSet;
 use LaRecipe\Domains\Content\DTOs\Locale;
 use LaRecipe\Domains\Content\DTOs\SetConfig;
@@ -31,13 +32,21 @@ final class SourcesDocsCatalog implements DocsCatalog
     /** @var array<string, CatalogSet>|null */
     private ?array $sets = null;
 
+    private ?SourceResolver $resolver = null;
+
     /**
-     * @param  array<string, SetConfig>  $configs
+     * The set configs and the source resolver are resolved on first use, not
+     * when the catalog is built: the installer changes a set's driver and the
+     * review mode mid-run, and the instructions it writes afterwards must
+     * describe those choices.
+     *
+     * @param  Closure(): array<string, SetConfig>  $configs
+     * @param  Closure(): SourceResolver  $sources
      */
     public function __construct(
         private readonly LaRecipe $larecipe,
-        private readonly SourceResolver $sources,
-        private readonly array $configs,
+        private readonly Closure $sources,
+        private readonly Closure $configs,
         private readonly string $projectRoot,
         private readonly string $defaultMigrationsPath,
     ) {}
@@ -47,7 +56,7 @@ final class SourcesDocsCatalog implements DocsCatalog
         if ($this->sets === null) {
             $this->sets = [];
 
-            foreach ($this->configs as $key => $config) {
+            foreach (($this->configs)() as $key => $config) {
                 $this->sets[$key] = $this->describe($config);
             }
         }
@@ -71,7 +80,8 @@ final class SourcesDocsCatalog implements DocsCatalog
     private function load(string $set, string $version, string $locale): array
     {
         try {
-            $source = $this->sources->for($set);
+            $this->resolver ??= ($this->sources)();
+            $source = $this->resolver->for($set);
             $pages = [];
 
             foreach ($source->pages($version, $locale) as $ref) {
