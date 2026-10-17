@@ -14,20 +14,26 @@ final class IntroductionPage
 {
     public function __construct(private readonly FrontmatterWriter $frontmatter) {}
 
+    /** The page as a Markdown file, for repository sets. */
     public function render(AppFacts $facts): string
     {
-        $description = $this->description($facts);
+        return rtrim($this->frontmatter->render($this->frontmatter($facts)))."\n\n".$this->body($facts);
+    }
 
-        $frontmatter = $this->frontmatter->render([
+    /** @return array{title: string, description: string, sources: list<string>} */
+    public function frontmatter(AppFacts $facts): array
+    {
+        return [
             'title' => 'Introduction',
-            'description' => $description,
+            'description' => $this->description($facts),
             'sources' => array_values(array_filter([$facts->readmeIntro !== null ? 'README.md' : null, 'composer.json'])),
-        ]);
+        ];
+    }
 
-        $lines = [rtrim($frontmatter), '', '# '.$facts->name, ''];
-
-        $lines[] = $facts->readmeIntro ?? $description;
-        $lines[] = '';
+    /** The Markdown after the frontmatter, for database sets (a docs migration carries it). */
+    public function body(AppFacts $facts): string
+    {
+        $lines = ['# '.$facts->name, '', $facts->readmeIntro ?? $this->description($facts), ''];
 
         $stack = $this->stack($facts);
 

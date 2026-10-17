@@ -52,6 +52,17 @@ final class RouteRegistrar
             'as' => "larecipe.{$set->key}.",
         ], fn ($value) => $value !== null && $value !== '');
 
+        // "Add .md to any page URL" holds at the set's root too: /docs.md is the
+        // landing page's Markdown. It sits outside the prefix, so it gets its own group.
+        if ($set->prefix !== '') {
+            $this->router->group(array_diff_key($attributes, ['prefix' => true]), function (Router $router) use ($set) {
+                $router->get($set->prefix.'.md', PageController::class)
+                    ->defaults('larecipeSet', $set->key)
+                    ->defaults('path', 'index.md')
+                    ->name('root.markdown');
+            });
+        }
+
         $this->router->group($attributes, function (Router $router) use ($set) {
             $router->get('_assets/{version}/{file}', DocsAssetController::class)
                 ->where('file', '.*')

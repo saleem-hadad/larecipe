@@ -7,6 +7,7 @@ use LaRecipe\Domains\Onboarding\Actions\AddComposerScriptAction;
 use LaRecipe\Domains\Onboarding\Actions\DetectAgentsAction;
 use LaRecipe\Domains\Onboarding\Actions\InstallAgentHooksAction;
 use LaRecipe\Domains\Onboarding\Actions\InstallMcpConfigAction;
+use LaRecipe\Domains\Onboarding\Actions\ScaffoldDatabaseDocSetAction;
 use LaRecipe\Domains\Onboarding\Actions\ScaffoldDocSetAction;
 use LaRecipe\Domains\Onboarding\Actions\WriteAppConfigAction;
 use LaRecipe\Domains\Onboarding\DTOs\DetectedAgent;
@@ -71,6 +72,7 @@ final class InstallCommand extends Command
         DetectBoostAction $boost,
         WriteAppConfigAction $config,
         ScaffoldDocSetAction $scaffold,
+        ScaffoldDatabaseDocSetAction $scaffoldDatabase,
         WriteInstructionsBlockAction $instructions,
         LinkClaudeMdAction $claudeMd,
         InstallSkillsAction $skills,
@@ -97,10 +99,16 @@ final class InstallCommand extends Command
         $config->execute($workspace, $options);
         $this->useOptionsForThisRun($options, $settings->defaultSet);
 
+        $appName = (string) $this->laravel['config']->get('app.name', 'Laravel');
+
         if ($options->isDatabase()) {
+            $migrations = (string) $this->laravel['config']->get('larecipe.migrations.path', $this->laravel->databasePath('migrations/docs'));
+            $relative = str_starts_with($migrations, $workspace->root()) ? substr($migrations, strlen(rtrim($workspace->root(), '/')) + 1) : 'database/migrations/docs';
+
+            $scaffoldDatabase->execute($workspace, $settings->defaultSet, $relative, $appName, $this->laravel->version(), now()->format('Y_m_d_His'));
             $this->prepareDatabase($workspace->isDryRun());
         } else {
-            $scaffold->execute($workspace, $options->path, (string) $this->laravel['config']->get('app.name', 'Laravel'), $this->laravel->version());
+            $scaffold->execute($workspace, $options->path, $appName, $this->laravel->version());
         }
 
         // 2. Instructions, skills and MCP for the agents this team uses.
@@ -283,7 +291,7 @@ final class InstallCommand extends Command
      */
     private function prepareDatabase(bool $dryRun): void
     {
-        $this->components->twoColumnDetail('database tables', 'run php artisan migrate (publish with --tag=larecipe-migrations to customize)');
+        $this->components->twoColumnDetail('database tables', 'run php artisan migrate: it creates the tables and applies the starter docs migration');
 
         $config = $this->laravel['config'];
         $store = (string) ($config->get('larecipe.cache.store') ?: $config->get('cache.default'));
