@@ -11,6 +11,7 @@
 
 return [
     'skip' => 'Skip to content',
+    'agents_index' => 'Docs index for AI agents (llms.txt)',
 
     'header' => [
         'home' => ':name home',

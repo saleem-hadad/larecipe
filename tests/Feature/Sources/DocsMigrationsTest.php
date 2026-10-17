@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Event;
 use LaRecipe\Domains\Content\DTOs\PageRef;
 use LaRecipe\Domains\Content\Enums\Actor;
+use LaRecipe\Domains\Onboarding\Actions\ScaffoldDatabaseDocSetAction;
 use LaRecipe\Domains\Sources\Actions\GetPageAction;
 use LaRecipe\Domains\Sources\Actions\ListConflictsAction;
 use LaRecipe\Domains\Sources\Actions\PublishDraftAction;
@@ -15,6 +16,7 @@ use LaRecipe\Domains\Sources\Events\DocsMigrationConflicted;
 use LaRecipe\Domains\Sources\Exceptions\DocsMigrationFailed;
 use LaRecipe\Domains\Sources\Laravel\SourceManager;
 use LaRecipe\Domains\Sources\Services\ContentHashes;
+use LaRecipe\Domains\Sync\Services\LocalWorkspace;
 use LaRecipe\Tests\Feature\Sources\Support\Fixtures;
 use LaRecipe\Tests\Feature\Sources\Support\UsesDatabaseSets;
 
@@ -263,4 +265,23 @@ it('resolves a conflict from the review queue by taking the migration', function
         ->and($page('installation')->body)->toContain('--agents=claude,codex')
         ->and($page('installation')->provenance->approvedBy)->toBe('Reviewer')
         ->and(app(ListConflictsAction::class)->execute('kb'))->toBe([]);
+});
+
+it('applies the starter migration larecipe:install writes for a new database set, once', function () use ($page) {
+    $directory = (string) config('larecipe.migrations.path');
+    $workspace = new LocalWorkspace(dirname($directory));
+    $scaffold = app(ScaffoldDatabaseDocSetAction::class);
+
+    expect($scaffold->execute($workspace, 'kb', basename($directory), 'Acme', '13.37.0', '2026_10_17_150000')->changed())->toBeTrue()
+        ->and($scaffold->execute($workspace, 'kb', basename($directory), 'Acme', '13.37.0', '2026_10_18_090000')->changed())->toBeFalse()
+        ->and(glob($directory.'/*_docs_introduction.php'))->toHaveCount(1);
+
+    $this->artisan('migrate')->assertSuccessful();
+    app()->forgetScopedInstances();
+
+    expect($page('index')->title)->toBe('Introduction')
+        ->and($page('index')->body)->toStartWith("# Acme\n")
+        ->and(app(SourceManager::class)->for('kb')->manifest()->name)->toBe('Acme');
+
+    $this->get('/kb')->assertOk()->assertSee('Acme');
 });

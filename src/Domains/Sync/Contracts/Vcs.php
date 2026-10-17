@@ -63,4 +63,24 @@ interface Vcs
 
     /** The project root's path relative to the repository root ("" when they are the same). */
     public function projectPrefix(): string;
+
+    /**
+     * The unified diff of the given files: what changed since the merge base
+     * of $base and $head, then, when $uncommitted is true (or there is no
+     * base), what changed in the working tree since HEAD. The docs agent's
+     * git_diff tool reads it. Null when git cannot answer.
+     *
+     * @param  list<string>  $files
+     */
+    public function diff(?string $base, string $head, bool $uncommitted, array $files): ?string;
+
+    /**
+     * Commit exactly these files (created, changed or deleted) on the current
+     * branch, leaving everything else staged or unstaged as it was, so
+     * `larecipe:sync --commit` never sweeps up the developer's own work.
+     *
+     * @param  list<string>  $files
+     * @return string|null the new commit's sha, or null when git refused
+     */
+    public function commit(array $files, string $message): ?string;
 }

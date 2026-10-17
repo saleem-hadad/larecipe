@@ -44,10 +44,11 @@ final class ModelResolver implements ListsReferenceTargets, ReferenceResolver
             return null;
         }
 
+        // Read as an array: Laravel 12 returns one, Laravel 13 a ModelInfo with array access.
         $info = (new ModelInspector($this->app))->inspect($class);
         $columns = [];
 
-        foreach ($info->attributes as $attribute) {
+        foreach ($info['attributes'] as $attribute) {
             if ($attribute['type'] === null) {
                 continue;
             }
@@ -64,7 +65,7 @@ final class ModelResolver implements ListsReferenceTargets, ReferenceResolver
         $tables = [new ReferenceTable('Columns', ['Column', 'Type', 'Nullable', 'Cast', 'Fillable'], $columns)];
         $relations = [];
 
-        foreach ($info->relations as $relation) {
+        foreach ($info['relations'] as $relation) {
             $relations[] = [(string) $relation['name'], (string) $relation['type'], (string) $relation['related']];
         }
 
@@ -72,7 +73,7 @@ final class ModelResolver implements ListsReferenceTargets, ReferenceResolver
             $tables[] = new ReferenceTable('Relations', ['Relation', 'Type', 'Related model'], $relations);
         }
 
-        return new Reference('model', $target, $class, null, [['Table', (string) $info->table]], null, $tables);
+        return new Reference('model', $target, $class, null, [['Table', (string) $info['table']]], null, $tables);
     }
 
     public function targets(): array

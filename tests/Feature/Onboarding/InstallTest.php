@@ -1,5 +1,7 @@
 <?php
 
+use LaRecipe\Domains\Onboarding\DTOs\AppFacts;
+use LaRecipe\Domains\Onboarding\Services\IntroductionPage;
 use LaRecipe\Tests\Feature\Onboarding\FakeAgents;
 use LaRecipe\Tests\Feature\Sync\TemporaryProject;
 
@@ -62,6 +64,14 @@ it('sets up the docs and every detected agent, matching the golden files', funct
         ->and($this->project->read('bootstrap/cache/larecipe/hooks.php'))->toContain("'git push'")
         ->and($this->project->read('.git/hooks/pre-push'))->toContain('larecipe:hook git-pre-push')
         ->and($this->project->read('config/larecipe.php'))->toBeNull();
+});
+
+it('does not call a fresh skeleton "Laravel" a Laravel application', function () {
+    $page = app(IntroductionPage::class)->render(new AppFacts(
+        name: 'Laravel', laravelVersion: '13.37.0', php: '^8.3', packages: [], readmeIntro: null, description: null,
+    ));
+
+    expect($page)->toContain('This is a Laravel 13 application (PHP ^8.3).');
 });
 
 it('writes a real Introduction page from facts only', function () {
@@ -128,12 +138,15 @@ it('records auto review mode in the published config and the instructions', func
         ->and($this->project->read('AGENTS.md'))->toContain('Review mode is `auto`: update the docs and push without asking.');
 });
 
-it('configures a database set without scaffolding files', function () {
+it('configures a database set and ships its first page as a docs migration', function () {
+    $this->travelTo('2026-10-17 15:00:00');
+
     $this->artisan('larecipe:install', ['--agents' => 'claude', '--driver' => 'database', '--no-interaction' => true])
         ->assertSuccessful();
 
     expect($this->project->read('config/larecipe.php'))->toContain("'driver' => 'database',")
         ->and($this->project->read('docs/index.md'))->toBeNull()
+        ->and($this->project->read('database/migrations/docs/2026_10_17_150000_docs_introduction.php'))->toContain("\$this->createPage('index'")
         ->and($this->project->read('AGENTS.md'))->toContain('they write a docs migration in `database/migrations/docs/`');
 });
 

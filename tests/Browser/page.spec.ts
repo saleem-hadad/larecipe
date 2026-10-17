@@ -120,3 +120,11 @@ test('a missing page is a designed 404', async ({ page }) => {
   await expect(page.locator('.lr-not-found-body code')).toHaveText('/guide/3.x/nothing-here')
   await expect(page.getByRole('link', { name: 'Back to LaRecipe' })).toBeVisible()
 })
+
+test('Markdown lists keep their markers', async ({ page }) => {
+  await page.goto('/guide/3.x')
+  await waitForApp(page)
+
+  const list = page.locator('.lr-prose ul:not([class])').first()
+  await expect(list).toHaveCSS('list-style-type', 'disc')
+})

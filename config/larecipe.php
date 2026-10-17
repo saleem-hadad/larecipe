@@ -119,11 +119,22 @@ return [
             'max_messages' => 20,
             'max_question_length' => 2000,
         ],
+        // php artisan larecipe:sync, the on-demand docs agent (never in CI).
+        // timeout is seconds per provider request. remote_token authenticates
+        // --remote runs against a production set's MCP endpoint (a token of a
+        // user the manageLarecipe gate allows). deny adds paths the agent may
+        // never read, on top of the built-in list (.env and every dotfile,
+        // config/, bootstrap/cache/, storage/, vendor/, keys, auth.json).
+        // queue is the queue for --queue runs (null: the default queue).
         'sync' => [
             'provider' => env('LARECIPE_AI_PROVIDER'),
             'model' => env('LARECIPE_AI_MODEL'),
             'max_pages' => 20,
             'max_steps' => 30,
+            'timeout' => 120,
+            'remote_token' => env('LARECIPE_SYNC_TOKEN'),
+            'deny' => [],
+            'queue' => env('LARECIPE_SYNC_QUEUE'),
         ],
     ],
 

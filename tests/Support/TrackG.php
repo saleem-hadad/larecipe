@@ -50,10 +50,9 @@ final class TrackG
      */
     public static function bootFixtureApp(): void
     {
+        // Every loader: which one is first depends on how the dependencies were installed.
         foreach (ClassLoader::getRegisteredLoaders() as $loader) {
             $loader->addPsr4('TrackGApp\\', self::fixture('app'));
-
-            break;
         }
 
         $app = app();
