@@ -3,10 +3,15 @@ import { useLayoutEffect, useRef } from 'react'
 type MovableElement = HTMLElement & { moveBefore?: (node: Node, child: Node | null) => void }
 
 /**
- * Re-inserts the server-rendered article node instead of re-rendering its HTML.
- * Element.moveBefore keeps iframes and media alive where browsers support it.
+ * Hosts the article without React ever rendering its HTML.
+ *
+ * On first load it re-inserts the node the browser built from server HTML
+ * (moveBefore keeps iframes and media alive where supported), so images are
+ * not refetched and selection survives. After a client navigation it builds a
+ * fresh article node from the payload's HTML. The host is display: contents,
+ * so the article keeps the exact box it had in the prerender.
  */
-export function ArticleHost({ node, html, onMount }: { node: HTMLElement | null; html?: string; onMount?: (article: HTMLElement) => void }) {
+export function ArticleHost({ node, html, onMount }: { node: HTMLElement | null; html: string | null; onMount?: (article: HTMLElement) => void }) {
   const container = useRef<HTMLDivElement>(null)
 
   useLayoutEffect(() => {
@@ -14,7 +19,7 @@ export function ArticleHost({ node, html, onMount }: { node: HTMLElement | null;
     if (!host) return
 
     let article = node
-    if (html !== undefined) {
+    if (html !== null) {
       article = document.createElement('article')
       article.className = 'lr-article lr-prose'
       article.id = 'lr-article'
@@ -25,7 +30,11 @@ export function ArticleHost({ node, html, onMount }: { node: HTMLElement | null;
 
     if (article.parentNode !== host) {
       if (typeof host.moveBefore === 'function' && article.isConnected) {
-        host.moveBefore(article, null)
+        try {
+          host.moveBefore(article, null)
+        } catch {
+          host.replaceChildren(article)
+        }
       } else {
         host.replaceChildren(article)
       }

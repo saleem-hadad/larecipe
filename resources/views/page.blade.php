@@ -14,9 +14,25 @@
         'dateModified' => $boot['page']['updated_at'],
         'isPartOf' => ['@type' => 'WebSite', 'name' => $set->manifest->name, 'url' => $boot['urls']['base']],
     ];
+
+    // UI strings in the page's locale: the same table React receives, so no word
+    // changes when React takes over.
+    $strings = $boot['strings'] ?? [];
+    $t = function (string $key, array $replace = []) use ($strings): string {
+        $line = $strings[$key] ?? $key;
+        uksort($replace, fn ($a, $b) => strlen((string) $b) <=> strlen((string) $a));
+        foreach ($replace as $name => $value) {
+            $line = str_replace(':'.$name, (string) $value, $line);
+        }
+
+        return $line;
+    };
+    $askEnabled = ! empty($boot['features']['ask']) && ! empty($boot['ask']['endpoint']) && ($boot['ask']['enabled'] ?? true) !== false;
+    $feedbackEnabled = ! empty($boot['features']['feedback']) && ! empty($boot['feedback']['endpoint']);
+    $themeMode = $set->manifest->theme->mode;
 @endphp
 <!doctype html>
-<html lang="{{ $locale['code'] }}" dir="{{ $locale['dir'] }}" data-theme-mode="{{ $set->manifest->theme->mode }}" class="lr-html">
+<html lang="{{ $locale['code'] }}" dir="{{ $locale['dir'] }}" data-theme-mode="{{ $themeMode }}" @if (in_array($themeMode, ['light', 'dark'], true)) data-theme="{{ $themeMode }}" @endif class="lr-html">
 <head>
     @include('larecipe::partials.head', ['title' => $page->title.' · '.$set->manifest->name, 'description' => $page->description, 'canonical' => $boot['page']['url'], 'markdown' => $boot['page']['markdown_url'], 'noindex' => $boot['page']['noindex'], 'themeCss' => $themeCss])
     <script type="application/ld+json">{!! json_encode($jsonLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
@@ -25,20 +41,24 @@
     @endforeach
 </head>
 <body class="lr-body-root">
-    <a class="lr-skip" href="#lr-article">Skip to content</a>
+    <a class="lr-skip" href="#lr-article">{{ $t('skip') }}</a>
     <div id="larecipe" class="lr-root" data-lr-root data-layout="{{ $boot['page']['layout'] }}">
-        @include('larecipe::prerender.header', ['boot' => $boot])
+        @include('larecipe::prerender.header')
         <div class="lr-shell">
-            @include('larecipe::prerender.sidebar', ['boot' => $boot])
+            @include('larecipe::prerender.sidebar')
             <main class="lr-main" id="lr-main">
-                @include('larecipe::prerender.page-header', ['boot' => $boot])
-                @include('larecipe::prerender.inserts', ['point' => 'article.before', 'boot' => $boot])
-                <article class="lr-article lr-prose" id="lr-article" data-lr-article>{!! $rendered->html !!}</article>
-                @include('larecipe::prerender.inserts', ['point' => 'article.after', 'boot' => $boot])
-                @include('larecipe::prerender.page-footer', ['boot' => $boot])
+                @include('larecipe::prerender.page-header')
+                @include('larecipe::prerender.inserts', ['point' => 'article.before'])
+                <div class="lr-article-host"><article class="lr-article lr-prose" id="lr-article" data-lr-article>{!! $rendered->html !!}</article></div>
+                @include('larecipe::prerender.inserts', ['point' => 'article.after'])
+                @include('larecipe::prerender.page-footer')
+                @if ($askEnabled)
+                    @include('larecipe::prerender.ask-bar')
+                @endif
             </main>
-            @include('larecipe::prerender.rail', ['boot' => $boot])
+            @include('larecipe::prerender.rail')
         </div>
+        @include('larecipe::prerender.footer')
     </div>
     <script type="application/json" id="lr-boot">{!! json_encode($boot, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
 </body>
