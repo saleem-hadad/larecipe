@@ -71,6 +71,29 @@ it('versions an unversioned set by moving its pages into a version folder', func
     expect($this->project->read('docs/3.x/guides/webhooks.md'))->not->toBeNull();
 });
 
+it('adds a version to a manifest that lists versions as plain strings', function () {
+    $this->artisan('larecipe:make:version', ['version' => '1.x', '--current-as' => '1.x-old'])->assertSuccessful();
+    $manifest = json_decode((string) $this->project->read('docs/larecipe.json'), true);
+    $manifest['versions'] = ['1.x-old', '1.x'];
+    $this->project->write('docs/larecipe.json', json_encode($manifest));
+    $this->app->forgetScopedInstances();
+
+    // An existing version is skipped, never added twice.
+    $this->artisan('larecipe:make:version', ['version' => '1.x'])->assertSuccessful();
+    expect(json_decode((string) $this->project->read('docs/larecipe.json'), true)['versions'])->toBe(['1.x-old', '1.x']);
+
+    $this->artisan('larecipe:make:version', ['version' => '2.x'])->assertSuccessful();
+
+    expect(json_decode((string) $this->project->read('docs/larecipe.json'), true)['versions'])->toBe(['1.x-old', '1.x', '2.x'])
+        // Without --from, the copy starts from the default version: the first one listed.
+        ->and($this->project->read('docs/2.x/billing.md'))->toContain('title: Billing');
+
+    $this->artisan('larecipe:make:version', ['version' => '3.x', '--from' => '2.x', '--default' => true])->assertSuccessful();
+
+    expect(json_decode((string) $this->project->read('docs/larecipe.json'), true)['versions'])
+        ->toBe(['1.x-old', '1.x', '2.x', ['id' => '3.x', 'default' => true]]);
+});
+
 it('writes nothing on a dry run', function () {
     $this->artisan('larecipe:make:version', ['version' => '2.x', '--current-as' => '1.x', '--dry-run' => true])->assertSuccessful();
     $this->artisan('larecipe:make:page', ['path' => 'faq', '--dry-run' => true])->assertSuccessful();
