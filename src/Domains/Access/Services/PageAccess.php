@@ -87,6 +87,17 @@ final class PageAccess
         return $set->config->accessMode === 'public';
     }
 
+    /**
+     * True when a guest may read this page: a public set, a public version and a
+     * public page. Anything else is personal content that shared caches must not keep.
+     */
+    public function isPublicPage(DocSet $set, PageSummary $page): bool
+    {
+        return $this->isPublic($set)
+            && ! $page->private
+            && $set->version($page->ref->version)?->visibility !== Visibility::Private;
+    }
+
     public function user(): ?object
     {
         return $this->authorizer->user();

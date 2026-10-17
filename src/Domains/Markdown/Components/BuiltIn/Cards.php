@@ -18,7 +18,7 @@ final class Cards
             new ComponentDefinition(
                 name: 'Card',
                 props: [
-                    'title' => ['type' => 'string', 'required' => true, 'description' => 'The card title'],
+                    'title' => ['type' => 'string', 'description' => 'The card title (optional: a card can be body only, as v2 cards were)'],
                     'href' => ['type' => 'string', 'description' => 'Where the card links to (a relative .md link works)'],
                     'icon' => ['type' => 'string', 'description' => 'A Lucide icon name'],
                 ],
@@ -27,6 +27,10 @@ final class Cards
                     $title = Markup::string($props, 'title');
                     $href = Markup::string($props, 'href');
                     $description = Markup::oneLine($children);
+
+                    if ($title === '') {
+                        return $href !== '' ? "- [{$description}]({$href})" : $children;
+                    }
 
                     return '- '.($href !== '' ? "[{$title}]({$href})" : "**{$title}**").($description !== '' ? ': '.$description : '');
                 },
@@ -58,7 +62,8 @@ final class Cards
         $icon = Markup::string($props, 'icon');
         $href = Markup::string($props, 'href');
         $attributes = $icon !== '' ? ' data-icon="'.Markup::e($icon).'"' : '';
-        $inner = '<span class="lr-card-title">'.Markup::e($props['title'] ?? '').'</span>'
+        $title = Markup::string($props, 'title');
+        $inner = ($title !== '' ? '<span class="lr-card-title">'.Markup::e($title).'</span>' : '')
             .'<span class="lr-card-body">'.Markup::unwrapParagraph($children).'</span>';
 
         return $href !== ''

@@ -181,7 +181,8 @@ it('renders a Button as a link', function () {
 it('drops unsafe URLs from component props', function () {
     $html = Render::html('<Button href="javascript:alert(1)">Click</Button>')->html;
 
-    expect($html)->not->toContain('javascript:')->and($html)->toContain('href=""');
+    // The unsafe link is dropped, so the button renders as a static label.
+    expect($html)->not->toContain('javascript:')->and($html)->toContain('<span class="lr-button lr-button-primary">Click</span>');
 });
 
 it('escapes unknown components and reports them', function () {

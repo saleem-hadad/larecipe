@@ -29,7 +29,8 @@ final class PropsParser
             $name = $match[1];
 
             $props[$name] = match (true) {
-                $match[2] !== null => stripcslashes($match[2]),
+                // Only \" and \\ are escapes, so class names keep their backslashes (App\Models\Order).
+                $match[2] !== null => preg_replace('/\\\\(["\\\\])/', '$1', $match[2]),
                 $match[3] !== null => $match[3],
                 $match[4] !== null => $this->decodeJson($match[4]),
                 $match[5] !== null => $this->scalar($match[5]),

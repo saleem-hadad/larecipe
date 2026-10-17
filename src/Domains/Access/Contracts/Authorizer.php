@@ -13,4 +13,7 @@ interface Authorizer
     public function allows(string $ability, array $arguments = []): bool;
 
     public function defines(string $ability): bool;
+
+    /** @return list<string> every ability the host defines, for "did you mean" hints */
+    public function definedAbilities(): array;
 }

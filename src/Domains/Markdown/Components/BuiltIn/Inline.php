@@ -36,16 +36,15 @@ final class Inline
             new ComponentDefinition(
                 name: 'Button',
                 props: [
-                    'href' => ['type' => 'string', 'required' => true, 'description' => 'Where the button links to'],
+                    'href' => ['type' => 'string', 'description' => 'Where the button links to (without one it renders as a static label, as v2 demo buttons did)'],
                     'variant' => ['type' => 'string', 'default' => 'primary', 'enum' => self::VARIANTS, 'description' => 'primary, secondary, outline or ghost'],
                 ],
-                fallback: fn (array $props, string $children) => sprintf(
-                    '<a class="lr-button lr-button-%s" href="%s">%s</a>',
-                    Markup::e($props['variant']),
-                    Markup::e($props['href'] ?? ''),
-                    Markup::unwrapParagraph($children),
-                ),
-                markdown: fn (array $props, string $children) => '['.Markup::oneLine($children).']('.Markup::string($props, 'href').')',
+                fallback: fn (array $props, string $children) => Markup::string($props, 'href') === ''
+                    ? sprintf('<span class="lr-button lr-button-%s">%s</span>', Markup::e($props['variant']), Markup::unwrapParagraph($children))
+                    : sprintf('<a class="lr-button lr-button-%s" href="%s">%s</a>', Markup::e($props['variant']), Markup::e($props['href']), Markup::unwrapParagraph($children)),
+                markdown: fn (array $props, string $children) => Markup::string($props, 'href') === ''
+                    ? Markup::oneLine($children)
+                    : '['.Markup::oneLine($children).']('.Markup::string($props, 'href').')',
                 description: 'A link styled as a button (kept for v2 compatibility).',
             ),
             new ComponentDefinition(

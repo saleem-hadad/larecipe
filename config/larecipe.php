@@ -127,9 +127,15 @@ return [
         ],
     ],
 
+    // Live references (<Route>, <Artisan>, <Model>, <Event>) read the app's public
+    // shape only. <Model> describes classes in these namespaces and nothing else;
+    // <Event> looks up short names in these namespaces.
     'references' => [
         'models' => [
             'allow' => ['App\\Models\\*'],
+        ],
+        'events' => [
+            'namespaces' => ['App\\Events'],
         ],
     ],
 
