@@ -64,7 +64,7 @@ final readonly class Frontmatter
 
     public function visibility(): Visibility
     {
-        return Visibility::tryFrom((string) ($this->data['visibility'] ?? 'public')) ?? Visibility::Public;
+        return Visibility::fromSetting($this->data['visibility'] ?? null);
     }
 
     public function layout(): string

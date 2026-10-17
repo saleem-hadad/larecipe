@@ -36,7 +36,7 @@ final readonly class Version
             label: (string) ($data['label'] ?? $id),
             status: VersionStatus::tryFrom((string) ($data['status'] ?? 'current')) ?? VersionStatus::Current,
             default: (bool) ($data['default'] ?? false),
-            visibility: Visibility::tryFrom((string) ($data['visibility'] ?? 'public')) ?? Visibility::Public,
+            visibility: Visibility::fromSetting($data['visibility'] ?? null),
         );
     }
 
