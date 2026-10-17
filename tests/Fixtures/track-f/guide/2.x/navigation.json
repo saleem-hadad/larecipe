@@ -1,0 +1,7 @@
+{
+  "$schema": "https://larecipe.saleem.dev/schemas/3.x/navigation.json",
+  "groups": [
+    { "group": "Get started", "icon": "rocket", "pages": ["index", "installation"] },
+    { "group": "Billing", "pages": ["billing", "billing/exports"] }
+  ]
+}

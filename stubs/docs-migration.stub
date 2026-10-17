@@ -1,0 +1,26 @@
+<?php
+
+use LaRecipe\Migrations\DocsMigration;
+
+/*
+ * A docs migration: content changes for the {{ setName }} doc set, reviewed in
+ * this pull request with the code and applied by `php artisan migrate` on
+ * deploy. Each change records the content hash it was written against
+ * (basedOn), so it never overwrites a newer edit made in production; such a
+ * change waits as a conflict draft in the admin UI instead.
+ */
+return new class extends DocsMigration
+{
+    protected string $set = {{ set }};
+
+    protected string $author = {{ author }};
+
+    protected string $ref = {{ ref }};
+
+    protected string $summary = {{ summary }};
+
+    public function up(): void
+    {
+{{ operations }}
+    }
+};
