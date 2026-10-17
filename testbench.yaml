@@ -3,6 +3,7 @@ laravel: '@testbench'
 providers:
   - LaRecipe\LaRecipeServiceProvider
   - Workbench\App\Providers\WorkbenchServiceProvider
+  - Workbench\App\Providers\AdminWorkbenchServiceProvider
 
 env:
   - APP_ENV=local

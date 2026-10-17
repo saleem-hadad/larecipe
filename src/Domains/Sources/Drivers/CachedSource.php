@@ -212,6 +212,11 @@ final class CachedSource implements DraftableContentSource
         return $this->inner->history($subject);
     }
 
+    public function revisions(?string $before = null, int $limit = 50): iterable
+    {
+        return $this->inner->revisions($before, $limit);
+    }
+
     private function changed(Revision $revision): Revision
     {
         $this->refresh();
