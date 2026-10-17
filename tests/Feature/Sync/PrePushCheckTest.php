@@ -75,6 +75,13 @@ it('allows a push whose docs were updated, committed or not', function () {
     expect(prePush())->toBeNull();
 });
 
+it('ignores commands that do not push, even when called without the bin', function () {
+    $this->project->append('app/Billing/Invoice.php', "// tax\n")->commit('Add tax');
+
+    expect(prePush(command: 'php artisan test'))->toBeNull()
+        ->and(prePush(command: 'git push origin feature'))->not->toBeNull();
+});
+
 it('allows a push that touches no documented code', function () {
     $this->project->write('app/Console/Kernel.php', "<?php\n")->commit('Unrelated');
 

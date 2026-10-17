@@ -15,6 +15,7 @@ use LaRecipe\Domains\Sync\Services\HookMessages;
 use LaRecipe\Domains\Sync\Services\LoopGuard;
 use LaRecipe\Domains\Sync\Services\MarkedBlock;
 use LaRecipe\Domains\Sync\Services\PushRange;
+use LaRecipe\Domains\Sync\Support\PushCommandDetector;
 
 /**
  * The pre-push check (L2, ARCHITECTURE.md 14.3): decides whether an agent's
@@ -47,6 +48,12 @@ final class CheckPrePushAction
     public function execute(HookPayload $payload): HookDecision
     {
         if (! $this->settings->hooksEnabled || ! $this->vcs->available()) {
+            return HookDecision::allow();
+        }
+
+        // vendor/bin/larecipe-hook already filters, but a hook wired straight to
+        // artisan must not run the check on every Bash call either.
+        if ($payload->command !== null && ! (new PushCommandDetector($this->settings->pushCommands))->matches($payload->command)) {
             return HookDecision::allow();
         }
 
