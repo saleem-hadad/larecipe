@@ -47,7 +47,9 @@ it('lists private pages only for readers the viewLarecipe gate allows, privately
 it('lists versions at the root of a versioned set and pages per version', function () {
     $root = Sets::local($this->get('/handbook/llms.txt')->assertOk()->getContent());
 
-    expect($root)->toContain("## Versions\n\n- [2.x (default)](/handbook/2.x/llms.txt): Current version.")
+    expect($root)->toStartWith("# Handbook\n")
+        ->toContain("## Start\n\n- [Welcome](/handbook/2.x/index.md)\n- [Deploys](/handbook/2.x/deploys.md)")
+        ->toContain("## Versions\n\n- [2.x (default)](/handbook/2.x/llms.txt): Current version.")
         ->toContain('- [1.x](/handbook/1.x/llms.txt): Maintained: fixes only.')
         ->toContain('- [العربية](/handbook/ar/llms.txt)');
 

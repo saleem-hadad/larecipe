@@ -64,16 +64,27 @@ final class LlmsTxtBuilder
             return null;
         }
 
-        $details = [
-            $this->describe->instructions($set),
-            'This index lists the versions of these docs. Each version has its own index of pages.',
-            ...$this->describe->accessNotes($set, $set->defaultVersion()->id, $locale),
-        ];
+        // The root lists the default version's pages too, so an agent that
+        // starts here reaches the current docs in one fetch.
+        $listed = $set->defaultVersion();
 
-        return $this->writer->write($this->describe->title($set, null, $locale), $this->describe->summary($set), array_filter($details), [
-            new OutlineSection('Versions', null, $entries),
-            ...$this->languages($set, null),
-        ]);
+        foreach ($this->docs->canViewVersion($set, $listed->id) ? [] : $set->versions() as $version) {
+            if ($this->docs->canViewVersion($set, $version->id)) {
+                $listed = $version;
+
+                break;
+            }
+        }
+
+        return $this->index(
+            $set,
+            $listed->id,
+            $locale,
+            $limit,
+            $this->describe->title($set, null, $locale),
+            "This index lists the pages of {$listed->label}, the ".($listed->default ? 'default' : 'newest visible').' version. Every version has its own index, under Versions.',
+            [new OutlineSection('Versions', null, $entries), ...$this->languages($set, null)],
+        );
     }
 
     /** One version's index, or null when the version is hidden from the caller. */
@@ -83,29 +94,38 @@ final class LlmsTxtBuilder
             return null;
         }
 
-        $outline = $this->outlines->build($set, $version, $locale);
-        $title = $this->describe->title($set, $version, $locale);
-        $summary = $this->describe->summary($set);
-        $details = array_values(array_filter([$this->describe->instructions($set), ...$this->describe->accessNotes($set, $version, $locale)]));
-        $languages = $this->languages($set, $version);
+        return $this->index($set, $version, $locale, $limit, $this->describe->title($set, $version, $locale), null, $this->languages($set, $version));
+    }
 
-        $text = $this->writer->write($title, $summary, $details, [...$outline->sections, ...$this->optional($outline), ...$languages]);
+    /**
+     * A version's pages under their navigation headings, split into group
+     * files when it would not fit the limit.
+     *
+     * @param  list<OutlineSection>  $extra  sections after the pages (versions, languages)
+     */
+    private function index(DocSet $set, string $version, string $locale, int $limit, string $title, ?string $lead, array $extra): string
+    {
+        $outline = $this->outlines->build($set, $version, $locale);
+        $summary = $this->describe->summary($set);
+        $details = array_values(array_filter([$this->describe->instructions($set), $lead, ...$this->describe->accessNotes($set, $version, $locale)]));
+
+        $text = $this->writer->write($title, $summary, $details, [...$outline->sections, ...$this->optional($outline), ...$extra]);
 
         if (mb_strlen($text) <= $limit) {
             return $text;
         }
 
         $split = $this->split($set, $version, $locale, $outline);
-        $text = $this->writer->write($title, $summary, $details, [...$split, ...$this->optional($outline), ...$languages]);
+        $text = $this->writer->write($title, $summary, $details, [...$split, ...$this->optional($outline), ...$extra]);
 
         if (mb_strlen($text) <= $limit) {
             return $text;
         }
 
-        return $this->writer->write($title, $summary, $details, array_map(
-            fn (OutlineSection $section) => $section->compact(),
-            [...$split, ...$this->optional($outline)],
-        ));
+        return $this->writer->write($title, $summary, $details, [
+            ...array_map(fn (OutlineSection $section) => $section->compact(), [...$split, ...$this->optional($outline)]),
+            ...$extra,
+        ]);
     }
 
     /**
