@@ -5,11 +5,13 @@
  * from, with a stable header, absolute links and components in portable form.
  */
 
+use LaRecipe\Domains\Markdown\Actions\RenderAgentMarkdownAction;
 use LaRecipe\Domains\Markdown\Support\AbsoluteUrls;
+use LaRecipe\LaRecipe;
 use LaRecipe\Tests\Unit\Markdown\Render;
 
 it('writes a stable header, the discovery hint and the title', function () {
-    $document = Render::document("Body text.", [
+    $document = Render::document('Body text.', [
         'version' => '3.x',
         'llms' => 'https://acme.test/docs/llms.txt',
         'mcp' => 'https://acme.test/docs/mcp',
@@ -39,7 +41,7 @@ it('keeps the page H1 instead of adding one', function () {
 
 it('never copies the source frontmatter', function () {
     $page = Render::page('Text.', 'example', ['secret_note' => 'internal', 'sources' => ['app/**']]);
-    $document = app(\LaRecipe\Domains\Markdown\Actions\RenderAgentMarkdownAction::class)->execute($page, ['url' => Render::URL]);
+    $document = app(RenderAgentMarkdownAction::class)->execute($page, ['url' => Render::URL]);
 
     expect($document)->not->toContain('internal')->and($document)->not->toContain('app/**');
 });
@@ -124,7 +126,7 @@ MD;
 });
 
 it('renders host components through their markdown closure, and unknown ones as children', function () {
-    app(\LaRecipe\LaRecipe::class)->component('Subscribe')
+    app(LaRecipe::class)->component('Subscribe')
         ->props(['list' => ['type' => 'string', 'default' => 'larecipe']])
         ->fallback(fn (array $props) => '<form></form>')
         ->markdown(fn (array $props) => 'Subscribe to the '.$props['list'].' newsletter: https://acme.test/newsletter');

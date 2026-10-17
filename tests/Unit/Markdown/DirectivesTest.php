@@ -31,7 +31,7 @@ it('keeps alert markers case-insensitive, with an optional title and several par
 });
 
 it('leaves ordinary blockquotes alone', function () {
-    expect(Render::html("> Just a quote.")->html)->toBe("<blockquote>\n<p>Just a quote.</p>\n</blockquote>\n")
+    expect(Render::html('> Just a quote.')->html)->toBe("<blockquote>\n<p>Just a quote.</p>\n</blockquote>\n")
         ->and(Render::html("> [!UNKNOWN]\n> Text")->html)->toStartWith('<blockquote>');
 });
 

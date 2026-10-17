@@ -2,6 +2,7 @@
 
 namespace LaRecipe\Tests\Feature\Markdown;
 
+use LaRecipe\LaRecipe;
 use LaRecipe\Tests\TestCase;
 
 /**
@@ -26,7 +27,7 @@ trait UsesGuideDocs
     protected function defineGateComponents(): void
     {
         foreach (['Can', 'Cannot'] as $name) {
-            app(\LaRecipe\LaRecipe::class)->component($name)
+            app(LaRecipe::class)->component($name)
                 ->props(['ability' => ['type' => 'string', 'required' => true]])
                 ->fallback(fn (array $props, string $children) => $children)
                 ->markdown(fn (array $props, string $children) => $children);

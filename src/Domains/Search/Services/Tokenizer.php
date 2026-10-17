@@ -98,7 +98,7 @@ final class Tokenizer
 
     /**
      * @return array{0: list<string>, 1: ?string} the lowercased parts, and the
-     *                                             whole identifier when it has more than one part
+     *                                            whole identifier when it has more than one part
      */
     private function split(string $chunk): array
     {

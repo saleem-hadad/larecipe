@@ -7,9 +7,11 @@
 
 use Illuminate\Auth\GenericUser;
 use Illuminate\Support\Facades\Gate;
+use LaRecipe\Domains\Delivery\Services\PageCatalog;
 use LaRecipe\Domains\Search\Contracts\SearchEngine;
 use LaRecipe\Domains\Search\DTOs\SearchHit;
 use LaRecipe\Domains\Search\DTOs\SearchQuery;
+use LaRecipe\LaRecipe;
 use LaRecipe\Tests\Feature\Markdown\UsesGuideDocs;
 
 uses(UsesGuideDocs::class);
@@ -87,7 +89,7 @@ it('searches what a signed-in reader may see, and nothing else', function () {
 });
 
 it('serves the same engine to other domains through the contract', function () {
-    $visible = app(\LaRecipe\Domains\Delivery\Services\PageCatalog::class)->summaries(app(\LaRecipe\LaRecipe::class)->set('guide'), 'current', 'en');
+    $visible = app(PageCatalog::class)->summaries(app(LaRecipe::class)->set('guide'), 'current', 'en');
     $hits = app(SearchEngine::class)->search(new SearchQuery('guide', 'current', 'en', 'webhooks', $visible, 3));
 
     expect($hits)->each->toBeInstanceOf(SearchHit::class)

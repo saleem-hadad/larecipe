@@ -6,12 +6,15 @@
  * them; both ride along with Laravel's optimize and optimize:clear.
  */
 
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
 use LaRecipe\Domains\Delivery\Commands\OptimizeCommand;
 use LaRecipe\Domains\Delivery\Services\RenderCache;
 use LaRecipe\Domains\Search\Actions\LoadSearchIndexAction;
+use LaRecipe\Domains\Search\Services\SearchIndexRepository;
 use LaRecipe\Domains\Search\Support\SearchCache;
 use LaRecipe\Domains\Sources\Actions\GetPageAction;
+use LaRecipe\LaRecipe;
 use LaRecipe\Tests\Feature\Markdown\UsesGuideDocs;
 
 uses(UsesGuideDocs::class);
@@ -23,7 +26,7 @@ beforeEach(function () {
 
 afterEach(function () {
     if (is_dir(dirname($this->manifest))) {
-        (new Illuminate\Filesystem\Filesystem)->deleteDirectory(dirname($this->manifest));
+        (new Filesystem)->deleteDirectory(dirname($this->manifest));
     }
 });
 
@@ -38,7 +41,7 @@ it('compiles rendered pages and search records for repository sets', function ()
         ->assertSuccessful();
 
     $manifest = require $this->manifest;
-    $page = app(GetPageAction::class)->execute(app(\LaRecipe\LaRecipe::class)->set('guide')->ref('billing/webhooks'));
+    $page = app(GetPageAction::class)->execute(app(LaRecipe::class)->set('guide')->ref('billing/webhooks'));
     $key = app(RenderCache::class)->key($page, 'guide|');
 
     expect($manifest['sets']['guide']['current']['en']['pages'])->toBe(10)
@@ -47,7 +50,7 @@ it('compiles rendered pages and search records for repository sets', function ()
         ->and(cache()->get($key)['html'])->toContain('id="retries"')
         ->and(array_keys($manifest['sets']))->toBe(['guide']);
 
-    $searchKey = SearchCache::key('index', 'guide', 'current', 'en', app(\LaRecipe\Domains\Search\Services\SearchIndexRepository::class)->fingerprint('guide', 'current', 'en'));
+    $searchKey = SearchCache::key('index', 'guide', 'current', 'en', app(SearchIndexRepository::class)->fingerprint('guide', 'current', 'en'));
 
     expect(cache()->get($searchKey))->toBeArray();
 });
@@ -56,7 +59,7 @@ it('serves compiled pages without rendering again', function () {
     $this->artisan('larecipe:optimize', ['--set' => ['guide']])->assertSuccessful();
 
     // Tag the compiled entry: if the request renders again, the tag is gone.
-    $page = app(GetPageAction::class)->execute(app(\LaRecipe\LaRecipe::class)->set('guide')->ref('billing/webhooks'));
+    $page = app(GetPageAction::class)->execute(app(LaRecipe::class)->set('guide')->ref('billing/webhooks'));
     $key = app(RenderCache::class)->key($page, 'guide|');
     cache()->forever($key, ['html' => '<p>compiled-entry</p>'] + cache()->get($key));
 
@@ -88,7 +91,7 @@ it('runs from php artisan optimize and clears with optimize:clear', function () 
 
 it('forgets compiled search records on clear', function () {
     $this->artisan('larecipe:optimize', ['--set' => ['guide']])->assertSuccessful();
-    $fingerprint = app(\LaRecipe\Domains\Search\Services\SearchIndexRepository::class)->fingerprint('guide', 'current', 'en');
+    $fingerprint = app(SearchIndexRepository::class)->fingerprint('guide', 'current', 'en');
 
     $this->artisan('larecipe:clear')->assertSuccessful();
 
