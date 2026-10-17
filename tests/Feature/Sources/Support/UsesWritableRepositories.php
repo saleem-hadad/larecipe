@@ -13,12 +13,7 @@ trait UsesWritableRepositories
     {
         parent::defineEnvironment($app);
 
-        $app['config']->set('larecipe.sets.docs.source.path', Fixtures::copy('docs'));
-        $app['config']->set('larecipe.sets.guide', [
-            'route' => ['prefix' => 'guide', 'middleware' => ['web']],
-            'source' => ['driver' => 'repository', 'path' => Fixtures::copy('track-f/guide')],
-            'access' => ['mode' => 'public'],
-        ]);
+        Fixtures::repositoryEnvironment($app);
     }
 
     protected function setPath(string $set): string

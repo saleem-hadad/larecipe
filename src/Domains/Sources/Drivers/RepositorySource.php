@@ -50,6 +50,8 @@ use RecursiveIteratorIterator;
  */
 class RepositorySource implements WritableContentSource
 {
+    public const NAVIGATION_SCHEMA = 'https://larecipe.saleem.dev/schemas/3.x/navigation.json';
+
     private ?Manifest $manifest = null;
 
     private bool $manifestLoaded = false;
@@ -242,11 +244,10 @@ class RepositorySource implements WritableContentSource
     {
         $file = $this->localeRoot(PathGuard::segment($version), PathGuard::segment($locale)).'/navigation.json';
         $existing = is_file($file) ? json_decode((string) file_get_contents($file), true) : null;
-        $data = $tree->toJson();
 
-        if (is_array($existing) && isset($existing['$schema'])) {
-            $data = ['$schema' => $existing['$schema']] + $data;
-        }
+        // Keep the file's own $schema pointer; a new file gets the published schema, so editors validate it.
+        $schema = is_array($existing) ? ($existing['$schema'] ?? null) : self::NAVIGATION_SCHEMA;
+        $data = ($schema !== null ? ['$schema' => $schema] : []) + $tree->toJson();
 
         $this->writeFile($file, self::json($data));
 

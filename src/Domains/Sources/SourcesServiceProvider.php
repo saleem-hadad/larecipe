@@ -10,6 +10,10 @@ use LaRecipe\Domains\Content\DTOs\SetConfig;
 use LaRecipe\Domains\Sources\Commands\CacheWarmCommand;
 use LaRecipe\Domains\Sources\Commands\MakeDocsMigrationCommand;
 use LaRecipe\Domains\Sources\Commands\ProvenanceCommand;
+use LaRecipe\Domains\Sources\Commands\PullCommand;
+use LaRecipe\Domains\Sources\Commands\SourceExportCommand;
+use LaRecipe\Domains\Sources\Commands\SourceImportCommand;
+use LaRecipe\Domains\Sources\Commands\SourceMoveCommand;
 use LaRecipe\Domains\Sources\Contracts\DocsMigrationRepository;
 use LaRecipe\Domains\Sources\Contracts\ProvenanceResolver;
 use LaRecipe\Domains\Sources\Contracts\SourceFactory;
@@ -126,6 +130,10 @@ final class SourcesServiceProvider extends ServiceProvider
                 CacheWarmCommand::class,
                 MakeDocsMigrationCommand::class,
                 ProvenanceCommand::class,
+                PullCommand::class,
+                SourceExportCommand::class,
+                SourceImportCommand::class,
+                SourceMoveCommand::class,
             ]);
         }
     }

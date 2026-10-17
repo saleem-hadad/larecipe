@@ -13,26 +13,7 @@ trait UsesDatabaseSets
     {
         parent::defineEnvironment($app);
 
-        $app['config']->set('database.default', 'larecipe');
-        $app['config']->set('database.connections.larecipe', [
-            'driver' => 'sqlite',
-            'database' => ':memory:',
-            'prefix' => '',
-            'foreign_key_constraints' => true,
-        ]);
-
-        $app['config']->set('filesystems.disks.larecipe-assets', [
-            'driver' => 'local',
-            'root' => Fixtures::temporaryDirectory('assets'),
-        ]);
-
-        $app['config']->set('larecipe.sets.kb', [
-            'route' => ['prefix' => 'kb', 'middleware' => ['web']],
-            'source' => ['driver' => 'database', 'disk' => 'larecipe-assets'],
-            'access' => ['mode' => 'public'],
-        ]);
-
-        $app['config']->set('larecipe.migrations.path', Fixtures::temporaryDirectory('docs-migrations'));
+        Fixtures::databaseEnvironment($app);
     }
 
     protected function defineDatabaseMigrations(): void

@@ -21,6 +21,42 @@ use RecursiveIteratorIterator;
  */
 final class Fixtures
 {
+    /** A database set "kb" at /kb on in-memory SQLite, assets on a temp disk, docs migrations in a temp folder. */
+    public static function databaseEnvironment($app): void
+    {
+        $app['config']->set('database.default', 'larecipe');
+        $app['config']->set('database.connections.larecipe', [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ]);
+
+        $app['config']->set('filesystems.disks.larecipe-assets', [
+            'driver' => 'local',
+            'root' => self::temporaryDirectory('assets'),
+        ]);
+
+        $app['config']->set('larecipe.sets.kb', [
+            'route' => ['prefix' => 'kb', 'middleware' => ['web']],
+            'source' => ['driver' => 'database', 'disk' => 'larecipe-assets'],
+            'access' => ['mode' => 'public'],
+        ]);
+
+        $app['config']->set('larecipe.migrations.path', self::temporaryDirectory('docs-migrations'));
+    }
+
+    /** "docs" on a writable copy of tests/Fixtures/docs, and "guide" from tests/Fixtures/track-f/guide. */
+    public static function repositoryEnvironment($app): void
+    {
+        $app['config']->set('larecipe.sets.docs.source.path', self::copy('docs'));
+        $app['config']->set('larecipe.sets.guide', [
+            'route' => ['prefix' => 'guide', 'middleware' => ['web']],
+            'source' => ['driver' => 'repository', 'path' => self::copy('track-f/guide')],
+            'access' => ['mode' => 'public'],
+        ]);
+    }
+
     /** Copy tests/Fixtures/{name} into a fresh temp directory and return its path. */
     public static function copy(string $name): string
     {
