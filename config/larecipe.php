@@ -106,6 +106,8 @@ return [
         'docs_migration' => 'LaRecipe\\Domains\\Sources\\Models\\DocsMigrationRecord',
     ],
 
+    // Ask AI needs laravel/ai and a provider key. rate_limit is "requests,minutes"
+    // per reader; daily_budget caps answers per set per day (null: no cap).
     'ai' => [
         'ask' => [
             'enabled' => env('LARECIPE_ASK', false),
@@ -114,6 +116,8 @@ return [
             'max_steps' => 6,
             'rate_limit' => '10,1',
             'daily_budget' => null,
+            'max_messages' => 20,
+            'max_question_length' => 2000,
         ],
         'sync' => [
             'provider' => env('LARECIPE_AI_PROVIDER'),
@@ -123,11 +127,18 @@ return [
         ],
     ],
 
+    // The MCP server. One web endpoint per set at /{prefix}/{path} (POST), plus
+    // one local stdio server for every set (php artisan larecipe:mcp).
+    // web.middleware authenticates private sets: ['auth:sanctum'] for Sanctum
+    // tokens, or ['auth:api'] with Mcp::oauthRoutes() for laravel/mcp's OAuth.
+    // Access is re-checked on every tool call either way.
     'mcp' => [
         'web' => [
             'enabled' => true,
             'path' => 'mcp',
             'author_tools' => false,
+            'middleware' => [],
+            'rate_limit' => '60,1',
         ],
         'local' => true,
     ],
@@ -135,9 +146,25 @@ return [
     'agents' => [
         'markdown' => true,
         'llms_txt' => true,
+        'llms_full' => true,
         'skill_md' => true,
         'well_known_skills' => true,
+        'sitemap' => true,
         'ask_endpoint' => false,
+        // llms.txt indexes stay under this many characters (the AFDocs
+        // threshold); larger versions split into one file per group.
+        'llms_txt_limit' => 50000,
+        // llms-full.txt splits by group past this many characters.
+        'llms_full_limit' => 400000,
+        // larecipe:validate warns when a page's agent Markdown is larger.
+        'markdown_budget' => 50000,
+    ],
+
+    // The "Was this page helpful?" widget and the submit_feedback MCP tool.
+    // Both dispatch FeedbackSubmitted for the host to forward; nothing is stored.
+    'feedback' => [
+        'enabled' => true,
+        'rate_limit' => '20,1',
     ],
 
     /*

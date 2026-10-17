@@ -167,20 +167,20 @@ final class OnboardCommand extends Command
     private function validate(CatalogSet $set, ValidateWrittenPagesAction $validate, array $files): int
     {
         if ($this->getApplication()?->has('larecipe:validate')) {
-            return $this->call('larecipe:validate', ['--set' => $set->key]) === 0 ? self::SUCCESS : self::FAILURE;
+            $errors = $this->call('larecipe:validate', ['--set' => $set->key]) === 0 ? 0 : 1;
+        } else {
+            $report = $validate->execute($set, $files);
+
+            foreach ($report->issues as $issue) {
+                $this->line("  {$issue->level}: {$issue->page}: {$issue->message}");
+            }
+
+            $errors = count($report->errors());
         }
-
-        $report = $validate->execute($set, $files);
-
-        foreach ($report->issues as $issue) {
-            $this->line("  {$issue->level}: {$issue->page}: {$issue->message}");
-        }
-
-        $errors = count($report->errors());
 
         $errors === 0
             ? $this->components->info('The new pages pass validation. Review them, then commit them with your code.')
-            : $this->components->error("{$errors} validation errors. Fix them before committing.");
+            : $this->components->error('Validation found errors. Fix them before committing.');
 
         return $errors === 0 ? self::SUCCESS : self::FAILURE;
     }

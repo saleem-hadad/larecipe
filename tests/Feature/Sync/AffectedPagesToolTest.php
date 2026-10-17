@@ -13,7 +13,8 @@ class AffectedPagesTestServer extends Server
 
 it('registers affected_pages with the docs MCP server', function () {
     expect(app(LaRecipe::class)->mcpTools())->toHaveKey(AffectedPagesTool::class)
-        ->and(app(LaRecipe::class)->mcpTools()[AffectedPagesTool::class]['author'])->toBeFalse();
+        // Local only: it reads the developer's git working tree, so the web endpoint never offers it.
+        ->and(app(LaRecipe::class)->mcpTools()[AffectedPagesTool::class]['author'])->toBeTrue();
 });
 
 it('answers which pages a change affects, over MCP', function () {

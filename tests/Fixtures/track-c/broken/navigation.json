@@ -1,0 +1,8 @@
+{
+  "groups": [
+    "index",
+    "guide",
+    "privat",
+    { "group": "Extras", "pages": ["missing-page"], "collapsed": "yes" }
+  ]
+}
