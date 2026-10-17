@@ -37,7 +37,12 @@ final class ClearCommand extends Command
             }
         }
 
-        $files->deleteDirectory(dirname($path));
+        // Only the list: the folder also holds the hook patterns, the provenance index and the references snapshot.
+        $files->delete($path);
+
+        if ($files->isDirectory(dirname($path)) && $files->isEmptyDirectory(dirname($path))) {
+            $files->deleteDirectory(dirname($path));
+        }
 
         $this->components->info('LaRecipe compiled docs cleared.');
 
