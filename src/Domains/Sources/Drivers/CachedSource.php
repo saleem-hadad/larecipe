@@ -16,6 +16,9 @@ use LaRecipe\Domains\Sources\DTOs\Subject;
 use LaRecipe\Domains\Sources\DTOs\WriteContext;
 use LaRecipe\Domains\Sources\Enums\WriteMode;
 use LaRecipe\Domains\Sources\Services\PagePayload;
+use LaRecipe\Support\CacheFormat;
+use Throwable;
+use UnexpectedValueException;
 
 /**
  * The cache every database set runs behind (the Cached-Database Rule): a warm
@@ -64,69 +67,81 @@ final class CachedSource implements DraftableContentSource
 
     public function manifest(): ?Manifest
     {
-        $data = $this->remember('manifest', fn () => $this->inner->manifest()?->toArray());
-
-        return is_array($data) ? Manifest::fromArray($data, ucfirst($this->set)) : null;
+        return $this->remember(
+            'manifest',
+            fn () => $this->inner->manifest()?->toArray(),
+            fn (mixed $data) => $data === null ? null : Manifest::fromArray(self::shape($data), ucfirst($this->set)),
+        );
     }
 
     public function pages(string $version, string $locale): iterable
     {
-        $paths = $this->remember("pages|{$version}|{$locale}", function () use ($version, $locale) {
-            $paths = [];
+        return $this->remember(
+            "pages|{$version}|{$locale}",
+            function () use ($version, $locale) {
+                $paths = [];
 
-            foreach ($this->inner->pages($version, $locale) as $ref) {
-                $paths[] = $ref->path;
-            }
+                foreach ($this->inner->pages($version, $locale) as $ref) {
+                    $paths[] = $ref->path;
+                }
 
-            return $paths;
-        });
-
-        return array_map(fn (string $path) => new PageRef($this->set, $version, $locale, $path), (array) $paths);
+                return $paths;
+            },
+            fn (mixed $paths) => array_map(fn (string $path) => new PageRef($this->set, $version, $locale, $path), self::shape($paths)),
+        );
     }
 
     public function page(PageRef $ref): ?Page
     {
-        $data = $this->remember("page|{$ref->version}|{$ref->locale}|{$ref->path}", function () use ($ref) {
-            $page = $this->inner->page($ref);
+        return $this->remember(
+            "page|{$ref->version}|{$ref->locale}|{$ref->path}",
+            function () use ($ref) {
+                $page = $this->inner->page($ref);
 
-            return $page !== null ? PagePayload::toArray($page) : null;
-        });
-
-        return is_array($data) ? PagePayload::fromArray($data) : null;
+                return $page !== null ? PagePayload::toArray($page) : null;
+            },
+            fn (mixed $data) => $data === null ? null : PagePayload::fromArray(self::shape($data)),
+        );
     }
 
     public function navigation(string $version, string $locale): ?NavigationTree
     {
-        $tree = $this->remember("navigation|{$version}|{$locale}", fn () => $this->inner->navigation($version, $locale)?->toJson());
-
-        return is_array($tree) ? NavigationTree::fromJson($tree) : null;
+        return $this->remember(
+            "navigation|{$version}|{$locale}",
+            fn () => $this->inner->navigation($version, $locale)?->toJson(),
+            fn (mixed $tree) => $tree === null ? null : NavigationTree::fromJson(self::shape($tree)),
+        );
     }
 
     public function asset(string $version, string $path): ?Asset
     {
-        $data = $this->remember("asset|{$version}|{$path}", function () use ($version, $path) {
-            $asset = $this->inner->asset($version, $path);
+        return $this->remember(
+            "asset|{$version}|{$path}",
+            function () use ($version, $path) {
+                $asset = $this->inner->asset($version, $path);
 
-            if ($asset === null) {
-                return null;
-            }
+                if ($asset === null) {
+                    return null;
+                }
 
-            $contents = $asset->contents();
+                $contents = $asset->contents();
 
-            return strlen($contents) > self::MAX_CACHED_ASSET_BYTES
-                ? ['large' => true]
-                : ['path' => $asset->path, 'mime' => $asset->mime, 'contents' => base64_encode($contents), 'size' => $asset->size, 'hash' => $asset->hash];
-        });
+                return strlen($contents) > self::MAX_CACHED_ASSET_BYTES
+                    ? ['large' => true]
+                    : ['path' => $asset->path, 'mime' => $asset->mime, 'contents' => base64_encode($contents), 'size' => $asset->size, 'hash' => $asset->hash];
+            },
+            function (mixed $data) use ($version, $path) {
+                if ($data === null) {
+                    return null;
+                }
 
-        if (! is_array($data)) {
-            return null;
-        }
+                $data = self::shape($data);
 
-        if (isset($data['large'])) {
-            return $this->inner->asset($version, $path);
-        }
-
-        return new Asset($data['path'], $data['mime'], null, (string) base64_decode((string) $data['contents']), $data['size'], $data['hash']);
+                return isset($data['large'])
+                    ? $this->inner->asset($version, $path)
+                    : new Asset($data['path'], $data['mime'], null, (string) base64_decode((string) $data['contents']), $data['size'], $data['hash']);
+            },
+        );
     }
 
     public function writePage(Page $page, Provenance $by, WriteMode $mode = WriteMode::Publish, ?WriteContext $context = null): Revision
@@ -220,29 +235,44 @@ final class CachedSource implements DraftableContentSource
     }
 
     /**
-     * The cached value under the current fingerprint, or $resolve()'s result
-     * stored there. Null results are cached too (a missing page, zero-config
-     * navigation), wrapped so they are told apart from a cache miss.
+     * The cached value under the current fingerprint, decoded, or $resolve()'s
+     * result stored there. Null results are cached too (a missing page,
+     * zero-config navigation), wrapped so they are told apart from a cache miss.
+     * An entry $decode cannot read (a shape this release does not write) is a miss.
      *
-     * @param  Closure(): mixed  $resolve
+     * @template T
+     *
+     * @param  Closure(): mixed  $resolve  the plain value to cache
+     * @param  Closure(mixed): T  $decode  the value as the source returns it
+     * @return T
      */
-    private function remember(string $name, Closure $resolve): mixed
+    private function remember(string $name, Closure $resolve, Closure $decode): mixed
     {
-        $key = 'larecipe:source:'.$this->set.':'.$this->fingerprint().':'.hash('xxh128', $name);
+        $key = CacheFormat::prefix().'source:'.$this->set.':'.$this->fingerprint().':'.hash('xxh128', $name);
         $cached = $this->cache->get($key);
 
         if (is_array($cached) && array_key_exists('value', $cached)) {
-            return $cached['value'];
+            try {
+                return $decode($cached['value']);
+            } catch (Throwable) {
+                // Read it again from the source, and overwrite the entry below.
+            }
         }
 
         $value = $resolve();
         $this->cache->forever($key, ['value' => $value]);
 
-        return $value;
+        return $decode($value);
+    }
+
+    /** A cached value that must be an array; anything else is an entry this release did not write. */
+    private static function shape(mixed $value): array
+    {
+        return is_array($value) ? $value : throw new UnexpectedValueException('Unexpected cache entry.');
     }
 
     private function fingerprintKey(): string
     {
-        return 'larecipe:source:'.$this->set.':fingerprint';
+        return CacheFormat::prefix().'source:'.$this->set.':fingerprint';
     }
 }

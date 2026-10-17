@@ -7,6 +7,7 @@ use LaRecipe\Domains\Sources\Drivers\CachedSource;
 use LaRecipe\Domains\Sources\Exceptions\NonPersistentCacheStore;
 use LaRecipe\Domains\Sources\Laravel\DatabaseSourceFactory;
 use LaRecipe\Domains\Sources\Laravel\SourceManager;
+use LaRecipe\Support\CacheFormat;
 use LaRecipe\Tests\Feature\Sources\Support\Fixtures;
 use LaRecipe\Tests\Feature\Sources\Support\UsesDatabaseSets;
 
@@ -53,6 +54,26 @@ it('serves new content right after a publish, because the fingerprint moved', fu
 
     $this->get('/kb/guides/deploys')->assertOk()->assertSee('Roll back');
 });
+
+it('reads a cached entry in an unexpected shape again from the database', function (mixed $stale) {
+    $this->get('/kb/guides/deploys')->assertOk();
+
+    $source = array_filter(array_keys(Cache::getStore()->all(false)), fn (string $key) => str_starts_with($key, CacheFormat::prefix().'source:kb:') && ! str_ends_with($key, ':fingerprint'));
+    expect($source)->not->toBeEmpty();
+
+    foreach ($source as $key) {
+        Cache::forever($key, ['value' => $stale]);
+    }
+
+    app()->forgetScopedInstances();
+
+    $this->get('/kb/guides/deploys')->assertOk()->assertSee('warm the cache');
+    $this->get('/kb/guides/deploys.md')->assertOk()->assertSee('warm the cache');
+})->with([
+    'a string' => 'stale',
+    'an array of the wrong shape' => [['ref' => 'x', 'large' => false]],
+    'a list of the wrong type' => [[1, 2, 3]],
+]);
 
 it('refuses the array and null cache stores outside tests', function () {
     $this->app['env'] = 'production';

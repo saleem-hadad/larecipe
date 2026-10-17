@@ -13,6 +13,7 @@ use LaRecipe\Domains\Delivery\Services\DocsUrls;
 use LaRecipe\Domains\Delivery\Services\PageCatalog;
 use LaRecipe\Domains\Delivery\Support\SetFromRequest;
 use LaRecipe\Domains\Sources\Actions\GetPageAction;
+use LaRecipe\Support\CacheFormat;
 
 /**
  * GET /{prefix}/sitemap.xml: every public page of a public set, with hreflang
@@ -42,9 +43,13 @@ final class SitemapController
         }
 
         $fingerprint = implode('|', array_map(fn ($version) => $this->catalog->fingerprint($set, $version->id), $set->versions()));
-        $key = 'larecipe:'.$set->key.':sitemap:'.hash('xxh128', $fingerprint.'|'.$this->urls->base($set));
+        $key = CacheFormat::prefix().$set->key.':sitemap:'.hash('xxh128', $fingerprint.'|'.$this->urls->base($set));
 
-        $xml = $this->cache->rememberForever($key, fn () => $this->build($set));
+        $xml = $this->cache->get($key);
+
+        if (! is_string($xml) || ! str_starts_with($xml, '<?xml')) {
+            $this->cache->forever($key, $xml = $this->build($set));
+        }
 
         return new Response($xml, 200, [
             'Content-Type' => 'application/xml; charset=UTF-8',

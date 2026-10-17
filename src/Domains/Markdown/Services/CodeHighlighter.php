@@ -4,6 +4,7 @@ namespace LaRecipe\Domains\Markdown\Services;
 
 use LaRecipe\Domains\Markdown\DTOs\CodeFence;
 use LaRecipe\Domains\Markdown\Support\PassTheme;
+use LaRecipe\Support\CacheFormat;
 use Phiki\Phiki;
 use Phiki\Theme\ParsedTheme;
 use Phiki\Theme\ThemeParser;
@@ -42,7 +43,7 @@ final class CodeHighlighter
     /** The lines of one code block as HTML, ready to sit inside <code>. */
     public function highlight(string $code, CodeFence $fence): string
     {
-        $key = 'larecipe.code.'.hash('xxh128', implode("\0", [
+        $key = CacheFormat::psrPrefix().'code.'.hash('xxh128', implode("\0", [
             PassTheme::VERSION,
             $fence->language ?? '',
             $fence->marksChanges() ? 'diff' : '',
