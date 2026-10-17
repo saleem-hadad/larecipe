@@ -10,8 +10,8 @@ use LaRecipe\Domains\Upgrade\DTOs\ReportEntry;
  *   > {warning} text                 > [!WARNING] alerts (GitHub syntax, portable)
  *   <a name="x"></a> + heading       a {#x} heading attribute
  *   <larecipe-card>                  <Card>, its content un-indented
- *   <larecipe-badge>/<larecipe-button> on their own line become <Badge>/<Button>;
- *                                    inside a sentence they become their text
+ *   <larecipe-badge>/<larecipe-button> on their own line become <Badge>/<Button> with
+ *                                    their text inside; inside a sentence they become their text
  *   <larecipe-progress>              removed, with a report entry
  *   /{{route}}/{{version}}/page      a relative page.md link
  *
@@ -24,7 +24,11 @@ final class PageRewriter
 
     private const ALERT_KINDS = ['primary' => 'IMPORTANT', 'secondary' => 'NOTE', 'info' => 'NOTE', 'success' => 'TIP', 'warning' => 'WARNING', 'danger' => 'CAUTION'];
 
-    private const TONES = ['primary' => 'info', 'secondary' => 'neutral', 'info' => 'info', 'success' => 'success', 'warning' => 'warning', 'danger' => 'danger'];
+    /** v2 badge types as the tones <Badge> reads. */
+    private const TONES = ['primary' => 'info', 'secondary' => 'neutral', 'white' => 'neutral', 'black' => 'neutral', 'info' => 'info', 'success' => 'success', 'warning' => 'warning', 'danger' => 'danger'];
+
+    /** v2 button types as the variants <Button> reads; the colored types have no match. */
+    private const VARIANTS = ['primary' => 'primary', 'secondary' => 'secondary', 'white' => 'outline', 'link' => 'ghost'];
 
     /** Font Awesome names that differ in Lucide; the rest keep their name. */
     private const ICONS = ['close' => 'x', 'times' => 'x', 'comment' => 'message-square', 'paper-plane' => 'send', 'code-fork' => 'git-fork', 'address-card' => 'contact', 'bar-chart' => 'chart-column', 'cog' => 'settings', 'gear' => 'settings', 'envelope' => 'mail', 'pencil' => 'pencil', 'trash' => 'trash-2', 'exclamation-triangle' => 'triangle-alert', 'info-circle' => 'info', 'check-circle' => 'circle-check'];
@@ -78,6 +82,7 @@ final class PageRewriter
             }
 
             if (preg_match(self::ALERT, $line, $matches)) {
+                $matches[4] = $this->line($matches[4], $i, $version, $directory, $links, $files) ?? '';
                 array_push($out, ...$this->alert($matches, $i));
 
                 continue;
@@ -96,9 +101,12 @@ final class PageRewriter
             }
 
             if (preg_match('/^\s*<larecipe-(badge|button)\b([^>]*)>\s*$/i', $line, $matches) && ($end = $this->closing($lines, $i, "</larecipe-{$matches[1]}>")) !== null) {
-                $this->count($matches[1] === 'badge' ? 'badges' : 'buttons');
-                $out[] = $this->component($matches[1] === 'badge' ? 'Badge' : 'Button', $matches[2], implode(' ', array_slice($lines, $i + 1, $end - $i - 1)), $i);
+                $component = $this->component($matches[1] === 'badge' ? 'Badge' : 'Button', $matches[2], implode(' ', array_slice($lines, $i + 1, $end - $i - 1)), $i);
                 $i = $end;
+
+                if ($component !== null) {
+                    $out[] = $component;
+                }
 
                 continue;
             }
@@ -284,8 +292,6 @@ final class PageRewriter
     private function line(string $line, int $i, string $version, string $directory, V2Links $links, array $files): ?string
     {
         if (preg_match('#^\s*<larecipe-(badge|button)\b([^>]*)>(.*?)</larecipe-\1>\s*$#i', $line, $matches) && ! str_contains($matches[3], '<')) {
-            $this->count($matches[1] === 'badge' ? 'badges' : 'buttons');
-
             return $this->component($matches[1] === 'badge' ? 'Badge' : 'Button', $matches[2], $matches[3], $i);
         }
 
@@ -308,38 +314,45 @@ final class PageRewriter
         return $line;
     }
 
-    /** A badge or button on its own line: a self-closing v3 component with its label as a prop. */
-    private function component(string $name, string $attributes, string $label, int $i): string
+    /**
+     * A badge or button on its own line, written the way the v3 component reads it:
+     * the text inside the tag, a tone for a badge, an href and a variant for a button.
+     * Null drops the line (a badge or button with no text, such as an icon-only badge).
+     */
+    private function component(string $name, string $attributes, string $text, int $i): ?string
     {
         $attributes = $this->attributes($attributes);
+        $text = trim((string) preg_replace('/\s+/', ' ', strip_tags($text)));
+
+        if ($text === '') {
+            $this->entries[] = ReportEntry::manual('components', "Removed a {$name} with no text. v3 badges and buttons show text, not icons.", $this->file, $i + 1, "Write its text inside the tag: <{$name}>Text</{$name}>.");
+
+            return null;
+        }
+
+        $this->count($name === 'Badge' ? 'badges' : 'buttons');
+        [$prop, $values] = $name === 'Badge' ? ['tone', self::TONES] : ['variant', self::VARIANTS];
         $props = [];
-        $label = trim((string) preg_replace('/\s+/', ' ', strip_tags($label)));
 
-        if ($label !== '') {
-            $props['label'] = $label;
-        }
-
-        if (isset($attributes['type'])) {
-            $props['tone'] = self::TONES[$attributes['type']] ?? $attributes['type'];
-        }
-
-        if (isset($attributes['icon'])) {
-            $props['icon'] = $this->icon($attributes['icon']);
-        }
-
-        if (isset($attributes['href'])) {
+        if ($name === 'Button' && isset($attributes['href'])) {
             $props['href'] = $attributes['href'];
         }
 
-        $dropped = array_diff(array_keys($attributes), ['type', 'icon', 'href']);
-
-        if ($dropped !== []) {
-            $this->entries[] = ReportEntry::dropped('components', "Dropped {$name} styling attributes (".implode(', ', $dropped).'). Components follow the theme.', $this->file, $i + 1);
+        if (isset($attributes['type'], $values[$attributes['type']])) {
+            $props[$prop] = $values[$attributes['type']];
+            unset($attributes['type']);
         }
 
-        $rendered = implode(' ', array_map(fn (string $key, string $value) => $key.'="'.str_replace('"', '&quot;', $value).'"', array_keys($props), $props));
+        $dropped = array_diff_key($attributes, $props);
 
-        return '<'.$name.($rendered === '' ? '' : ' '.$rendered).' />';
+        if ($dropped !== []) {
+            $listed = implode(', ', array_map(fn (string $key, string $value) => $value === '' ? $key : "{$key}=\"{$value}\"", array_keys($dropped), $dropped));
+            $this->entries[] = ReportEntry::dropped('components', "Dropped {$name} attributes ({$listed}). v3 components follow the theme.", $this->file, $i + 1);
+        }
+
+        $rendered = implode('', array_map(fn (string $key, string $value) => ' '.$key.'="'.str_replace('"', '&quot;', $value).'"', array_keys($props), $props));
+
+        return "<{$name}{$rendered}>{$text}</{$name}>";
     }
 
     /** Badges, buttons and progress bars inside a sentence: v3 components are blocks, so they become their text. */
@@ -401,7 +414,7 @@ final class PageRewriter
                     : ReportEntry::manual('vue', "<{$tag}> is a custom Vue component. v3 renders React components with a server fallback.", $this->file, $i + 1, 'Rewrite it as a React extension component and register it with LaRecipe::component() (larecipe-upgrade-v2 skill).');
             }
         } elseif (preg_match('#<(?!/?[A-Z])/?[a-z][a-z0-9]*(?:\s[^>]*)?/?>#', $code)) {
-            $this->entries[] = ReportEntry::manual('html', 'Raw HTML is shown as text in v3: '.trim($line), $this->file, $i + 1, 'Use Markdown or a component, or set html_input to allow for this repository set.');
+            $this->entries[] = ReportEntry::manual('html', 'Raw HTML is shown as text in v3: '.trim($line), $this->file, $i + 1, 'Use Markdown or a component instead, or leave it: it shows as text.');
         }
     }
 
