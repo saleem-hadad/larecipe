@@ -180,7 +180,6 @@ export function LocaleMenu() {
                 className="lr-menu-item"
                 href={locale.url}
                 lang={locale.code}
-                dir={locale.dir}
                 data-lr-reload=""
                 aria-current={locale.code === boot.locale.code ? 'true' : undefined}
               >
@@ -210,7 +209,6 @@ export function LocaleLinks() {
               className="lr-menu-item"
               href={locale.url}
               lang={locale.code}
-              dir={locale.dir}
               data-lr-reload=""
               aria-current={locale.code === boot.locale.code ? 'true' : undefined}
             >

@@ -39,6 +39,14 @@ for (const path of paths) {
       await page.waitForTimeout(2500)
     }
   }
+  if (options.action === 'sheet') {
+    await page.getByRole('button', { name: 'Open navigation' }).click()
+    await page.waitForTimeout(400)
+  }
+  if (options.action === 'tools') {
+    await page.locator('.lr-toc-disclosure > summary').click()
+    await page.waitForTimeout(300)
+  }
   if (options.scroll) {
     await page.evaluate((y) => window.scrollTo(0, Number(y)), options.scroll)
     await page.waitForTimeout(300)

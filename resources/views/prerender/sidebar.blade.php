@@ -13,7 +13,7 @@
         <div class="lr-sidebar-extras">
             @include('larecipe::prerender.navbar')
             @if (count($boot['set']['locales']) > 1)
-                <div class="lr-locale-links"><p class="lr-label lr-menu-label">{{ $t('header.languages') }}</p><ul class="lr-menu-list">@foreach ($boot['set']['locales'] as $item)<li><a class="lr-menu-item" href="{{ $item['url'] }}" lang="{{ $item['code'] }}" dir="{{ $item['dir'] }}" data-lr-reload="" @if ($item['code'] === $boot['locale']['code']) aria-current="true" @endif>{{ $item['label'] }}</a></li>@endforeach</ul></div>
+                <div class="lr-locale-links"><p class="lr-label lr-menu-label">{{ $t('header.languages') }}</p><ul class="lr-menu-list">@foreach ($boot['set']['locales'] as $item)<li><a class="lr-menu-item" href="{{ $item['url'] }}" lang="{{ $item['code'] }}" data-lr-reload="" @if ($item['code'] === $boot['locale']['code']) aria-current="true" @endif>{{ $item['label'] }}</a></li>@endforeach</ul></div>
             @endif
         </div>
     @endif

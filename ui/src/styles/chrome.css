@@ -561,11 +561,23 @@
   /* Page tools under the title on narrow screens: the page actions split
      button and the table of contents. Hidden while the rail is visible. */
   .lr-page-tools {
+    position: relative;
     display: none;
     flex-wrap: wrap;
     align-items: center;
     gap: 8px;
     margin-top: 20px;
+  }
+
+  .lr-page-tools .lr-menu,
+  .lr-page-tools .lr-split {
+    position: static;
+  }
+
+  .lr-page-tools .lr-menu-panel {
+    inset-inline: 0;
+    min-width: 0;
+    max-width: 420px;
   }
 
   .lr-split {
@@ -598,9 +610,6 @@
     gap: 8px;
   }
 
-  .lr-toc-disclosure .lr-menu-panel {
-    min-width: min(320px, calc(100vw - 32px));
-  }
 
   /* ---- Article column ---------------------------------------------------- */
 
