@@ -89,12 +89,11 @@ final class SourcesServiceProvider extends ServiceProvider
             $app->basePath('stubs/docs-migration.stub'),
         ));
 
-        // The local stdio server runs in the console; the web endpoint does not.
+        // Local (stdio, in the console) or web is decided per call; see AuthorSession::isLocal().
         $this->app->bind(AuthorSession::class, fn ($app) => new AuthorSession(
             $app,
             $app->make(SourceResolver::class),
             $app->make(Authorizer::class),
-            $app->runningInConsole(),
         ));
     }
 

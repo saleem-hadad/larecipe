@@ -34,12 +34,23 @@ final class AuthorSession
         private readonly Container $app,
         private readonly SourceResolver $sources,
         private readonly Authorizer $authorizer,
-        private readonly bool $local,
+        private readonly ?bool $local = null,
     ) {}
 
+    /**
+     * The local stdio server runs in the console and serves no HTTP route.
+     * Checking the route too matters under Octane, where web requests are
+     * also served from a console process.
+     */
     public function isLocal(): bool
     {
-        return $this->local;
+        if ($this->local !== null) {
+            return $this->local;
+        }
+
+        $servingHttp = $this->app->bound('request') && $this->app->make('request')->route() !== null;
+
+        return $this->app->runningInConsole() && ! $servingHttp;
     }
 
     /** The set the call targets: the endpoint's own set on the web, the `set` argument or the default locally. */
@@ -71,7 +82,7 @@ final class AuthorSession
             return 'Unknown doc set. Pass a set key from config/larecipe.php (sets.*), or omit it for the default set.';
         }
 
-        if ($this->local) {
+        if ($this->isLocal()) {
             return null;
         }
 
@@ -97,7 +108,7 @@ final class AuthorSession
 
     public function channel(): Channel
     {
-        return $this->local ? Channel::PullRequest : Channel::RemoteAgent;
+        return $this->isLocal() ? Channel::PullRequest : Channel::RemoteAgent;
     }
 
     /**
@@ -108,7 +119,7 @@ final class AuthorSession
      */
     public function recordMigration(SetConfig $set, ?DocsMigrationOperation $operation, WriteResult $result, Provenance $author, ?string $summary): ?string
     {
-        if (! $this->local || $set->driver !== 'database' || $operation === null || ! $result->isPublished()) {
+        if (! $this->isLocal() || $set->driver !== 'database' || $operation === null || ! $result->isPublished()) {
             return null;
         }
 
