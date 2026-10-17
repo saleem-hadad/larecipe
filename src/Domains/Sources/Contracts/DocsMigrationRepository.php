@@ -2,6 +2,7 @@
 
 namespace LaRecipe\Domains\Sources\Contracts;
 
+use LaRecipe\Domains\Sources\DTOs\AppliedMigration;
 use LaRecipe\Domains\Sources\DTOs\AppliedOperation;
 
 /**
@@ -11,13 +12,10 @@ use LaRecipe\Domains\Sources\DTOs\AppliedOperation;
  */
 interface DocsMigrationRepository
 {
-    /** @param list<AppliedOperation> $operations */
+    /** @param list<AppliedOperation> $operations appended after what the migration already recorded */
     public function append(string $migration, string $set, array $operations): void;
 
-    /** @return list<AppliedOperation> in the order they were applied */
-    public function operations(string $migration): array;
-
-    public function has(string $migration): bool;
+    public function find(string $migration): ?AppliedMigration;
 
     public function forget(string $migration): void;
 }
