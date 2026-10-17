@@ -24,13 +24,15 @@ final class DocsAssistant implements Agent, HasTools
 
     /**
      * @param  list<object>  $docsTools  the search_docs and read_page tool instances
+     * @param  string|array<int|string, string|null>|null  $providers  one provider, or a failover list laravel/ai tries in order
+     *                                                                 (["anthropic", "openai"] or ["anthropic" => "model", ...])
      */
     public function __construct(
         private readonly string $docsName,
         private readonly string $docsVersion,
         private readonly array $docsTools,
         private readonly int $steps = 6,
-        private readonly ?string $providerName = null,
+        private readonly string|array|null $providers = null,
         private readonly ?string $modelName = null,
     ) {}
 
@@ -57,11 +59,13 @@ final class DocsAssistant implements Agent, HasTools
         return $this->steps;
     }
 
-    public function provider(): ?string
+    /** @return string|array<int|string, string|null>|null */
+    public function provider(): string|array|null
     {
-        return $this->providerName;
+        return $this->providers;
     }
 
+    /** Used with a single provider; a failover list names each provider's model itself. */
     public function model(): ?string
     {
         return $this->modelName;

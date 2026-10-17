@@ -134,6 +134,17 @@ it('sends earlier turns as history and builds the assistant from config', functi
     });
 });
 
+it('passes a provider failover list from config straight to laravel/ai', function () {
+    enableAsk(['provider' => ['anthropic' => 'claude-test', 'openai' => 'gpt-test'], 'model' => 'ignored-with-a-list']);
+    DocsAssistant::fake(['Answer.']);
+
+    $this->postJson('/billing/_ask', chat('Failover?'))->assertOk()->streamedContent();
+
+    DocsAssistant::assertPrompted(fn ($prompt) => $prompt->agent->provider() === ['anthropic' => 'claude-test', 'openai' => 'gpt-test']
+        && $prompt->provider->name() === 'anthropic'
+        && $prompt->model === 'claude-test');
+});
+
 it('checks the askLarecipe gate', function () {
     enableAsk();
     Gate::define('askLarecipe', fn ($user = null) => $user !== null);

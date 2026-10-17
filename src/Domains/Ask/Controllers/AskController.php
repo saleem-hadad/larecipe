@@ -90,7 +90,7 @@ final class AskController
             $set->isVersioned() ? ($set->version($version)?->label ?? $version) : '',
             [$this->search, $this->read],
             max(1, (int) $set->config->setting('ai.ask.max_steps', 6)),
-            $this->option($set->config->setting('ai.ask.provider')),
+            $this->providers($set->config->setting('ai.ask.provider')),
             $this->option($set->config->setting('ai.ask.model')),
         );
 
@@ -154,5 +154,11 @@ final class AskController
     private function option(mixed $value): ?string
     {
         return is_string($value) && $value !== '' ? $value : null;
+    }
+
+    /** One provider, or a failover list, passed as is: laravel/ai tries each in order when one fails. */
+    private function providers(mixed $value): string|array|null
+    {
+        return is_array($value) && $value !== [] ? $value : $this->option($value);
     }
 }

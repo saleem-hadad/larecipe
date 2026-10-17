@@ -109,6 +109,10 @@ return [
     // Ask AI needs laravel/ai and a provider key. rate_limit is "requests,minutes"
     // per reader; daily_budget caps answers per set per day (null: no cap).
     'ai' => [
+        // Ask AI. provider is a laravel/ai provider name, or a failover list
+        // tried in order when one fails: ['anthropic', 'openai'], or with a
+        // model for each: ['anthropic' => '{model}', 'openai' => '{model}'].
+        // model applies to a single provider only.
         'ask' => [
             'enabled' => env('LARECIPE_ASK', false),
             'provider' => env('LARECIPE_AI_PROVIDER'),
