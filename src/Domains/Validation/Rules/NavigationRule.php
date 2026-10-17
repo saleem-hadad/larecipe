@@ -18,8 +18,8 @@ use LaRecipe\Domains\Validation\Services\Suggest;
  * readers can only reach by URL.
  *
  * Zero-config navigation lists every page by construction, so it has no
- * orphans; a translation that borrows its version's navigation.json falls
- * back to the default language for missing pages, so it has no missing ones.
+ * orphans. A translation falls back to the default language for pages it does
+ * not have yet, so an entry for one of those is not missing either.
  */
 final class NavigationRule implements SetRule
 {
@@ -30,14 +30,14 @@ final class NavigationRule implements SetRule
         $issues = [];
 
         foreach ($docs->versions as $version) {
-            array_push($issues, ...$this->version($version));
+            array_push($issues, ...$this->version($version, $docs->original($version->version)));
         }
 
         return $issues;
     }
 
     /** @return list<ValidationIssue> */
-    private function version(VersionSnapshot $version): array
+    private function version(VersionSnapshot $version, ?VersionSnapshot $original): array
     {
         $file = $version->navigationFile;
 
@@ -56,11 +56,11 @@ final class NavigationRule implements SetRule
         }
 
         $listed = NavigationTree::fromJson($version->navigation)->pagePaths();
-        $paths = array_keys($version->pages);
+        $served = $version->pages + ($original->pages ?? []);
 
         foreach ($listed as $path) {
-            if (! isset($version->pages[$path])) {
-                $meant = Suggest::closest($path, $paths);
+            if (! isset($served[$path])) {
+                $meant = Suggest::closest($path, array_keys($served));
                 $issues[] = ValidationIssue::error(
                     'navigation.missing-page',
                     "The navigation lists \"{$path}\", but there is no such page.",

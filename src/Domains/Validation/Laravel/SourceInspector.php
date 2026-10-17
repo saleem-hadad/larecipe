@@ -103,6 +103,13 @@ final class SourceInspector implements DocsInspector
         }
 
         $set = $this->sets->get($ref->set);
+        $labels = [];
+
+        foreach ($set->versions() as $version) {
+            foreach ($set->locales() as $locale) {
+                $labels[$this->label($set, $version->id, $locale->code)] = [$version->id, $locale->code];
+            }
+        }
 
         return new PageContext(
             $ref->version,
@@ -112,6 +119,7 @@ final class SourceInspector implements DocsInspector
             new SourceLinkTargets($set, $this->sources->for($set->key), $this->render),
             $set->version($ref->version)?->visibility === Visibility::Private,
             strictLinks: false,
+            labels: $labels,
         );
     }
 

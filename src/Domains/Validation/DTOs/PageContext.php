@@ -13,6 +13,11 @@ use LaRecipe\Domains\Validation\Contracts\LinkTargets;
  */
 final readonly class PageContext
 {
+    /**
+     * @param  array<string, array{0: string, 1: string}>  $labels  the URL segments of every version and
+     *                                                              locale of the set ("ar/2.x") => [version, locale],
+     *                                                              so absolute links into any of them are checked
+     */
     public function __construct(
         public string $version,
         public string $locale,
@@ -21,6 +26,7 @@ final readonly class PageContext
         public LinkTargets $targets,
         public bool $privateVersion = false,
         public bool $strictLinks = true,
+        public array $labels = [],
     ) {}
 
     public function pageId(string $path): string

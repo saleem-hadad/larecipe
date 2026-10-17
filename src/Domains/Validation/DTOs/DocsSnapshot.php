@@ -38,4 +38,16 @@ final readonly class DocsSnapshot
 
         return null;
     }
+
+    /** The default-locale snapshot of a version: what a missing translation falls back to. */
+    public function original(string $version): ?VersionSnapshot
+    {
+        foreach ($this->versions as $candidate) {
+            if ($candidate->version === $version && $candidate->defaultLocale) {
+                return $candidate;
+            }
+        }
+
+        return null;
+    }
 }
