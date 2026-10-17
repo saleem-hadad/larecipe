@@ -62,7 +62,7 @@ final class SkillReferences
             '',
             'Every component this app\'s docs can use. Anything else renders as escaped text and fails `php artisan larecipe:validate`.',
             '',
-            '- Write a component as a PascalCase tag on its own line: `<Callout type="warning">`, content on the next lines, then `</Callout>`. A component without content closes itself: `<Video src="/demo.mp4" />`.',
+            '- Write a component as a PascalCase tag on its own line: `<Callout type="warning">`, content on the next lines, then `</Callout>`. A component without content closes itself: `<Name prop="value" />`.',
             '- `:::callout` directives produce the same component, if you prefer that syntax.',
             '- Props are strings. Write booleans as `prop="true"` or `prop="false"` and lists or objects as JSON strings. There are no JSX expressions.',
             '- Prefer GitHub alerts (`> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`) for simple callouts: they read well on GitHub too.',

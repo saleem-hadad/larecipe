@@ -1,0 +1,29 @@
+{
+  "description": "LaRecipe: hold a push once when it leaves docs pages stale, and map the docs when a session starts. Deterministic; never calls an AI. Turn off for a session with LARECIPE_HOOKS=off.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "php \"${CLAUDE_PLUGIN_ROOT}/bin/larecipe-hook\" pre-push",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "php \"${CLAUDE_PLUGIN_ROOT}/bin/larecipe-hook\" session-start",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
