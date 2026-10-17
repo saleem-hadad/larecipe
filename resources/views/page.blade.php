@@ -42,6 +42,10 @@
 </head>
 <body class="lr-body-root">
     <a class="lr-skip" href="#lr-article">{{ $t('skip') }}</a>
+    @if (! empty($boot['urls']['llms']))
+        {{-- For agents that read the HTML: the Markdown index. Out of the tab order; people use the For agents menu. --}}
+        <a class="lr-sr" href="{{ $boot['urls']['llms'] }}" tabindex="-1">{{ $t('agents_index') }}</a>
+    @endif
     <div id="larecipe" class="lr-root" data-lr-root data-layout="{{ $boot['page']['layout'] }}">
         @include('larecipe::prerender.header')
         <div class="lr-shell">
