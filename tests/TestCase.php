@@ -14,6 +14,9 @@ abstract class TestCase extends Orchestra
 
     protected function defineEnvironment($app): void
     {
+        // Independent of whatever a local `testbench serve` wrote into the skeleton's .env.
+        $app['config']->set('app.url', 'http://localhost');
+
         $app['config']->set('larecipe.sets', [
             'docs' => [
                 'route' => ['prefix' => 'docs', 'middleware' => ['web']],
