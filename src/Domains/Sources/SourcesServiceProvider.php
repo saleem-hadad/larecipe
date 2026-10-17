@@ -4,6 +4,7 @@ namespace LaRecipe\Domains\Sources;
 
 use Illuminate\Contracts\Events\Dispatcher as Events;
 use Illuminate\Support\ServiceProvider;
+use LaRecipe\Domains\Access\Contracts\Authorizer;
 use LaRecipe\Domains\Content\Contracts\ManifestProvider;
 use LaRecipe\Domains\Content\DTOs\SetConfig;
 use LaRecipe\Domains\Sources\Commands\CacheWarmCommand;
@@ -25,9 +26,16 @@ use LaRecipe\Domains\Sources\Laravel\SourceDrivers;
 use LaRecipe\Domains\Sources\Laravel\SourceManager;
 use LaRecipe\Domains\Sources\Laravel\SourceModels;
 use LaRecipe\Domains\Sources\Listeners\WarmChangedSet;
+use LaRecipe\Domains\Sources\Mcp\AuthorSession;
+use LaRecipe\Domains\Sources\Mcp\DeletePageTool;
+use LaRecipe\Domains\Sources\Mcp\MovePageTool;
+use LaRecipe\Domains\Sources\Mcp\UpdateManifestTool;
+use LaRecipe\Domains\Sources\Mcp\UpdateNavigationTool;
+use LaRecipe\Domains\Sources\Mcp\WritePageTool;
 use LaRecipe\Domains\Sources\Services\DocsMigrationOperations;
 use LaRecipe\Domains\Sources\Services\DocsMigrationRenderer;
 use LaRecipe\Domains\Sources\Services\ReviewPolicy;
+use LaRecipe\LaRecipe;
 use LaRecipe\Support\Contracts\Clock;
 use LaRecipe\Support\Paths;
 
@@ -76,11 +84,24 @@ final class SourcesServiceProvider extends ServiceProvider
             $app->make(Clock::class),
             $app->basePath('stubs/docs-migration.stub'),
         ));
+
+        // The local stdio server runs in the console; the web endpoint does not.
+        $this->app->bind(AuthorSession::class, fn ($app) => new AuthorSession(
+            $app,
+            $app->make(SourceResolver::class),
+            $app->make(Authorizer::class),
+            $app->runningInConsole(),
+        ));
     }
 
     public function boot(): void
     {
         $this->app->make(Events::class)->listen(ContentChanged::class, WarmChangedSet::class);
+
+        // The Agents domain composes these into the MCP server (local always; web for database sets with author_tools).
+        foreach ([WritePageTool::class, MovePageTool::class, DeletePageTool::class, UpdateNavigationTool::class, UpdateManifestTool::class] as $tool) {
+            $this->app->make(LaRecipe::class)->mcpTool($tool, author: true);
+        }
 
         if ($this->usesDatabaseSource()) {
             // The tables load from the package until the host publishes them (to customize them).
