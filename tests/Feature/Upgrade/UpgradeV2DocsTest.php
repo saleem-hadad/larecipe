@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use LaRecipe\Domains\Upgrade\Actions\PlanUpgradeAction;
 use LaRecipe\Domains\Upgrade\Actions\ValidateUpgradeAction;
 use LaRecipe\Domains\Upgrade\DTOs\V2Project;
@@ -165,4 +166,10 @@ it('refuses to move the docs into a folder that already has files', function () 
     file_put_contents($this->base.'/docs/keep.md', '# Keep');
 
     $this->artisan('larecipe:upgrade', ['--move-to' => 'docs'])->expectsOutputToContain('already has files')->assertFailed();
+});
+
+it('shows the whole --relative-links help text', function () {
+    $option = Artisan::all()['larecipe:upgrade']->getDefinition()->getOption('relative-links');
+
+    expect($option->getDescription())->toEndWith('into relative .md links');
 });
