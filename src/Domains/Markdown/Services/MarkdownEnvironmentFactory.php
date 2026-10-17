@@ -4,14 +4,21 @@ namespace LaRecipe\Domains\Markdown\Services;
 
 use Closure;
 use LaRecipe\Domains\Markdown\Components\ComponentRegistry;
+use LaRecipe\Domains\Markdown\Parser\CodeBlockRenderer;
 use LaRecipe\Domains\Markdown\Parser\ComponentNode;
 use LaRecipe\Domains\Markdown\Parser\ComponentRenderer;
 use LaRecipe\Domains\Markdown\Parser\ComponentStartParser;
+use LaRecipe\Domains\Markdown\Parser\DirectiveStartParser;
+use LaRecipe\Domains\Markdown\Parser\MathStartParser;
+use LaRecipe\Domains\Markdown\Parser\SnippetIncludeStartParser;
+use LaRecipe\Domains\Markdown\Support\PassTheme;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Environment\EnvironmentBuilderInterface;
 use League\CommonMark\Event\DocumentParsedEvent;
 use League\CommonMark\Extension\Attributes\AttributesExtension;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
+use League\CommonMark\Extension\CommonMark\Node\Block\IndentedCode;
 use League\CommonMark\Extension\DescriptionList\DescriptionListExtension;
 use League\CommonMark\Extension\Footnote\FootnoteExtension;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
@@ -21,7 +28,12 @@ use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
  *
  * Raw HTML is escaped. Component tags are recognized by our own block parser at
  * priority 45, ahead of CommonMark's HTML block parser (40), so they work
- * without ever allowing raw HTML.
+ * without ever allowing raw HTML. Directives (`:::`) start at 80, display math
+ * (`$$`) at 55 and snippet includes (`<<<`) at 47.
+ *
+ * After parsing, the document transformer (-40) turns alerts, mermaid fences and
+ * includes into their final nodes, then the document processor (-50) assigns
+ * heading ids and resolves links. Every renderer reads the result.
  */
 final class MarkdownEnvironmentFactory
 {
@@ -31,6 +43,8 @@ final class MarkdownEnvironmentFactory
     public function __construct(
         private readonly ComponentRegistry $components,
         private readonly array $config = [],
+        private readonly CodeHighlighter $highlighter = new CodeHighlighter,
+        private readonly SnippetResolver $snippets = new SnippetResolver,
     ) {}
 
     /** @param Closure(EnvironmentBuilderInterface, RenderState): void $extender */
@@ -54,8 +68,16 @@ final class MarkdownEnvironmentFactory
         $environment->addExtension(new FootnoteExtension);
         $environment->addExtension(new DescriptionListExtension);
 
-        $environment->addBlockStartParser(new ComponentStartParser, 45);
+        $environment->addBlockStartParser(new DirectiveStartParser($this->components), 80);
+        $environment->addBlockStartParser(new MathStartParser, 55);
+        $environment->addBlockStartParser(new SnippetIncludeStartParser, 47);
+        $environment->addBlockStartParser(new ComponentStartParser($this->components), 45);
+
         $environment->addRenderer(ComponentNode::class, new ComponentRenderer($this->components, $state));
+        $environment->addRenderer(FencedCode::class, new CodeBlockRenderer($this->highlighter), 10);
+        $environment->addRenderer(IndentedCode::class, new CodeBlockRenderer($this->highlighter), 10);
+
+        $environment->addEventListener(DocumentParsedEvent::class, new DocumentTransformer($state, $this->snippets), -40);
         $environment->addEventListener(DocumentParsedEvent::class, new DocumentProcessor($state), -50);
 
         foreach ($this->extenders as $extender) {
@@ -65,9 +87,9 @@ final class MarkdownEnvironmentFactory
         return $environment;
     }
 
-    /** Part of the render cache key: changes when extensions or config change. */
+    /** Part of the render cache key: changes when extensions, config or the code theme change. */
     public function version(): string
     {
-        return substr(hash('xxh128', json_encode($this->config).count($this->extenders).$this->components->version()), 0, 12);
+        return substr(hash('xxh128', json_encode($this->config).count($this->extenders).$this->components->version().PassTheme::VERSION), 0, 12);
     }
 }

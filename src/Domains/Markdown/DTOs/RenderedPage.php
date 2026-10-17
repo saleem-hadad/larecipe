@@ -11,7 +11,8 @@ final readonly class RenderedPage
      * @param  list<TocItem>  $toc
      * @param  list<string>  $components  component names used on the page
      * @param  list<array{href: string, line: ?int}>  $links  internal links, for validation
-     * @param  list<array{component: string, message: string}>  $issues  render-time problems, for validation
+     * @param  list<array{rule?: string, level?: string, message: string, component?: string, line?: int}>  $issues  render-time problems, for validation
+     * @param  array<string, string>  $dependencies  files the render read (snippet includes) => content hash
      */
     public function __construct(
         public string $html,
@@ -22,7 +23,35 @@ final readonly class RenderedPage
         public array $issues = [],
         public bool $hasLiveReferences = false,
         public array $abilities = [],
+        public array $dependencies = [],
     ) {}
+
+    /** Errors make a render unfit to cache: the author has to fix the page first. */
+    public function hasErrors(): bool
+    {
+        foreach ($this->issues as $issue) {
+            if (($issue['level'] ?? 'error') === 'error') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Whether a file this render read (a snippet include) has changed since. The
+     * page's own content hash cannot see those files, so caches check this.
+     */
+    public function dependenciesChanged(): bool
+    {
+        foreach ($this->dependencies as $file => $hash) {
+            if ((is_file($file) ? hash_file('xxh128', $file) : 'missing') !== $hash) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public function toArray(): array
     {
@@ -35,6 +64,7 @@ final readonly class RenderedPage
             'issues' => $this->issues,
             'has_live_references' => $this->hasLiveReferences,
             'abilities' => $this->abilities,
+            'dependencies' => $this->dependencies,
         ];
     }
 
@@ -49,6 +79,7 @@ final readonly class RenderedPage
             issues: $data['issues'] ?? [],
             hasLiveReferences: $data['has_live_references'] ?? false,
             abilities: $data['abilities'] ?? [],
+            dependencies: $data['dependencies'] ?? [],
         );
     }
 }

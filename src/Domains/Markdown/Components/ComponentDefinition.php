@@ -14,9 +14,14 @@ use Closure;
 final class ComponentDefinition
 {
     /**
+     * A raw component keeps its content as literal text instead of parsing it as
+     * Markdown (a Mermaid diagram, a TeX formula): the fallback receives it
+     * escaped, the Markdown form receives it verbatim, and the island gets it as
+     * the "source" prop.
+     *
      * @param  array<string, array<string, mixed>>  $props  prop name => {type, default, required, enum, description}
      * @param  (Closure(array<string, mixed>, string, RenderedComponent): string)|null  $fallback  props, children HTML
-     * @param  (Closure(array<string, mixed>, string): string)|null  $markdown  props, children Markdown
+     * @param  (Closure(array<string, mixed>, string, RenderedComponent): string)|null  $markdown  props, children Markdown
      */
     public function __construct(
         public readonly string $name,
@@ -27,6 +32,7 @@ final class ComponentDefinition
         public ?string $description = null,
         public bool $chromeOnly = false,
         public string $origin = 'builtin',
+        public bool $raw = false,
     ) {}
 
     /**
@@ -85,6 +91,7 @@ final class ComponentDefinition
             'description' => $this->description,
             'props' => $this->props,
             'island' => $this->island,
+            'raw' => $this->raw,
             'origin' => $this->origin,
         ];
     }
