@@ -72,16 +72,35 @@ final class DocsIndexRenderer
         $line = "- `{$page->ref->path}`: ".$this->clean($page->title);
 
         if ($descriptionLimit > 0 && $page->description !== null && trim($page->description) !== '') {
-            $description = $this->clean($page->description);
-
-            if (mb_strlen($description) > $descriptionLimit) {
-                $description = rtrim(mb_substr($description, 0, $descriptionLimit - 3)).'...';
-            }
-
-            $line .= '. '.rtrim($description, '.').'.';
+            $line .= '. '.$this->shorten($this->clean($page->description), $descriptionLimit);
         }
 
         return $line;
+    }
+
+    /**
+     * A description within the limit: whole, or cut at its last full sentence,
+     * or else at its last full word with an ellipsis. Never inside a word.
+     */
+    private function shorten(string $description, int $limit): string
+    {
+        if (mb_strlen($description) <= $limit) {
+            return rtrim($description, '.').'.';
+        }
+
+        $cut = mb_substr($description, 0, $limit);
+
+        if (preg_match('/^(.{'.intdiv($limit, 2).',}[.?])\s/u', $cut, $sentence)) {
+            return $sentence[1];
+        }
+
+        $cut = mb_substr($description, 0, $limit - 1);
+
+        if (mb_substr($description, $limit - 1, 1) !== ' ' && ($space = mb_strrpos($cut, ' ')) !== false) {
+            $cut = mb_substr($cut, 0, $space);
+        }
+
+        return rtrim($cut, ' ,;:.').'…';
     }
 
     private function clean(string $text): string
