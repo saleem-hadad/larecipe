@@ -46,6 +46,13 @@ final class DeliveryServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(Paths::resources('views'), 'larecipe');
 
+        if ($this->app->runningInConsole()) {
+            $this->commands([Commands\OptimizeCommand::class, Commands\ClearCommand::class]);
+
+            // php artisan optimize and optimize:clear run these too, so deploy scripts need no new step.
+            $this->optimizes(optimize: 'larecipe:optimize', clear: 'larecipe:clear', key: 'larecipe');
+        }
+
         if (! $this->app->routesAreCached()) {
             $this->app->booted(function () {
                 $this->app->make(RouteRegistrar::class)->register($this->app->make('larecipe.set-configs'));
