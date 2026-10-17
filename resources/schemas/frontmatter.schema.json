@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://larecipe.saleem.dev/schemas/3.x/frontmatter.json",
+  "title": "LaRecipe page frontmatter",
+  "description": "The YAML at the top of a page: configuration for that page only. Keys LaRecipe does not know are kept and passed to the UI as page meta.",
+  "type": "object",
+  "properties": {
+    "title": { "type": "string", "minLength": 1, "description": "Required unless the first # heading gives it." },
+    "description": { "type": "string", "description": "One sentence. Used in llms.txt, meta tags, search snippets and list_pages." },
+    "order": { "type": "number", "description": "Position in zero-config navigation." },
+    "icon": { "type": "string" },
+    "sources": {
+      "description": "Globs of the code this page documents, for drift detection.",
+      "oneOf": [{ "type": "string" }, { "type": "array", "items": { "type": "string" } }]
+    },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "badge": {
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "required": ["label"],
+          "properties": { "label": { "type": "string" }, "tone": { "enum": ["info", "success", "warning", "danger", "neutral"] } },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "since": { "type": ["string", "number"] },
+    "deprecated": { "type": ["boolean", "string"] },
+    "hidden": { "type": "boolean", "description": "Routable but not listed in the navigation." },
+    "noindex": { "type": "boolean" },
+    "visibility": { "enum": ["public", "private"], "description": "private pages need the viewLarecipe gate." },
+    "redirect_from": {
+      "oneOf": [{ "type": "string" }, { "type": "array", "items": { "type": "string" } }]
+    },
+    "layout": { "enum": ["default", "wide", "full"] },
+    "inserts": {
+      "oneOf": [
+        { "const": false },
+        { "type": "object", "additionalProperties": { "type": "boolean" } }
+      ]
+    },
+    "type": { "enum": ["page", "openapi"] },
+    "spec": { "type": "string" }
+  }
+}
