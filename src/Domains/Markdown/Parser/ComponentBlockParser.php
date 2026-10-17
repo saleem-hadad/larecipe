@@ -48,12 +48,24 @@ final class ComponentBlockParser extends AbstractBlockContinueParser
         $active = $activeBlockParser->getBlock();
         $insideCode = $active instanceof FencedCode || $active instanceof IndentedCode || $active instanceof HtmlBlock;
 
-        if (! $insideCode && ! $cursor->isIndented() && trim($cursor->getRemainder()) === '</'.$this->block->name.'>') {
+        if (! $insideCode && ! $cursor->isIndented() && trim($cursor->getRemainder()) === '</'.$this->block->name.'>' && ! $this->hasOpenNamesakeInside($active)) {
             $cursor->advanceToEnd();
 
             return BlockContinue::finished();
         }
 
         return BlockContinue::at($cursor);
+    }
+
+    /** A closing tag belongs to the innermost open component of that name (<Can> inside <Can>). */
+    private function hasOpenNamesakeInside(AbstractBlock $active): bool
+    {
+        for ($node = $active; $node !== null && $node !== $this->block; $node = $node->parent()) {
+            if ($node instanceof ComponentNode && $node->name === $this->block->name) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

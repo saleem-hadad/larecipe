@@ -43,4 +43,9 @@ final class GateAuthorizer implements Authorizer
     {
         return $this->gate->has($ability);
     }
+
+    public function definedAbilities(): array
+    {
+        return array_values(array_map('strval', array_keys($this->gate->abilities())));
+    }
 }
