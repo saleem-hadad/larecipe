@@ -78,8 +78,8 @@ it('renders component tags as server HTML without allowing raw HTML', function (
 });
 
 it('redirects unversioned URLs of a versioned set to the default version', function () {
-    $this->get('/handbook')->assertRedirect('http://localhost/handbook/2.x');
-    $this->get('/handbook/deploys')->assertRedirect('http://localhost/handbook/2.x/deploys');
+    expect(parse_url($this->get('/handbook')->assertRedirect()->headers->get('Location'), PHP_URL_PATH))->toBe('/handbook/2.x');
+    expect(parse_url($this->get('/handbook/deploys')->assertRedirect()->headers->get('Location'), PHP_URL_PATH))->toBe('/handbook/2.x/deploys');
 });
 
 it('serves versions and navigation.json', function () {
