@@ -1,0 +1,44 @@
+/* The Subscribe form, on LaRecipe's tokens so it follows the set's theme, dark mode and RTL. */
+.lr-subscribe {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 24px;
+  padding: 20px;
+  border: 1px solid var(--lr-hairline);
+  border-radius: var(--lr-radius-md);
+}
+
+.lr-subscribe-copy {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
+.lr-subscribe-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--lr-ink);
+}
+
+.lr-subscribe-body {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--lr-ink-muted);
+}
+
+.lr-subscribe-row {
+  display: flex;
+  flex: 1 1 300px;
+  gap: 8px;
+}
+
+.lr-subscribe-row .lr-input {
+  flex: 1;
+}
+
+.lr-subscribe-error {
+  flex-basis: 100%;
+}

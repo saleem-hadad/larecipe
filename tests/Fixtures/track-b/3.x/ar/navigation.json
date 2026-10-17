@@ -1,0 +1,15 @@
+{
+  "groups": [
+    { "group": "البداية", "pages": ["index", "installation", "configuration"] },
+    {
+      "group": "الكتابة",
+      "pages": [
+        "components",
+        "guides/webhooks",
+        { "group": "المرجع", "pages": ["guides/frontmatter", "guides/long-page"] }
+      ]
+    },
+    { "group": "الوكلاء", "pages": ["agents"] },
+    { "label": "صفحة الحالة", "href": "https://status.example.com" }
+  ]
+}

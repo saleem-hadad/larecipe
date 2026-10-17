@@ -1,0 +1,3 @@
+{{-- LaRecipe's ticket mark: ink on paper, paper on night. Never violet, never animated. --}}
+@php($__markSize = $markSize ?? 20)
+<svg class="lr-mark" width="{{ $__markSize }}" height="{{ (int) round($__markSize * 1.2) }}" viewBox="0 0 40 48" aria-hidden="true" focusable="false"><path d="M6 7a3 3 0 0 1 3-3h22a3 3 0 0 1 3 3v37a3.5 3.5 0 0 0-7 0a3.5 3.5 0 0 0-7 0a3.5 3.5 0 0 0-7 0a3.5 3.5 0 0 0-7 0Z" fill="currentColor"/><rect x="11" y="11" width="18" height="3.6" rx="1.8" class="lr-mark-cut"/><rect x="11" y="19" width="11" height="3" rx="1.5" class="lr-mark-cut"/><rect x="11" y="26" width="11" height="3" rx="1.5" class="lr-mark-cut"/></svg>

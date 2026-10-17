@@ -7,7 +7,6 @@ use LaRecipe\Domains\Access\Services\PageAccess;
 use LaRecipe\Domains\Content\DTOs\DocSet;
 use LaRecipe\Domains\Content\DTOs\Page;
 use LaRecipe\Domains\Delivery\Services\DocsUrls;
-use LaRecipe\LaRecipe;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -22,7 +21,11 @@ final class ResponseHeaders
         private readonly Assets $assets,
     ) {}
 
-    public function apply(Response $response, DocSet $set, Page $page, Request $request, string $format): Response
+    /**
+     * @param  bool  $perRequest  the body carries something personal to this session (a CSRF
+     *                            token in a component's fallback form), decided before it was filled in
+     */
+    public function apply(Response $response, DocSet $set, Page $page, Request $request, string $format, bool $perRequest = false): Response
     {
         $links = ['<'.$this->urls->page($set, $page->ref, true).'>; rel="alternate"; type="text/markdown"'];
 
@@ -47,13 +50,14 @@ final class ResponseHeaders
             $response->setLastModified($page->updatedAt);
         }
 
-        $content = (string) $response->getContent();
-        $perRequest = str_contains($content, LaRecipe::CSRF_PLACEHOLDER) || $format === 'html' && $this->access->user() !== null;
-
+        $perRequest = $perRequest || ($format === 'html' && $this->access->user() !== null);
         $sharedByEveryone = $this->access->isPublic($set) && $page->frontmatter->visibility()->value !== 'private';
 
         if ($sharedByEveryone && ! $perRequest) {
             $response->headers->set('Cache-Control', 'public, max-age=60, s-maxage=600');
+        } elseif ($sharedByEveryone) {
+            // A public page with a session token: never stored by a shared cache, still indexable.
+            $response->headers->set('Cache-Control', 'private, no-cache');
         } else {
             $response->headers->set('Cache-Control', 'private, no-store');
             $response->headers->set('X-Robots-Tag', 'noindex');

@@ -6,10 +6,19 @@
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
   "exports": {
-    ".": "./src/index.js"
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    }
   },
+  "files": [
+    "src"
+  ],
   "peerDependencies": {
     "vite": "^6.0.0 || ^7.0.0"
+  },
+  "devDependencies": {
+    "vite": "^7.1.0"
   },
   "license": "MIT"
 }

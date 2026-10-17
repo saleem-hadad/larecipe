@@ -1,10 +1,11 @@
+{{-- An insert point: the server fallbacks of the components placed here, mounted as islands by React (ui/src/app/Insert.tsx). --}}
 @php
-    $names = $boot['inserts'][$point] ?? [];
-    $optOut = $boot['page']['inserts'] ?? [];
-    $html = $names === [] || $optOut === false || (($optOut[$point] ?? true) === false)
+    $insertNames = $boot['inserts'][$point] ?? [];
+    $insertOptOut = $boot['page']['inserts'] ?? [];
+    $insertHtml = $insertNames === [] || $insertOptOut === false || (($insertOptOut[$point] ?? true) === false)
         ? ''
-        : app(\LaRecipe\Domains\Delivery\Support\InsertRenderer::class)->render($names, $boot);
+        : app(\LaRecipe\Domains\Delivery\Support\InsertRenderer::class)->render($insertNames, $boot);
 @endphp
-@if ($html !== '')
-<div class="lr-insert" data-lr-insert="{{ $point }}">{!! $html !!}</div>
+@if ($insertHtml !== '')
+<div class="lr-insert" data-lr-insert="{{ $point }}">{!! $insertHtml !!}</div>
 @endif
