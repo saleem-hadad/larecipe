@@ -5,6 +5,8 @@ import { defineConfig } from 'vite'
 // line a host adds to build its LaRecipe extension.
 export default defineConfig({
   plugins: [larecipe({ input: 'resources/larecipe/extension.tsx', outDir: 'public/build/larecipe' })],
+  // Like laravel-vite-plugin: public/ is served as is, never copied into a build inside it.
+  publicDir: false,
   build: {
     outDir: 'public/build/app',
     emptyOutDir: true,
