@@ -1204,7 +1204,7 @@ interface SearchDriver
 }
 ```
 
-`LaRecipe::extendSearch('meilisearch', fn ($app, array $config) => new MeilisearchDriver(...))`, then `search.driver = 'meilisearch'`. With a custom driver, the UI queries the server endpoint instead of the client index, and MCP and Ask AI use the driver. Drivers receive records with their required abilities and must filter by the reader's; the published driver contract tests check it.
+`LaRecipe::extendSearch('meilisearch', fn ($app, array $config) => new MeilisearchDriver(...))`, then `search.driver = 'meilisearch'`. With a custom driver, the UI queries the server endpoint instead of the client index, and MCP and Ask AI use the driver. Drivers receive records with their required abilities and must filter by the reader's; the published driver contract tests check it. LaRecipe does not rely on that: every hit a driver returns is checked again against the query's visible pages and the reader's abilities, and dropped when it fails. A hit names the record it matched (`SearchHit::$record`); without it, a hit in a section that holds gated blocks loses its snippet for a reader who lacks one of their abilities.
 
 - `SearchPerformed` events carry the query and a zero-result flag (section 18), so hosts can forward search gaps to their own analytics. LaRecipe stores nothing.
 - Keyword retrieval is the only retrieval mode; there is no embeddings or vector store dependency.
