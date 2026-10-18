@@ -40,6 +40,7 @@ final class PackageAssetController
             'Content-Type' => $this->mime($path),
             'Cache-Control' => $build === $this->assets->build() ? 'public, max-age=31536000, immutable' : 'public, max-age=60',
             'Vary' => 'Accept-Encoding',
+            'X-Content-Type-Options' => 'nosniff',
         ]);
 
         if ($encoding !== null) {
