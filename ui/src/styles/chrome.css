@@ -355,19 +355,16 @@
   /* ---- Shell -------------------------------------------------------------- */
 
   .lr-shell {
-    --lr-sidebar-column: var(--lr-sidebar-width);
-
     display: grid;
     flex: 1;
-    grid-template-columns: var(--lr-sidebar-column) minmax(0, 1fr) var(--lr-rail-width);
-    transition: grid-template-columns var(--lr-duration-panel) var(--lr-ease);
+    grid-template-columns: var(--lr-sidebar-width) minmax(0, 1fr) var(--lr-rail-width);
     width: 100%;
     max-width: 1440px;
     margin-inline: auto;
   }
 
   .lr-root[data-layout='wide'] .lr-shell {
-    grid-template-columns: var(--lr-sidebar-column) minmax(0, 1fr);
+    grid-template-columns: var(--lr-sidebar-width) minmax(0, 1fr);
   }
 
   .lr-root[data-layout='wide'] .lr-rail {
@@ -415,7 +412,6 @@
     scrollbar-width: thin;
     /* Past the 1440px shell, the sidebar's color runs to the edge of the window. */
     border-image: linear-gradient(var(--lr-sidebar-bg) 0 0) fill 0 / / 0 0 0 100vw;
-    transition: visibility 0s;
   }
 
   html[dir='rtl'] .lr-sidebar {
@@ -423,20 +419,70 @@
     border-image: linear-gradient(var(--lr-sidebar-bg) 0 0) fill 0 / / 0 100vw 0 0;
   }
 
-  /* Hidden by the switch next to the logo (wide screens only; phones keep the sheet). */
+  /* Hidden by the switch next to the logo (wide screens only; phones keep the sheet).
+     The sidebar slides out at its full width, then the layout changes once, so
+     nothing rewraps mid-animation (ui/src/app/sidebar.ts sets the states). */
   @media (min-width: 641px) {
-    .lr-sidebar > * {
-      min-width: calc(var(--lr-sidebar-width) - 28px);
+    .lr-sidebar {
+      transition:
+        transform var(--lr-duration-panel) var(--lr-ease),
+        opacity var(--lr-duration-panel) var(--lr-ease);
     }
 
+    html[data-lr-sidebar='hiding'] .lr-sidebar {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+
+    html[dir='rtl'][data-lr-sidebar='hiding'] .lr-sidebar {
+      transform: translateX(100%);
+    }
+
+    /* The hidden sidebar leaves the grid, so the columns are written without it. */
     html[data-lr-sidebar='hidden'] .lr-shell {
-      --lr-sidebar-column: 0px;
+      grid-template-columns: minmax(0, 1fr) var(--lr-rail-width);
+    }
+
+    html[data-lr-sidebar='hidden'] .lr-root[data-layout='wide'] .lr-shell {
+      grid-template-columns: minmax(0, 1fr);
     }
 
     html[data-lr-sidebar='hidden'] .lr-sidebar {
-      padding-inline: 0;
-      visibility: hidden;
-      transition: visibility 0s linear var(--lr-duration-panel);
+      display: none;
+    }
+
+    html[data-lr-sidebar='showing'] .lr-sidebar {
+      animation: lr-sidebar-in var(--lr-duration-panel) var(--lr-ease);
+    }
+
+    html[dir='rtl'][data-lr-sidebar='showing'] .lr-sidebar {
+      animation-name: lr-sidebar-in-rtl;
+    }
+
+    /* Without the sidebar the article widens (tokens.css) and centers between the edge and the rail. */
+    html[data-lr-sidebar='hidden'] .lr-main {
+      padding-inline: max(var(--lr-article-gutter), calc((100% - var(--lr-prose-width)) / 2));
+    }
+  }
+
+  /* Tablets have no rail, so a hidden sidebar leaves the article alone. */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    html[data-lr-sidebar='hidden'] .lr-shell {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @keyframes lr-sidebar-in {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes lr-sidebar-in-rtl {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
     }
   }
 
@@ -478,6 +524,13 @@
   .lr-nav-group > .lr-nav-label,
   .lr-nav-group > details > .lr-nav-summary {
     padding: 0 10px 8px;
+  }
+
+  /* Section titles read as headings, not links: ink and bold. */
+  .lr-nav-tab-group > .lr-nav-list > .lr-nav-group > .lr-nav-label,
+  .lr-nav-tab-group > .lr-nav-list > .lr-nav-group > details > .lr-nav-summary {
+    font-weight: 700;
+    color: var(--lr-ink);
   }
 
   .lr-nav-group .lr-nav-list > .lr-nav-group,
@@ -551,7 +604,6 @@
     gap: 8px;
     min-height: 30px;
     padding: 4px 10px;
-    border-inline-start: 2px solid transparent;
     border-radius: var(--lr-radius-sm);
     color: var(--lr-ink-muted);
     font-size: 14px;
@@ -567,13 +619,11 @@
     color: var(--lr-ink);
   }
 
-  /* The current page: violet text on violet soft, with a 2px violet edge at the start. */
+  /* The current page: violet text on the sidebar's own violet tint (the hover
+     shade of the accent, so it clears AA on the tint in both modes). */
   .lr-nav-link[aria-current='page'] {
-    border-inline-start-color: var(--lr-accent-current);
-    border-start-start-radius: 0;
-    border-end-start-radius: 0;
-    background: var(--lr-accent-soft);
-    color: var(--lr-accent-current);
+    background: var(--lr-sidebar-active);
+    color: var(--lr-accent-hover);
     font-weight: 500;
   }
 
@@ -1172,7 +1222,7 @@
   /* Tablet: the rail hides; page actions and the TOC move under the title. */
   @media (max-width: 1024px) {
     .lr-shell {
-      grid-template-columns: var(--lr-sidebar-column) minmax(0, 1fr);
+      grid-template-columns: var(--lr-sidebar-width) minmax(0, 1fr);
     }
 
     .lr-rail {

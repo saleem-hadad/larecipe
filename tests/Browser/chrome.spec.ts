@@ -10,20 +10,29 @@ test('the header shows the LaRecipe logo and the docs name', async ({ page }) =>
   await expect(brand.locator('.lr-brand-name')).toHaveText('LaRecipe')
 })
 
-test('the switch next to the logo hides the navigation and remembers it', async ({ page }) => {
+test('the switch next to the logo hides the navigation cleanly, widens the article and remembers it', async ({ page }) => {
   await page.goto('/guide/3.x/installation')
   await waitForApp(page)
 
   const toggle = page.getByRole('switch', { name: 'Show the navigation' })
   const sidebar = page.locator('.lr-sidebar')
+  const article = page.locator('#lr-article')
+  const widthOf = (locator: typeof article) => locator.evaluate((element) => Math.round(element.getBoundingClientRect().width))
   await expect(toggle).toHaveAttribute('aria-checked', 'true')
   await expect(sidebar).toBeVisible()
+  const before = await widthOf(article)
 
+  // The sidebar slides out at its full width first, so nothing rewraps while it moves.
   await toggle.click()
+  await expect(page.locator('html')).toHaveAttribute('data-lr-sidebar', 'hiding')
+  expect(await widthOf(article)).toBe(before)
+  expect(await widthOf(sidebar)).toBeGreaterThan(200)
+
+  // Then the layout changes once: the article widens and the choice is remembered.
+  await expect(page.locator('html')).toHaveAttribute('data-lr-sidebar', 'hidden')
   await expect(toggle).toHaveAttribute('aria-checked', 'false')
   await expect(sidebar).toBeHidden()
-  const left = await page.locator('.lr-page-header').evaluate((element) => element.getBoundingClientRect().left)
-  expect(left).toBeLessThan(120)
+  expect(await widthOf(article)).toBe(880)
   expect(await page.evaluate(() => localStorage.getItem('larecipe:sidebar'))).toBe('hidden')
 
   // Hidden before first paint on the next load, with no flash of the sidebar.
@@ -34,20 +43,22 @@ test('the switch next to the logo hides the navigation and remembers it', async 
 
   await toggle.click()
   await expect(sidebar).toBeVisible()
+  await expect(page.locator('html')).not.toHaveAttribute('data-lr-sidebar', /./)
+  expect(await widthOf(article)).toBe(before)
   expect(await page.evaluate(() => localStorage.getItem('larecipe:sidebar'))).toBe('shown')
 })
 
-test('the current page in the navigation has a 2px violet edge', async ({ page }) => {
+test('the sidebar reads as its own panel: bold section titles and a violet tint for the current page', async ({ page }) => {
   await page.goto('/guide/3.x/installation')
   await waitForApp(page)
 
-  const active = page.locator('.lr-sidebar .lr-nav-link[aria-current="page"]')
-  await expect(active).toHaveCSS('border-left-width', '2px')
-  await expect(active).toHaveCSS('border-left-style', 'solid')
-  expect(await active.evaluate((element) => getComputedStyle(element).borderLeftColor)).not.toBe('rgba(0, 0, 0, 0)')
-  expect(await page.locator('.lr-sidebar').evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe(
-    await page.evaluate(() => getComputedStyle(document.body).backgroundColor),
-  )
+  const sidebar = page.locator('.lr-sidebar')
+  const active = sidebar.locator('.lr-nav-link[aria-current="page"]')
+  const body = await page.evaluate(() => getComputedStyle(document.body).backgroundColor)
+  expect(await sidebar.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe(body)
+  await expect(active).toHaveCSS('border-left-width', '0px')
+  expect(await active.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)')
+  await expect(sidebar.locator('.lr-nav-tab-group > .lr-nav-list > .lr-nav-group > .lr-nav-label').first()).toHaveCSS('font-weight', '700')
 })
 
 test('a thin line fills along the top as the reader scrolls', async ({ page }) => {
@@ -77,11 +88,14 @@ test('back to top appears well down a page and returns to the title', async ({ p
   await expect(button).toBeHidden()
 })
 
-test('code blocks wear a thin violet top edge', async ({ page }) => {
+test('code blocks sit on the slate slab with a soft shadow and no top edge', async ({ page }) => {
   await page.goto('/guide/3.x/components')
   await waitForApp(page)
 
-  await expect(page.locator('.lr-prose > figure.lr-code').first()).toHaveCSS('border-top-width', '2px')
-  await expect(page.locator('.lr-code-group').first()).toHaveCSS('border-top-width', '2px')
-  await expect(page.locator('.lr-code-group figure.lr-code').first()).toHaveCSS('border-top-width', '0px')
+  for (const block of [page.locator('.lr-prose > figure.lr-code').first(), page.locator('.lr-code-group').first()]) {
+    await expect(block).toHaveCSS('border-top-width', '0px')
+    await expect(block).toHaveCSS('background-color', 'rgb(52, 66, 88)')
+    expect(await block.evaluate((element) => getComputedStyle(element).boxShadow)).not.toBe('none')
+  }
+  await expect(page.locator('.lr-code-group figure.lr-code').first()).toHaveCSS('box-shadow', 'none')
 })

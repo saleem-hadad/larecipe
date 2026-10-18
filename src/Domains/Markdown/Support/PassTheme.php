@@ -4,11 +4,11 @@ namespace LaRecipe\Domains\Markdown\Support;
 
 /**
  * "larecipe-pass": the one syntax theme LaRecipe ships. Code blocks sit on a
- * dark slab in both light and dark mode (DESIGN.md, Code), so a single dark
+ * slate slab (#344258) in both light and dark mode (DESIGN.md, Code), so a single dark
  * theme serves both and the HTML carries no per-mode CSS variables.
  *
  * Colors come from DESIGN.json's syntax tokens: keywords #B4A7FF, strings
- * #9FDDB4, comments at 42% of the code foreground, functions #F2C97D, numbers
+ * #9FDDB4, comments at 72% of the code foreground, functions #F2C97D, numbers
  * and constants #8FD3FF. Bump VERSION whenever a color changes, so cached
  * highlights are rebuilt.
  */
@@ -16,7 +16,7 @@ final class PassTheme
 {
     public const NAME = 'larecipe-pass';
 
-    public const VERSION = '1';
+    public const VERSION = '3';
 
     public const TEXT = '#E8E7EE';
 
@@ -24,15 +24,15 @@ final class PassTheme
 
     public const STRING = '#9FDDB4';
 
-    /** rgba(232, 231, 238, 0.42) written as #RRGGBBAA. */
-    public const COMMENT = '#E8E7EE6B';
+    /** rgba(232, 231, 238, 0.72) written as #RRGGBBAA: AA contrast on the slate slab. */
+    public const COMMENT = '#E8E7EEB8';
 
     public const FUNCTION = '#F2C97D';
 
     public const CONSTANT = '#8FD3FF';
 
-    /** Removed diff lines: the danger hue lightened for the dark slab. */
-    public const DELETED = '#F29A8E';
+    /** Removed diff lines: the danger hue lightened to clear AA on the slate slab and its band. */
+    public const DELETED = '#F6ADA3';
 
     /** @return array{name: string, type: string, colors: array<string, string>, tokenColors: list<array>} a VS Code theme */
     public static function definition(): array

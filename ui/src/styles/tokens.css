@@ -19,8 +19,10 @@
   --lr-ink-solid: #1c1b22;
   --lr-surface: #f2f1f4;
   --lr-surface-2: #eae9ed;
-  --lr-sidebar-bg: #f3f3f0;
-  --lr-sidebar-hover: #e9e8e5;
+  /* The sidebar: a cool gray one step under the paper, so the violet active tint belongs to it. */
+  --lr-sidebar-bg: oklch(0.965 0.004 279);
+  --lr-sidebar-hover: oklch(0.935 0.007 279);
+  --lr-sidebar-active: oklch(0.945 0.035 279);
   --lr-hairline: #e7e6ea;
   --lr-hairline-strong: #d6d5db;
   --lr-scrim: rgb(17 16 22 / 0.32);
@@ -33,10 +35,10 @@
   --lr-accent-foreground: #ffffff;
   --lr-accent-ring: color-mix(in oklch, var(--lr-accent-current) 75%, transparent);
 
-  --lr-code: #17161c;
+  --lr-code: #344258;
   --lr-code-foreground: #e8e7ee;
-  --lr-code-muted: rgb(232 231 238 / 0.55);
-  --lr-code-line: #2a2932;
+  --lr-code-muted: rgb(232 231 238 / 0.72);
+  --lr-code-line: #43516a;
   --lr-code-keyword: #b4a7ff;
   --lr-code-string: #9fddb4;
   --lr-code-function: #f2c97d;
@@ -62,6 +64,7 @@
   --lr-space-xl: 40px;
   --lr-space-2xl: 56px;
 
+  --lr-shadow-xs: 0 1px 2px rgb(17 16 22 / 0.14);
   --lr-shadow-float: 0 12px 32px -8px rgb(17 16 22 / 0.22), 0 0 0 1px var(--lr-hairline);
   --lr-shadow-overlay: 0 30px 80px -20px rgb(17 16 22 / 0.35), 0 0 0 1px var(--lr-hairline);
 
@@ -92,6 +95,14 @@
   :root {
     --lr-accent-soft: oklch(from var(--lr-accent-current) 0.955 0.025 h);
     --lr-accent-hover: oklch(from var(--lr-accent-current) calc(l - 0.05) c h);
+    --lr-sidebar-active: oklch(from var(--lr-accent-current) 0.945 0.035 h);
+  }
+}
+
+/* With the sidebar hidden (the switch next to the logo), the article reads wider. */
+@media (min-width: 641px) {
+  html[data-lr-sidebar='hidden'] {
+    --lr-prose-width: 880px;
   }
 }
 
@@ -107,6 +118,7 @@
   --lr-surface-2: #24232b;
   --lr-sidebar-bg: #16151c;
   --lr-sidebar-hover: #222129;
+  --lr-sidebar-active: oklch(0.29 0.065 279);
   --lr-hairline: #26252d;
   --lr-hairline-strong: #34333c;
   --lr-scrim: rgb(0 0 0 / 0.55);
@@ -116,13 +128,14 @@
   --lr-accent-soft: oklch(0.28 0.06 279);
   --lr-accent-foreground: #111016;
 
-  --lr-code: #0b0a0f;
-  --lr-code-line: #23222a;
+  --lr-code: #344258;
+  --lr-code-line: #43516a;
 
   --lr-success: oklch(0.8 0.14 155);
   --lr-warning: oklch(0.82 0.15 75);
   --lr-danger: oklch(0.78 0.17 25);
 
+  --lr-shadow-xs: 0 1px 2px rgb(0 0 0 / 0.45);
   --lr-shadow-float: 0 12px 32px -8px rgb(0 0 0 / 0.55), 0 0 0 1px var(--lr-hairline);
   --lr-shadow-overlay: 0 30px 80px -20px rgb(0 0 0 / 0.65), 0 0 0 1px var(--lr-hairline-strong);
 
@@ -140,6 +153,7 @@
     --lr-surface-2: #24232b;
     --lr-sidebar-bg: #16151c;
     --lr-sidebar-hover: #222129;
+    --lr-sidebar-active: oklch(0.29 0.065 279);
     --lr-hairline: #26252d;
     --lr-hairline-strong: #34333c;
     --lr-scrim: rgb(0 0 0 / 0.55);
@@ -147,12 +161,13 @@
     --lr-accent-hover: oklch(0.8 0.12 279);
     --lr-accent-soft: oklch(0.28 0.06 279);
     --lr-accent-foreground: #111016;
-    --lr-code: #0b0a0f;
-    --lr-code-line: #23222a;
+    --lr-code: #344258;
+    --lr-code-line: #43516a;
     --lr-success: oklch(0.8 0.14 155);
     --lr-warning: oklch(0.82 0.15 75);
     --lr-danger: oklch(0.78 0.17 25);
-    --lr-shadow-float: 0 12px 32px -8px rgb(0 0 0 / 0.55), 0 0 0 1px var(--lr-hairline);
+    --lr-shadow-xs: 0 1px 2px rgb(0 0 0 / 0.45);
+  --lr-shadow-float: 0 12px 32px -8px rgb(0 0 0 / 0.55), 0 0 0 1px var(--lr-hairline);
     --lr-shadow-overlay: 0 30px 80px -20px rgb(0 0 0 / 0.65), 0 0 0 1px var(--lr-hairline-strong);
     color-scheme: dark;
   }
@@ -161,12 +176,15 @@
 @supports (color: oklch(from red l c h)) {
   :root[data-theme='dark'] {
     --lr-accent-soft: oklch(from var(--lr-accent-dark) 0.28 0.06 h);
+    --lr-sidebar-active: oklch(from var(--lr-accent-dark) 0.29 0.065 h);
     --lr-accent-hover: oklch(from var(--lr-accent-dark) calc(l + 0.06) c h);
   }
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme]) {
       --lr-accent-soft: oklch(from var(--lr-accent-dark) 0.28 0.06 h);
+      --lr-sidebar-active: oklch(from var(--lr-accent-dark) 0.29 0.065 h);
+    --lr-sidebar-active: oklch(from var(--lr-accent-dark) 0.29 0.065 h);
       --lr-accent-hover: oklch(from var(--lr-accent-dark) calc(l + 0.06) c h);
     }
   }

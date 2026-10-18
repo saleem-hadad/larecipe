@@ -156,7 +156,7 @@ In a restaurant kitchen, the pass is the counter where the head chef checks ever
 
 The interface is an instrument for trust. Paper and ink, one violet that only ever means state, mono labels for anything a machine produced, and a clean sans for anything a person reads. Structure is carried by whitespace, a hairline, and a perforated rule borrowed from a kitchen ticket. Corners stay small and exact. Light is thermal paper under a pass lamp; dark is the kitchen after service, the screen the only light left. Both are first-class. Arabic is a peer rendering, not a translation toggle.
 
-The system rejects the generic AI-docs look: purple-to-blue gradients, sparkles, glassmorphism, floating chat bubbles that cover the content. It rejects the default docs template that makes every site recognizable as its vendor's. It rejects LaRecipe v2's dated chrome (Font Awesome, heavy shadows) but keeps the v2 details readers knew: the violet ticket logo, the navigation switch, the reading line along the top, the back-to-top button and the violet top edge on code. Where anything only decorates, LaRecipe states facts.
+The system rejects the generic AI-docs look: purple-to-blue gradients, sparkles, glassmorphism, floating chat bubbles that cover the content. It rejects the default docs template that makes every site recognizable as its vendor's. It rejects LaRecipe v2's dated chrome (Font Awesome, heavy shadows) but keeps the v2 details readers knew: the violet ticket logo, the navigation switch, the reading line along the top and the back-to-top button. Where anything only decorates, LaRecipe states facts.
 
 **Key characteristics:**
 
@@ -178,19 +178,19 @@ A near-monochrome paper and ink system with a slight violet cast in the neutrals
 ### Primary
 
 - **Violet** (`oklch(0.55 0.2 279)` light, `oklch(0.74 0.14 279)` dark): The heritage LaRecipe purple (`#787AF6`) pushed deeper so white text on it clears 4.5:1. It carries the one primary action per screen (Ask the docs), focus rings, the active navigation item, links in running text, highlighted code lines, step numbers and the fresh dot. It is never a background wash, never a gradient, and never the mark.
-- **Violet soft** (`oklch(0.955 0.025 279)` light, `oklch(0.28 0.06 279)` dark): Selected and active backgrounds only (the current sidebar item, which also carries a 2 px violet edge at its start; a selected search result).
+- **Violet soft** (`oklch(0.955 0.025 279)` light, `oklch(0.28 0.06 279)` dark): Selected and active backgrounds only (a selected search result; the sidebar has its own active tint).
 
 ### Neutral
 
 - **Paper** (`#FAFAF8` light) and **Night** (`#111016` dark): The canvas. Header and article share it.
-- **Sidebar paper** (`#F3F3F0` light, `#16151C` dark): One step deeper than the canvas, so the navigation reads as its own column, as in v2. Hover in the sidebar is `#E9E8E5` light, `#222129` dark.
+- **Sidebar paper** (`oklch(0.965 0.004 279)` light, `#16151C` dark): A cool gray one step deeper than the canvas, so the navigation reads as its own column, as in v2, and the violet active tint belongs to it. Hover is `oklch(0.935 0.007 279)` light, `#222129` dark. The current page sits on the sidebar active tint (`oklch(0.945 0.035 279)` light, `oklch(0.29 0.065 279)` dark, derived from the accent) in the accent's hover shade, which clears AA on the tint.
 - **Ink** (`rgba(28, 27, 34, 0.92)` light, `rgba(244, 243, 248, 0.92)` dark): Headings and body text.
 - **Ink muted** (`0.66` alpha light, `0.64` dark): Secondary text, labels, metadata. Clears 4.5:1 on its canvas.
 - **Ink faint** (`0.44` alpha light, `0.42` dark): Placeholders, disabled states and decoration only. Never carries information.
 - **Surface** (`#F2F1F4` light, `#1B1A21` dark): Callouts, tickets, inputs, the search field. One measured step off the canvas.
 - **Surface 2** (`#EAE9ED` light, `#24232B` dark): Hover and pressed states.
 - **Hairline** (`#E7E6EA` light, `#26252D` dark) and **Hairline strong** (`#D6D5DB` light, `#34333C` dark): Borders, dividers, the perforation dots, hover borders.
-- **Code** (`#17161C` light, `#0B0A0F` dark): Code blocks sit on a dark slab in both modes, with a 2 px violet top edge (a code group carries one edge for the whole group). Syntax colors: keywords `#B4A7FF`, strings `#9FDDB4`, comments at 42% foreground, functions `#F2C97D`, numbers and constants `#8FD3FF`.
+- **Code** (`#344258` in both modes): Code blocks sit on a slate slab with an extra-small shadow (`0 1px 2px`), in both modes. Syntax colors: keywords `#B4A7FF`, strings `#9FDDB4`, comments at 72% foreground, functions `#F2C97D`, numbers and constants `#8FD3FF`, removed diff text `#F6ADA3`. Added and removed lines carry a 10% success or danger band; text keeps full contrast.
 
 ### Semantic (labels only)
 
@@ -294,7 +294,8 @@ A 6 px violet dot that means "changed recently" (default: within 7 days). It sit
 - **Header:** the LaRecipe logo (or the team's) and the docs name, then the navigation switch (a 34 by 20 px pill: violet with the thumb at the end while the sidebar shows, hairline strong when hidden; wide screens only, remembered per reader), then the version menu. At the end, one icon button switches light and dark in a click (moon offers dark, sun offers light; with no choice made the page follows the system).
 - **Reading line:** a 2 px violet line along the top of the header that fills as the page scrolls, on a violet soft track.
 - **Back to top:** a 44 px round violet button in the end corner, shown after 600 px of scrolling; it returns focus to the page title.
-- **Sidebar:** 248 px on sidebar paper, mono labels for groups, 14 px items 30 px tall with a 4 px radius. Active item: a 2 px violet edge at its start, violet soft background, violet text, 500 weight. No icons by default (frontmatter `icon` allows one). Scrolls the active item into view on load.
+- **Sidebar:** 248 px on sidebar paper, mono section titles in ink at 700 (so they never read as links), 14 px items 30 px tall with a 4 px radius. Active item: the sidebar active tint, violet text, 500 weight, no edge. No icons by default (frontmatter `icon` allows one). Scrolls the active item into view on load.
+- **Hiding the sidebar:** it slides out at its full width (240 ms), then the layout changes once: the article widens to 880 px and centers between the window's edge and the rail, so nothing rewraps mid-animation. Showing reverses it: the layout first, then the sidebar slides in.
 - **Table of contents:** 240 px rail, 13 px links, active link in ink at 500 with scroll-spy. Followed by "For agents" page actions, then the Last change ticket.
 - **Breadcrumb:** mono label above the H1 (`GET STARTED / INSTALLATION`).
 - **Previous and next:** two outline cards at the end of the article with mono direction labels.

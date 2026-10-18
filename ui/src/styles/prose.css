@@ -415,14 +415,14 @@
     background: var(--lr-code);
   }
 
-  /* Every code block wears a thin violet top edge, the way LaRecipe always has. */
+  /* Code blocks sit on the slate slab with an extra-small shadow. */
   .lr-code {
     margin: 24px 0;
     overflow: hidden;
-    border-top: 2px solid var(--lr-accent-current);
     border-radius: var(--lr-radius-md);
     background: var(--lr-code);
     color: var(--lr-code-foreground);
+    box-shadow: var(--lr-shadow-xs);
   }
 
   .lr-prose .lr-code > pre,
@@ -525,7 +525,7 @@
     background: var(--lr-code-highlight);
   }
 
-  /* Diff lines: success and danger labels in the gutter only. */
+  /* Diff lines: success and danger labels in the gutter, and a faint band (below). */
   .lr-prose pre .lr-line[data-diff='add'],
   .lr-prose pre .lr-line[data-diff='remove'],
   .lr-code .lr-line[data-diff='add'],
@@ -560,8 +560,13 @@
     color: var(--lr-code-remove);
   }
 
+  /* Added and removed lines carry a faint band; their text keeps full contrast. */
+  .lr-line[data-diff='add'] {
+    background: color-mix(in oklch, var(--lr-code-add) 10%, transparent);
+  }
+
   .lr-line[data-diff='remove'] {
-    opacity: 0.6;
+    background: color-mix(in oklch, var(--lr-code-remove) 10%, transparent);
   }
 
   .lr-prose pre .lr-line[data-highlighted][data-diff] {
@@ -587,7 +592,7 @@
     display: inline-block;
     width: 2.5ch;
     margin-inline-end: 2ch;
-    color: rgb(232 231 238 / 0.42);
+    color: rgb(232 231 238 / 0.62);
     text-align: end;
     user-select: none;
   }
@@ -630,15 +635,15 @@
   .lr-code-group {
     margin: 24px 0;
     overflow: hidden;
-    border-top: 2px solid var(--lr-accent-current);
     border-radius: var(--lr-radius-md);
     background: var(--lr-code);
+    box-shadow: var(--lr-shadow-xs);
   }
 
   .lr-code-group .lr-code {
     margin: 0;
-    border-top: 0;
     border-radius: 0;
+    box-shadow: none;
   }
 
   .lr-code-group .lr-code + .lr-code {
