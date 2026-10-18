@@ -69,7 +69,10 @@ final class KernelSiteClient implements SiteClient
         return $this->origin;
     }
 
-    /** The built UI, from the package and, when published, from public/vendor/larecipe. */
+    /**
+     * The built UI, from the package and, when published, from public/vendor/larecipe,
+     * and the host extension's build (public/build/larecipe), which every page loads.
+     */
     public function staticFolders(): array
     {
         $folders = [];
@@ -82,6 +85,35 @@ final class KernelSiteClient implements SiteClient
             $folders['vendor/larecipe'] = $this->publicPath.'/vendor/larecipe';
         }
 
+        $extension = $this->assets->extensionBuild();
+
+        if ($extension !== null && str_starts_with($extension['url'], '/') && is_dir($extension['directory'])) {
+            $folders[trim($extension['url'], '/')] = $extension['directory'];
+        }
+
         return $folders;
+    }
+
+    public function publicFile(string $path): ?string
+    {
+        $path = trim(rawurldecode((string) parse_url($path, PHP_URL_PATH)), '/');
+        $segments = explode('/', $path);
+
+        if ($this->publicPath === null || $path === '' || array_filter($segments, fn (string $s) => $s === '' || str_starts_with($s, '.')) !== []) {
+            return null;
+        }
+
+        if (preg_match('/\.(php\d?|phtml|phar|inc)$/i', $path)) {
+            return null;
+        }
+
+        $root = realpath($this->publicPath);
+        $file = realpath($this->publicPath.'/'.$path);
+
+        if ($root === false || $file === false || ! is_file($file) || ! str_starts_with($file, $root.DIRECTORY_SEPARATOR)) {
+            return null;
+        }
+
+        return (string) file_get_contents($file);
     }
 }
