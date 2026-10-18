@@ -28,6 +28,10 @@ return [
     | source.driver is 'repository' (recommended: docs in this repo) or
     | 'database' (managed in the admin UI, always behind a cache).
     | access.mode is 'public', 'auth' or 'gate' (the viewLarecipe gate).
+    | html_input is 'escape' (default: raw HTML in Markdown shows as text) or,
+    | for a repository set only, 'allow' (raw HTML passes as written, except
+    | GitHub's filtered tags such as <script> and <iframe>). Database sets always
+    | escape raw HTML and sanitize every rendered page.
     |
     */
 

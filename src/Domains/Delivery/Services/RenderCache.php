@@ -76,7 +76,7 @@ final class RenderCache
             self::RENDERER_VERSION,
             $page->ref->key(),
             $page->contentHash,
-            $this->environment->version(),
+            $this->environment->version($page->ref->set),
             $variant,
         ]));
     }

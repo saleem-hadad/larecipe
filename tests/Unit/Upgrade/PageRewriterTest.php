@@ -74,10 +74,10 @@ it('rewrites links inside alerts', function () {
         ->toBe("> [!NOTE]\n> Read [overview](overview.md) and [deploy](guides/deploy.md).\n");
 });
 
-it('points raw HTML at Markdown or components, never at an option that does not exist', function () {
+it('points raw HTML at Markdown, components or the html_input option', function () {
     $fix = collect(rewriteV2('<div class="note">Raw</div>')['entries'])->firstWhere('category', 'html')->fix;
 
-    expect($fix)->toContain('component')->not->toContain('html_input');
+    expect($fix)->toContain('component')->toContain('html_input to allow')->toContain('config/larecipe.php');
 });
 
 it('turns {{route}} links into relative .md links and keeps {{version}} links unless asked', function () {

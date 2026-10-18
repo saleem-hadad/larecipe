@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use LaRecipe\Domains\Content\DTOs\SetConfig;
 use LaRecipe\Domains\Markdown\Components\BuiltInComponents;
 use LaRecipe\Domains\Markdown\Components\ComponentRegistry;
+use LaRecipe\Domains\Markdown\Enums\HtmlInput;
 use LaRecipe\Domains\Markdown\Services\AgentMarkdownRenderer;
 use LaRecipe\Domains\Markdown\Services\CodeHighlighter;
 use LaRecipe\Domains\Markdown\Services\MarkdownEnvironmentFactory;
@@ -38,10 +39,29 @@ final class MarkdownServiceProvider extends ServiceProvider
             [],
             $app->make(CodeHighlighter::class),
             $app->make(SnippetResolver::class),
+            fn (string $set) => $this->htmlInput($app, $set),
         ));
 
         $this->app->scoped(PageRenderer::class);
         $this->app->scoped(AgentMarkdownRenderer::class);
+    }
+
+    /**
+     * What a doc set does with raw HTML: database sets always escape it and
+     * sanitize the page; a repository set may opt into html_input: allow.
+     */
+    private function htmlInput(Application $app, string $set): HtmlInput
+    {
+        /** @var array<string, SetConfig> $configs */
+        $configs = $app->make('larecipe.set-configs');
+        $config = $configs[$set] ?? null;
+
+        return match (true) {
+            $config === null => HtmlInput::Escape,
+            $config->driver === 'database' => HtmlInput::Sanitize,
+            $config->setting('html_input') === 'allow' => HtmlInput::Allow,
+            default => HtmlInput::Escape,
+        };
     }
 
     /** A reader-facing string from resources/lang/{locale}/ui.php in a page's language, or null when no language file has it. */

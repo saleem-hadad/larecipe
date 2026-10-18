@@ -414,7 +414,7 @@ final class PageRewriter
                     : ReportEntry::manual('vue', "<{$tag}> is a custom Vue component. v3 renders React components with a server fallback.", $this->file, $i + 1, 'Rewrite it as a React extension component and register it with LaRecipe::component() (larecipe-upgrade-v2 skill).');
             }
         } elseif (preg_match('#<(?!/?[A-Z])/?[a-z][a-z0-9]*(?:\s[^>]*)?/?>#', $code)) {
-            $this->entries[] = ReportEntry::manual('html', 'Raw HTML is shown as text in v3: '.trim($line), $this->file, $i + 1, 'Use Markdown or a component instead, or leave it: it shows as text.');
+            $this->entries[] = ReportEntry::manual('html', 'Raw HTML is shown as text in v3: '.trim($line), $this->file, $i + 1, 'Use Markdown or a component instead, leave it as text, or set html_input to allow for this repository set in config/larecipe.php.');
         }
     }
 
