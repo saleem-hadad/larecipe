@@ -41,16 +41,20 @@ final class ResponseHeaders
             $links[] = '<'.$this->urls->skill($set).'>; rel="describedby"; type="text/markdown"; title="skill"';
         }
 
-        $response->headers->set('Vary', 'Accept');
+        // A signed-in reader's response can list pages guests never see (in the
+        // navigation of every format), so it is personal: never publicly cached,
+        // and its ETag never matches the guest's.
+        $reader = $this->reader();
+        $perRequest = $perRequest || $reader !== 'guest';
+
+        $response->headers->set('Vary', $perRequest ? 'Accept, Cookie' : 'Accept');
         $response->headers->set('Link', implode(', ', $links));
         $response->headers->set('X-LaRecipe-Build', $this->assets->build());
-        $response->setEtag(substr(hash('xxh128', $page->contentHash.'|'.$this->assets->build().'|'.$format.'|'.$page->ref->key()), 0, 20));
+        $response->setEtag(substr(hash('xxh128', $page->contentHash.'|'.$this->assets->build().'|'.$format.'|'.$page->ref->key().'|'.$reader), 0, 20));
 
         if ($page->updatedAt !== null) {
             $response->setLastModified($page->updatedAt);
         }
-
-        $perRequest = $perRequest || ($format === 'html' && $this->access->user() !== null);
         $sharedByEveryone = $this->access->isPublic($set) && $page->frontmatter->visibility()->value !== 'private';
 
         if ($sharedByEveryone && ! $perRequest) {
@@ -70,5 +74,19 @@ final class ResponseHeaders
         $response->isNotModified($request);
 
         return $response;
+    }
+
+    /** Who the response is for, for the ETag: "guest", or a hash of the signed-in reader. */
+    private function reader(): string
+    {
+        $user = $this->access->user();
+
+        if ($user === null) {
+            return 'guest';
+        }
+
+        $id = method_exists($user, 'getAuthIdentifier') ? $user->getAuthIdentifier() : spl_object_id($user);
+
+        return 'reader:'.hash('xxh128', $user::class.'|'.(is_scalar($id) ? (string) $id : ''));
     }
 }

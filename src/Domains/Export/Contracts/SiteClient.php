@@ -24,4 +24,11 @@ interface SiteClient
 
     /** @return array<string, string> folders to copy as they are: URL path prefix => local folder (the built UI) */
     public function staticFolders(): array;
+
+    /**
+     * The contents of a file the web server serves next to the app (the host's
+     * public/ folder) at this domain-relative path, or null. Only a page's own
+     * references are asked for; scripts and dot files are never returned.
+     */
+    public function publicFile(string $path): ?string;
 }

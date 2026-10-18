@@ -108,6 +108,15 @@ it('writes nothing on a dry run', function () {
         ->and($this->project->read('.git/hooks/pre-push'))->toBeNull();
 });
 
+it('refuses the app root or a folder outside it as the docs folder', function (string $path) {
+    // Every file in the docs folder can be served, so it must be a folder of its own.
+    $this->artisan('larecipe:install', [...FULL_INSTALL, '--path' => $path])
+        ->expectsOutputToContain('Choose a docs folder inside your app')
+        ->assertExitCode(2);
+
+    expect($this->project->git('status', '--porcelain', '--untracked-files=all'))->toBe('');
+})->with(['/', '.', './', '..', '../docs', 'docs/../..']);
+
 it('merges into settings the team already has and never replaces them', function () {
     $this->project->write('.claude/settings.json', json_encode([
         'permissions' => ['allow' => ['Bash(composer test)']],

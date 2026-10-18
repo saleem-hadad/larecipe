@@ -28,8 +28,7 @@ final class ValidationServiceProvider extends ServiceProvider
                 ->name('schema');
         });
 
-        if ($this->app->runningInConsole()) {
-            $this->commands([ValidateCommand::class]);
-        }
+        // Registered outside the console too, so <Artisan> sees them on web requests.
+        $this->commands([ValidateCommand::class]);
     }
 }

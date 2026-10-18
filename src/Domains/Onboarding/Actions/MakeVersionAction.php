@@ -30,7 +30,7 @@ final class MakeVersionAction
     {
         $root = rtrim((string) $set->docsPath, '/');
         $manifest = $this->json->decode($workspace->read($root.'/larecipe.json')) ?? throw new RuntimeException("{$root}/larecipe.json is not valid JSON.");
-        $versions = array_values(array_filter((array) ($manifest['versions'] ?? []), 'is_array'));
+        $versions = $this->versions((array) ($manifest['versions'] ?? []));
 
         if (in_array($version, array_column($versions, 'id'), true)) {
             return [$workspace->skip($root.'/'.$version, "Version {$version} already exists.")];
@@ -59,7 +59,7 @@ final class MakeVersionAction
         }
 
         $versions[] = array_filter(['id' => $version, 'default' => $default ?: null], fn ($v) => $v !== null);
-        $manifest['versions'] = $versions;
+        $manifest['versions'] = $this->written($versions, (array) ($manifest['versions'] ?? []));
         $changes[] = $workspace->write($root.'/larecipe.json', $this->json->encode($manifest));
 
         return $changes;
@@ -106,6 +106,41 @@ final class MakeVersionAction
         }
 
         return $files;
+    }
+
+    /**
+     * The manifest's versions as objects. larecipe.json accepts both shapes:
+     * `{ "id": "3.x", "default": true }` and a plain `"3.x"`.
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function versions(array $listed): array
+    {
+        $versions = [];
+
+        foreach ($listed as $version) {
+            if (is_array($version) && isset($version['id'])) {
+                $versions[] = $version;
+            } elseif (is_string($version) && $version !== '') {
+                $versions[] = ['id' => $version];
+            }
+        }
+
+        return $versions;
+    }
+
+    /**
+     * Back to the manifest in the author's shape: when they listed versions as
+     * plain strings, a version with nothing but an id stays a plain string.
+     *
+     * @param  list<array<string, mixed>>  $versions
+     * @return list<string|array<string, mixed>>
+     */
+    private function written(array $versions, array $listed): array
+    {
+        $plain = $listed !== [] && array_filter($listed, fn ($version) => ! is_string($version)) === [];
+
+        return array_map(fn (array $version) => $plain && array_keys($version) === ['id'] ? $version['id'] : $version, $versions);
     }
 
     private function defaultVersion(array $versions): string

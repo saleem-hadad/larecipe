@@ -16,9 +16,8 @@ final class ExportServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        if ($this->app->runningInConsole()) {
-            $this->commands([ExportCommand::class]);
-        }
+        // Registered outside the console too, so <Artisan> sees them on web requests.
+        $this->commands([ExportCommand::class]);
 
         // A static host cannot answer Ask AI, take feedback, collect search
         // reports or serve MCP, so the exported pages do not offer them.

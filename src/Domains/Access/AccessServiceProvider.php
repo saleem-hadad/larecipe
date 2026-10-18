@@ -45,8 +45,7 @@ final class AccessServiceProvider extends ServiceProvider
             ),
         );
 
-        if ($this->app->runningInConsole()) {
-            $this->commands([ShareCommand::class]);
-        }
+        // Registered outside the console too, so <Artisan> sees them on web requests.
+        $this->commands([ShareCommand::class]);
     }
 }

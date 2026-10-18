@@ -28,6 +28,7 @@ use LaRecipe\LaRecipe;
  *   on the local server; on the web only for a database set with
  *   mcp.web.author_tools on, a signed-in caller and the manageLarecipe gate.
  *   Repository sets never expose author tools on the web: their changes belong in git.
+ *   Local tools (affected_pages) only on the local server.
  */
 final class ServerComposition
 {
@@ -54,6 +55,10 @@ final class ServerComposition
         }
 
         foreach ($this->larecipe->mcpTools() as $tool => $options) {
+            if ($options['local'] && ! $this->scope->isLocal()) {
+                continue;
+            }
+
             if (! $options['author'] || $this->allowsAuthorTools($set)) {
                 $tools[] = $tool;
             }

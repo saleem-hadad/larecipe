@@ -28,7 +28,7 @@ abstract class AuthorTool extends Tool
     /** @return array<string, mixed> the `set` argument every author tool accepts */
     protected function setArgument(JsonSchema $schema): array
     {
-        return ['set' => $schema->string()->description('The doc set key, when the app has more than one. Defaults to the default set.')];
+        return ['set' => $schema->string()->description('The doc set key, when the app has more than one. Defaults to the default set. A set\'s web endpoint only accepts its own set.')];
     }
 
     /** @return array<string, mixed> */
@@ -40,12 +40,18 @@ abstract class AuthorTool extends Tool
         ];
     }
 
-    /** @return array<string, mixed> */
-    protected function changeArguments(JsonSchema $schema): array
+    /** Where a page tool's based_on comes from. */
+    protected const PAGE_BASED_ON = 'The content_hash read_page returned for this page. The change is refused if the page changed since you read it.';
+
+    /**
+     * @param  string  $basedOn  where the caller gets the hash to pass as based_on
+     * @return array<string, mixed>
+     */
+    protected function changeArguments(JsonSchema $schema, string $basedOn = self::PAGE_BASED_ON): array
     {
         return [
             'summary' => $schema->string()->description('One line describing the change, for the revision list and the pull request.'),
-            'based_on' => $schema->string()->description('The content hash you read (content_hash from read_page). The change is refused if the content changed since.'),
+            'based_on' => $schema->string()->description($basedOn),
         ];
     }
 

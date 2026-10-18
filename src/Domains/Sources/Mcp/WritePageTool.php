@@ -19,7 +19,7 @@ use LaRecipe\Domains\Sources\Services\PageAddresses;
 
 #[Name('write_page')]
 #[Title('Write a docs page')]
-#[Description('Create or replace one docs page: frontmatter and Markdown body. Read the page first and pass its content_hash as based_on, so you never overwrite a newer edit. On a repository set the file changes in the working tree; on a database set the change is applied to the local database and written into the branch\'s docs migration (commit it with the code). Returns the revision and the validation result; fix every validation error it reports.')]
+#[Description('Create or replace one docs page: frontmatter and Markdown body. Read the page first with read_page and pass the content_hash it returns as based_on, so you never overwrite a newer edit (leave based_on out for a new page). On a repository set the file changes in the working tree; on a database set the change is applied to the local database and written into the branch\'s docs migration (commit it with the code). Returns the revision and the validation result; fix every validation error it reports.')]
 #[IsDestructive]
 final class WritePageTool extends AuthorTool
 {

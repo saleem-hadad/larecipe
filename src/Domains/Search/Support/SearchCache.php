@@ -3,6 +3,7 @@
 namespace LaRecipe\Domains\Search\Support;
 
 use Closure;
+use LaRecipe\Support\CacheFormat;
 use Psr\SimpleCache\CacheInterface;
 use Throwable;
 
@@ -65,6 +66,6 @@ final class SearchCache
     /** A PSR-16 safe key: reserved characters ({}()/\@:) never reach the store. */
     public static function key(string $kind, string ...$parts): string
     {
-        return 'larecipe.search.'.$kind.'.'.hash('xxh128', implode("\0", $parts));
+        return CacheFormat::psrPrefix().'search.'.$kind.'.'.hash('xxh128', implode("\0", $parts));
     }
 }

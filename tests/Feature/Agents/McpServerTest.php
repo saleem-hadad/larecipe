@@ -13,11 +13,18 @@ use LaRecipe\Domains\Agents\Mcp\Tools\ListPagesTool;
 use LaRecipe\Domains\Agents\Mcp\Tools\ReadPageTool;
 use LaRecipe\Domains\Agents\Mcp\Tools\SearchDocsTool;
 use LaRecipe\Domains\Agents\Mcp\Tools\SubmitFeedbackTool;
+use LaRecipe\Domains\Content\DTOs\PageRef;
 use LaRecipe\Domains\Delivery\Events\FeedbackSubmitted;
 use LaRecipe\Domains\Delivery\Events\McpToolCalled;
 use LaRecipe\Domains\Delivery\Events\SearchPerformed;
+use LaRecipe\Domains\Sources\Actions\GetPageAction;
 use LaRecipe\Domains\Sources\Drivers\RepositorySource;
 use LaRecipe\Domains\Sources\Laravel\SourceManager;
+use LaRecipe\Domains\Sources\Mcp\DeletePageTool;
+use LaRecipe\Domains\Sources\Mcp\MovePageTool;
+use LaRecipe\Domains\Sources\Mcp\UpdateManifestTool;
+use LaRecipe\Domains\Sources\Mcp\UpdateNavigationTool;
+use LaRecipe\Domains\Sources\Mcp\WritePageTool;
 use LaRecipe\Domains\Validation\Mcp\ValidateDocsTool;
 use LaRecipe\LaRecipe;
 use LaRecipe\Tests\Feature\Agents\Support\FakeAuthorTool;
@@ -87,6 +94,31 @@ it('reads a page as its agent Markdown, by path, URL or anchor, and one section 
 
     DocsServer::tool(ReadPageTool::class, ['path' => 'installation', 'section' => 'nope', 'set' => 'billing'])
         ->assertHasErrors(['has no section "nope"', 'Requirements']);
+});
+
+it('returns the page\'s content hash, the based_on the author tools take', function () {
+    $hash = app(GetPageAction::class)->execute(new PageRef('billing', 'current', 'en', 'installation'))->contentHash;
+
+    DocsServer::tool(ReadPageTool::class, ['path' => 'installation', 'set' => 'billing'])
+        ->assertOk()
+        ->assertSee(['composer require acme/billing', "content_hash: {$hash} (pass it as based_on"]);
+
+    $result = mcpCall('billing', 'tools/call', ['name' => 'read_page', 'arguments' => ['path' => 'installation']])['result'];
+
+    expect($result['_meta'])->toMatchArray([
+        'title' => 'Installation',
+        'path' => 'installation',
+        'content_hash' => $hash,
+        'markdown_url' => Sets::url('billing/installation.md'),
+    ])->and($result)->not->toHaveKey('structuredContent');
+
+    foreach ([WritePageTool::class, MovePageTool::class, DeletePageTool::class] as $tool) {
+        expect(app($tool)->toArray()['inputSchema']['properties']['based_on']['description'])->toContain('read_page');
+    }
+
+    foreach ([UpdateNavigationTool::class, UpdateManifestTool::class] as $tool) {
+        expect(app($tool)->toArray()['inputSchema']['properties']['based_on']['description'])->toContain('revision.content_hash')->not->toContain('read_page');
+    }
 });
 
 it('treats hidden pages as missing, everywhere', function () {

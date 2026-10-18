@@ -2,6 +2,8 @@
 
 namespace LaRecipe\Domains\Agents\Mcp;
 
+use Illuminate\Contracts\Foundation\Application;
+
 /**
  * Who is calling the docs tools, and which set the call is bound to.
  *
@@ -14,6 +16,12 @@ namespace LaRecipe\Domains\Agents\Mcp;
  *
  * Author tools registered with LaRecipe::mcpTool(..., author: true) should
  * resolve their set through set() too, so they honor the binding.
+ *
+ * Until something binds it, a call is local only when it comes from the
+ * console and serves no HTTP route. Any HTTP call is a web call, so a server
+ * mounted by hand (without a set's binding) gets the read-only web surface,
+ * never the local one. Checking the route matters under Octane, where web
+ * requests are also served from a console process.
  */
 final class McpScope
 {
@@ -23,13 +31,15 @@ final class McpScope
 
     public const ASSISTANT = 'assistant';
 
-    private string $transport = self::LOCAL;
+    private ?string $transport = null;
 
     private ?string $set = null;
 
     private ?string $version = null;
 
     private ?string $locale = null;
+
+    public function __construct(private readonly Application $app) {}
 
     public function bindWeb(string $set): void
     {
@@ -49,22 +59,22 @@ final class McpScope
 
     public function transport(): string
     {
-        return $this->transport;
+        return $this->transport ?? ($this->app->runningInConsole() && ! $this->servingHttp() ? self::LOCAL : self::WEB);
     }
 
     public function isLocal(): bool
     {
-        return $this->transport === self::LOCAL;
+        return $this->transport() === self::LOCAL;
     }
 
     public function isWeb(): bool
     {
-        return $this->transport === self::WEB;
+        return $this->transport() === self::WEB;
     }
 
     public function isAssistant(): bool
     {
-        return $this->transport === self::ASSISTANT;
+        return $this->transport() === self::ASSISTANT;
     }
 
     /** The set every call is bound to, or null on the local server. */
@@ -73,10 +83,14 @@ final class McpScope
         return $this->set;
     }
 
-    /** The set a call works on: the bound set, else the one the caller asked for. */
+    /** The set a call works on: the bound set, else the one the caller asked for (local server only). */
     public function set(?string $requested): ?string
     {
-        return $this->set ?? ($requested !== null && $requested !== '' ? $requested : null);
+        if ($this->set !== null || ! $this->isLocal()) {
+            return $this->set;
+        }
+
+        return $requested !== null && $requested !== '' ? $requested : null;
     }
 
     public function defaultVersion(): ?string
@@ -87,5 +101,10 @@ final class McpScope
     public function defaultLocale(): ?string
     {
         return $this->locale;
+    }
+
+    private function servingHttp(): bool
+    {
+        return $this->app->bound('request') && $this->app->make('request')->route() !== null;
     }
 }

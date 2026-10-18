@@ -12,6 +12,8 @@ use LaRecipe\Domains\Sources\Actions\GetNavigationAction;
 use LaRecipe\Domains\Sources\Actions\ListLocalizedPagesAction;
 use LaRecipe\Domains\Sources\Actions\ListPageSummariesAction;
 use LaRecipe\Domains\Sources\Contracts\SourceResolver;
+use LaRecipe\Support\CacheFormat;
+use Throwable;
 
 /**
  * Page lists and navigation per set, version and locale, cached by the source's
@@ -42,7 +44,7 @@ final class PageCatalog
     /** @return array<string, PageSummary> */
     public function summaries(DocSet $set, string $version, string $locale): array
     {
-        $key = "larecipe:{$set->key}:{$version}:{$locale}:summaries:".$this->fingerprint($set, $version);
+        $key = CacheFormat::prefix()."{$set->key}:{$version}:{$locale}:summaries:".$this->fingerprint($set, $version);
 
         return $this->memo[$key] ??= $this->rememberSummaries($key, fn () => $this->summaries->execute($set->key, $version, $locale));
     }
@@ -59,7 +61,7 @@ final class PageCatalog
             return $this->summaries($set, $version, $locale);
         }
 
-        $key = "larecipe:{$set->key}:{$version}:{$locale}:localized:".$this->fingerprint($set, $version);
+        $key = CacheFormat::prefix()."{$set->key}:{$version}:{$locale}:localized:".$this->fingerprint($set, $version);
 
         return $this->memo[$key] ??= $this->rememberSummaries($key, fn () => $this->localized->execute($set, $version, $locale));
     }
@@ -71,7 +73,7 @@ final class PageCatalog
      */
     public function navigation(DocSet $set, string $version, string $locale, array $visible): array
     {
-        $treeKey = "larecipe:{$set->key}:{$version}:{$locale}:nav:".$this->fingerprint($set, $version);
+        $treeKey = CacheFormat::prefix()."{$set->key}:{$version}:{$locale}:nav:".$this->fingerprint($set, $version);
         $tree = $this->memo[$treeKey] ??= $this->rememberTree(
             $treeKey,
             fn () => $this->navigation->execute($set->key, $version, $locale, $this->localized($set, $version, $locale)),
@@ -98,8 +100,12 @@ final class PageCatalog
     {
         $cached = $this->cache->get($key);
 
-        if (is_array($cached)) {
-            return array_map(fn (array $summary) => PageSummary::fromCache($summary), $cached);
+        try {
+            if (is_array($cached)) {
+                return array_map(fn (array $summary) => PageSummary::fromCache($summary), $cached);
+            }
+        } catch (Throwable) {
+            // An entry in a shape this release does not write: a miss.
         }
 
         $summaries = $resolve();
@@ -113,10 +119,14 @@ final class PageCatalog
     {
         $cached = $this->cache->get($key);
 
-        if (is_array($cached) && isset($cached['tree'])) {
-            $tree = NavigationTree::fromJson($cached['tree']);
+        try {
+            if (is_array($cached) && is_array($cached['tree'] ?? null)) {
+                $tree = NavigationTree::fromJson($cached['tree']);
 
-            return new NavigationTree($tree->tabs, (bool) $cached['derived']);
+                return new NavigationTree($tree->tabs, (bool) ($cached['derived'] ?? false));
+            }
+        } catch (Throwable) {
+            // An entry in a shape this release does not write: a miss.
         }
 
         $tree = $resolve();
