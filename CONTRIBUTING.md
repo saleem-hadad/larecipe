@@ -26,6 +26,8 @@ If the project maintainer has any additional requirements, you will find them li
 
 - **Domains, actions, DTOs** - Read `ARCHITECTURE.md` (section 4) before adding code: each feature belongs to one domain under `src/Domains`, and each action has one public `execute()` method. The architecture tests enforce it.
 
+- **Commit the built UI** - `dist/` ships in the Composer package, so hosts need no Node. After any change under `ui/` or `packages/ui`, run `pnpm build` and commit `dist/` with it. CI fails when they differ.
+
 - **Add tests!** - Your patch won't be accepted if it doesn't have tests.
 
 - **Document any change in behaviour** - Update the docs in the same pull request, the way LaRecipe asks of its users.

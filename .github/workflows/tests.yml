@@ -66,6 +66,15 @@ jobs:
       - name: Build
         run: pnpm build
 
+      # dist/ ships in the Composer package (hosts need no Node), so it must match the source.
+      - name: Check that dist/ is committed and current
+        run: |
+          if [ -n "$(git status --porcelain -- dist)" ]; then
+            git status --short -- dist | head -20
+            echo "::error::dist/ does not match the source. Run pnpm build and commit dist/."
+            exit 1
+          fi
+
       - name: Test
         run: pnpm --filter @larecipe/app exec vitest run --passWithNoTests
 
