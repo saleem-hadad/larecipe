@@ -51,6 +51,14 @@ final readonly class SetConfig
         return Arr::get($this->settings, $key, $default);
     }
 
+    /** The cache store a database set runs behind: its own source.cache, then larecipe.cache.store; null means the app's default store. */
+    public function cacheStore(): ?string
+    {
+        $store = $this->source['cache'] ?? $this->setting('cache.store');
+
+        return is_string($store) && $store !== '' ? $store : null;
+    }
+
     public function isRootMounted(): bool
     {
         return $this->prefix === '';
