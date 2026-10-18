@@ -279,7 +279,7 @@ final class DocumentTransformer
 
     private function video(ComponentNode $node): void
     {
-        // The embed URL reaches an iframe, so only LaRecipe derives it (YouTube or Vimeo below).
+        // The embed URL reaches an iframe, so only LaRecipe derives it (YouTube, Vimeo or Loom below).
         unset($node->props['embed'], $node->props['provider']);
         $src = is_string($node->props['src'] ?? null) ? $node->props['src'] : '';
 
@@ -296,6 +296,9 @@ final class DocumentTransformer
         } elseif (preg_match('~^https?://(?:www\.)?(?:player\.)?vimeo\.com/(?:video/)?(\d+)~', $src, $matches)) {
             $node->props['embed'] = 'https://player.vimeo.com/video/'.$matches[1];
             $node->props['provider'] = 'vimeo';
+        } elseif (preg_match('~^https?://(?:www\.)?loom\.com/(?:share|embed)/([A-Za-z0-9]+)~', $src, $matches)) {
+            $node->props['embed'] = 'https://www.loom.com/embed/'.$matches[1];
+            $node->props['provider'] = 'loom';
         }
     }
 }

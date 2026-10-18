@@ -47,6 +47,21 @@ it('derives a Video embed only from a YouTube or Vimeo src, never from the autho
         ->and($youtube['provider'])->toBe('youtube');
 });
 
+it('derives a Loom embed from a share link', function () {
+    $loom = islandProps('docs', '<Video src="https://www.loom.com/share/0a1b2c3d4e5f" />')[0];
+    $other = islandProps('docs', '<Video src="https://www.loom.com/looms/videos" />')[0];
+
+    expect($loom['embed'])->toBe('https://www.loom.com/embed/0a1b2c3d4e5f')
+        ->and($loom['provider'])->toBe('loom')
+        ->and($other)->not->toHaveKey('embed');
+});
+
+it('labels the no-JavaScript link with the video host, in the page language', function () {
+    $html = app(RenderPageAction::class)->execute(Page::make(new PageRef('docs', 'current', 'ar', 'video'), new Frontmatter(['title' => 'Video']), '<Video src="https://www.loom.com/share/0a1b2c3d4e5f" />'))->html;
+
+    expect($html)->toContain('شاهد على Loom');
+});
+
 it('keeps undeclared props for host components on a repository set, and drops them on a database set', function () {
     app(LaRecipe::class)->component('Chart')->props(['title' => 'string'])->island()->fallback(fn () => '<div class="chart"></div>');
 

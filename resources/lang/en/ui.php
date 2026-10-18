@@ -159,6 +159,7 @@ return [
     'video' => [
         'play' => 'Play video',
         'placeholder' => 'Demo video coming soon',
+        'watch' => 'Watch on :provider',
     ],
 
     'mermaid' => [

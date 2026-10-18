@@ -45,7 +45,7 @@ final class Media
             new ComponentDefinition(
                 name: 'Video',
                 props: [
-                    'src' => ['type' => 'string', 'description' => 'A video file, or a YouTube or Vimeo URL'],
+                    'src' => ['type' => 'string', 'description' => 'A video file, or a YouTube, Vimeo or Loom URL'],
                     'poster' => ['type' => 'string', 'description' => 'Image shown before the video plays'],
                     'title' => ['type' => 'string', 'description' => 'What the video shows'],
                     'duration' => ['type' => 'string', 'description' => 'Length, for example 2:40'],
@@ -54,6 +54,7 @@ final class Media
                 fallback: fn (array $props, string $children, RenderedComponent $component) => self::video(
                     $props,
                     ($strings !== null ? $strings('video.placeholder', $component->locale) : null) ?? self::PLACEHOLDER,
+                    ($strings !== null ? $strings('video.watch', $component->locale) : null) ?? 'Watch on :provider',
                 ),
                 markdown: function (array $props) {
                     $src = Markup::string($props, 'src');
@@ -96,8 +97,11 @@ final class Media
         ];
     }
 
-    /** @param string $placeholder the label for a frame without src, when the author did not write one */
-    private static function video(array $props, string $placeholder): string
+    /**
+     * @param  string  $placeholder  the label for a frame without src, when the author did not write one
+     * @param  string  $watch  the link label for a hosted video, with a :provider placeholder
+     */
+    private static function video(array $props, string $placeholder, string $watch): string
     {
         $src = Markup::string($props, 'src');
         $poster = Markup::string($props, 'poster');
@@ -111,11 +115,15 @@ final class Media
         }
 
         if (Markup::string($props, 'embed') !== '') {
-            $provider = Markup::string($props, 'provider') === 'vimeo' ? 'Vimeo' : 'YouTube';
+            $provider = match (Markup::string($props, 'provider')) {
+                'vimeo' => 'Vimeo',
+                'loom' => 'Loom',
+                default => 'YouTube',
+            };
 
             return '<figure class="lr-video"><a class="lr-video-link" href="'.Markup::e($src).'">'
                 .($poster !== '' ? '<img src="'.Markup::e($poster).'" alt="" loading="lazy">' : '')
-                .'<span class="lr-video-link-label">Watch on '.$provider.'</span></a>'.$figcaption.'</figure>';
+                .'<span class="lr-video-link-label">'.Markup::e(str_replace(':provider', $provider, $watch)).'</span></a>'.$figcaption.'</figure>';
         }
 
         return '<figure class="lr-video"><video controls preload="none" src="'.Markup::e($src).'"'
