@@ -27,7 +27,7 @@
           "rule": {
             "type": "string",
             "pattern": "^[a-z]+(\\.[a-z-]+)+$",
-            "description": "A stable id: links.broken, navigation.missing-page, pages.orphan, manifest.schema, navigation.schema, frontmatter.schema, frontmatter.description.missing, components.unknown, components.props, snippets.missing, media.placeholder, pages.duplicate, pages.empty, redirects.loop, links.private-from-public, search.budget, markdown.size, skills.spec, cache.store."
+            "description": "A stable id: links.broken, navigation.missing-page, pages.orphan, manifest.schema, navigation.schema, frontmatter.schema, frontmatter.description.missing, components.unknown, components.props, snippets.missing, media.placeholder, pages.duplicate, pages.empty, redirects.loop, links.private-from-public, search.budget, markdown.size, skills.spec, cache.store, assets.missing."
           },
           "set": { "type": "string" },
           "page": { "type": "string", "description": "The page, as {locale}/{version}/{path} with the default locale and an unversioned set's version left out." },

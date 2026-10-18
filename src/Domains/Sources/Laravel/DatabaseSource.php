@@ -135,6 +135,11 @@ final class DatabaseSource implements DraftableContentSource
 
         $candidates = [[$version, $path], [$version, '_assets/'.$path], [Version::IMPLICIT, '_assets/'.$path]];
 
+        // A stylesheet listed under assets.css is a set-level file that serves every version.
+        if ($this->manifest()?->listsStylesheet($path)) {
+            $candidates[] = [Version::IMPLICIT, $path];
+        }
+
         foreach ($candidates as [$candidateVersion, $candidatePath]) {
             $row = $this->query('asset')->where('set', $this->set)->where('version', $candidateVersion)->where('path', $candidatePath)->first();
 

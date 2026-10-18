@@ -8,6 +8,7 @@ use LaRecipe\Domains\Access\Services\PageAccess;
 use LaRecipe\Domains\Content\DTOs\Version;
 use LaRecipe\Domains\Content\Enums\Visibility;
 use LaRecipe\Domains\Content\Services\SetRegistry;
+use LaRecipe\Domains\Delivery\Support\DocsStylesheets;
 use LaRecipe\Domains\Delivery\Support\SetFromRequest;
 use LaRecipe\Domains\Sources\Contracts\SourceResolver;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -48,9 +49,12 @@ final class DocsAssetController
 
         $public = $this->access->isPublic($set) && $set->version($version)?->visibility !== Visibility::Private;
 
+        // A URL fingerprinted with this exact content (a stylesheet from assets.css) never changes.
+        $fingerprinted = $asset->hash !== null && $request->query('v') === DocsStylesheets::fingerprint($asset->hash);
+
         $headers = [
             'Content-Type' => $asset->mime,
-            'Cache-Control' => $public ? 'public, max-age=3600' : 'private, max-age=3600',
+            'Cache-Control' => ($public ? 'public' : 'private').($fingerprinted ? ', max-age=31536000, immutable' : ', max-age=3600'),
             'X-Content-Type-Options' => 'nosniff',
         ];
 

@@ -110,6 +110,25 @@ final readonly class Manifest
         ];
     }
 
+    /**
+     * The stylesheets listed under assets.css, as written: files next to
+     * larecipe.json ("theme.css") that load after LaRecipe's own CSS.
+     *
+     * @return list<string>
+     */
+    public function stylesheets(): array
+    {
+        $css = $this->raw['assets']['css'] ?? [];
+
+        return array_values(array_filter(is_array($css) ? $css : [], fn ($file) => is_string($file) && trim($file) !== ''));
+    }
+
+    /** Whether a path inside the docs root is one of the listed stylesheets. */
+    public function listsStylesheet(string $path): bool
+    {
+        return in_array(trim($path, '/'), array_map(fn (string $file) => trim($file, '/'), $this->stylesheets()), true);
+    }
+
     /** @return array<string, list<string>> insert point => component names */
     public function inserts(): array
     {
@@ -136,4 +155,3 @@ final readonly class Manifest
         return $this->raw;
     }
 }
-

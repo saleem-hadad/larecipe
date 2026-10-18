@@ -12,6 +12,7 @@ final readonly class DocsSnapshot
      * @param  ?array  $manifest  the decoded larecipe.json, null when the set has none
      * @param  list<VersionSnapshot>  $versions
      * @param  list<SkillSnapshot>  $skills
+     * @param  array<string, bool>  $stylesheets  each file listed under assets.css => whether the set has it
      */
     public function __construct(
         public string $set,
@@ -21,6 +22,7 @@ final readonly class DocsSnapshot
         public array $skills = [],
         public ?string $manifestError = null,
         public string $manifestFile = 'larecipe.json',
+        public array $stylesheets = [],
     ) {}
 
     public function pageCount(): int

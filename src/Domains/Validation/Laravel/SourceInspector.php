@@ -80,7 +80,13 @@ final class SourceInspector implements DocsInspector
             }
         }
 
-        return new DocsSnapshot($set, $manifest, $versions, $this->settings($docs), $this->skills($source), $error);
+        $stylesheets = [];
+
+        foreach ($docs->manifest->stylesheets() as $file) {
+            $stylesheets[$file] = $source->asset($docs->defaultVersion()->id, $file) !== null;
+        }
+
+        return new DocsSnapshot($set, $manifest, $versions, $this->settings($docs), $this->skills($source), $error, stylesheets: $stylesheets);
     }
 
     public function inspect(Page $page): PageSnapshot

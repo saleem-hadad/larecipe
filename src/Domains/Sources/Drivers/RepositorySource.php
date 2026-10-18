@@ -169,7 +169,14 @@ class RepositorySource implements WritableContentSource
             return null;
         }
 
-        foreach ([$this->versionRoot($version), $this->versionRoot($version).'/_assets', $this->root().'/_assets'] as $base) {
+        $bases = [$this->versionRoot($version), $this->versionRoot($version).'/_assets', $this->root().'/_assets'];
+
+        // A stylesheet listed under assets.css lives next to larecipe.json and serves every version.
+        if ($this->manifest()?->listsStylesheet($path)) {
+            $bases[] = $this->root();
+        }
+
+        foreach ($bases as $base) {
             $file = $base.'/'.$path;
 
             if (is_file($file) && $this->isInside($file, $this->root())) {

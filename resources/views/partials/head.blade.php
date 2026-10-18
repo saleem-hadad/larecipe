@@ -28,6 +28,8 @@
 <style>{!! $themeCss !!}</style>
 @endif
 {{ $assets->tags('app') }}
+{{-- The set's own stylesheets (assets.css in larecipe.json), after LaRecipe's, so small overrides win. --}}
+{!! app(\LaRecipe\Domains\Delivery\Support\DocsStylesheets::class)->tags($set, $version ?? $set->defaultVersion()->id) !!}
 @foreach ($larecipe->headCallbacks() as $callback)
 {!! (function ($value) { return is_object($value) && method_exists($value, 'render') ? $value->render() : (string) $value; })($callback($set)) !!}
 @endforeach
