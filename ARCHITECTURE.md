@@ -451,7 +451,7 @@ type: page                            # page | openapi (Phase 4, with spec: url,
 ---
 ```
 
-Unknown keys are allowed and passed to the UI as `page.meta`, so extensions can define their own. `larecipe:validate` warns on keys that look like typos of known keys.
+Values for extensions go under `meta:` (`meta: { audience: developers }`) and reach the UI as `page.meta`. Other unknown keys are allowed but stay on the server, since they often hold notes for the team (an owner, a ticket). `larecipe:validate` warns on keys that look like typos of known keys.
 
 ### 4.5 The Two-Files Rule
 

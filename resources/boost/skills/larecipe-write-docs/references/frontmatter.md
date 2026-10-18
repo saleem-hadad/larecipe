@@ -2,7 +2,7 @@
 
 # Frontmatter
 
-YAML at the top of a page configures that page only. Set-level settings belong in `larecipe.json`, navigation in `navigation.json`. Unknown keys are allowed (extensions read them), but `larecipe:validate` warns about likely typos.
+YAML at the top of a page configures that page only. Set-level settings belong in `larecipe.json`, navigation in `navigation.json`. Values for your own components go under `meta:` (they read them as `page.meta`). Other unknown keys are allowed but never reach readers, and `larecipe:validate` warns about likely typos.
 
 Every page should have `title`, `description` and `sources`. `sources` lists the code the page documents (globs from the project root, optionally `path#region`), so `php artisan larecipe:affected` can tell when the page goes stale.
 

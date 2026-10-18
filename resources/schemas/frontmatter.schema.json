@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://larecipe.saleem.dev/schemas/3.x/frontmatter.json",
   "title": "LaRecipe page frontmatter",
-  "description": "The YAML at the top of a page: configuration for that page only. Keys LaRecipe does not know are kept and passed to the UI as page meta.",
+  "description": "The YAML at the top of a page: configuration for that page only. Keys under meta reach the UI as page meta. Other keys LaRecipe does not know are allowed but never sent to readers.",
   "type": "object",
   "properties": {
     "title": { "type": "string", "minLength": 1, "description": "Required unless the first # heading gives it." },
@@ -41,6 +41,7 @@
       ]
     },
     "type": { "enum": ["page", "openapi"] },
-    "spec": { "type": "string" }
+    "spec": { "type": "string" },
+    "meta": { "type": "object", "description": "Values for your own components, which read them as page.meta. The only frontmatter readers receive beyond the keys above." }
   }
 }

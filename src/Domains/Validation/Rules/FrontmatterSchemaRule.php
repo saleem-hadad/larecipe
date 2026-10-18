@@ -14,7 +14,8 @@ use LaRecipe\Domains\Validation\Services\Suggest;
  * frontmatter.schema: YAML that does not parse, values of the wrong shape, and
  * unknown keys that look like typos of known ones ("descripton").
  *
- * Other unknown keys are fine: they reach the UI as page meta for extensions.
+ * Other unknown keys are fine: they stay on the server. Values for extensions
+ * go under `meta:`, which reaches the UI as page meta.
  */
 final class FrontmatterSchemaRule implements PageRule
 {

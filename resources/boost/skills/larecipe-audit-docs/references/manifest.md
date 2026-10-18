@@ -20,6 +20,6 @@ One `larecipe.json` per doc set, at the root of its content. It holds presentati
 | `redirects` | A list of `{ from, to, status }`. |
 | `assets` | `{ css: ["theme.css"] }`. |
 | `inserts` | Components placed at named insert points: `{ "article.after": ["Subscribe"] }`. |
-| `integrations` | Analytics integrations: GA4, Plausible, Fathom, PostHog or a custom script. |
+| `integrations` | Analytics integrations: GA4, Plausible, Fathom, PostHog or a custom script. Repository sets only; a database set sets them in config/larecipe.php. |
 | `agents` | `{ llmsTxt: { description, instructions }, skillMd, context7 }`. |
 | `provenance` | Show who and what last changed each page (default true). |
