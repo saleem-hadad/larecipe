@@ -2,6 +2,7 @@
 
 namespace TrackGApp\Http\Controllers;
 
+use TrackGApp\Http\Requests\BillingOverrideRequest;
 use TrackGApp\Http\Requests\StoreOrderRequest;
 
 class OrderController
@@ -14,5 +15,10 @@ class OrderController
     public function store(StoreOrderRequest $request): string
     {
         return 'stored';
+    }
+
+    public function override(BillingOverrideRequest $request): string
+    {
+        return 'overridden';
     }
 }

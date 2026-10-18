@@ -135,7 +135,7 @@ it('never lets configuration, environment values or secret files reach the model
         ->and(SyncAgent::resultOf($results, 'git_diff', 0))->toContain('Changed but never shown')->toContain('config/services.php')->toContain('+// tax')
         ->and(SyncAgent::resultOf($results, 'git_diff', 1))->not->toContain('```diff')
         ->and(SyncAgent::resultOf($results, 'app_reference', 0))->toContain('orders.store')
-        ->and(SyncAgent::resultOf($results, 'app_reference', 1))->toContain('<Route name="orders.store" />')->toContain('throttle:60,1')
+        ->and(SyncAgent::resultOf($results, 'app_reference', 1))->toContain('<Route name="orders.store" />')->toContain('throttle')->not->toContain('throttle:60,1')
         ->and(SyncAgent::resultOf($results, 'app_reference', 2))->toContain('--dry-run')
         ->and(SyncAgent::resultOf($results, 'read_page_source', 0))->toContain('"content_hash": "sha256:');
 

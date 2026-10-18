@@ -65,7 +65,7 @@ final class BuildBootPayloadAction
                 'reader' => $this->urls->base($set),
             ],
             'components' => $this->components(),
-            'schemas' => $this->schemas(),
+            'schemas' => $this->schemas($set),
             'version' => LaRecipe::VERSION,
         ];
     }
@@ -78,12 +78,20 @@ final class BuildBootPayloadAction
         return array_values(array_map(fn (ComponentDefinition $definition) => $definition->toArray(), $components));
     }
 
-    private function schemas(): array
+    /**
+     * The settings form offers no integrations where larecipe.json may not
+     * declare them: a database set's analytics live in config/larecipe.php.
+     */
+    private function schemas(DocSet $set): array
     {
         $schemas = [];
 
         foreach (self::SCHEMAS as $key => $file) {
             $schemas[$key] = json_decode((string) file_get_contents(Paths::resources("schemas/{$file}.schema.json")), true);
+        }
+
+        if (! $set->config->allowsManifestIntegrations()) {
+            unset($schemas['manifest']['properties']['integrations']);
         }
 
         return $schemas;

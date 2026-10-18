@@ -8,15 +8,16 @@ use LaRecipe\Domains\Content\Enums\Visibility;
  * Page-level configuration from the YAML at the top of a page.
  *
  * Frontmatter configures one page only. Set-level settings live in larecipe.json
- * and navigation structure in navigation.json. Unknown keys are kept and passed
- * to the UI as page meta, so extensions can define their own.
+ * and navigation structure in navigation.json. Keys under `meta:` reach the UI
+ * as page meta, so extensions can define their own. Other unknown keys are
+ * kept for the server (validation, agents) and never sent to readers.
  */
 final readonly class Frontmatter
 {
     public const KNOWN_KEYS = [
         'title', 'description', 'order', 'icon', 'sources', 'tags', 'badge', 'since',
         'deprecated', 'hidden', 'noindex', 'visibility', 'redirect_from', 'layout',
-        'inserts', 'type', 'spec',
+        'inserts', 'type', 'spec', 'meta',
     ];
 
     /** @param array<string, mixed> $data */
@@ -64,7 +65,7 @@ final readonly class Frontmatter
 
     public function visibility(): Visibility
     {
-        return Visibility::tryFrom((string) ($this->data['visibility'] ?? 'public')) ?? Visibility::Public;
+        return Visibility::fromSetting($this->data['visibility'] ?? null);
     }
 
     public function layout(): string
@@ -106,10 +107,18 @@ final readonly class Frontmatter
         return is_array($inserts) ? array_map('boolval', $inserts) : [];
     }
 
-    /** @return array<string, mixed> keys LaRecipe does not know, for extensions */
+    /**
+     * The `meta:` map, which reaches the UI as page.meta for custom
+     * components. Other unknown keys never leave the server: they often hold
+     * notes for the team (an owner, a ticket) that readers should not see.
+     *
+     * @return array<string, mixed>
+     */
     public function meta(): array
     {
-        return array_diff_key($this->data, array_flip(self::KNOWN_KEYS));
+        $meta = $this->data['meta'] ?? null;
+
+        return is_array($meta) && ! array_is_list($meta) ? $meta : [];
     }
 
     public function toArray(): array

@@ -51,6 +51,17 @@ final readonly class SetConfig
         return Arr::get($this->settings, $key, $default);
     }
 
+    /**
+     * Whether larecipe.json may declare integrations: analytics scripts that
+     * run with every reader's session. A repository set's manifest is code
+     * reviewed in git. A database set's can be changed from the admin UI and
+     * MCP, so its analytics come from config/larecipe.php only.
+     */
+    public function allowsManifestIntegrations(): bool
+    {
+        return $this->driver === 'repository';
+    }
+
     /** The cache store a database set runs behind: its own source.cache, then larecipe.cache.store; null means the app's default store. */
     public function cacheStore(): ?string
     {

@@ -9,7 +9,8 @@ use LaRecipe\Domains\Validation\DTOs\ValidationReport;
 
 /**
  * The checks a navigation or manifest write needs before it lands: entries
- * that point at no page, duplicate versions or locales. Pages are validated by
+ * that point at no page, duplicate versions or locales, and links that are not
+ * http, https, mailto or relative (links.unsafe). Pages are validated by
  * the Validation domain's ValidatePageAction; these two files have no Action
  * there yet, so their write-time checks live here, using the same report shape.
  */
@@ -19,7 +20,7 @@ final class StructureValidator
     public function navigation(NavigationTree $tree, array $knownPaths, string $where): ValidationReport
     {
         $known = array_flip($knownPaths);
-        $issues = [];
+        $issues = array_map(fn (string $href) => ValidationIssue::unsafeLink($href, $where), $tree->refusedLinks);
 
         foreach ($tree->pagePaths() as $path) {
             if (! isset($known[$path])) {
@@ -38,7 +39,7 @@ final class StructureValidator
 
     public function manifest(Manifest $manifest): ValidationReport
     {
-        $issues = [];
+        $issues = array_map(fn (string $href) => ValidationIssue::unsafeLink($href, 'larecipe.json'), $manifest->refusedLinks());
 
         foreach (['versions' => fn ($v) => $v->id, 'locales' => fn ($l) => $l->code] as $key => $id) {
             $ids = array_map($id, $manifest->{$key});

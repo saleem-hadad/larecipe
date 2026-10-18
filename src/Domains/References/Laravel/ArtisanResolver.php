@@ -3,18 +3,28 @@
 namespace LaRecipe\Domains\References\Laravel;
 
 use Closure;
+use Illuminate\Console\Command as LaravelCommand;
+use Illuminate\Console\Parser;
 use Illuminate\Contracts\Console\Kernel;
 use LaRecipe\Domains\References\Contracts\ListsReferenceTargets;
 use LaRecipe\Domains\References\Contracts\ReferenceResolver;
 use LaRecipe\Domains\References\DTOs\Reference;
 use LaRecipe\Domains\References\DTOs\ReferenceTable;
+use ReflectionClass;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Throwable;
 
 /**
  * <Artisan command="orders:prune" />: the signature, description, arguments and
  * options from the console kernel's command registry. The command is never run.
+ *
+ * Hidden commands are never described. A default is shown only when it is
+ * written in the command's $signature as declared in its class: a command
+ * that builds its definition at runtime (getOptions(), a closure command, a
+ * signature rebuilt in the constructor) could fill a default from config, so
+ * its defaults are left out.
  *
  * The kernel is asked for lazily, so web requests that render no command
  * reference never load the console.
@@ -41,6 +51,7 @@ final class ArtisanResolver implements ListsReferenceTargets, ReferenceResolver
         }
 
         $definition = $command->getDefinition();
+        $literal = $this->literalDefaults($command);
         $tables = [];
 
         if ($definition->getArguments() !== []) {
@@ -48,7 +59,7 @@ final class ArtisanResolver implements ListsReferenceTargets, ReferenceResolver
                 fn (InputArgument $argument) => [
                     $argument->getName().($argument->isArray() ? '...' : ''),
                     trim($argument->getDescription().($argument->isRequired() ? ' (required)' : '')),
-                    $this->value($argument->getDefault()),
+                    $this->default($literal['arguments'][$argument->getName()] ?? null, $argument->getDefault()),
                 ],
                 $definition->getArguments(),
             )));
@@ -59,7 +70,7 @@ final class ArtisanResolver implements ListsReferenceTargets, ReferenceResolver
                 fn (InputOption $option) => [
                     '--'.$option->getName().($option->getShortcut() ? ', -'.$option->getShortcut() : '').($option->acceptValue() ? '='.strtoupper($option->getName()) : ''),
                     $option->getDescription(),
-                    $option->acceptValue() ? $this->value($option->getDefault()) : '',
+                    $option->acceptValue() ? $this->default($literal['options'][$option->getName()] ?? null, $option->getDefault()) : '',
                 ],
                 $definition->getOptions(),
             )));
@@ -96,10 +107,48 @@ final class ArtisanResolver implements ListsReferenceTargets, ReferenceResolver
         return hash('xxh128', implode("\n", $shapes));
     }
 
-    /** @return array<string, Command> */
+    /** @return array<string, Command> every command the app lists (hidden ones left out) */
     private function commands(): array
     {
-        return $this->commands ??= ($this->kernel)()->all();
+        return $this->commands ??= array_filter(($this->kernel)()->all(), fn (Command $command) => ! $command->isHidden());
+    }
+
+    /**
+     * The defaults written in the class's declared $signature, by input name.
+     * Empty when there is no such signature: then no default can be trusted.
+     *
+     * @return array{arguments: array<string, mixed>, options: array<string, mixed>}
+     */
+    private function literalDefaults(Command $command): array
+    {
+        $declared = $command instanceof LaravelCommand ? ((new ReflectionClass($command))->getDefaultProperties()['signature'] ?? null) : null;
+        $defaults = ['arguments' => [], 'options' => []];
+
+        if (! is_string($declared) || trim($declared) === '') {
+            return $defaults;
+        }
+
+        try {
+            [, $arguments, $options] = Parser::parse($declared);
+        } catch (Throwable) {
+            return $defaults;
+        }
+
+        foreach ($arguments as $argument) {
+            $defaults['arguments'][$argument->getName()] = $argument->getDefault();
+        }
+
+        foreach ($options as $option) {
+            $defaults['options'][$option->getName()] = $option->getDefault();
+        }
+
+        return $defaults;
+    }
+
+    /** The default, when the running command still has the one its signature declares. */
+    private function default(mixed $declared, mixed $actual): string
+    {
+        return $declared !== null && $declared === $actual ? $this->value($actual) : '';
     }
 
     private function value(mixed $default): string

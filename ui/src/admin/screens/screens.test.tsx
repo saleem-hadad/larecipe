@@ -5,6 +5,7 @@ import { PREVIEW_DELAY } from '../editor/useLivePreview'
 import { bootFixture, mockApi, renderAdmin, revisionFixture } from '../test/harness'
 import type { RevisionDetail } from '../types'
 import { Review } from './Review'
+import { Settings } from './Settings'
 import { Ticket } from './Ticket'
 
 beforeAll(() => {
@@ -128,6 +129,29 @@ describe('resolving a docs-migration conflict', () => {
 
     await waitFor(() => expect(api.calls.find((call) => call.path === 'review/7/edit')?.body).toEqual({ frontmatter: { title: 'Escalation' }, body: '# Escalation\n\nThrough PagerDuty.\n' }))
     await waitFor(() => expect(notices.push).toHaveBeenCalledWith({ message: 'The merge is live.', tone: 'success' }))
+  })
+})
+
+describe('the settings screen', () => {
+  it('shows why the server refused a change, in its own words', async () => {
+    const refusal = 'A database set takes its analytics from config/larecipe.php (sets.kb.integrations), not from larecipe.json. Nothing was written.'
+    mockApi({
+      'GET manifest': { manifest: { name: 'Knowledge base' }, exists: true, content_hash: 'sha256:aaaa' },
+      'PUT manifest': () => ({ status: 422, json: { outcome: 'rejected', message: refusal, revision: null, validation: { ok: false, summary: { pages: 0, errors: 1, warnings: 0 }, issues: [] } } }),
+    })
+    const { notices } = renderAdmin(<Settings />)
+
+    fireEvent.change(await screen.findByDisplayValue('Knowledge base'), { target: { value: 'KB' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Save settings' }))
+
+    await waitFor(() => expect(notices.push).toHaveBeenCalledWith({ message: refusal, tone: 'danger' }))
+  })
+
+  it('says where analytics live', async () => {
+    mockApi({ 'GET manifest': { manifest: { name: 'Knowledge base' }, exists: true, content_hash: 'sha256:aaaa' } })
+    renderAdmin(<Settings />)
+
+    expect(await screen.findByText(/AI and analytics live in config\/larecipe\.php/)).toBeTruthy()
   })
 })
 

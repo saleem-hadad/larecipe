@@ -29,3 +29,15 @@ it('knows when a path resolves inside a root, symlinks included', function () {
     expect(PathGuard::isInside($root.'/docs/new/page.md', $root.'/docs'))->toBeTrue()
         ->and(PathGuard::isInside($root.'/docs/escape/page.md', $root.'/docs'))->toBeFalse();
 });
+
+it('sees through dot segments in the part of a path that does not exist yet', function () {
+    $root = sys_get_temp_dir().'/larecipe-track-f/guard-'.bin2hex(random_bytes(4));
+    mkdir($root.'/docs/guides', 0755, true);
+    touch($root.'/secret.txt');
+
+    expect(PathGuard::isInside($root.'/docs/nope/../../secret.txt', $root.'/docs'))->toBeFalse()
+        ->and(PathGuard::isInside($root.'/docs/nope/../../docs-other/x.md', $root.'/docs'))->toBeFalse()
+        ->and(PathGuard::isInside($root.'/docs/nope/a/../../../outside.md', $root.'/docs'))->toBeFalse()
+        ->and(PathGuard::isInside($root.'/docs/nope/../guides/./new.md', $root.'/docs'))->toBeTrue()
+        ->and(PathGuard::isInside($root.'/docs/nope/..', $root.'/docs'))->toBeTrue();
+});

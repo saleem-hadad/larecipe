@@ -3,6 +3,7 @@
 namespace LaRecipe\Domains\Content\DTOs;
 
 use LaRecipe\Domains\Content\Enums\NavigationNodeType;
+use LaRecipe\Domains\Content\Support\SafeHref;
 
 /**
  * One entry in a navigation tree: a page, a group of entries, or an external link.
@@ -37,7 +38,8 @@ final readonly class NavigationNode
     }
 
     /**
-     * Parse one item of a navigation.json pages list.
+     * Parse one item of a navigation.json pages list. A link whose href a
+     * page may not carry (SafeHref) is left out.
      */
     public static function fromJson(mixed $item): ?self
     {
@@ -59,7 +61,9 @@ final readonly class NavigationNode
         }
 
         if (isset($item['href'])) {
-            return self::link((string) ($item['label'] ?? $item['href']), (string) $item['href'], isset($item['icon']) ? (string) $item['icon'] : null);
+            $href = SafeHref::of((string) $item['href']);
+
+            return $href === null ? null : self::link((string) ($item['label'] ?? $href), $href, isset($item['icon']) ? (string) $item['icon'] : null);
         }
 
         if (isset($item['page'])) {

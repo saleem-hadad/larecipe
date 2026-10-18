@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$(git rev-parse --show-toplevel)/vendor/bin/larecipe-hook\" pre-push --client=codex",
+            "command": "\"$(git rev-parse --show-toplevel)\"/'vendor/bin/larecipe-hook' pre-push --client=codex",
             "timeout": 60
           }
         ]
@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$(git rev-parse --show-toplevel)/vendor/bin/larecipe-hook\" session-start --client=codex",
+            "command": "\"$(git rev-parse --show-toplevel)\"/'vendor/bin/larecipe-hook' session-start --client=codex",
             "timeout": 30
           }
         ]

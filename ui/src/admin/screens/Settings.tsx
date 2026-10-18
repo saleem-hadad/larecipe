@@ -72,7 +72,7 @@ function SettingsForm({ manifest, hash, exists }: { manifest: Record<string, unk
       <ScreenHeader
         label="Settings · larecipe.json"
         title={typeof cleaned.name === 'string' && cleaned.name ? cleaned.name : boot.set.name}
-        lead={exists ? 'Presentation and structure for this doc set. Routes, the source, the cache and AI live in config/larecipe.php.' : 'This set has no larecipe.json yet, so it uses defaults. Saving creates it.'}
+        lead={exists ? 'Presentation and structure for this doc set. Routes, the source, the cache, AI and analytics live in config/larecipe.php.' : 'This set has no larecipe.json yet, so it uses defaults. Saving creates it.'}
         actions={
           <>
             <Button variant="ghost" size="sm" aria-expanded={showHistory} onClick={() => setShowHistory(!showHistory)} icon={<AdminIcon name="History" size={14} />}>

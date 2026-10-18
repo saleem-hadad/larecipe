@@ -71,6 +71,7 @@ export interface PagePayload {
   reading_label?: string
   layout: 'default' | 'wide' | 'full'
   badge: unknown
+  /** The page's `meta:` frontmatter map, for custom components. Other unknown frontmatter keys never reach the browser. */
   meta: Record<string, unknown>
   inserts: Record<string, boolean> | false
   toc: TocItem[]

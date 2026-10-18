@@ -3,6 +3,7 @@
 namespace LaRecipe\Domains\Sources\Actions;
 
 use LaRecipe\Domains\Content\DTOs\Manifest;
+use LaRecipe\Domains\Content\Services\SetRegistry;
 use LaRecipe\Domains\Sources\Contracts\DraftableContentSource;
 use LaRecipe\Domains\Sources\DTOs\ManifestDraft;
 use LaRecipe\Domains\Sources\DTOs\WriteResult;
@@ -15,11 +16,17 @@ use LaRecipe\Domains\Sources\Services\Preconditions;
 use LaRecipe\Domains\Sources\Services\ReviewPolicy;
 use LaRecipe\Domains\Sources\Services\StructureValidator;
 use LaRecipe\Domains\Sources\Services\WritableSources;
+use LaRecipe\Domains\Validation\DTOs\ValidationIssue;
+use LaRecipe\Domains\Validation\DTOs\ValidationReport;
 
 /**
  * Changes a set's larecipe.json with a JSON merge patch. Presentation and
  * content structure only: infrastructure stays in config/larecipe.php
  * (the Two-Files Rule), and secrets never belong in either JSON file.
+ *
+ * A database set's manifest may not declare integrations: analytics scripts
+ * run with every reader's session, so they come from config/larecipe.php
+ * (SetConfig::allowsManifestIntegrations()). Removing old ones is fine.
  */
 final class UpdateManifestAction
 {
@@ -30,10 +37,15 @@ final class UpdateManifestAction
         private readonly StructureValidator $validator,
         private readonly Preconditions $preconditions,
         private readonly ChangeEvents $events,
+        private readonly SetRegistry $sets,
     ) {}
 
     public function execute(ManifestDraft $draft): WriteResult
     {
+        if (($draft->patch['integrations'] ?? null) !== null && ! $this->sets->config($draft->set)->allowsManifestIntegrations()) {
+            return $this->refuseIntegrations($draft->set);
+        }
+
         $source = $this->sources->writable($draft->set);
         $current = $source->manifest();
         $currentHash = ContentHashes::manifest($current);
@@ -70,5 +82,17 @@ final class UpdateManifestAction
         $this->events->written($revision, $draft->set);
 
         return $mode === WriteMode::Publish ? WriteResult::published($revision, $report) : WriteResult::drafted($revision, $report);
+    }
+
+    private function refuseIntegrations(string $set): WriteResult
+    {
+        $issue = ValidationIssue::error(
+            'manifest.integrations',
+            "A database set takes its analytics from config/larecipe.php (sets.{$set}.integrations), not from larecipe.json.",
+            fix: "Remove integrations from the change and add them to sets.{$set}.integrations in config/larecipe.php.",
+            file: 'larecipe.json',
+        );
+
+        return WriteResult::rejected(new ValidationReport([$issue]), $issue->message.' Nothing was written.');
     }
 }

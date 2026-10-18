@@ -132,6 +132,7 @@
     },
     "integrations": {
       "type": "object",
+      "description": "Repository sets only. A database set takes its analytics from config/larecipe.php (sets.{key}.integrations), and so does a self-hosted Plausible, Fathom or PostHog host.",
       "properties": {
         "analytics": {
           "type": "object",
@@ -145,19 +146,19 @@
             "plausible": {
               "type": "object",
               "required": ["domain"],
-              "properties": { "domain": { "type": "string" }, "src": { "type": "string", "pattern": "^https://" } },
+              "properties": { "domain": { "type": "string" }, "src": { "type": "string", "pattern": "^https://plausible\\.io/", "description": "A plausible.io script. Set a self-hosted one in config/larecipe.php." } },
               "additionalProperties": false
             },
             "fathom": {
               "type": "object",
               "required": ["siteId"],
-              "properties": { "siteId": { "type": "string", "pattern": "^[A-Z0-9]{4,20}$" }, "src": { "type": "string", "pattern": "^https://" } },
+              "properties": { "siteId": { "type": "string", "pattern": "^[A-Z0-9]{4,20}$" }, "src": { "type": "string", "pattern": "^https://cdn\\.usefathom\\.com/", "description": "A cdn.usefathom.com script. Set a custom domain in config/larecipe.php." } },
               "additionalProperties": false
             },
             "posthog": {
               "type": "object",
               "required": ["apiKey"],
-              "properties": { "apiKey": { "type": "string", "pattern": "^phc_" }, "host": { "type": "string", "pattern": "^https://" } },
+              "properties": { "apiKey": { "type": "string", "pattern": "^phc_" }, "host": { "type": "string", "pattern": "^https://(us\\.i|eu\\.i|app|eu)\\.posthog\\.com/?$", "description": "A PostHog cloud host. Set a self-hosted one or a proxy in config/larecipe.php." } },
               "additionalProperties": false
             },
             "custom": {
