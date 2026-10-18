@@ -20,6 +20,7 @@ use LaRecipe\Domains\Content\DTOs\PageRef;
 use LaRecipe\Domains\Content\Services\SetRegistry;
 use LaRecipe\Domains\Delivery\DTOs\DocsRequest;
 use LaRecipe\Domains\Delivery\Events\MarkdownServed;
+use LaRecipe\Domains\Delivery\Events\PageRendered;
 use LaRecipe\Domains\Delivery\Events\PageViewed;
 use LaRecipe\Domains\Delivery\Services\DocsUrls;
 use LaRecipe\Domains\Delivery\Services\PageCatalog;
@@ -197,6 +198,8 @@ final class PageController
             'mcp' => $set->config->setting('mcp.web.enabled', true) ? $this->urls->mcp($set) : null,
             'skill' => $set->config->setting('agents.skill_md', true) ? $this->urls->skill($set) : null,
         ], new DocsLinkResolver($set, $this->urls, $this->sources->for($set->key), markdownTwins: true), $view->audience->toContext());
+
+        event(new PageRendered($set->key, $page->ref, PageRendered::MARKDOWN, $page->contentHash));
 
         return $this->finish(new Response($body, 200, ['Content-Type' => 'text/markdown; charset=UTF-8']), $set, $page, $request, 'markdown', $view);
     }

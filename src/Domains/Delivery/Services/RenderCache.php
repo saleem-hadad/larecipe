@@ -5,10 +5,12 @@ namespace LaRecipe\Domains\Delivery\Services;
 use Closure;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use LaRecipe\Domains\Content\DTOs\Page;
+use LaRecipe\Domains\Delivery\Events\PageRendered;
 use LaRecipe\Domains\Markdown\DTOs\RenderedPage;
 use LaRecipe\Domains\Markdown\Services\MarkdownEnvironmentFactory;
 use LaRecipe\Domains\References\Actions\ReferencesFingerprintAction;
 use LaRecipe\Support\CacheFormat;
+use LaRecipe\Support\Contracts\Dispatcher;
 use Throwable;
 
 /**
@@ -36,6 +38,7 @@ final class RenderCache
         private readonly Cache $cache,
         private readonly MarkdownEnvironmentFactory $environment,
         private readonly ReferencesFingerprintAction $references,
+        private readonly Dispatcher $events,
     ) {}
 
     /** @param Closure(): RenderedPage $render */
@@ -49,6 +52,7 @@ final class RenderCache
         }
 
         $rendered = $render();
+        $this->events->dispatch(new PageRendered($page->ref->set, $page->ref, PageRendered::HTML, $page->contentHash));
 
         if ($rendered->hasErrors()) {
             return $rendered;
