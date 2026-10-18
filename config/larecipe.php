@@ -29,6 +29,21 @@ return [
     | 'database' (managed in the admin UI, always behind a cache).
     | access.mode is 'public', 'auth' or 'gate' (the viewLarecipe gate).
     |
+    | integrations.analytics adds GA4, Plausible, Fathom, PostHog or a custom
+    | https script to every page of the set, with the same keys as larecipe.json:
+    |
+    |   'integrations' => ['analytics' => [
+    |       'plausible' => ['domain' => 'docs.example.com'],
+    |       'posthog' => ['apiKey' => 'phc_...', 'host' => 'https://ph.example.com'],
+    |   ]],
+    |
+    | These scripts run with every reader's session, so a database set reads
+    | them from here only: its larecipe.json can be edited in the admin UI and
+    | over MCP. A repository set may also declare them in larecipe.json, where
+    | they are reviewed with your code; this file wins per provider. A
+    | self-hosted Plausible, Fathom or PostHog host (src, host) counts only
+    | here; larecipe.json loads them from their official hosts.
+    |
     */
 
     'sets' => [
@@ -228,7 +243,16 @@ return [
     // Live references (<Route>, <Artisan>, <Model>, <Event>) read the app's public
     // shape only. <Model> describes classes in these namespaces and nothing else;
     // <Event> looks up short names in these namespaces.
+    // <Route> shows a route's method, URI, middleware names and form request
+    // field and rule names, never rule arguments or the domain. routes.allow
+    // lists the routes it may describe, by name or URI ('orders.*', 'api/*').
+    // null means every route your app defines: routes registered by packages
+    // in vendor/ are left out, except LaRecipe's own. The snapshot command and
+    // larecipe:validate follow the same list.
     'references' => [
+        'routes' => [
+            'allow' => null,
+        ],
         'models' => [
             'allow' => ['App\\Models\\*'],
         ],

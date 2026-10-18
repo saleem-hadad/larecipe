@@ -17,11 +17,16 @@ use Throwable;
 
 /**
  * <Route name="orders.store" />: method, URI and middleware from the route
- * collection, plus the rules of the form request the action type-hints.
+ * collection, plus the fields of the form request the action type-hints and
+ * the names of their rules.
  *
- * Only what the route definition declares is shown. The route is never run, its
- * controller is never built (so controller middleware is not read), and the form
- * request is created bare, without the container, so it never validates anything.
+ * Only names are shown, never arguments: a rule such as in:{secret} or a
+ * middleware parameter is often built from config, so "in" and "throttle" are
+ * as far as a page goes. The domain is never shown, and RouteAllowList decides
+ * which routes may be described at all. The route is never run, its
+ * controller is never built (so controller middleware is not read), and the
+ * form request is created bare, without the container, so it never validates
+ * anything.
  */
 final class RouteResolver implements ListsReferenceTargets, ReferenceResolver
 {
@@ -30,6 +35,7 @@ final class RouteResolver implements ListsReferenceTargets, ReferenceResolver
     public function __construct(
         private readonly Router $router,
         private readonly Container $container,
+        private readonly RouteAllowList $allow,
         private readonly ?string $routeCacheFile = null,
     ) {}
 
@@ -42,17 +48,13 @@ final class RouteResolver implements ListsReferenceTargets, ReferenceResolver
     {
         $route = $this->router->getRoutes()->getByName($target);
 
-        if (! $route instanceof Route) {
+        if (! $route instanceof Route || ! $this->allow->allows($route)) {
             return null;
         }
 
         $methods = array_values(array_diff($route->methods(), ['HEAD']));
-        $middleware = array_values(array_filter($route->middleware(), 'is_string'));
+        $middleware = array_values(array_unique(array_map(fn (string $name) => $this->nameOf($name), array_filter($route->middleware(), 'is_string'))));
         $facts = [['Method', implode(', ', $methods)], ['URI', '/'.ltrim($route->uri(), '/')]];
-
-        if ($route->getDomain() !== null) {
-            $facts[] = ['Domain', (string) $route->getDomain()];
-        }
 
         if ($middleware !== []) {
             $facts[] = ['Middleware', implode(', ', $middleware)];
@@ -77,7 +79,7 @@ final class RouteResolver implements ListsReferenceTargets, ReferenceResolver
         $names = [];
 
         foreach ($this->router->getRoutes()->getRoutes() as $route) {
-            if (is_string($route->getName()) && $route->getName() !== '') {
+            if (is_string($route->getName()) && $route->getName() !== '' && $this->allow->allows($route)) {
                 $names[] = $route->getName();
             }
         }
@@ -138,7 +140,7 @@ final class RouteResolver implements ListsReferenceTargets, ReferenceResolver
         return null;
     }
 
-    /** @return list<list<string>> */
+    /** @return list<list<string>> each field with the names of its rules */
     private function rules(string $class, Route $route, string $method): array
     {
         try {
@@ -153,20 +155,30 @@ final class RouteResolver implements ListsReferenceTargets, ReferenceResolver
         $rows = [];
 
         foreach ($rules as $field => $fieldRules) {
-            $rows[] = [(string) $field, implode(', ', array_map(fn ($rule) => $this->describe($rule), is_string($fieldRules) ? explode('|', $fieldRules) : (array) $fieldRules))];
+            $names = array_map(fn ($rule) => $this->ruleName($rule), is_string($fieldRules) ? explode('|', $fieldRules) : (array) $fieldRules);
+            $rows[] = [(string) $field, implode(', ', $names)];
         }
 
         return $rows;
     }
 
-    private function describe(mixed $rule): string
+    /** "required", "in", "exists": a rule's name, never its arguments. */
+    private function ruleName(mixed $rule): string
     {
         return match (true) {
-            is_string($rule) => $rule,
+            is_string($rule) => $this->nameOf($rule),
             $rule instanceof Closure => 'custom',
-            is_object($rule) && method_exists($rule, '__toString') => (string) $rule,
+            is_object($rule) && method_exists($rule, '__toString') => $this->nameOf((string) $rule),
             is_object($rule) => lcfirst(class_basename($rule)),
-            default => (string) json_encode($rule),
+            default => 'custom',
         };
+    }
+
+    /** The part before the first colon ("throttle" for "throttle:5,1"), or "custom" when that is not a plain name. */
+    private function nameOf(string $rule): string
+    {
+        $name = trim(explode(':', $rule, 2)[0]);
+
+        return preg_match('/^[A-Za-z_][A-Za-z0-9_.\\\\-]*$/', $name) === 1 ? $name : 'custom';
     }
 }

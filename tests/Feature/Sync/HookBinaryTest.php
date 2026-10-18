@@ -9,28 +9,34 @@ use Symfony\Component\Process\Process;
  * records being called, so they prove when the framework is (not) booted.
  */
 
+const FAKE_ARTISAN = <<<'PHP'
+    <?php
+    file_put_contents(__DIR__.'/artisan-called', implode(' ', array_slice($argv, 1))."\n".stream_get_contents(STDIN));
+    echo '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"held by the fake app"}}';
+    PHP;
+
+const LARECIPE_COMPOSER = '{"require": {"laravel/framework": "^13.0", "larecipe/larecipe": "^3.0"}}';
+
 beforeEach(function () {
     $this->project = TemporaryProject::create();
-    $this->project->write('artisan', <<<'PHP'
-        <?php
-        file_put_contents(__DIR__.'/artisan-called', implode(' ', array_slice($argv, 1))."\n".stream_get_contents(STDIN));
-        echo '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"held by the fake app"}}';
-        PHP);
+    $this->project->write('artisan', FAKE_ARTISAN);
+    $this->project->write('composer.json', LARECIPE_COMPOSER);
 });
 
 afterEach(fn () => $this->project->destroy());
 
-function runHook(TemporaryProject $project, string $command, array $env = [], string $event = 'pre-push'): array
+function runHook(TemporaryProject $project, string $command, array $env = [], string $event = 'pre-push', string $in = ''): array
 {
+    $directory = $project->path($in);
     $payload = json_encode([
         'session_id' => 'abc',
         'hook_event_name' => 'PreToolUse',
-        'cwd' => $project->path(),
+        'cwd' => $directory,
         'tool_name' => 'Bash',
         'tool_input' => ['command' => $command],
     ]);
 
-    $process = new Process([PHP_BINARY, dirname(__DIR__, 3).'/bin/larecipe-hook', $event], $project->path(), ['CLAUDE_PROJECT_DIR' => $project->path(), ...$env]);
+    $process = new Process([PHP_BINARY, dirname(__DIR__, 3).'/bin/larecipe-hook', $event], $directory, ['CLAUDE_PROJECT_DIR' => $directory, ...$env]);
     $process->setInput($payload);
 
     $started = microtime(true);
@@ -92,4 +98,43 @@ it('passes session start through to the app', function () {
     runHook($this->project, '', event: 'session-start');
 
     expect($this->project->read('artisan-called'))->toStartWith('larecipe:hook session-start');
+});
+
+it('does nothing in a Laravel app that does not have LaRecipe', function () {
+    $this->project->write('composer.json', '{"require": {"laravel/framework": "^13.0"}}');
+    $this->project->write('bootstrap/cache/larecipe/hooks.php', "<?php file_put_contents(__DIR__.'/included', 'yes'); return [];");
+
+    $result = runHook($this->project, 'git push');
+
+    expect($result['output'])->toBe('')
+        ->and($this->project->read('artisan-called'))->toBeNull()
+        ->and($this->project->read('bootstrap/cache/larecipe/included'))->toBeNull();
+});
+
+it('counts LaRecipe as installed when vendor/ has it', function () {
+    $this->project->write('composer.json', '{"require": {"laravel/framework": "^13.0"}}');
+    $this->project->write('vendor/larecipe/larecipe/composer.json', '{"name": "larecipe/larecipe"}');
+
+    runHook($this->project, 'git push');
+
+    expect($this->project->read('artisan-called'))->not->toBeNull();
+});
+
+it('never looks above the repository it was opened in', function () {
+    $this->project->write('checkout/.git/HEAD', "ref: refs/heads/main\n");
+    $this->project->write('checkout/src/index.php', '<?php');
+
+    runHook($this->project, 'git push', in: 'checkout/src');
+
+    expect($this->project->read('artisan-called'))->toBeNull();
+});
+
+it('stops at the nearest app, even when an app above it has LaRecipe', function () {
+    $this->project->write('packages/demo/artisan', FAKE_ARTISAN);
+    $this->project->write('packages/demo/composer.json', '{"require": {"laravel/framework": "^13.0"}}');
+
+    runHook($this->project, 'git push', in: 'packages/demo');
+
+    expect($this->project->read('artisan-called'))->toBeNull()
+        ->and($this->project->read('packages/demo/artisan-called'))->toBeNull();
 });

@@ -13,7 +13,10 @@ use LaRecipe\Domains\Search\DTOs\SearchResults;
  * LaRecipe pushes every record (private pages and gated blocks included) when
  * the set's content changes. Records carry the abilities they require, so a
  * driver must filter by the reader's: the query carries the pages the reader
- * may see and the abilities they hold (the Same-Rules Rule).
+ * may see and the abilities they hold (the Same-Rules Rule). LaRecipe checks
+ * every hit again and drops what the reader may not see; set SearchHit's
+ * $record to the matched record's id, or a hit in a section with gated
+ * blocks loses its snippet for readers who lack an ability there.
  */
 interface SearchDriver
 {

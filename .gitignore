@@ -12,3 +12,5 @@ composer.lock
 *.log
 /workbench/public/build
 /.claude/worktrees
+/workbench/database/*.sqlite
+/workbench/storage

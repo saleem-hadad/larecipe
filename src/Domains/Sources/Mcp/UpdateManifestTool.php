@@ -15,7 +15,7 @@ use LaRecipe\Domains\Sources\DTOs\ManifestDraft;
 
 #[Name('update_manifest')]
 #[Title('Update the doc set manifest')]
-#[Description('Change the set\'s larecipe.json (name, description, theme, versions, locales, navbar, redirects, agent description) with a JSON merge patch: keys replace, null removes a key, objects merge, lists are replaced whole. Presentation and structure only: routes, drivers, AI settings and secrets live in config/larecipe.php and never here.')]
+#[Description('Change the set\'s larecipe.json (name, description, theme, versions, locales, navbar, redirects, agent description) with a JSON merge patch: keys replace, null removes a key, objects merge, lists are replaced whole. Presentation and structure only: routes, drivers, AI settings and secrets live in config/larecipe.php and never here, and so do a database set\'s analytics integrations.')]
 #[IsDestructive]
 final class UpdateManifestTool extends AuthorTool
 {

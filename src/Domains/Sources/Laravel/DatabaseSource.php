@@ -441,6 +441,18 @@ final class DatabaseSource implements DraftableContentSource
             ->all();
     }
 
+    public function revisions(?string $before = null, int $limit = 50): iterable
+    {
+        return $this->query('revision')
+            ->where('set', $this->set)
+            ->when($before !== null, fn (Builder $query) => $query->where('id', '<', (int) $before))
+            ->orderByDesc('id')
+            ->limit(max(1, $limit))
+            ->get()
+            ->map(fn (Model $revision) => $this->toRevision($revision))
+            ->all();
+    }
+
     private function writeNavigationState(string $version, string $locale, ?NavigationTree $tree, RevisionOperation $operation, Provenance $by, WriteMode $mode, ?WriteContext $context): Revision
     {
         return $this->transaction(function () use ($version, $locale, $tree, $operation, $by, $mode, $context) {

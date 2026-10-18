@@ -71,6 +71,7 @@ export interface PagePayload {
   reading_label?: string
   layout: 'default' | 'wide' | 'full'
   badge: unknown
+  /** The page's `meta:` frontmatter map, for custom components. Other unknown frontmatter keys never reach the browser. */
   meta: Record<string, unknown>
   inserts: Record<string, boolean> | false
   toc: TocItem[]
@@ -111,6 +112,8 @@ export interface SearchConfig {
   driver?: string
   index_url?: string | null
   endpoint?: string | null
+  /** Where the palette reports searches it answered in the browser; null when the server sees them itself. */
+  report_url?: string | null
 }
 
 export interface AskConfig {

@@ -2,8 +2,11 @@
 
 namespace LaRecipe\Domains\Search;
 
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use InvalidArgumentException;
 use LaRecipe\Domains\Content\DTOs\DocSet;
@@ -15,6 +18,7 @@ use LaRecipe\Domains\Search\Contracts\SearchDriver;
 use LaRecipe\Domains\Search\Contracts\SearchEngine;
 use LaRecipe\Domains\Search\Controllers\SearchController;
 use LaRecipe\Domains\Search\Controllers\SearchIndexController;
+use LaRecipe\Domains\Search\Controllers\SearchReportController;
 use LaRecipe\Domains\Search\Laravel\BootPayload;
 use LaRecipe\Domains\Search\Laravel\NotFoundSuggestions;
 use LaRecipe\Domains\Search\Services\RecordSearchEngine;
@@ -59,12 +63,20 @@ final class SearchServiceProvider extends ServiceProvider
             $router->get('{scope}/_search', SearchController::class)
                 ->where('scope', self::SCOPE)->defaults('larecipeSet', $set->key)->name('search.scoped');
 
+            $router->post('_search/report', SearchReportController::class)
+                ->middleware('throttle:larecipe-search-report')->defaults('larecipeSet', $set->key)->name('search.report');
+
+            $router->post('{scope}/_search/report', SearchReportController::class)
+                ->where('scope', self::SCOPE)->middleware('throttle:larecipe-search-report')->defaults('larecipeSet', $set->key)->name('search.report.scoped');
+
             $router->get('_search/{index}', SearchIndexController::class)
                 ->where('index', self::INDEX)->defaults('larecipeSet', $set->key)->name('search.index');
 
             $router->get('{scope}/_search/{index}', SearchIndexController::class)
                 ->where(['scope' => self::SCOPE, 'index' => self::INDEX])->defaults('larecipeSet', $set->key)->name('search.index.scoped');
         });
+
+        RateLimiter::for('larecipe-search-report', fn (Request $request) => Limit::perMinute(30)->by('larecipe-search-report|'.($request->user()?->getAuthIdentifier() ?? $request->ip())));
 
         // Both are scoped (rebuilt per request under Octane), so hook every instance as it is built.
         $this->whenResolved(PagePresenter::class, fn (PagePresenter $presenter) => $presenter->extend(

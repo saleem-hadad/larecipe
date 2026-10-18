@@ -80,6 +80,12 @@ final readonly class DocSet
         return $this->manifest->isMultilingual();
     }
 
+    /** larecipe.json's integrations, or none when this set's manifest may not declare them (SetConfig::allowsManifestIntegrations()). */
+    public function manifestIntegrations(): array
+    {
+        return $this->config->allowsManifestIntegrations() ? (array) $this->manifest->get('integrations', []) : [];
+    }
+
     public function landingPath(): string
     {
         return PageRef::normalizePath($this->manifest->landing ?? 'index');

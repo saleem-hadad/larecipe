@@ -149,6 +149,14 @@ it('fails a database set on a cache store that keeps nothing', function () {
     expect(brokenIssues()['cache.store'][0]['message'])->toContain('"array" cache store');
 });
 
+it('reads the cache store a database set names for itself', function () {
+    useBrokenSet(['source' => ['driver' => 'database', 'cache' => 'file']], ['app.env' => 'production']);
+    app(SourceManager::class)->extend('database', fn ($app, $set) => new RepositorySource($set->key, Sets::fixture('broken')));
+    app()->detectEnvironment(fn () => 'production');
+
+    expect(brokenIssues())->not->toHaveKey('cache.store');
+});
+
 it('passes clean docs with warnings only', function () {
     $report = app(ValidateDocsAction::class)->execute('docs');
 

@@ -8,10 +8,11 @@ use LaRecipe\Domains\Search\Services\SearchDrivers;
 /**
  * Adds search to the boot payload React reads:
  *
- *   search: { driver: "client", index_url: "/docs/_search/{audience}.{fingerprint}.json", endpoint: "/docs/_search" }
+ *   search: { driver: "client", index_url: "/docs/_search/{audience}.{fingerprint}.json", endpoint: "/docs/_search", report_url: "/docs/_search/report" }
  *
  * index_url is this reader's own index variant. It is null for the "server"
- * driver and custom drivers; the UI then queries the endpoint instead.
+ * driver and custom drivers; the UI then queries the endpoint instead, and
+ * the endpoint emits the search events itself, so report_url is null too.
  */
 final class BootPayload
 {
@@ -21,7 +22,7 @@ final class BootPayload
         private readonly SearchDrivers $drivers,
     ) {}
 
-    /** @return array{search: array{driver: string, index_url: ?string, endpoint: string}} */
+    /** @return array{search: array{driver: string, index_url: ?string, endpoint: string, report_url: ?string}} */
     public function __invoke(DocSet $set, array $payload): array
     {
         $version = (string) ($payload['version'] ?? $set->defaultVersion()->id);
@@ -36,6 +37,7 @@ final class BootPayload
             'driver' => $driver,
             'index_url' => $indexUrl,
             'endpoint' => $this->urls->endpoint($set, $version, $locale),
+            'report_url' => $indexUrl !== null ? $this->urls->report($set, $version, $locale) : null,
         ]];
     }
 }

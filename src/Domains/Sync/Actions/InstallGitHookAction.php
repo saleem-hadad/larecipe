@@ -74,8 +74,9 @@ final class InstallGitHookAction
 
     private function command(bool $strict): string
     {
+        // The app's folder is quoted for the shell: a folder named site$(cmd) must never run cmd.
         $prefix = rtrim($this->vcs->projectPrefix(), '/');
-        $directory = $prefix === '' ? '"$(git rev-parse --show-toplevel)"' : '"$(git rev-parse --show-toplevel)/'.$prefix.'"';
+        $directory = $prefix === '' ? '"$(git rev-parse --show-toplevel)"' : '"$(git rev-parse --show-toplevel)"/'.escapeshellarg($prefix);
 
         return "(cd {$directory} && php artisan larecipe:hook git-pre-push".($strict ? ' --strict' : '').')';
     }

@@ -38,8 +38,9 @@ final class InstallAgentHooksAction
         }
 
         if (in_array(Agent::Codex, $agents, true)) {
+            // The app's folder is quoted for the shell: a folder named site$(cmd) must never run cmd.
             $prefix = $this->vcs->available() ? $this->vcs->projectPrefix() : '';
-            $changes[] = $this->install($workspace, '.codex/hooks.json', '"$(git rev-parse --show-toplevel)/'.$prefix.'vendor/bin/larecipe-hook"', ' --client=codex');
+            $changes[] = $this->install($workspace, '.codex/hooks.json', '"$(git rev-parse --show-toplevel)"/'.escapeshellarg($prefix.'vendor/bin/larecipe-hook'), ' --client=codex');
         }
 
         return $changes;
