@@ -53,6 +53,8 @@ class WorkbenchServiceProvider extends ServiceProvider
                 'route' => ['prefix' => 'guide', 'middleware' => ['web']],
                 'source' => ['driver' => 'fixture', 'path' => $fixtures.'/track-b'],
                 'access' => ['mode' => 'public'],
+                // The showcase pages hold each component's exact server HTML, written as raw HTML.
+                'html_input' => 'allow',
             ],
         ]);
 
