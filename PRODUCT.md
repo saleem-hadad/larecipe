@@ -228,6 +228,7 @@ Own all of it (open source, your repo or your database, your agent or your keys)
 8. **Gorgeous by default.** LaRecipe's first promise was beautiful docs. A default LaRecipe site should look better than most teams would design themselves.
 9. **Laravel-native, not Laravel-flavored.** Gates, Eloquent, Artisan, queues, cache, Boost, `laravel/ai`, `laravel/mcp`. Use the framework; never wrap it in a second one.
 10. **Simple by default, powerful when asked.** Defaults cover most teams: docs in the repo, client-side search, the owner's agent session. Custom search drivers, static export, the database source and live references are there for teams who need them, and never in the way of those who don't.
+11. **Easy first, depth on demand.** Docs are written for people first: each page opens with the common case in a few short lines, and the options, edge cases and internals come after it, folded or on a linked page. A doc set reads from easy to advanced, and expert material never sits on its first pages. Agents lose nothing: the Markdown twin carries every word. Every skill and the `AGENTS.md` block LaRecipe writes teach agents this rule, and LaRecipe's own docs follow it.
 
 ### The North Star
 

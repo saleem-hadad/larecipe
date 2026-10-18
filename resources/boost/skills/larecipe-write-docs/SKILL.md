@@ -32,7 +32,7 @@ Read the code the page describes before writing a word: routes, controllers, For
 ## 4. Write the page
 
 - **Frontmatter.** Every page has `title`, `description` (one sentence that says what the reader gets) and `sources` (globs of the code it documents, from the project root). See [frontmatter](references/frontmatter.md).
-- **Answer first.** Open with what the feature does and when to use it, then how. Short sentences, plain words, one idea per paragraph. See [writing style](references/writing-style.md).
+- **Easy first, depth on demand.** Open with the common case in a few short lines: what it does, when to use it, the one command or snippet that works. Put options, edge cases and internals after that, in an `<Accordion>`, or on a linked page. People skim; agents still read everything in the Markdown twin. Short sentences, plain words. See [writing style](references/writing-style.md).
 - **Real examples.** Code samples come from the real code. Prefer a snippet include (`<<< @/app/Billing/Invoice.php#refund`, which pulls the `#region refund` part of the file) over pasting code that will drift.
 - **Live references.** Write `<Route name="orders.store" />`, `<Artisan command="orders:prune" />`, `<Model name="Order" />` or `<Event name="OrderShipped" />` instead of pasting a URI, a command signature or a column list. They read the running app, so they cannot go stale. See [live references](references/live-references.md).
 - **Components.** Use only the components in [the component catalog](references/components.md). Anything else renders as plain text.
@@ -44,6 +44,7 @@ Never write configuration or environment values into docs: no `.env` values, API
 
 ## 5. Put it in the navigation
 
+- Order pages from easy to advanced: getting started first, everyday tasks next, advanced topics and reference last. Never put expert or niche pages (upgrades from old versions, internals) at the top.
 - When the version has a `navigation.json`, add the page there, in the right group. See [navigation](references/navigation.md).
 - Without one, navigation comes from folders and frontmatter `order`: place the file in the right folder and set `order`.
 - A database set changes navigation with the `update_navigation` MCP tool.

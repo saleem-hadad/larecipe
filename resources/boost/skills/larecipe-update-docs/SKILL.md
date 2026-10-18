@@ -36,7 +36,7 @@ For each page:
 2. Change only what the code change made wrong or incomplete: a renamed option, a new parameter, a removed step, a new behavior. Keep every unrelated sentence exactly as it is. A docs diff that rewrites a page to fix one line is hard to review.
 3. Replace pasted values you touch with live references where possible (`<Route name>`, `<Artisan command>`, `<Model name>`, `<Event name>`). See [live references](references/live-references.md).
 4. Keep `sources:` accurate: add the new files the page now documents, remove ones it no longer does.
-5. Follow [the writing style](references/writing-style.md) and use only the components in [the catalog](references/components.md). Frontmatter keys are in [frontmatter](references/frontmatter.md).
+5. Follow [the writing style](references/writing-style.md), easy first: a new option or edge case goes after the common case (or in an `<Accordion>`), never ahead of it. Use only the components in [the catalog](references/components.md). Frontmatter keys are in [frontmatter](references/frontmatter.md).
 
 Never write configuration or environment values into docs. Name a config key in inline code; never print its value.
 

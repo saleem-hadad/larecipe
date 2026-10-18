@@ -12,6 +12,8 @@ Before you push a branch or open a pull request:
 
 Review mode is `required`: show the user the docs diff and wait for approval before committing it.
 
+Write docs for people first: open each page with the common case in a few short lines, then put options, edge cases and internals after it (in an `<Accordion>` or on a linked page). Order pages from easy to advanced. Agents still read everything in the Markdown twin.
+
 Search and read the docs with the `larecipe` MCP server. Never write configuration or environment values into docs.
 
 ### Docs index: Acme

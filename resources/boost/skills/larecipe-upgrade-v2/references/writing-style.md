@@ -1,6 +1,16 @@
 # Writing style
 
-Docs are read for long stretches, by people in a hurry and by agents with no patience for filler. Write for both.
+Write for people first. Agents read every word of the Markdown twin, so they are served by anything you write; people skim, and stop as soon as they have their answer. Give them that answer fast.
+
+## Easy first, depth on demand
+
+This is LaRecipe's first writing rule.
+
+- **The common case first, in few words.** A page opens with the shortest path that works for most readers: what it is, when to use it, the one command or snippet. Many readers stop there, and that is success.
+- **Depth on demand.** Options, edge cases, internals and reference tables come after the basics: lower on the page under a plain heading, folded into an `<Accordion>`, or on their own page linked at the end. Folding hides nothing from agents; the Markdown twin keeps it all.
+- **Easy pages before hard ones.** A doc set reads in order: getting started, then everyday tasks, then advanced topics and reference. Niche or expert material (upgrading from an old version, internals, tuning) never sits on the introduction or the first pages; link to it from where an expert will look.
+- **Short pages.** A task page longer than about two screens usually holds two topics: split it. Say a thing once and link to it, instead of repeating it on every page.
+- **Cut, then cut again.** No preamble that restates the title, no "in this guide we will", no summary of what the reader just read.
 
 ## Voice
 

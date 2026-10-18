@@ -41,6 +41,8 @@ For each page, check:
 
 - `description` exists, is one sentence and says what the reader gets (not a repeat of the title).
 - The first paragraph answers what the page is about. See [writing style](references/writing-style.md).
+- Easy first, depth on demand: the common case comes first and fits in a few lines; options, edge cases and internals sit after it, in an `<Accordion>` or on a linked page. Flag pages that open with edge cases, run past about two screens on one task, or repeat what another page says.
+- Reading order: getting started, then everyday tasks, then advanced topics and reference. Flag expert or niche pages (upgrades from old versions, internals) placed on the introduction or the first pages.
 - Pasted values that should be live references (`<Route>`, `<Artisan>`, `<Model>`, `<Event>`). See [live references](references/live-references.md).
 - Code samples that no longer match the code; prefer snippet includes (`<<< @/path#region`).
 - Components and frontmatter keys that do not exist. See [the component catalog](references/components.md) and [frontmatter](references/frontmatter.md).
