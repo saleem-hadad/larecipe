@@ -31,7 +31,9 @@ class ProvenanceFixtureSource extends RepositorySource
             return $page;
         }
 
-        $at = new DateTimeImmutable((string) $entry['updated']);
+        // Relative to the start of the hour, so every request in a run dates a
+        // page the same way (the browser remembers opened pages by that date).
+        $at = (new DateTimeImmutable(date('Y-m-d H:00:00')))->modify((string) $entry['updated']);
         $provenance = isset($entry['name'])
             ? new Provenance(
                 Actor::tryFrom((string) ($entry['actor'] ?? 'human')) ?? Actor::Human,

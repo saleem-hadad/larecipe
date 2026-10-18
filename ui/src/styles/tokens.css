@@ -47,6 +47,8 @@
   --lr-sidebar-active: oklch(0.945 0.035 279);
   --lr-hairline: #e7e6ea;
   --lr-hairline-strong: #d6d5db;
+  /* The line a linked card traces on hover: ink, quiet, never the accent. */
+  --lr-card-trace: color-mix(in oklab, var(--lr-ink) 30%, transparent);
   --lr-scrim: rgb(17 16 22 / 0.32);
 
   --lr-accent: oklch(0.55 0.2 279);
@@ -108,7 +110,8 @@
   --lr-duration-state: 180ms;
   --lr-duration-panel: 240ms;
   --lr-duration-sidebar: 320ms;
-  --lr-duration-card: 600ms;
+  --lr-duration-card: 380ms;
+  --lr-ease-card: cubic-bezier(0.22, 1, 0.36, 1);
   --lr-ease-sidebar: cubic-bezier(0.4, 0, 0.2, 1);
   --lr-duration-swap: 160ms;
 

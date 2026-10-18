@@ -22,8 +22,8 @@
 <link rel="icon" href="{{ $set->manifest->favicon() }}">
 @endif
 <meta name="color-scheme" content="light dark">
-{{-- Before first paint: the reader's theme (light, dark or system), whether they hid the navigation, and the .lr-js flag that shows JavaScript-only controls in their final place. --}}
-<script{!! $larecipe->cspNonce() ? ' nonce="'.e($larecipe->cspNonce()).'"' : '' !!}>(function(){var d=document.documentElement;d.classList.add('lr-js');try{var m=d.getAttribute('data-theme-mode')||'system',s=localStorage.getItem('larecipe:theme');var t=s||m;if(t==='system'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}d.setAttribute('data-theme',t);if(localStorage.getItem('larecipe:sidebar')==='hidden'){d.setAttribute('data-lr-sidebar','hidden')}}catch(e){}})();</script>
+{{-- Before first paint: the reader's theme (light, dark or system), whether they hid the navigation, the .lr-js flag that shows JavaScript-only controls in their final place, and a stylesheet that hides the fresh dots of pages the reader has already opened (ui/src/app/seen.ts keeps it). --}}
+<script{!! $larecipe->cspNonce() ? ' nonce="'.e($larecipe->cspNonce()).'"' : '' !!}>(function(){var d=document.documentElement;d.classList.add('lr-js');try{var m=d.getAttribute('data-theme-mode')||'system',s=localStorage.getItem('larecipe:theme');var t=s||m;if(t==='system'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}d.setAttribute('data-theme',t);if(localStorage.getItem('larecipe:sidebar')==='hidden'){d.setAttribute('data-lr-sidebar','hidden')}var n=JSON.parse(localStorage.getItem('larecipe:seen')||'[]');if(n.length&&document.adoptedStyleSheets){var c=new CSSStyleSheet();c.replaceSync(n.map(function(k){return '[data-lr-seen="'+String(k).replace(/["\\]/g,'\\$&')+'"]'}).join(',')+'{display:none}');document.adoptedStyleSheets=document.adoptedStyleSheets.concat(c);window.__lrSeen=c}}catch(e){}})();</script>
 @if (! empty($themeCss))
 <style>{!! $themeCss !!}</style>
 @endif

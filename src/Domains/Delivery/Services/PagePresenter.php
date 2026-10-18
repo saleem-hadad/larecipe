@@ -14,6 +14,7 @@ use LaRecipe\Domains\Content\DTOs\PageRef;
 use LaRecipe\Domains\Content\DTOs\PageSummary;
 use LaRecipe\Domains\Content\DTOs\Version;
 use LaRecipe\Domains\Delivery\Support\Assets;
+use LaRecipe\Domains\Delivery\Support\Freshness;
 use LaRecipe\Domains\Delivery\Support\InsertRenderer;
 use LaRecipe\Domains\Markdown\DTOs\RenderedPage;
 use LaRecipe\Domains\Markdown\DTOs\TocItem;
@@ -33,9 +34,6 @@ use LaRecipe\LaRecipe;
  */
 final class PagePresenter
 {
-    /** Pages changed within this window carry the fresh dot. */
-    private const FRESH_WINDOW = '-7 days';
-
     /** Words per minute for the reading time in the provenance line. */
     private const WORDS_PER_MINUTE = 220;
 
@@ -57,6 +55,7 @@ final class PagePresenter
         private readonly LaRecipe $larecipe,
         private readonly Translator $translator,
         private readonly InsertRenderer $inserts,
+        private readonly Freshness $freshness,
     ) {}
 
     /**
@@ -99,7 +98,7 @@ final class PagePresenter
                 'edit_url' => $this->editUrl($set, $ref),
                 'updated_at' => $page->updatedAt?->format(DATE_ATOM),
                 'updated_human' => $page->updatedAt !== null ? $this->relativeTime($page->updatedAt, $locale) : null,
-                'fresh' => $this->isFresh($page->updatedAt),
+                'fresh' => $this->freshness->isFresh($page->updatedAt),
                 'provenance' => $provenance,
                 'ticket' => null,
                 'breadcrumb' => $this->breadcrumb($navigation, $ref->path),
@@ -314,9 +313,11 @@ final class PagePresenter
 
     /**
      * Navigation as the reader sees it, with URLs, the active page, the fresh
-     * dot for pages changed within the last seven days (the sidebar's only
-     * decoration, and it is a state) and the fallback flag for pages shown in
-     * the original language.
+     * dot for other pages changed within larecipe.ui.fresh_days (the
+     * sidebar's only decoration, and it is a state) and the fallback flag for
+     * pages shown in the original language. A fresh page carries its
+     * updated_at, so the browser can hide the dot once the reader has opened
+     * that version of the page (resources/views/partials/head.blade.php).
      *
      * @param  array<string, PageSummary>  $visible
      */
@@ -329,7 +330,13 @@ final class PagePresenter
                 if ($item['type'] === 'page') {
                     $item['url'] = $this->urls->pagePath($set, $ref->withPath($item['path']));
                     $item['active'] = $item['path'] === $ref->path;
-                    $item['fresh'] = $this->isFresh($visible[$item['path']]->updatedAt ?? null);
+                    $updatedAt = $visible[$item['path']]->updatedAt ?? null;
+                    $item['fresh'] = ! $item['active'] && $this->freshness->isFresh($updatedAt);
+
+                    if ($item['fresh']) {
+                        $item['updated_at'] = $updatedAt?->format(DATE_ATOM);
+                    }
+
                     $item['fallback'] = isset($visible[$item['path']]) && $visible[$item['path']]->ref->locale !== $ref->locale;
                 } elseif ($item['type'] === 'group') {
                     $item['items'] = $withUrls($item['items']);
@@ -474,11 +481,6 @@ final class PagePresenter
     private function relativeTime(DateTimeInterface $at, string $locale): string
     {
         return Carbon::instance($at)->locale($locale)->diffForHumans();
-    }
-
-    private function isFresh(?DateTimeInterface $updatedAt): bool
-    {
-        return $updatedAt !== null && $updatedAt > new DateTimeImmutable(self::FRESH_WINDOW);
     }
 
     private function readingMinutes(string $html): int

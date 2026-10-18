@@ -14,6 +14,7 @@ import { AppContext, askEnabled, type AppServices } from './context'
 import { Insert } from './Insert'
 import { IslandsHost } from './Islands'
 import { installShortcuts } from './shortcuts'
+import { markSeen, seenKey } from './seen'
 import { useStoreState } from './store'
 import { watchSystem } from './theme'
 
@@ -72,6 +73,11 @@ export function App({ services, article }: { services: AppServices; article: HTM
       }),
     [store],
   )
+
+  // Opening a recently changed page clears its fresh dot in the sidebar.
+  useEffect(() => {
+    if (page.fresh && page.updated_at) markSeen(seenKey(page.path_url, page.updated_at))
+  }, [page.fresh, page.updated_at, page.path_url])
 
   // The layout attribute lives on the root element React does not render.
   useEffect(() => {

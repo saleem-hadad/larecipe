@@ -2,6 +2,7 @@ import { Icon, useLaRecipe, type NavItem } from '@larecipe/ui'
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import { useApp, useAppState } from '../app/context'
 import { Insert } from '../app/Insert'
+import { seenKey } from '../app/seen'
 import { Brand, LocaleLinks, Navbar } from './Header'
 
 function containsActive(items: NavItem[]): boolean {
@@ -25,7 +26,7 @@ function NavEntry({ item, depth }: { item: NavItem; depth: number }) {
             </span>
           )}
           {item.fresh && (
-            <span className="lr-fresh-dot" title={t('nav.updated')}>
+            <span className="lr-fresh-dot" title={t('nav.updated')} data-lr-seen={seenKey(item.url, item.updated_at ?? '')}>
               <span className="lr-sr">{t('nav.updated')}</span>
             </span>
           )}

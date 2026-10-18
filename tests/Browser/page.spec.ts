@@ -11,9 +11,37 @@ test('the page header carries the breadcrumb, provenance and the fresh dot', asy
   await expect(page.locator('.lr-provenance .lr-fresh-dot')).toHaveCount(1)
   await expect(page.locator('.lr-provenance time')).toHaveText('2 hours ago')
 
-  // Fresh dots mark pages changed in the last seven days, and only those.
-  const fresh = page.locator('.lr-sidebar .lr-nav-link:has(.lr-fresh-dot) .lr-nav-text')
-  await expect(fresh).toHaveText(['Introduction', 'Installation', 'Components', 'Connect your agents'])
+  // Sidebar dots mark other pages changed within a day (larecipe.ui.fresh_days),
+  // and only those: Introduction is 3 days old, Components 26 hours.
+  const fresh = page.locator('.lr-sidebar .lr-nav-link:has(.lr-fresh-dot:visible) .lr-nav-text')
+  await expect(fresh).toHaveText(['Connect your agents'])
+})
+
+test('a sidebar fresh dot goes away once the reader opens that page, and stays away', async ({ page }) => {
+  const dot = page.locator('.lr-sidebar .lr-nav-link:has-text("Connect your agents") .lr-fresh-dot')
+
+  await page.goto('/guide/3.x/installation')
+  await waitForApp(page)
+  await expect(dot).toBeVisible()
+
+  await page.locator('.lr-sidebar .lr-nav-link:has-text("Connect your agents")').click()
+  await expect(page.locator('h1.lr-title')).toHaveText('Connect your agents')
+  // The page being read has no sidebar dot of its own.
+  await expect(dot).toHaveCount(0)
+
+  await page.locator('.lr-sidebar .lr-nav-link:has-text("Installation")').click()
+  await expect(page.locator('h1.lr-title')).toHaveText('Installation')
+  await expect(dot).toHaveCount(1)
+  await expect(dot).toBeHidden()
+
+  // After a reload the head script hides it before first paint.
+  await page.reload()
+  await expect(dot).toBeHidden()
+  // Both opened pages are remembered by URL and date, the latest last.
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('larecipe:seen') ?? '[]'))).toEqual([
+    expect.stringMatching(/^\/guide\/3\.x\/agents\|\d{4}-/),
+    expect.stringMatching(/^\/guide\/3\.x\/installation\|\d{4}-/),
+  ])
 })
 
 test('a page without recent changes has no fresh dot and no ticket without provenance', async ({ page }) => {
@@ -129,7 +157,7 @@ test('Markdown lists keep their markers', async ({ page }) => {
   await expect(list).toHaveCSS('list-style-type', 'disc')
 })
 
-test('a linked card traces its border in violet on hover and unwinds when left', async ({ page }) => {
+test('a linked card traces its border on hover and unwinds when left', async ({ page }) => {
   await page.goto('/guide/3.x/guides/authoring')
   await waitForApp(page)
 

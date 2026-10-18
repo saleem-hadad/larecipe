@@ -61,6 +61,17 @@ it('draws the brand with the LaRecipe logo and the name, and the reading line in
         ->toContain('<div class="lr-progress" aria-hidden="true"><div class="lr-progress-bar"></div></div>');
 });
 
+it('keys each sidebar fresh dot by URL and date, and hides the ones the reader opened before first paint', function () {
+    config(['larecipe.ui.fresh_days' => 3650]);
+    $html = guideHtml('/guide/3.x/installation');
+
+    expect($html)
+        ->toMatch('#<span class="lr-fresh-dot" title="[^"]+" data-lr-seen="/guide/3\.x/components\|\d{4}-\d\d-\d\dT[^"]+">#')
+        ->toContain("JSON.parse(localStorage.getItem('larecipe:seen')||'[]')")
+        // The page being read never carries the sidebar dot.
+        ->not->toContain('data-lr-seen="/guide/3.x/installation|');
+});
+
 it('opens menus and the phone navigation without JavaScript', function () {
     $html = guideHtml('/guide/3.x/installation');
 

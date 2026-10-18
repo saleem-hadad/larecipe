@@ -1,7 +1,9 @@
 <?php
 
+use Illuminate\Support\Collection;
 use LaRecipe\Domains\Content\DTOs\DocSet;
 use LaRecipe\Domains\Delivery\Services\PagePresenter;
+use LaRecipe\Domains\Delivery\Support\Freshness;
 use LaRecipe\Tests\Support\TrackG;
 use LaRecipe\Tests\TestCase;
 
@@ -53,13 +55,39 @@ it('words the page header once: breadcrumb, relative time and reading time', fun
     expect(guideBoot('/guide/ar/3.x/installation')['page']['reading_label'])->toStartWith('قراءة');
 });
 
-it('marks navigation pages changed within the last seven days as fresh', function () {
-    $items = collect(guideBoot('/guide/3.x/installation')['navigation'][0]['items'])
+function guidePages(string $url): Collection
+{
+    return collect(guideBoot($url)['navigation'][0]['items'])
         ->flatMap(fn (array $item) => $item['type'] === 'group' ? $item['items'] : [$item])
         ->where('type', 'page');
+}
 
-    // Fixture files are checked out fresh, so every page counts as changed this week.
-    expect($items->pluck('fresh')->unique()->values()->all())->toBe([true]);
+it('marks the other navigation pages changed within larecipe.ui.fresh_days as fresh, with the date the browser keys seen dots on', function () {
+    // A window wide enough that every fixture file counts, whenever it was checked out.
+    config(['larecipe.ui.fresh_days' => 3650]);
+
+    $pages = guidePages('/guide/3.x/installation');
+    $others = $pages->where('active', false);
+
+    expect($others->pluck('fresh')->unique()->values()->all())->toBe([true])
+        ->and($others->every(fn (array $page) => strtotime($page['updated_at']) !== false))->toBeTrue()
+        // The page being read is the one the reader has already opened.
+        ->and($pages->firstWhere('active', true))->toMatchArray(['path' => 'installation', 'fresh' => false])
+        ->and($pages->firstWhere('active', true))->not->toHaveKey('updated_at');
+});
+
+it('turns the fresh dots off at fresh_days 0, and dates outside the window are not fresh', function () {
+    config(['larecipe.ui.fresh_days' => 0]);
+    expect(guidePages('/guide/3.x/installation')->pluck('fresh')->unique()->values()->all())->toBe([false]);
+
+    config(['larecipe.ui.fresh_days' => 1]);
+    $freshness = app(Freshness::class);
+    expect($freshness->isFresh(new DateTimeImmutable('-23 hours')))->toBeTrue()
+        ->and($freshness->isFresh(new DateTimeImmutable('-25 hours')))->toBeFalse()
+        ->and($freshness->isFresh(null))->toBeFalse();
+
+    config(['larecipe.ui.fresh_days' => 7]);
+    expect($freshness->isFresh(new DateTimeImmutable('-6 days')))->toBeTrue();
 });
 
 it('offers six agent destinations at most, with the MCP command for this set', function () {

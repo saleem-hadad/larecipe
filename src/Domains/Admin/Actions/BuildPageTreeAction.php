@@ -2,10 +2,10 @@
 
 namespace LaRecipe\Domains\Admin\Actions;
 
-use DateTimeImmutable;
 use LaRecipe\Domains\Admin\Queries\PendingRevisionsQuery;
 use LaRecipe\Domains\Admin\Support\AdminJson;
 use LaRecipe\Domains\Content\DTOs\PageSummary;
+use LaRecipe\Domains\Delivery\Support\Freshness;
 use LaRecipe\Domains\Sources\Actions\GetNavigationAction;
 use LaRecipe\Domains\Sources\Actions\HashContentAction;
 use LaRecipe\Domains\Sources\Actions\ListPageSummariesAction;
@@ -20,13 +20,12 @@ use LaRecipe\Domains\Sources\DTOs\Revision;
  */
 final class BuildPageTreeAction
 {
-    public const FRESH_DAYS = 7;
-
     public function __construct(
         private readonly ListPageSummariesAction $summaries,
         private readonly GetNavigationAction $navigation,
         private readonly HashContentAction $hash,
         private readonly PendingRevisionsQuery $pending,
+        private readonly Freshness $freshness,
     ) {}
 
     public function execute(string $set, string $version, string $locale): array
@@ -34,7 +33,6 @@ final class BuildPageTreeAction
         $summaries = $this->summaries->execute($set, $version, $locale);
         $tree = $this->navigation->execute($set, $version, $locale, $summaries);
         $pending = array_values(array_filter($this->pending->get($set, $version), fn (Revision $revision) => $revision->ref === null || $revision->ref->locale === $locale));
-        $fresh = new DateTimeImmutable('-'.self::FRESH_DAYS.' days');
 
         return [
             'version' => $version,
@@ -46,7 +44,7 @@ final class BuildPageTreeAction
             ],
             'pages' => array_values(array_map(fn (PageSummary $summary) => $summary->toArray() + [
                 'private' => $summary->private,
-                'fresh' => $summary->updatedAt !== null && $summary->updatedAt > $fresh,
+                'fresh' => $this->freshness->isFresh($summary->updatedAt),
                 'pending' => count(array_filter($pending, fn (Revision $revision) => $revision->ref?->path === $summary->ref->path)),
             ], $summaries)),
             // Pages that exist only as a draft or conflict so far (an agent proposed a new page).

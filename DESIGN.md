@@ -251,7 +251,7 @@ Flat at rest. Depth comes from the surface step and the hairline. Shadows belong
 
 ### Named Rules
 
-**The Flat-At-Rest Rule.** Cards and tickets have no shadow at rest or on hover. Interactive cards show hover with a violet border that sweeps once around them, never a lift. The exceptions are small and deliberate: code blocks carry `shadow-xs`, tables a whisper (`0 1px 2px` at 5%), and callouts LaRecipe 2's lifted shadow, which settles on hover.
+**The Flat-At-Rest Rule.** Cards and tickets have no shadow at rest or on hover. Interactive cards show hover with a quiet ink line that traces their border once, never a lift. The exceptions are small and deliberate: code blocks carry `shadow-xs`, tables a whisper (`0 1px 2px` at 5%), and callouts LaRecipe 2's lifted shadow, which settles on hover.
 
 **The Shared-Canvas Rule.** Header, article and table of contents share the canvas. Boundaries are a single hairline. The sidebar is the one tonal panel: sidebar paper, one step deeper, running to the window's edge.
 
@@ -332,7 +332,7 @@ Mono step numbers (`01`, `02`) in violet, 28 px column, H2 or H3 titles, content
 
 ### Cards
 
-Hairline border, `rounded-md`, 20 px padding, title 15 px / 600, description in ink muted. Linked cards trace their border in violet on hover and focus: a conic sweep from the top that fills all 360° in 600 ms (`--lr-duration-card`, the sidebar's easing), and unwinds when the pointer leaves. Under reduced motion it fills at once. They also show a trailing arrow. No shadows. An optional icon (`icon="rocket"`, from the content icon set) sits above the title, violet on violet soft in a 34 px rounded square.
+Hairline border, `rounded-md`, 20 px padding, title 15 px / 600, description in ink muted. Linked cards trace their border on hover and focus: a 1 px line in ink at 30% (`--lr-card-trace`, never the accent) runs from the top all the way around in 380 ms, fast then settling (`--lr-duration-card`, `--lr-ease-card`), and unwinds when the pointer leaves. Under reduced motion it is drawn at once. They also show a trailing arrow. No shadows. An optional icon (`icon="rocket"`, from the content icon set) sits above the title, violet on violet soft in a 34 px rounded square.
 
 ### Tables
 

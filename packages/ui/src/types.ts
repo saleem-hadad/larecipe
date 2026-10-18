@@ -3,7 +3,7 @@ import type { ComponentType, ReactNode } from 'react'
 export type NavBadge = { label: string; tone?: string } | null
 
 export type NavItem =
-  | { type: 'page'; path: string; title: string; url: string; icon?: string | null; badge?: NavBadge; active?: boolean; fresh?: boolean; fallback?: boolean }
+  | { type: 'page'; path: string; title: string; url: string; icon?: string | null; badge?: NavBadge; active?: boolean; fresh?: boolean; updated_at?: string; fallback?: boolean }
   | { type: 'group'; label: string; icon?: string | null; collapsed?: boolean | null; items: NavItem[] }
   | { type: 'link'; label: string; href: string; icon?: string | null }
 

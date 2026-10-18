@@ -4,11 +4,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default doc set
+    | Default Doc Set
     |--------------------------------------------------------------------------
     |
-    | The set used by artisan commands and the local MCP server when none is
-    | given. Most apps have exactly one set and never think about this.
+    | This is the doc set that artisan commands and the local MCP server use
+    | when no set is given. Most apps have just one set and never need to
+    | think about this. The default works for nearly every application.
     |
     */
 
@@ -16,25 +17,28 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Doc sets
+    | Doc Sets
     |--------------------------------------------------------------------------
     |
-    | Each set is an independent docs site inside this app: its own route, its
-    | own source, its own larecipe.json and its own agent surfaces. Content and
-    | presentation (name, theme, versions, navigation) live next to the docs in
-    | larecipe.json and navigation.json, never here.
+    | Each set is an independent docs site inside this app, with its own route,
+    | source, larecipe.json and agent surfaces. Content and presentation sit
+    | next to the docs, in larecipe.json and navigation.json, never here.
     |
-    | route.prefix '' mounts a set at the domain root.
-    | source.driver is 'repository' (recommended: docs in this repo) or
-    | 'database' (managed in the admin UI, always behind a cache).
-    | access.mode is 'public', 'auth' or 'gate' (the viewLarecipe gate).
-    | html_input is 'escape' (default: raw HTML in Markdown shows as text) or,
-    | for a repository set only, 'allow' (raw HTML passes as written, except
-    | GitHub's filtered tags such as <script> and <iframe>). Database sets always
-    | escape raw HTML and sanitize every rendered page.
+    | A route.prefix of '' mounts the set at the domain root. A source.driver
+    | is 'repository' (recommended, the docs live in the repository) or it
+    | is 'database' (managed in the admin UI and always behind a cache).
     |
-    | integrations.analytics adds GA4, Plausible, Fathom, PostHog or a custom
-    | https script to every page of the set, with the same keys as larecipe.json:
+    | The access.mode is 'public', 'auth' or 'gate' (the viewLarecipe gate).
+    | A set can also override review, cache, search, ai, mcp, agents, the
+    | references and migrations options, and the set's own value wins.
+    |
+    | The html_input option is 'escape' by default, and raw HTML in Markdown
+    | shows as text. A repository set may 'allow' it, apart from the tags
+    | GitHub filters, such as <script>. Database sets always escape it.
+    |
+    | The integrations.analytics key adds GA4, Plausible, Fathom, PostHog or
+    | a custom https script to every page of the set, using the same keys
+    | as larecipe.json does. A set's analytics config looks like this:
     |
     |   'integrations' => ['analytics' => [
     |       'plausible' => ['domain' => 'docs.example.com'],
@@ -42,11 +46,12 @@ return [
     |   ]],
     |
     | These scripts run with every reader's session, so a database set reads
-    | them from here only: its larecipe.json can be edited in the admin UI and
-    | over MCP. A repository set may also declare them in larecipe.json, where
-    | they are reviewed with your code; this file wins per provider. A
-    | self-hosted Plausible, Fathom or PostHog host (src, host) counts only
-    | here; larecipe.json loads them from their official hosts.
+    | them from here only, as its larecipe.json is edited in the admin UI
+    | and over MCP, where agents and editors can change it at any time.
+    |
+    | A repository set may also declare them in larecipe.json, where they are
+    | reviewed with the code, and this file wins per provider. Self-hosted
+    | Plausible, Fathom or PostHog hosts (src, host) are read only here.
     |
     */
 
@@ -69,34 +74,79 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Defaults for every set (a set may override any of these)
+    | Review Mode
     |--------------------------------------------------------------------------
+    |
+    | With 'required', changes that agents make outside a pull request stay
+    | drafts until a person publishes them. With 'auto', they publish at
+    | once, and every change keeps its revision, so it can be undone.
+    |
     */
 
-    // required: agent changes made outside a pull request are drafts until a
-    // person publishes them. auto: they publish immediately (still revisioned).
     'review' => env('LARECIPE_REVIEW', 'required'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cache Store
+    |--------------------------------------------------------------------------
+    |
+    | This is the cache store LaRecipe keeps rendered pages, navigation and
+    | search records in. If null, the app's default cache store is used.
+    |
+    */
 
     'cache' => [
         'store' => env('LARECIPE_CACHE_STORE'),
     ],
 
-    // client (default): MiniSearch in the browser. server: the PHP ranker.
-    // Any other value is a custom driver registered with LaRecipe::extendSearch().
-    // budget_kb: a client index over this size (gzipped) is reported, so a set
-    // that outgrows the browser index can move to the server driver.
+    /*
+    |--------------------------------------------------------------------------
+    | Search
+    |--------------------------------------------------------------------------
+    |
+    | The 'client' driver searches with MiniSearch in the reader's browser,
+    | and 'server' uses a PHP ranker. Any other value is a custom driver
+    | that your app registered with LaRecipe::extendSearch() at boot.
+    |
+    | A client index larger than budget_kb (gzipped) is reported, so a set
+    | that outgrows the browser index knows to switch to server search.
+    |
+    */
+
     'search' => [
         'driver' => 'client',
         'budget_kb' => 300,
     ],
 
-    // Snippet includes (<<< @/app/Billing/Invoice.php#refund) resolve inside this
-    // folder. null means the app's base path for repository sets. Database sets
-    // include nothing unless a set sets its own sets.{key}.snippets.root.
-    // Dotfiles (.env), keys, storage/ and auth.json are never included.
+    /*
+    |--------------------------------------------------------------------------
+    | Snippet Includes
+    |--------------------------------------------------------------------------
+    |
+    | Snippet includes such as <<< @/app/Billing/Invoice.php#refund resolve
+    | inside this folder. Null means the app's root for repository sets.
+    |
+    | Database sets include nothing unless they set their own snippets.root.
+    | Dotfiles such as .env, keys, storage/ and auth.json are never read.
+    |
+    */
+
     'snippets' => [
         'root' => null,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Docs Migrations
+    |--------------------------------------------------------------------------
+    |
+    | Docs migrations ship content changes to a database set as migration
+    | files in this folder, and php artisan migrate then applies them.
+    |
+    | Docs migrations run only for sets that use the database source, and
+    | skip_in_tests skips them when the test suite migrates its tables.
+    |
+    */
 
     'migrations' => [
         'path' => database_path('migrations/docs'),
@@ -105,14 +155,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Database source models
+    | Database Source Models
     |--------------------------------------------------------------------------
     |
-    | A set with source.driver 'database' may also set source.connection (a
-    | database connection), source.cache (a persistent cache store; array and
-    | null are refused outside tests) and source.disk (the filesystem disk for
-    | assets). Point these keys at your own subclasses to add scopes, tenancy
-    | or observers to the tables LaRecipe uses.
+    | A database set may also set source.connection (a database connection),
+    | source.cache (a persistent cache) and source.disk (the disk for its
+    | assets), and each key below may point at a subclass of your own.
+    |
+    | Subclasses can add scopes, tenancy or observers to the tables that
+    | LaRecipe uses, without changing any line of LaRecipe's own code.
     |
     */
 
@@ -125,18 +176,37 @@ return [
         'docs_migration' => 'LaRecipe\\Domains\\Sources\\Models\\DocsMigrationRecord',
     ],
 
-    // Ask AI needs laravel/ai and a provider key. rate_limit is "requests,minutes"
-    // per reader; daily_budget caps answers per set per day (null: no cap).
+    /*
+    |--------------------------------------------------------------------------
+    | Ask AI And The Docs Agent
+    |--------------------------------------------------------------------------
+    |
+    | Ask AI needs laravel/ai and a provider key. The provider option takes
+    | a laravel/ai provider name or a failover list tried in order, like
+    | ['anthropic', 'openai'], or keyed by provider with a model each.
+    | The model option applies only when a single provider is named.
+    |
+    | Answers run on your provider key. The rate_limit is answers per reader
+    | ('10,1' is ten a minute), and daily_budget caps answers per set per
+    | day. Set daily_budget to null to let answers run without any cap.
+    |
+    | The conversation a browser sends back is limited to max_messages turns,
+    | max_question_length characters per question, and max_history_length
+    | characters of the earlier turns in all, so a request stays small.
+    |
+    | The sync options set up php artisan larecipe:sync, the docs agent you
+    | run on demand, never in CI. The timeout is in seconds, per request.
+    |
+    | The remote_token authenticates --remote runs against a production set's
+    | MCP endpoint. Its user has to be one the manageLarecipe gate allows.
+    |
+    | The queue option names the queue for --queue runs, and the deny list
+    | adds paths the agent may not read beyond the built-in ones, such
+    | as .env and every dotfile, config/, storage/, vendor/ or keys.
+    |
+    */
+
     'ai' => [
-        // Ask AI. provider is a laravel/ai provider name, or a failover list
-        // tried in order when one fails: ['anthropic', 'openai'], or with a
-        // model for each: ['anthropic' => '{model}', 'openai' => '{model}'].
-        // model applies to a single provider only. Answers run on your provider
-        // key: rate_limit is answers per reader ("10,1": 10 a minute, per set),
-        // daily_budget caps answers per set per day (null for no cap), and the
-        // conversation a browser sends back is limited to max_messages turns,
-        // max_question_length characters per question and max_history_length
-        // characters of earlier turns in all.
         'ask' => [
             'enabled' => env('LARECIPE_ASK', false),
             'provider' => env('LARECIPE_AI_PROVIDER'),
@@ -148,13 +218,6 @@ return [
             'max_question_length' => 2000,
             'max_history_length' => 20000,
         ],
-        // php artisan larecipe:sync, the on-demand docs agent (never in CI).
-        // timeout is seconds per provider request. remote_token authenticates
-        // --remote runs against a production set's MCP endpoint (a token of a
-        // user the manageLarecipe gate allows). deny adds paths the agent may
-        // never read, on top of the built-in list (.env and every dotfile,
-        // config/, bootstrap/cache/, storage/, vendor/, keys, auth.json).
-        // queue is the queue for --queue runs (null: the default queue).
         'sync' => [
             'provider' => env('LARECIPE_AI_PROVIDER'),
             'model' => env('LARECIPE_AI_MODEL'),
@@ -167,11 +230,23 @@ return [
         ],
     ],
 
-    // The MCP server. One web endpoint per set at /{prefix}/{path} (POST), plus
-    // one local stdio server for every set (php artisan larecipe:mcp).
-    // web.middleware authenticates private sets: ['auth:sanctum'] for Sanctum
-    // tokens, or ['auth:api'] with Mcp::oauthRoutes() for laravel/mcp's OAuth.
-    // Access is re-checked on every tool call either way.
+    /*
+    |--------------------------------------------------------------------------
+    | MCP Server
+    |--------------------------------------------------------------------------
+    |
+    | Each set gets one web endpoint at /{prefix}/{path} (POST), and the local
+    | stdio server (php artisan larecipe:mcp) serves every set of your app.
+    |
+    | The web.middleware option authenticates private sets: ['auth:sanctum']
+    | for Sanctum tokens, or ['auth:api'] with Mcp::oauthRoutes() (OAuth).
+    |
+    | Access is checked again on every tool call. Author tools, which write
+    | docs, are always on the local server, and on the web only for the
+    | database sets that turn on author_tools in their web settings.
+    |
+    */
+
     'mcp' => [
         'web' => [
             'enabled' => true,
@@ -183,6 +258,24 @@ return [
         'local' => true,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Agent Surfaces
+    |--------------------------------------------------------------------------
+    |
+    | Each switch turns an agent surface on or off: each page's Markdown
+    | twin, llms.txt, llms-full.txt, skill.md, the well-known skills,
+    | the sitemap, and the ask endpoint for agents that lack MCP.
+    |
+    | The llms.txt indexes stay under llms_txt_limit characters, and bigger
+    | ones split into one file per group. llms-full.txt splits by group
+    | too, as soon as it gets past llms_full_limit characters in all.
+    |
+    | The larecipe:validate command warns when the agent Markdown of a page
+    | is larger than markdown_budget characters, so pages stay readable.
+    |
+    */
+
     'agents' => [
         'markdown' => true,
         'llms_txt' => true,
@@ -191,38 +284,51 @@ return [
         'well_known_skills' => true,
         'sitemap' => true,
         'ask_endpoint' => false,
-        // llms.txt indexes stay under this many characters (the AFDocs
-        // threshold); larger versions split into one file per group.
         'llms_txt_limit' => 50000,
-        // llms-full.txt splits by group past this many characters.
         'llms_full_limit' => 400000,
-        // larecipe:validate warns when a page's agent Markdown is larger.
         'markdown_budget' => 50000,
     ],
 
-    // The "Was this page helpful?" widget and the submit_feedback MCP tool.
-    // Both dispatch FeedbackSubmitted for the host to forward; nothing is stored.
+    /*
+    |--------------------------------------------------------------------------
+    | Page Feedback
+    |--------------------------------------------------------------------------
+    |
+    | The "Was this page helpful?" widget and the submit_feedback MCP tool.
+    | Both dispatch FeedbackSubmitted, for your app to forward anywhere,
+    | and LaRecipe stores nothing. Turn it off to remove its endpoint.
+    |
+    */
+
     'feedback' => [
         'enabled' => true,
         'rate_limit' => '20,1',
     ],
 
-    // The images and files that live with the docs (/{prefix}/_assets/...).
-    // "requests,minutes" per reader, generous enough for image-heavy pages.
+    /*
+    |--------------------------------------------------------------------------
+    | Docs Assets
+    |--------------------------------------------------------------------------
+    |
+    | The images and files that live with the docs, at /{prefix}/_assets/. The
+    | rate limit is "requests,minutes" per reader, which is generous enough
+    | for pages that carry many images, such as screenshots and diagrams.
+    |
+    */
+
     'assets' => [
         'rate_limit' => '600,1',
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Keeping docs in sync with code
+    | Pre-Push Check
     |--------------------------------------------------------------------------
     |
-    | The pre-push check runs on commands that push code or open a pull
-    | request. `php artisan larecipe:agents` compiles these patterns into
-    | bootstrap/cache/larecipe/hooks.php, so ordinary shell commands never
-    | boot the framework. Set LARECIPE_HOOKS=off to turn the check off for
-    | a session.
+    | The pre-push check runs on commands that push code or open a pull request.
+    | Running larecipe:agents compiles these patterns into one small PHP file
+    | in bootstrap/cache, so that plain shell commands never boot Laravel.
+    | Set LARECIPE_HOOKS to off to turn the check off for one session.
     |
     */
 
@@ -238,12 +344,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Instructions for coding agents
+    | Instructions For Coding Agents
     |--------------------------------------------------------------------------
     |
-    | The marker-delimited LaRecipe block in AGENTS.md: the before-you-push
-    | instructions plus a compact docs index. default_branch is detected
-    | from origin/HEAD when null.
+    | The LaRecipe block in AGENTS.md holds the before-you-push instructions
+    | and a short docs index. When default_branch is null, LaRecipe reads
+    | it from origin/HEAD, which works for nearly every Git repository.
     |
     */
 
@@ -254,15 +360,24 @@ return [
         'default_branch' => env('LARECIPE_DEFAULT_BRANCH'),
     ],
 
-    // Live references (<Route>, <Artisan>, <Model>, <Event>) read the app's public
-    // shape only. <Model> describes classes in these namespaces and nothing else;
-    // <Event> looks up short names in these namespaces.
-    // <Route> shows a route's method, URI, middleware names and form request
-    // field and rule names, never rule arguments or the domain. routes.allow
-    // lists the routes it may describe, by name or URI ('orders.*', 'api/*').
-    // null means every route your app defines: routes registered by packages
-    // in vendor/ are left out, except LaRecipe's own. The snapshot command and
-    // larecipe:validate follow the same list.
+    /*
+    |--------------------------------------------------------------------------
+    | Live References
+    |--------------------------------------------------------------------------
+    |
+    | Live references (<Route>, <Artisan>, <Model>, <Event>) read the public
+    | shape of the app only. <Model> describes classes in these namespaces
+    | and nothing else, while <Event> looks up short names in them too.
+    |
+    | <Route> shows a route's method, URI, middleware names and form request
+    | fields and rule names, never rule arguments or the route's domain.
+    |
+    | The routes.allow list names the routes it may describe, by name or URI
+    | ('orders.*', 'api/*'). Null means every route your app defines, but
+    | not routes that packages in vendor/ register, except LaRecipe's.
+    |
+    */
+
     'references' => [
         'routes' => [
             'allow' => null,
@@ -275,8 +390,21 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Reading UI
+    |--------------------------------------------------------------------------
+    |
+    | Pages changed within fresh_days show a dot in the sidebar until the
+    | reader opens them. Set it to 0 to turn the dots off for everyone.
+    |
+    | Set LARECIPE_UI_DEV to a Vite dev server URL, like localhost:5174, to
+    | load the reader UI from it while you are working on the UI itself.
+    |
+    */
+
     'ui' => [
-        // Set LARECIPE_UI_DEV=http://localhost:5174 to load the UI from the Vite dev server.
+        'fresh_days' => 1,
         'dev_server' => env('LARECIPE_UI_DEV'),
     ],
 ];
