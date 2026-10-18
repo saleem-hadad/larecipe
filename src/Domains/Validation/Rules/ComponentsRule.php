@@ -36,7 +36,9 @@ final class ComponentsRule implements PageRule
             $line = isset($issue['line']) ? $page->fileLine((int) $issue['line']) : ($component !== null ? $page->lineOf('<'.$component) : null);
             $level = ($issue['level'] ?? ValidationIssue::ERROR) === ValidationIssue::WARNING ? ValidationIssue::WARNING : ValidationIssue::ERROR;
 
-            $issues[] = new ValidationIssue($level, $rule, $message, $id, $line, $this->fix($rule, $component, $context), null, $page->file);
+            $fix = isset($issue['fix']) ? (string) $issue['fix'] : $this->fix($rule, $component, $context);
+
+            $issues[] = new ValidationIssue($level, $rule, $message, $id, $line, $fix, null, $page->file);
         }
 
         return $issues;
@@ -52,6 +54,7 @@ final class ComponentsRule implements PageRule
         return str_starts_with($message, 'Unknown component') ? 'components.unknown' : 'components.props';
     }
 
+    /** A fix for renderer issues that do not bring their own (live references bring one). */
     private function fix(string $rule, ?string $component, PageContext $context): ?string
     {
         return match ($rule) {

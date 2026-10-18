@@ -2,6 +2,7 @@
 
 namespace LaRecipe\Domains\Markdown\Components;
 
+use Closure;
 use LaRecipe\Domains\Markdown\Components\BuiltIn\Accordions;
 use LaRecipe\Domains\Markdown\Components\BuiltIn\Callout;
 use LaRecipe\Domains\Markdown\Components\BuiltIn\Cards;
@@ -22,7 +23,8 @@ final class BuiltInComponents
     /** Props that hold URLs: resolved like Markdown links, made absolute for agents, unsafe schemes dropped. */
     public const URL_PROPS = ['href', 'src', 'poster'];
 
-    public static function register(ComponentRegistry $registry): void
+    /** @param (Closure(string, ?string): ?string)|null $strings a UI string by key ("video.placeholder"), in a page's language */
+    public static function register(ComponentRegistry $registry, ?Closure $strings = null): void
     {
         $definitions = [
             ...Callout::definitions(),
@@ -31,7 +33,7 @@ final class BuiltInComponents
             ...Cards::definitions(),
             ...Accordions::definitions(),
             ...Inline::definitions(),
-            ...Media::definitions(),
+            ...Media::definitions($strings),
         ];
 
         foreach ($definitions as $definition) {

@@ -12,7 +12,9 @@ use LaRecipe\Domains\Markdown\Parser\SnippetInclude;
 use League\CommonMark\Event\DocumentParsedEvent;
 use League\CommonMark\Extension\CommonMark\Node\Block\BlockQuote;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
+use League\CommonMark\Extension\CommonMark\Node\Block\HtmlBlock;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Code;
+use League\CommonMark\Extension\CommonMark\Node\Inline\HtmlInline;
 use League\CommonMark\Node\Block\Paragraph;
 use League\CommonMark\Node\Inline\Newline;
 use League\CommonMark\Node\Inline\Text;
@@ -27,6 +29,7 @@ use League\CommonMark\Util\RegexHelper;
  *  - GitHub alerts (`> [!WARNING]`) become Callout components.
  *  - ```mermaid fences become Mermaid components.
  *  - Snippet includes become code blocks with the real code (or a visible notice).
+ *  - HTML comments (`<!-- ... -->`) are removed: they are notes for authors.
  *  - Component URL props resolve like Markdown links; unsafe schemes are dropped.
  *  - Islands get the derived props they need (tab labels, video embeds, sources).
  *  - Video placeholders are reported, so a missing demo is never forgotten.
@@ -47,6 +50,7 @@ final class DocumentTransformer
                 $node instanceof BlockQuote => $this->alert($node),
                 $node instanceof FencedCode => $this->mermaid($node),
                 $node instanceof SnippetInclude => $this->include($node),
+                $node instanceof HtmlBlock, $node instanceof HtmlInline => $this->withoutComments($node),
                 default => null,
             };
         }
@@ -62,6 +66,24 @@ final class DocumentTransformer
     private function nodes(Node $root): array
     {
         return iterator_to_array($root->iterator(), false);
+    }
+
+    /** HTML comments are notes for authors: removed here, they reach no renderer. Other raw HTML is left (and escaped). */
+    private function withoutComments(HtmlBlock|HtmlInline $node): void
+    {
+        $literal = (string) preg_replace('/<!--.*?-->/s', '', $node->getLiteral(), -1, $removed);
+
+        if ($removed === 0) {
+            return;
+        }
+
+        if (trim($literal) === '') {
+            $node->detach();
+
+            return;
+        }
+
+        $node->setLiteral($literal);
     }
 
     private function alert(BlockQuote $quote): void
@@ -257,6 +279,8 @@ final class DocumentTransformer
 
     private function video(ComponentNode $node): void
     {
+        // The embed URL reaches an iframe, so only LaRecipe derives it (YouTube or Vimeo below).
+        unset($node->props['embed'], $node->props['provider']);
         $src = is_string($node->props['src'] ?? null) ? $node->props['src'] : '';
 
         if ($src === '') {

@@ -136,8 +136,8 @@ final class AnalyticsTags
         return '<script'.$loading.' src="'.$this->attr($src).'"'.$attributes.$this->nonce().'></script>';
     }
 
-    /** Forwards {detail: {path, version, locale, helpful}} from the reader UI to whichever tool is loaded. */
-    private const FEEDBACK_LISTENER = "document.addEventListener('larecipe:feedback',function(e){var d=e.detail||{};var p={page:d.path,version:d.version,locale:d.locale,helpful:!!d.helpful};"
+    /** Forwards {detail: {path, version, locale, helpful, source}} from the reader UI (source "ask" for an Ask answer) to whichever tool is loaded. */
+    private const FEEDBACK_LISTENER = "document.addEventListener('larecipe:feedback',function(e){var d=e.detail||{};var p={page:d.path,version:d.version,locale:d.locale,helpful:!!d.helpful,source:d.source||'reader'};"
         ."if(typeof window.gtag==='function'){window.gtag('event','larecipe_feedback',p)}"
         ."if(typeof window.plausible==='function'){window.plausible('Docs Feedback',{props:p})}"
         ."if(window.fathom&&typeof window.fathom.trackEvent==='function'){window.fathom.trackEvent('docs feedback: '+(p.helpful?'helpful':'not helpful'))}"

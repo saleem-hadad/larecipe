@@ -5,6 +5,8 @@ use LaRecipe\Domains\Markdown\Actions\RenderPageAction;
 use LaRecipe\Domains\Markdown\Components\ComponentRegistry;
 use LaRecipe\Domains\References\Actions\ResolveReferenceAction;
 use LaRecipe\Domains\Sources\Actions\GetPageAction;
+use LaRecipe\Domains\Validation\Actions\ValidateDocsAction;
+use LaRecipe\Domains\Validation\DTOs\ValidationIssue;
 use LaRecipe\Tests\Support\TrackG;
 
 beforeEach(function () {
@@ -99,6 +101,22 @@ it('renders a clear notice and reports references.missing with the closest name'
         ->and($issues)->toHaveKeys(['Invoice', 'TrackGApp\Http\Controllers\OrderController', 'TrackGApp\Http\Requests\StoreOrderRequest']);
 
     $this->get('/shop/broken')->assertOk()->assertSee('data-missing="true"', false);
+});
+
+it('gives every references.missing validation issue a fix', function () {
+    $issues = collect(app(ValidateDocsAction::class)->execute('shop')->issues)
+        ->where('rule', 'references.missing')
+        // Keyed by the target the tag names: <Route name="orders.stor"> is "orders.stor".
+        ->mapWithKeys(fn (ValidationIssue $issue) => [explode('"', $issue->message)[1] => $issue->fix]);
+
+    expect($issues)->toHaveCount(5)
+        ->and($issues['orders.stor'])->toBe('Use name="orders.store".')
+        ->and($issues['Invoice'])->toContain('php artisan larecipe:references:snapshot')
+        ->and($issues['TrackGApp\Http\Requests\StoreOrderRequest'])->toContain('event');
+
+    foreach ($issues as $fix) {
+        expect($fix)->toBeString()->not->toBe('');
+    }
 });
 
 it('never reads a model outside the allowlist, or an event that is not one', function () {

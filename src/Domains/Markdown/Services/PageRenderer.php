@@ -5,6 +5,7 @@ namespace LaRecipe\Domains\Markdown\Services;
 use LaRecipe\Domains\Content\DTOs\Page;
 use LaRecipe\Domains\Markdown\Contracts\LinkResolver;
 use LaRecipe\Domains\Markdown\DTOs\RenderedPage;
+use LaRecipe\Domains\Markdown\Enums\HtmlInput;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
 use League\CommonMark\Node\Block\Document;
@@ -15,7 +16,8 @@ use League\CommonMark\Renderer\HtmlRenderer;
  * Parses a page once and renders its article HTML.
  *
  * The parsed document is the contract: HTML, agent Markdown, search records and
- * validation data are all projections of the same AST.
+ * validation data are all projections of the same AST. A database set's HTML
+ * also goes through the PageSanitizer, as a second layer.
  */
 final class PageRenderer
 {
@@ -23,14 +25,17 @@ final class PageRenderer
 
     private readonly RenderState $state;
 
-    public function __construct(private readonly MarkdownEnvironmentFactory $factory)
-    {
+    public function __construct(
+        private readonly MarkdownEnvironmentFactory $factory,
+        private readonly PageSanitizer $sanitizer = new PageSanitizer,
+    ) {
         $this->state = new RenderState;
     }
 
     public function parse(Page $page, ?LinkResolver $links = null, array $context = []): Document
     {
         $this->state->reset($page->ref, $links, $context);
+        $this->state->rawHtml = $this->factory->htmlInput($page->ref->set) === HtmlInput::Allow;
 
         return (new MarkdownParser($this->environment()))->parse($page->body);
     }
@@ -47,6 +52,10 @@ final class PageRenderer
         }
 
         $html = (string) (new HtmlRenderer($this->environment()))->renderDocument($document);
+
+        if ($this->factory->htmlInput($page->ref->set) === HtmlInput::Sanitize) {
+            $html = $this->sanitizer->sanitize($html);
+        }
 
         return new RenderedPage(
             html: $html,

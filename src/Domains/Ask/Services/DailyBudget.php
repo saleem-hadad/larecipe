@@ -31,6 +31,10 @@ final class DailyBudget
 
         $this->cache->add($key, 0, 60 * 60 * 25);
 
+        // increment() is atomic on the redis, memcached and database stores. The
+        // file store reads and writes the count in two steps, so answers that
+        // arrive at the same moment can overshoot the budget by a few; that is
+        // accepted rather than failing answers on a lock.
         return (int) $this->cache->increment($key) <= (int) $limit;
     }
 }

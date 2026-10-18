@@ -11,8 +11,9 @@ use LaRecipe\Domains\Validation\Services\Suggest;
 
 /**
  * links.broken: internal links to pages or anchors that do not exist, whether
- * written as relative .md links, absolute links into the set or #anchors on
- * the same page.
+ * written as relative .md links, absolute links into any version or locale of
+ * the set or #anchors on the same page. A page that is not translated yet is
+ * served in its original language, so a link to it is not broken.
  * links.private-from-public: a public page linking to a private one, a link
  * every guest would follow into a 404.
  */
@@ -38,6 +39,7 @@ final class LinksRule implements PageRule
                 ?? $this->paths->relative($from->path, $page->folderIndex, $href);
 
             if ($target !== null) {
+                $target += ['version' => $context->version, 'locale' => $context->locale];
                 array_push($issues, ...$this->target($page, $context, (string) $link['href'], $target, $page->fileLine($link['line'] ?? null)));
             }
         }
@@ -60,7 +62,7 @@ final class LinksRule implements PageRule
                 continue;
             }
 
-            $target = $this->paths->absolute($context->settings->prefix, $context->label, $href);
+            $target = $this->absolute($context, $href);
 
             if ($target !== null) {
                 array_push($issues, ...$this->target($page, $context, $href, $target, $page->lineOf('('.$href) ?? $page->lineOf($href)));
@@ -71,16 +73,40 @@ final class LinksRule implements PageRule
     }
 
     /**
-     * @param  array{path: string, anchor: ?string}  $target
+     * An absolute link into any version or locale of the set ("/2.x/billing",
+     * "/ar/3.x/billing"), and the page it lands on. Null when it points elsewhere.
+     *
+     * @return array{path: string, anchor: ?string, version: string, locale: string}|null
+     */
+    private function absolute(PageContext $context, string $href): ?array
+    {
+        $labels = $context->labels + [$context->label => [$context->version, $context->locale]];
+
+        // Longest first: "ar/3.x" before "3.x", and an unversioned root set's "" (which matches every link) last.
+        uksort($labels, fn ($a, $b) => strlen((string) $b) <=> strlen((string) $a));
+
+        foreach ($labels as $label => [$version, $locale]) {
+            $target = $this->paths->absolute($context->settings->prefix, (string) $label, $href);
+
+            if ($target !== null) {
+                return $target + ['version' => $version, 'locale' => $locale];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param  array{path: string, anchor: ?string, version: string, locale: string}  $target
      * @return list<ValidationIssue>
      */
     private function target(PageSnapshot $page, PageContext $context, string $href, array $target, ?int $line): array
     {
         $id = $context->pageId($page->page->ref->path);
-        $anchors = $context->targets->anchors($context->version, $context->locale, $target['path']);
+        $anchors = $context->targets->anchors($target['version'], $target['locale'], $target['path']);
 
         if ($anchors === null) {
-            $meant = Suggest::closest($target['path'], $context->targets->paths($context->version, $context->locale));
+            $meant = Suggest::closest($target['path'], $context->targets->paths($target['version'], $target['locale']));
 
             return [$this->issue($context, ValidationIssue::error(
                 'links.broken',
@@ -107,7 +133,7 @@ final class LinksRule implements PageRule
 
         $public = ! $context->privateVersion && $page->page->frontmatter->visibility()->value !== 'private';
 
-        if ($public && $context->targets->isPrivate($context->version, $context->locale, $target['path'])) {
+        if ($public && $context->targets->isPrivate($target['version'], $target['locale'], $target['path'])) {
             $issues[] = ValidationIssue::warning(
                 'links.private-from-public',
                 "This public page links to the private page \"{$target['path']}\"; guests get a 404 there.",

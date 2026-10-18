@@ -3,12 +3,18 @@
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Gate;
 use LaRecipe\Domains\Access\Actions\CheckGateBlocksAction;
+use LaRecipe\Domains\Access\Actions\FilterGatedSourceAction;
+use LaRecipe\Domains\Access\DTOs\Audience;
 use LaRecipe\Domains\Access\DTOs\GateIssue;
 use LaRecipe\Domains\Content\DTOs\Frontmatter;
 use LaRecipe\Domains\Content\DTOs\Page;
 use LaRecipe\Domains\Content\DTOs\PageRef;
 use LaRecipe\Domains\Markdown\Actions\RenderPageAction;
+use LaRecipe\Domains\Markdown\Services\AgentMarkdownRenderer;
 use LaRecipe\Domains\Sources\Actions\GetPageAction;
+use LaRecipe\Domains\Validation\Actions\ValidateDocsAction;
+use LaRecipe\Domains\Validation\Actions\ValidatePageAction;
+use LaRecipe\Domains\Validation\DTOs\ValidationIssue;
 use LaRecipe\Facades\LaRecipe;
 use LaRecipe\Tests\Support\TrackG;
 use League\CommonMark\Event\DocumentParsedEvent;
@@ -154,6 +160,50 @@ it('hides a block that names no ability from everyone and reports it', function 
         ->and(collect($rendered->issues)->pluck('component')->all())->toBe(['Can', 'Cannot']);
 });
 
+dataset('unreadable gate tags', [
+    'inline in a sentence' => ["Plans: <Can ability=\"view-billing\">SECRET</Can> end.\n\nAfter.\n", 1],
+    'in a table cell' => ["| Plan | Price |\n| - | - |\n| Pro | <Can ability=\"view-billing\">SECRET</Can> |\n\nAfter.\n", 1],
+    'in a heading' => ["## Pricing <Can ability=\"view-billing\">SECRET</Can>\n\nAfter.\n", 1],
+    'in a list item' => ["- Pro <Can ability=\"view-billing\">SECRET</Can>\n\nAfter.\n", 1],
+    'an opening tag split over lines' => ["<Can\n  ability=\"view-billing\">\nSECRET\n</Can>\n\nAfter.\n", 1],
+    'split over lines, with blank lines inside' => ["<Can\n  ability=\"view-billing\">\n\nSECRET\n\n</Can>\n\nAfter.\n", 1],
+    'text after the opening tag' => ["<Can ability=\"view-billing\"> SECRET\n</Can>\n\nAfter.\n", 1],
+    'a lowercase tag' => ["<can ability=\"view-billing\">\nSECRET\n</can>\n\nAfter.\n", 1],
+    'a quote line without >' => ["> <Can ability=\"view-billing\">\nSECRET\n> </Can>\n\nAfter.\n", 1],
+]);
+
+it('never shows content around a gate tag it cannot read, on any surface, and fails validation', function (string $body, int $line) {
+    $page = Page::make(new PageRef('gated', '2.x', 'en', 'unreadable'), new Frontmatter(['title' => 'Unreadable', 'description' => 'Gate tags the parser cannot read.']), $body);
+
+    $surfaces = [
+        'guest' => app(RenderPageAction::class)->execute($page)->html,
+        'reader holding the ability' => app(RenderPageAction::class)->execute($page, null, Audience::granting(['view-billing'])->toContext())->html,
+        'search' => app(RenderPageAction::class)->execute($page, null, ['purpose' => 'search'])->html,
+        'agent markdown' => app(AgentMarkdownRenderer::class)->render($page, ['url' => 'https://acme.test/gated/2.x/unreadable']),
+        'source view' => app(FilterGatedSourceAction::class)->execute($page, Audience::guest())->body,
+    ];
+
+    foreach ($surfaces as $surface => $output) {
+        expect($output)->not->toContain('SECRET', "{$surface} shows the gated text")->toContain('After.');
+    }
+
+    $issues = collect(app(ValidatePageAction::class)->execute($page)->issues)->where('rule', 'access.gate-syntax')->values();
+
+    expect($issues)->not->toBeEmpty()
+        ->and($issues[0]->level)->toBe('error')
+        ->and($issues[0]->line)->toBe($line)
+        ->and($issues[0]->fix)->toContain('own line');
+})->with('unreadable gate tags');
+
+it('reads a gate tag whose ability holds a >', function () {
+    $page = Page::make(new PageRef('gated', '2.x', 'en', 'odd'), new Frontmatter(['title' => 'Odd']), "<Can ability=\"a>b\">\nSECRET\n</Can>\n");
+    $rendered = app(RenderPageAction::class)->execute($page);
+
+    expect($rendered->html)->not->toContain('SECRET')
+        ->and($rendered->abilities)->toBe(['a>b'])
+        ->and($rendered->issues)->toBe([]);
+});
+
 it('records every ability a page asks about, nested ones included', function () {
     $rendered = app(RenderPageAction::class)->execute(
         app(GetPageAction::class)->execute(new PageRef('gated', '2.x', 'en', 'index')),
@@ -170,6 +220,27 @@ it('keeps every gate block for a search parse, which filters per audience itself
         ->and($search->abilities)->toEqualCanonicalizing(['view-billing', 'manage-billing']);
 
     expect(app(RenderPageAction::class)->execute($page, null, ['purpose' => 'html'])->html)->not->toContain('EXPORT-SECRET');
+});
+
+it('reports gate blocks with an undefined ability in larecipe:validate, on their line', function () {
+    $rules = collect(app(ValidateDocsAction::class)->execute('gated')->issues)->pluck('rule');
+
+    expect($rules)->not->toContain(GateIssue::UNKNOWN_ABILITY);
+
+    $page = Page::make(
+        new PageRef('gated', '2.x', 'en', 'exports'),
+        new Frontmatter(['title' => 'Exports', 'description' => 'Billing exports.']),
+        "# Exports\n\n<Can ability=\"view-biling\">\nExport invoices as CSV.\n</Can>\n\n<Cannot ability=\"launch-rockets\">\nAsk your owner.\n</Cannot>\n",
+    );
+
+    $issues = collect(app(ValidatePageAction::class)->execute($page)->issues)
+        ->where('rule', GateIssue::UNKNOWN_ABILITY)
+        ->map(fn (ValidationIssue $issue) => $issue->toArray())
+        ->values();
+
+    expect($issues)->toHaveCount(2)
+        ->and($issues[0])->toMatchArray(['level' => 'warning', 'set' => 'gated', 'page' => '2.x/exports', 'line' => 3, 'fix' => 'Use "view-billing", or define "view-biling" with Gate::define() in a service provider.'])
+        ->and($issues[1])->toMatchArray(['line' => 7, 'fix' => 'Define "launch-rockets" with Gate::define() in a service provider.']);
 });
 
 it('warns about abilities the host never defined, with the closest one as the fix', function () {

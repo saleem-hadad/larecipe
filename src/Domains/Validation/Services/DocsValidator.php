@@ -31,10 +31,15 @@ final class DocsValidator
     public function set(DocsSnapshot $docs): ValidationReport
     {
         $targets = new SnapshotLinkTargets($docs);
+        $labels = [];
         $issues = [];
 
         foreach ($docs->versions as $version) {
-            $context = new PageContext($version->version, $version->locale, $version->label, $docs->settings, $targets, $version->private);
+            $labels[$version->label] = [$version->version, $version->locale];
+        }
+
+        foreach ($docs->versions as $version) {
+            $context = new PageContext($version->version, $version->locale, $version->label, $docs->settings, $targets, $version->private, labels: $labels);
 
             foreach ($version->pages as $page) {
                 array_push($issues, ...$this->page($page, $context));

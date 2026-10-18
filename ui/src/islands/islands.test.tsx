@@ -10,7 +10,7 @@ import { CodeGroupIsland } from './CodeGroup'
 import { scan } from './Enhancements'
 import { codeText } from './shared'
 import { TabsIsland } from './Tabs'
-import { embedUrl } from './Video'
+import { embedUrl, VideoIsland } from './Video'
 
 function Providers({ children }: { children: ReactNode }) {
   const boot = bootFixture()
@@ -155,5 +155,31 @@ describe('video', () => {
     expect(embedUrl('https://youtu.be/abc123')).toBe('https://www.youtube-nocookie.com/embed/abc123?autoplay=1')
     expect(embedUrl('https://www.youtube-nocookie.com/embed/abc123')).toBe('https://www.youtube-nocookie.com/embed/abc123?autoplay=1')
     expect(embedUrl('https://player.vimeo.com/video/42')).toBe('https://player.vimeo.com/video/42?autoplay=1')
+    expect(embedUrl('https://www.loom.com/share/abc')).toBe('https://www.loom.com/embed/abc?autoplay=1')
+  })
+
+  it('embeds nothing that is not YouTube, Vimeo or Loom over https', () => {
+    expect(embedUrl('https://evil.example/player')).toBeNull()
+    expect(embedUrl('javascript:alert(1)')).toBeNull()
+    expect(embedUrl('http://player.vimeo.com/video/42')).toBeNull()
+    expect(embedUrl('data:text/html,<script>alert(1)</script>')).toBeNull()
+  })
+
+  it('leaves the fallback alone when the embed is not allowed', () => {
+    const host = document.createElement('div')
+    host.innerHTML = `<div data-lr-component="Video" data-lr-props='{"src":"https://cdn.example.com/a.mp4","embed":"https://evil.example/player"}'><figure class="lr-video"><a class="lr-video-link" href="https://cdn.example.com/a.mp4">Watch</a></figure></div>`
+    document.body.appendChild(host)
+    const figure = host.querySelector('figure') as HTMLElement
+
+    render(
+      <Providers>
+        <VideoIsland figure={figure} />
+      </Providers>,
+    )
+
+    expect(document.querySelector('iframe')).toBeNull()
+    expect(figure.querySelector('.lr-video-play')).toBeNull()
+    expect(figure.querySelector('.lr-video-link')).not.toBeNull()
+    host.remove()
   })
 })

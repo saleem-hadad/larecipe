@@ -4,6 +4,7 @@ import { DefaultChatTransport, type UIMessage } from 'ai'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
 import { useApp, useAppState } from '../app/context'
 import { displayPath } from '../palette/search'
+import { AnswerFeedback } from './AnswerFeedback'
 import { Markdown } from './markdown'
 
 interface Citation {
@@ -81,7 +82,8 @@ function Waiting() {
 /**
  * Ask the docs (⌘I): a 420 px side sheet. Answers stream as prose and always
  * show their sources as compact tickets. When an answer cites no page, the
- * panel says plainly that the docs may not cover it, and offers search.
+ * panel says plainly that the docs may not cover it, and offers search. A
+ * finished answer takes a thumbs up or down.
  */
 export default function AskPanel() {
   const { boot, page, t } = useLaRecipe()
@@ -217,6 +219,7 @@ export default function AskPanel() {
                       </Button>
                     </div>
                   )}
+                  {finished && answer !== '' && <AnswerFeedback question={exchange.question} />}
                 </li>
               )
             })}

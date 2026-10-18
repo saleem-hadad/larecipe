@@ -12,8 +12,9 @@ use LaRecipe\Domains\Delivery\Support\RequestClassifier;
 use LaRecipe\Domains\Delivery\Support\SetFromRequest;
 
 /**
- * POST /{prefix}/_feedback: "Was this page helpful?" from the page widget (and
- * Ask AI's thumbs).
+ * POST /{prefix}/_feedback: "Was this page helpful?" from the page widget, and
+ * the thumbs on an Ask AI answer, which send the question the answer was for
+ * and are tagged with the "ask" source.
  *
  * It dispatches FeedbackSubmitted for the host to forward to its own tools and
  * stores nothing. The route runs in the set's middleware group, so the web
@@ -43,6 +44,7 @@ final class FeedbackController
             'locale' => ['nullable', 'string', 'max:20'],
             'helpful' => ['required', 'boolean'],
             'comment' => ['nullable', 'string', 'max:2000'],
+            'question' => ['nullable', 'string', 'max:2000'],
         ]);
 
         $version = $set->isVersioned() && ! empty($data['version']) ? $data['version'] : $set->defaultVersion()->id;
@@ -60,14 +62,16 @@ final class FeedbackController
         }
 
         $comment = isset($data['comment']) ? trim((string) $data['comment']) : '';
+        $question = isset($data['question']) ? trim((string) $data['question']) : '';
 
         event(new FeedbackSubmitted(
             $set->key,
             $summary->ref,
             filter_var($data['helpful'], FILTER_VALIDATE_BOOLEAN),
             $comment === '' ? null : $comment,
-            'reader',
+            $question === '' ? 'reader' : 'ask',
             $this->classifier->classify($request),
+            $question === '' ? null : $question,
         ));
 
         return new Response('', 204);

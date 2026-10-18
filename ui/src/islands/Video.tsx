@@ -3,8 +3,14 @@ import { useLayoutEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { propsFor } from './shared'
 
-/** A watch URL turned into an embed URL that starts playing (the reader asked for it). */
-export function embedUrl(source: string): string {
+/** The only players a Video ever frames. */
+const EMBED_HOSTS = ['www.youtube-nocookie.com', 'player.vimeo.com', 'www.loom.com']
+
+/**
+ * A watch URL turned into an embed URL that starts playing (the reader asked
+ * for it), or null when it does not lead to YouTube, Vimeo or Loom over https.
+ */
+export function embedUrl(source: string): string | null {
   try {
     const url = new URL(source, window.location.href)
     const host = url.hostname.replace(/^www\./, '')
@@ -23,10 +29,12 @@ export function embedUrl(source: string): string {
       embed = url
     }
 
+    if (embed.protocol !== 'https:' || !EMBED_HOSTS.includes(embed.hostname)) return null
+
     embed.searchParams.set('autoplay', '1')
     return embed.href
   } catch {
-    return source
+    return null
   }
 }
 
@@ -38,7 +46,8 @@ export function embedUrl(source: string): string {
 export function VideoIsland({ figure }: { figure: HTMLElement }) {
   const { t } = useLaRecipe()
   const props = propsFor(figure)
-  const embed = typeof props.embed === 'string' ? props.embed : (figure.dataset.embed ?? null)
+  const source = typeof props.embed === 'string' ? props.embed : (figure.dataset.embed ?? null)
+  const embed = source ? embedUrl(source) : null
   const poster = typeof props.poster === 'string' ? props.poster : (figure.querySelector('img')?.getAttribute('src') ?? null)
   const title = typeof props.title === 'string' ? props.title : (figure.querySelector('figcaption')?.textContent?.trim() ?? '')
   const [frame, setFrame] = useState<HTMLElement | null>(null)
@@ -77,7 +86,7 @@ export function VideoIsland({ figure }: { figure: HTMLElement }) {
 
   return createPortal(
     playing ? (
-      <iframe src={embedUrl(embed)} title={title || t('video.play')} allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowFullScreen loading="lazy" />
+      <iframe src={embed} title={title || t('video.play')} allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowFullScreen loading="lazy" />
     ) : (
       <>
         {poster && <img src={poster} alt="" loading="lazy" />}

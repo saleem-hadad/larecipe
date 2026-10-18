@@ -3,6 +3,7 @@
 use LaRecipe\Domains\Upgrade\DTOs\ReportEntry;
 use LaRecipe\Domains\Upgrade\Services\PageRewriter;
 use LaRecipe\Domains\Upgrade\Services\V2Links;
+use LaRecipe\Tests\Unit\Markdown\Render;
 
 function rewriteV2(string $markdown, bool $relative = false, string $file = 'page.md'): array
 {
@@ -29,26 +30,54 @@ it('turns cards into <Card>, with their content un-indented', function () {
     expect($result['body'])->toBe("<Card>\nSome **bold** text\n</Card>\n");
 });
 
-it('turns standalone badges and buttons into self-closing components, inline ones into text', function () {
+it('turns standalone badges and buttons into the v3 components, with their text inside, and inline ones into text', function () {
     $result = rewriteV2(implode("\n", [
         '<larecipe-badge type="success" rounded>New</larecipe-badge>',
+        '<larecipe-badge type="black">Old</larecipe-badge>',
         '<larecipe-badge type="primary" circle icon="fa fa-user"></larecipe-badge>',
         '<larecipe-button type="danger" radius="full">Delete</larecipe-button>',
         '<larecipe-button type="primary" tag="a" href="https://example.com">',
         '    Visit <i class="fa fa-external-link"></i>',
         '</larecipe-button>',
+        '<larecipe-button type="white">Later</larecipe-button>',
         '',
         'Status: <larecipe-badge type="warning">Beta</larecipe-badge> for now.',
     ]));
 
     expect($result['body'])->toBe(implode("\n", [
-        '<Badge label="New" tone="success" />',
-        '<Badge tone="info" icon="user" />',
-        '<Button label="Delete" tone="danger" />',
-        '<Button label="Visit" tone="info" href="https://example.com" />',
+        '<Badge tone="success">New</Badge>',
+        '<Badge tone="neutral">Old</Badge>',
+        '<Button>Delete</Button>',
+        '<Button href="https://example.com" variant="primary">Visit</Button>',
+        '<Button variant="outline">Later</Button>',
         '',
         'Status: Beta for now.',
     ])."\n");
+
+    expect(collect($result['entries'])->where('kind', ReportEntry::MANUAL)->pluck('message')->implode(' '))->toContain('Badge with no text')
+        ->and(collect($result['entries'])->where('kind', ReportEntry::DROPPED)->pluck('message')->implode(' '))->toContain('danger');
+});
+
+it('writes badges and buttons the built-in components render', function () {
+    $body = rewriteV2(implode("\n", [
+        '<larecipe-badge type="success">Completed</larecipe-badge>',
+        '',
+        '<larecipe-button type="primary" href="https://example.com">View Zino Library</larecipe-button>',
+    ]))['body'];
+
+    expect(Render::html($body)->html)->toContain('<span class="lr-badge" data-tone="success">Completed</span>')
+        ->toContain('<a class="lr-button lr-button-primary" href="https://example.com">View Zino Library</a>');
+});
+
+it('rewrites links inside alerts', function () {
+    expect(rewriteV2('> {info} Read [overview](/{{route}}/{{version}}/overview) and [deploy](/docs/{{version}}/guides/deploy).', relative: true)['body'])
+        ->toBe("> [!NOTE]\n> Read [overview](overview.md) and [deploy](guides/deploy.md).\n");
+});
+
+it('points raw HTML at Markdown, components or the html_input option', function () {
+    $fix = collect(rewriteV2('<div class="note">Raw</div>')['entries'])->firstWhere('category', 'html')->fix;
+
+    expect($fix)->toContain('component')->toContain('html_input to allow')->toContain('config/larecipe.php');
 });
 
 it('turns {{route}} links into relative .md links and keeps {{version}} links unless asked', function () {

@@ -45,6 +45,9 @@ final class RenderState
 
     public bool $hasLiveReferences = false;
 
+    /** Raw HTML passes as written (a repository set with html_input: allow); escaped otherwise. */
+    public bool $rawHtml = false;
+
     /** @var array<string, true> abilities that <Can> blocks on the page asked about */
     public array $abilities = [];
 
@@ -67,6 +70,7 @@ final class RenderState
         $this->internalLinks = [];
         $this->issues = [];
         $this->hasLiveReferences = false;
+        $this->rawHtml = false;
         $this->abilities = [];
         $this->dependencies = [];
     }

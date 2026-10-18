@@ -20,10 +20,11 @@ use LaRecipe\Domains\Upgrade\DTOs\V2Project;
  */
 final class UpgradeCommand extends Command
 {
+    // No braces in the descriptions: the signature parser reads them as its own syntax.
     protected $signature = 'larecipe:upgrade
         {--apply : Write the changes (without it, only the report is written)}
         {--move-to= : Move the docs into this folder, for example docs}
-        {--relative-links : Also turn /docs/{{version}}/page links into relative .md links}';
+        {--relative-links : Also turn /docs/VERSION/page links into relative .md links}';
 
     protected $description = 'Upgrade LaRecipe 2 docs, config and navigation to LaRecipe 3';
 

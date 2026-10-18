@@ -1,10 +1,9 @@
 <?php
 
-use LaRecipe\Domains\Markdown\Components\ComponentRegistry;
+use Illuminate\Support\Facades\Artisan;
 use LaRecipe\Domains\Upgrade\Actions\PlanUpgradeAction;
 use LaRecipe\Domains\Upgrade\Actions\ValidateUpgradeAction;
 use LaRecipe\Domains\Upgrade\DTOs\V2Project;
-use LaRecipe\Facades\LaRecipe;
 use LaRecipe\Tests\Support\TrackG;
 
 /*
@@ -19,20 +18,6 @@ beforeEach(function () {
 afterEach(function () {
     TrackG::remove($this->base);
 });
-
-/** Card, Badge and Button ship with the built-in components; stand in for them where they are not registered yet. */
-function v3ComponentsForUpgrade(): void
-{
-    $registry = app(ComponentRegistry::class);
-
-    foreach (['Card', 'Badge', 'Button'] as $name) {
-        if (! $registry->has($name)) {
-            LaRecipe::component($name)
-                ->props(['label' => 'string', 'tone' => 'string', 'icon' => 'string', 'href' => 'string'])
-                ->fallback(fn (array $props, string $children) => '<div class="lr-'.strtolower($name).'">'.e($props['label'] ?? '').$children.'</div>');
-        }
-    }
-}
 
 /** Every page file under a folder, without its fenced code samples. */
 function proseOf(string $folder): array
@@ -105,7 +90,7 @@ it('converts config, navigation and content with --apply', function () {
         ->toContain("- guest users\n- authenticated users and\n- a subset(s) of authenticated users");
 
     expect(file_get_contents($docs.'/2.2/example-documentations.md'))
-        ->toContain('<Button label="View Zino Library" tone="info" href="https://zino.binarytorch.com.my" />');
+        ->toContain('<Button href="https://zino.binarytorch.com.my" variant="primary">View Zino Library</Button>');
 
     // Code samples are left exactly as they were.
     expect(file_get_contents($docs.'/2.2/vue-components-support.md'))
@@ -113,7 +98,6 @@ it('converts config, navigation and content with --apply', function () {
 });
 
 it('produces a set that renders and passes the basic checks', function () {
-    v3ComponentsForUpgrade();
     $this->artisan('larecipe:upgrade', ['--apply' => true])->assertSuccessful();
 
     TrackG::useSets(['upgraded' => [
@@ -135,6 +119,8 @@ it('produces a set that renders and passes the basic checks', function () {
     // GitHub alert rendering belongs to the Markdown renderer; here the alert is at least a quote.
     $this->get('/upgraded/2.2/configurations')->assertSee('id="routing"', false)->assertSee('<aside class="lr-callout" data-type="warning" role="note">', false);
     $this->get('/upgraded/2.2/overview.md')->assertOk()->assertSee('description: ');
+    $this->get('/upgraded/2.2/example-documentations')->assertSee('href="https://zino.binarytorch.com.my">View Zino Library</a>', false);
+    $this->get('/upgraded/2.2/example-project-tracking')->assertSee('<span class="lr-badge" data-tone="success">Completed</span>', false);
 
     $validation = app(ValidateUpgradeAction::class)->execute(app(PlanUpgradeAction::class)->execute(
         new V2Project($this->base, require $this->base.'/config/larecipe.v2.php.bak'),
@@ -180,4 +166,10 @@ it('refuses to move the docs into a folder that already has files', function () 
     file_put_contents($this->base.'/docs/keep.md', '# Keep');
 
     $this->artisan('larecipe:upgrade', ['--move-to' => 'docs'])->expectsOutputToContain('already has files')->assertFailed();
+});
+
+it('shows the whole --relative-links help text', function () {
+    $option = Artisan::all()['larecipe:upgrade']->getDefinition()->getOption('relative-links');
+
+    expect($option->getDescription())->toEndWith('into relative .md links');
 });

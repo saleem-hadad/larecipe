@@ -4,6 +4,7 @@ namespace LaRecipe\Domains\Validation\Laravel;
 
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Contracts\Foundation\Application;
+use LaRecipe\Domains\Access\Actions\CheckGateBlocksAction;
 use LaRecipe\Domains\Content\DTOs\DocSet;
 use LaRecipe\Domains\Content\DTOs\Locale;
 use LaRecipe\Domains\Content\DTOs\Page;
@@ -16,7 +17,9 @@ use LaRecipe\Domains\Delivery\Services\DocsUrls;
 use LaRecipe\Domains\Markdown\Actions\RenderPageAction;
 use LaRecipe\Domains\Markdown\Components\ComponentRegistry;
 use LaRecipe\Domains\Markdown\Services\AgentMarkdownRenderer;
+use LaRecipe\Domains\Sources\Actions\ListConflictsAction;
 use LaRecipe\Domains\Sources\Contracts\ContentSource;
+use LaRecipe\Domains\Sources\Contracts\DraftableContentSource;
 use LaRecipe\Domains\Sources\Contracts\SourceResolver;
 use LaRecipe\Domains\Sources\Drivers\RepositorySource;
 use LaRecipe\Domains\Validation\Contracts\DocsInspector;
@@ -51,6 +54,8 @@ final class SourceInspector implements DocsInspector
         private readonly DocsUrls $urls,
         private readonly Config $config,
         private readonly Application $app,
+        private readonly CheckGateBlocksAction $gates,
+        private readonly ListConflictsAction $conflicts,
     ) {}
 
     public function sets(): array
@@ -86,7 +91,10 @@ final class SourceInspector implements DocsInspector
             $stylesheets[$file] = $source->asset($docs->defaultVersion()->id, $file) !== null;
         }
 
-        return new DocsSnapshot($set, $manifest, $versions, $this->settings($docs), $this->skills($source), $error, stylesheets: $stylesheets);
+        // Only a source that keeps revisions (the database) can hold docs-migration conflicts.
+        $conflicts = $source instanceof DraftableContentSource ? $this->conflicts->execute($set, $version) : [];
+
+        return new DocsSnapshot($set, $manifest, $versions, $this->settings($docs), $this->skills($source), $error, conflicts: $conflicts, stylesheets: $stylesheets);
     }
 
     public function inspect(Page $page): PageSnapshot
@@ -109,6 +117,13 @@ final class SourceInspector implements DocsInspector
         }
 
         $set = $this->sets->get($ref->set);
+        $labels = [];
+
+        foreach ($set->versions() as $version) {
+            foreach ($set->locales() as $locale) {
+                $labels[$this->label($set, $version->id, $locale->code)] = [$version->id, $locale->code];
+            }
+        }
 
         return new PageContext(
             $ref->version,
@@ -118,6 +133,7 @@ final class SourceInspector implements DocsInspector
             new SourceLinkTargets($set, $this->sources->for($set->key), $this->render),
             $set->version($ref->version)?->visibility === Visibility::Private,
             strictLinks: false,
+            labels: $labels,
         );
     }
 
@@ -179,6 +195,8 @@ final class SourceInspector implements DocsInspector
             $size = null;
         }
 
+        $private = $page->frontmatter->visibility() === Visibility::Private || $set?->version($page->ref->version)?->visibility === Visibility::Private;
+
         return new PageSnapshot(
             page: $page,
             file: $relative,
@@ -189,6 +207,7 @@ final class SourceInspector implements DocsInspector
             yamlError: $yamlError,
             renderError: $renderError,
             lineOffset: $offset,
+            gateIssues: $rendered === null ? [] : $this->gates->execute($rendered->abilities, $private),
         );
     }
 

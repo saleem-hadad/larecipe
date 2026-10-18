@@ -7,8 +7,10 @@ use LaRecipe\Domains\Validation\Contracts\PageRule;
 use LaRecipe\Domains\Validation\Contracts\SetRule;
 use LaRecipe\Domains\Validation\Rules\CacheStoreRule;
 use LaRecipe\Domains\Validation\Rules\ComponentsRule;
+use LaRecipe\Domains\Validation\Rules\DocsMigrationConflictsRule;
 use LaRecipe\Domains\Validation\Rules\DuplicatePagesRule;
 use LaRecipe\Domains\Validation\Rules\FrontmatterSchemaRule;
+use LaRecipe\Domains\Validation\Rules\GateBlocksRule;
 use LaRecipe\Domains\Validation\Rules\LinksRule;
 use LaRecipe\Domains\Validation\Rules\ManifestSchemaRule;
 use LaRecipe\Domains\Validation\Rules\MarkdownSizeRule;
@@ -44,6 +46,7 @@ final class RuleRegistry
             new SnippetsRule($scanner),
             new LinksRule($paths),
             new MarkdownSizeRule,
+            new GateBlocksRule,
         ];
 
         $this->setRules = [
@@ -54,6 +57,7 @@ final class RuleRegistry
             new SearchBudgetRule,
             new SkillsSpecRule($parser),
             new CacheStoreRule,
+            new DocsMigrationConflictsRule,
             new StylesheetsRule,
         ];
     }

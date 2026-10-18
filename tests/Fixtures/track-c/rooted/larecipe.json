@@ -1,0 +1,5 @@
+{
+  "name": "Rooted",
+  "versions": [{ "id": "3.x", "default": true }, { "id": "2.x" }],
+  "locales": [{ "code": "en", "default": true }, { "code": "ar", "dir": "rtl" }]
+}

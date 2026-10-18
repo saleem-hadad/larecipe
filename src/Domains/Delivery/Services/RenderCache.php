@@ -32,7 +32,7 @@ use Throwable;
  */
 final class RenderCache
 {
-    public const RENDERER_VERSION = '3.0.0-dev.2';
+    public const RENDERER_VERSION = '3.0.0-dev.3';
 
     public function __construct(
         private readonly Cache $cache,
@@ -74,7 +74,7 @@ final class RenderCache
             self::RENDERER_VERSION,
             $page->ref->key(),
             $page->contentHash,
-            $this->environment->version(),
+            $this->environment->version($page->ref->set),
             $variant,
         ]));
     }

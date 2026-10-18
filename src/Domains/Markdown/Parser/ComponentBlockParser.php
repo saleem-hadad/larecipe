@@ -24,6 +24,8 @@ final class ComponentBlockParser extends AbstractBlockContinueParser
 {
     private readonly ComponentNode $block;
 
+    private bool $closedByTag = false;
+
     public function __construct(string $name, array $props, private readonly bool $selfClosing)
     {
         $this->block = new ComponentNode($name, $props, $selfClosing);
@@ -56,11 +58,17 @@ final class ComponentBlockParser extends AbstractBlockContinueParser
 
         if (! $insideCode && ! $cursor->isIndented() && trim($cursor->getRemainder()) === '</'.$this->block->name.'>' && ! $this->innerSameNameIsOpen($active)) {
             $cursor->advanceToEnd();
+            $this->closedByTag = true;
 
             return BlockContinue::finished();
         }
 
         return BlockContinue::at($cursor);
+    }
+
+    public function closeBlock(): void
+    {
+        $this->block->unclosed = ! $this->selfClosing && ! $this->closedByTag;
     }
 
     /** Whether a component with this name is open between the deepest open block and this one. */

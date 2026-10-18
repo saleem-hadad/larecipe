@@ -3,7 +3,9 @@
 namespace LaRecipe\Domains\Validation\Contracts;
 
 /**
- * The pages a link may point at, in one version and locale of a set.
+ * The pages a link may point at, in one version and locale of a set. Like the
+ * reader, a locale gets its version's original page where a translation is
+ * missing, so a link to a page that is not translated yet is not broken.
  */
 interface LinkTargets
 {

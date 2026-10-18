@@ -2,6 +2,7 @@
 
 namespace LaRecipe\Domains\Validation\DTOs;
 
+use LaRecipe\Domains\Access\DTOs\GateIssue;
 use LaRecipe\Domains\Content\DTOs\Page;
 use LaRecipe\Domains\Markdown\DTOs\RenderedPage;
 
@@ -16,6 +17,7 @@ final readonly class PageSnapshot
      * @param  bool  $folderIndex  an index.md inside a folder, so relative links start in that folder
      * @param  list<string>  $anchors  every id on the rendered page
      * @param  int  $lineOffset  lines before the body in the file (the frontmatter block), so line numbers match the file
+     * @param  list<GateIssue>  $gateIssues  what the Access domain found wrong with the page's <Can> and <Cannot> abilities
      */
     public function __construct(
         public Page $page,
@@ -27,6 +29,7 @@ final readonly class PageSnapshot
         public ?string $yamlError = null,
         public ?string $renderError = null,
         public int $lineOffset = 0,
+        public array $gateIssues = [],
     ) {}
 
     /** The file line of the first body line containing $needle, for pointing at a problem. */

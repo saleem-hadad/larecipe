@@ -87,10 +87,20 @@ export function parseBlocks(source: string): Block[] {
   return blocks
 }
 
+/**
+ * A link from an answer, or null when it is not safe to render: http(s) URLs,
+ * #anchors, and paths on this site. A path is resolved like the browser would
+ * and must stay on this origin, so "//evil.example" and "/\evil.example"
+ * (protocol-relative to a browser) never pass as site links.
+ */
 function safeHref(href: string): string | null {
   const trimmed = href.trim()
-  if (trimmed.startsWith('/') || trimmed.startsWith('#')) return trimmed
+  if (trimmed.startsWith('#')) return trimmed
   try {
+    if (trimmed.startsWith('/')) {
+      const url = new URL(trimmed, window.location.href)
+      return url.origin === window.location.origin && !/^\/[/\\]/.test(trimmed) ? trimmed : null
+    }
     const url = new URL(trimmed)
     return url.protocol === 'http:' || url.protocol === 'https:' ? url.href : null
   } catch {
