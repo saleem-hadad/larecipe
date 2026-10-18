@@ -2,6 +2,8 @@
 
 namespace LaRecipe\Domains\Sync\Services;
 
+use LaRecipe\Support\SecretFiles;
+
 /**
  * Which project files the server-side docs agent may read.
  *
@@ -11,23 +13,15 @@ namespace LaRecipe\Domains\Sync\Services;
  * path as asked and again on the real path behind any symlink:
  *
  * - anything outside the project root;
- * - every dotfile and dot folder (.env, .env.*, .git, .aws, .ssh, ...);
- * - config/ and bootstrap/cache/ (configuration, and the cached config with every value resolved);
- * - storage/, vendor/ and node_modules/;
- * - auth.json, PHPUnit files (they set environment values), private keys and certificates,
- *   database files and logs.
+ * - every file LaRecipe\Support\SecretFiles lists: dotfiles, config/, bootstrap/cache/,
+ *   storage/, vendor/, node_modules/, auth.json, PHPUnit files, keys, certificates,
+ *   credential files, database files, dumps and logs (snippet includes share the list).
  *
  * Hosts can deny more with larecipe.ai.sync.deny; nothing can allow these.
  * This is the No-Secrets Rule applied to a reader that can open any file.
  */
 final class CodeAccessPolicy
 {
-    private const DENIED_FOLDERS = ['config', 'bootstrap/cache', 'storage', 'vendor', 'node_modules'];
-
-    private const DENIED_FILES = ['auth.json', 'phpunit.xml', 'phpunit.xml.dist', 'phpunit.dist.xml', 'id_rsa', 'id_dsa', 'id_ecdsa', 'id_ed25519', 'credentials.json'];
-
-    private const DENIED_EXTENSIONS = ['env', 'key', 'pem', 'p8', 'p12', 'pfx', 'crt', 'cer', 'der', 'jks', 'keystore', 'kdbx', 'sqlite', 'sqlite3', 'db', 'log', 'sql', 'dump'];
-
     /** @param list<string> $extra more paths or globs to deny, relative to the root */
     public function __construct(
         private readonly string $root,
@@ -124,26 +118,10 @@ final class CodeAccessPolicy
             return null;
         }
 
-        $segments = explode('/', $relative);
-        $name = strtolower((string) end($segments));
         $lower = strtolower($relative);
 
-        foreach ($segments as $segment) {
-            if (str_starts_with($segment, '.')) {
-                return "[{$relative}] is a dotfile or inside a dot folder (such as .env or .git). LaRecipe never reads them: they hold configuration, environment values and secrets.";
-            }
-        }
-
-        foreach (self::DENIED_FOLDERS as $folder) {
-            if ($lower === $folder || str_starts_with($lower, $folder.'/')) {
-                return "[{$relative}] is inside {$folder}/. LaRecipe never reads it: it holds configuration, environment values, secrets or third-party code. Describe settings by their key names, never their values.";
-            }
-        }
-
-        $extension = str_contains($name, '.') ? substr($name, strrpos($name, '.') + 1) : '';
-
-        if (in_array($name, self::DENIED_FILES, true) || str_starts_with($name, 'id_rsa') || in_array($extension, self::DENIED_EXTENSIONS, true)) {
-            return "[{$relative}] may hold credentials, keys, environment values or data, so LaRecipe never reads it.";
+        if (($reason = SecretFiles::reason($relative)) !== null) {
+            return $reason;
         }
 
         foreach ($this->extra as $pattern) {

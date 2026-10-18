@@ -5,6 +5,8 @@
  * doc set's snippet root, with missing files and regions made loud.
  */
 
+use LaRecipe\Domains\Markdown\DTOs\Snippet;
+use LaRecipe\Domains\Markdown\Services\SnippetResolver;
 use LaRecipe\Tests\TestCase;
 use LaRecipe\Tests\Unit\Markdown\Render;
 
@@ -74,7 +76,24 @@ it('never includes secrets or files outside the root', function (string $target)
     'keys in storage' => 'storage/oauth-private.key',
     'traversal' => '../../docs/larecipe.json',
     'composer auth' => 'auth.json',
+    'a credentials file' => 'firebase-credentials.json',
+    'a credentials file in capitals' => 'Firebase-Credentials.JSON',
+    'an SSH key' => 'id_ed25519',
+    'a PuTTY key' => 'deploy.ppk',
+    'a key file without an extension' => 'deploy_key',
+    'a database dump' => 'database/dump.sql',
+    'a JSON dump' => 'database/backups/users.json',
+    'configuration' => 'config/services.php',
+    'vendor code' => 'vendor/acme/sdk/src/Client.php',
 ]);
+
+it('still includes ordinary code whose name only sounds secret', function () {
+    $resolver = app(SnippetResolver::class);
+
+    foreach (['app/Http/Controllers/CredentialsController.php', 'app/Support/KeyRing.php', 'app/Billing/Invoice.php'] as $path) {
+        expect($resolver->resolve(TestCase::fixture('track-a/app'), $path, null)->status)->not->toBe(Snippet::DENIED, $path);
+    }
+});
 
 it('is disabled without a snippet root', function () {
     $rendered = Render::html('<<< @/app/Billing/Invoice.php#refund', ['snippets_root' => null]);

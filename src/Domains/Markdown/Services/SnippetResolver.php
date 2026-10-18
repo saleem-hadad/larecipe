@@ -4,6 +4,7 @@ namespace LaRecipe\Domains\Markdown\Services;
 
 use Closure;
 use LaRecipe\Domains\Markdown\DTOs\Snippet;
+use LaRecipe\Support\SecretFiles;
 
 /**
  * Reads the code a snippet include points at, so samples come from the real
@@ -11,8 +12,9 @@ use LaRecipe\Domains\Markdown\DTOs\Snippet;
  *
  * Files resolve only inside the doc set's snippet root (the app's base path
  * for repository sets; nothing for database sets unless configured). Files
- * that commonly hold secrets are refused even inside the root: dotfiles such
- * as .env, keys and certificates, storage/ and Composer's auth.json. Docs must
+ * that commonly hold secrets are refused even inside the root, by the same
+ * list the docs agent uses (LaRecipe\Support\SecretFiles): dotfiles such as
+ * .env, config/, storage/, vendor/, keys, credential files and dumps. Docs must
  * never become a side door to configuration or environment values.
  *
  * Regions are marked in the source with comments:
@@ -23,12 +25,6 @@ use LaRecipe\Domains\Markdown\DTOs\Snippet;
  */
 final class SnippetResolver
 {
-    private const DENIED_EXTENSIONS = ['key', 'pem', 'p12', 'pfx', 'crt', 'cer', 'der', 'sqlite', 'db', 'env'];
-
-    private const DENIED_FILES = ['auth.json'];
-
-    private const DENIED_FOLDERS = ['storage/', 'bootstrap/cache/'];
-
     private const COMMENT = '^\s*(?:\/\/|#|\/\*+|<!--|\{\{--|--|;|\')?\s*';
 
     private const LANGUAGES = [
@@ -113,22 +109,7 @@ final class SnippetResolver
 
     private function isDenied(string $path): bool
     {
-        $path = strtolower($path);
-
-        foreach (explode('/', $path) as $segment) {
-            if (str_starts_with($segment, '.')) {
-                return true;
-            }
-        }
-
-        foreach (self::DENIED_FOLDERS as $folder) {
-            if (str_starts_with($path, $folder)) {
-                return true;
-            }
-        }
-
-        return in_array(basename($path), self::DENIED_FILES, true)
-            || in_array(pathinfo($path, PATHINFO_EXTENSION), self::DENIED_EXTENSIONS, true);
+        return SecretFiles::reason($path) !== null;
     }
 
     /** The lines between `#region name` and its matching `#endregion`, or null when there is no such region. */
