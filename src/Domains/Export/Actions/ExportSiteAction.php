@@ -132,7 +132,8 @@ final class ExportSiteAction
             $this->documents[ExportFiles::fileFor($root, true)] = $this->redirectPage((string) parse_url((string) $response->location, PHP_URL_PATH));
         }
 
-        $missing = $this->site->get($this->setPath($set, '__larecipe-export-404'));
+        // Inside the default version: on a versioned set, a URL without a version redirects there first.
+        $missing = $this->site->get($this->setPath($set, ($set->isVersioned() ? $set->defaultVersion()->id.'/' : '').'__larecipe-export-404'));
 
         if ($missing->status === 404 && $missing->isHtml()) {
             $this->documents[trim($root, '/') === '' ? '404.html' : trim($root, '/').'/404.html'] = $missing->body;
@@ -186,6 +187,9 @@ final class ExportSiteAction
 
             if ($response->isOk() && ! $response->isHtml()) {
                 $files->write($file, $response->body);
+            } elseif (($public = $this->site->publicFile($path)) !== null) {
+                // The web server serves public/ (a logo, the favicon), not the app.
+                $files->write($file, $public);
             }
         }
 

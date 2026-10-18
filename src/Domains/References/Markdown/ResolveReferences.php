@@ -56,7 +56,7 @@ final class ResolveReferences
 
         $this->state->issues[] = [
             'component' => $node->name,
-            'message' => "<{$node->name} {$prop}=\"{$target}\"> does not resolve: nothing in the app has that name any more.",
+            'message' => "<{$node->name} {$prop}=\"{$target}\"> does not resolve: nothing in the app has that name any more, or the references settings in config/larecipe.php leave it out.",
             'rule' => self::RULE,
             'level' => 'error',
             'line' => $node->getStartLine(),
@@ -69,7 +69,7 @@ final class ResolveReferences
     private function fix(string $kind, string $component): string
     {
         return match ($kind) {
-            'route' => "Use the name of an existing route (php artisan route:list shows them), or remove the <{$component}>.",
+            'route' => "Use the name of an existing route (php artisan route:list shows them) that references.routes.allow in config/larecipe.php allows, or remove the <{$component}>.",
             'artisan' => "Use an existing command (php artisan list shows them), or remove the <{$component}>.",
             'model' => "Use an Eloquent model that references.models.allow in config/larecipe.php allows, or remove the <{$component}>. In CI without a database, run php artisan larecipe:references:snapshot first so models resolve from the snapshot.",
             default => "Use an existing event class (short names are looked up in references.events.namespaces in config/larecipe.php), or remove the <{$component}>.",

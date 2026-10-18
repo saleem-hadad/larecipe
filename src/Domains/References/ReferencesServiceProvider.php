@@ -12,6 +12,7 @@ use LaRecipe\Domains\References\Commands\SnapshotCommand;
 use LaRecipe\Domains\References\Laravel\ArtisanResolver;
 use LaRecipe\Domains\References\Laravel\EventResolver;
 use LaRecipe\Domains\References\Laravel\ModelResolver;
+use LaRecipe\Domains\References\Laravel\RouteAllowList;
 use LaRecipe\Domains\References\Laravel\RouteResolver;
 use LaRecipe\Domains\References\Markdown\ReferenceComponents;
 use LaRecipe\Domains\References\Markdown\ResolveReferences;
@@ -24,8 +25,9 @@ use League\CommonMark\Event\DocumentParsedEvent;
 
 /**
  * Wires live references. This provider is the only place in the domain that
- * reads configuration: it hands the model allowlist and the event namespaces to
- * the resolvers, which themselves never read configuration or environment values.
+ * reads configuration: it hands the route and model allowlists and the event
+ * namespaces to the resolvers, which themselves never read configuration or
+ * environment values.
  */
 final class ReferencesServiceProvider extends ServiceProvider
 {
@@ -38,12 +40,20 @@ final class ReferencesServiceProvider extends ServiceProvider
             $references = (array) $app['config']->get('larecipe.references', []);
 
             return new ReferenceRegistry(array_map(fn ($resolver) => new SnapshotFallback($resolver, $snapshot), [
-                new RouteResolver($app['router'], $app, $app->getCachedRoutesPath()),
+                new RouteResolver($app['router'], $app, new RouteAllowList($this->routePatterns($references), $app->basePath('vendor')), $app->getCachedRoutesPath()),
                 new ArtisanResolver(fn () => $app->make(Kernel::class)),
                 new ModelResolver($app, array_values((array) ($references['models']['allow'] ?? [])), [$app->databasePath('migrations')]),
                 new EventResolver($app['events'], array_values((array) ($references['events']['namespaces'] ?? []))),
             ]));
         });
+    }
+
+    /** @return list<string>|null references.routes.allow, or null for every route the app defines */
+    private function routePatterns(array $references): ?array
+    {
+        $allow = $references['routes']['allow'] ?? null;
+
+        return $allow === null ? null : array_values(array_map('strval', (array) $allow));
     }
 
     public function boot(): void
@@ -58,8 +68,7 @@ final class ReferencesServiceProvider extends ServiceProvider
             ),
         );
 
-        if ($this->app->runningInConsole()) {
-            $this->commands([SnapshotCommand::class]);
-        }
+        // Registered outside the console too, so <Artisan> sees them on web requests.
+        $this->commands([SnapshotCommand::class]);
     }
 }

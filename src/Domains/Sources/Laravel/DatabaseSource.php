@@ -34,6 +34,7 @@ use LaRecipe\Domains\Sources\Services\ContentHashes;
 use LaRecipe\Domains\Sources\Services\SetLayout;
 use LaRecipe\Domains\Sources\Support\MimeTypes;
 use LaRecipe\Domains\Sources\Support\PathGuard;
+use LaRecipe\Domains\Sources\Support\ServableAsset;
 use LaRecipe\Support\Contracts\Clock;
 
 /**
@@ -126,8 +127,18 @@ final class DatabaseSource implements DraftableContentSource
 
     public function asset(string $version, string $path): ?Asset
     {
-        $path = ltrim(str_replace('\\', '/', $path), '/');
+        $path = ServableAsset::path($path);
+
+        if ($path === null) {
+            return null;
+        }
+
         $candidates = [[$version, $path], [$version, '_assets/'.$path], [Version::IMPLICIT, '_assets/'.$path]];
+
+        // A stylesheet listed under assets.css is a set-level file that serves every version.
+        if ($this->manifest()?->listsStylesheet($path)) {
+            $candidates[] = [Version::IMPLICIT, $path];
+        }
 
         foreach ($candidates as [$candidateVersion, $candidatePath]) {
             $row = $this->query('asset')->where('set', $this->set)->where('version', $candidateVersion)->where('path', $candidatePath)->first();

@@ -8,6 +8,9 @@ namespace LaRecipe\Domains\Sources\Support;
  */
 final class MimeTypes
 {
+    /** The type of a file whose extension is not listed; the asset route never serves one. */
+    public const UNKNOWN = 'application/octet-stream';
+
     public static function for(string $path): string
     {
         return match (strtolower(pathinfo($path, PATHINFO_EXTENSION))) {
@@ -26,7 +29,7 @@ final class MimeTypes
             'pdf' => 'application/pdf',
             'woff2' => 'font/woff2',
             'txt' => 'text/plain',
-            default => 'application/octet-stream',
+            default => self::UNKNOWN,
         };
     }
 }

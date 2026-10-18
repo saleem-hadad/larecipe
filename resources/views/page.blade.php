@@ -34,7 +34,7 @@
 <!doctype html>
 <html lang="{{ $locale['code'] }}" dir="{{ $locale['dir'] }}" data-theme-mode="{{ $themeMode }}" @if (in_array($themeMode, ['light', 'dark'], true)) data-theme="{{ $themeMode }}" @endif class="lr-html">
 <head>
-    @include('larecipe::partials.head', ['title' => $page->title.' · '.$set->manifest->name, 'description' => $page->description, 'canonical' => $boot['page']['url'], 'markdown' => $boot['page']['markdown_url'], 'noindex' => $boot['page']['noindex'], 'themeCss' => $themeCss])
+    @include('larecipe::partials.head', ['title' => $page->title.' · '.$set->manifest->name, 'description' => $page->description, 'canonical' => $boot['page']['url'], 'markdown' => $boot['page']['markdown_url'], 'noindex' => $boot['page']['noindex'], 'themeCss' => $themeCss, 'version' => $page->ref->version])
     <script type="application/ld+json">{!! json_encode($jsonLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
     @foreach ($boot['page']['alternates'] ?? [] as $alternate)
         <link rel="alternate" hreflang="{{ $alternate['hreflang'] }}" href="{{ $alternate['url'] }}">

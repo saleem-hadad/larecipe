@@ -33,6 +33,17 @@ final readonly class ValidationIssue
         return new self(self::WARNING, $rule, $message, $page, $line, $fix, null, $file);
     }
 
+    /** links.unsafe: a navigation, navbar, footer or repository link that pages leave out (SafeHref). */
+    public static function unsafeLink(string $href, ?string $file = null): self
+    {
+        return self::error(
+            'links.unsafe',
+            "The link \"{$href}\" is left out of every page: links must be http, https or mailto URLs, or paths on this site.",
+            fix: 'Change it to an http, https or mailto URL, or a relative path such as /changelog.',
+            file: $file,
+        );
+    }
+
     public function inSet(string $set): self
     {
         return new self($this->level, $this->rule, $this->message, $this->page, $this->line, $this->fix, $set, $this->file);

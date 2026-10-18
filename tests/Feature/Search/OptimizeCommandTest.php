@@ -89,6 +89,26 @@ it('runs from php artisan optimize and clears with optimize:clear', function () 
         ->and(cache()->has($key))->toBeFalse();
 });
 
+it('clears only what larecipe:optimize wrote', function () {
+    $folder = dirname($this->manifest);
+    $kept = ['hooks.php' => '<?php return [];', 'provenance-guide.php' => '<?php return [];', 'references.json' => '{}'];
+
+    (new Filesystem)->ensureDirectoryExists($folder);
+
+    foreach ($kept as $file => $contents) {
+        file_put_contents($folder.'/'.$file, $contents);
+    }
+
+    $this->artisan('larecipe:optimize', ['--set' => ['guide']])->assertSuccessful();
+    $this->artisan('larecipe:clear')->assertSuccessful();
+
+    expect($this->manifest)->not->toBeFile();
+
+    foreach (array_keys($kept) as $file) {
+        expect($folder.'/'.$file)->toBeFile();
+    }
+});
+
 it('forgets compiled search records on clear', function () {
     $this->artisan('larecipe:optimize', ['--set' => ['guide']])->assertSuccessful();
     $fingerprint = app(SearchIndexRepository::class)->fingerprint('guide', 'current', 'en');

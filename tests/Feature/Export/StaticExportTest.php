@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Artisan;
+use LaRecipe\Domains\Delivery\Support\Assets;
+use LaRecipe\Tests\Feature\Sources\Support\Fixtures;
 use LaRecipe\Tests\Support\TrackG;
 
 beforeEach(function () {
@@ -116,6 +118,64 @@ it('resolves live references at export time', function () {
 
     expect(file_get_contents($this->out.'/shop/index.html'))->toContain('<code>POST /orders</code>')
         ->and($this->out.'/shop/broken/index.html')->toBeFile();
+});
+
+it('writes the not-found page for a versioned set too', function () {
+    exportSite(['--out' => $this->out, '--set' => ['gated']]);
+
+    expect($this->out.'/gated/404.html')->toBeFile()
+        ->and(file_get_contents($this->out.'/gated/404.html'))->toContain('<meta name="robots" content="noindex">');
+});
+
+it('copies the files from public/ the pages reference, and nothing else', function () {
+    $public = Fixtures::temporaryDirectory('public');
+    $files = [
+        'brand/mark.svg' => '<svg id="mark"/>',
+        'brand/mark-dark.svg' => '<svg id="mark-dark"/>',
+        'favicon.svg' => '<svg id="favicon"/>',
+        'evil.php' => '<?php echo "secret";',
+        'index.php' => '<?php // front controller',
+        'secret.txt' => 'not referenced',
+        'build/larecipe/manifest.json' => json_encode(['extension.tsx' => ['file' => 'extension-abc.js', 'isEntry' => true, 'css' => ['extension-abc.css']], '_lazy.js' => ['file' => 'lazy-def.js']]),
+        'build/larecipe/extension-abc.js' => 'import("./lazy-def.js")',
+        'build/larecipe/extension-abc.css' => '.x{}',
+        'build/larecipe/lazy-def.js' => 'export default 1',
+    ];
+
+    foreach ($files as $path => $contents) {
+        @mkdir(dirname($public.'/'.$path), 0755, true);
+        file_put_contents($public.'/'.$path, $contents);
+    }
+
+    $docs = Fixtures::temporaryDirectory('branded');
+    mkdir($docs.'/3.x', 0755, true);
+    file_put_contents($docs.'/3.x/index.md', "# Home\n\n![php](/evil.php) [secret](/index.php)\n");
+    file_put_contents($docs.'/larecipe.json', json_encode([
+        'name' => 'Branded',
+        'logo' => ['light' => '/brand/mark.svg', 'dark' => '/brand/mark-dark.svg'],
+        'favicon' => '/favicon.svg',
+        'versions' => [['id' => '3.x', 'default' => true]],
+    ]));
+
+    $this->app->usePublicPath($public);
+    $this->app->forgetInstance(Assets::class);
+    TrackG::useSets(['branded' => ['route' => ['prefix' => '', 'middleware' => ['web']], 'source' => ['driver' => 'repository', 'path' => $docs], 'access' => ['mode' => 'public']]]);
+
+    exportSite(['--out' => $this->out, '--set' => ['branded']]);
+
+    expect(file_get_contents($this->out.'/brand/mark.svg'))->toBe('<svg id="mark"/>')
+        ->and(file_get_contents($this->out.'/brand/mark-dark.svg'))->toBe('<svg id="mark-dark"/>')
+        ->and(file_get_contents($this->out.'/favicon.svg'))->toBe('<svg id="favicon"/>')
+        ->and($this->out.'/build/larecipe/extension-abc.js')->toBeFile()
+        ->and($this->out.'/build/larecipe/extension-abc.css')->toBeFile()
+        ->and($this->out.'/build/larecipe/lazy-def.js')->toBeFile()
+        ->and($this->out.'/evil.php')->not->toBeFile()
+        ->and($this->out.'/index.php')->not->toBeFile()
+        ->and($this->out.'/secret.txt')->not->toBeFile()
+        ->and($this->out.'/404.html')->toBeFile();
+
+    TrackG::remove($public);
+    TrackG::remove($docs);
 });
 
 it('refuses a set it does not know', function () {

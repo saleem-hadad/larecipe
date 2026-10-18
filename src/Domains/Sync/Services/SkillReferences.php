@@ -145,7 +145,7 @@ final class SkillReferences
             '',
             '# Frontmatter',
             '',
-            'YAML at the top of a page configures that page only. Set-level settings belong in `larecipe.json`, navigation in `navigation.json`. Unknown keys are allowed (extensions read them), but `larecipe:validate` warns about likely typos.',
+            'YAML at the top of a page configures that page only. Set-level settings belong in `larecipe.json`, navigation in `navigation.json`. Values for your own components go under `meta:` (they read them as `page.meta`). Other unknown keys are allowed but never reach readers, and `larecipe:validate` warns about likely typos.',
             '',
             'Every page should have `title`, `description` and `sources`. `sources` lists the code the page documents (globs from the project root, optionally `path#region`), so `php artisan larecipe:affected` can tell when the page goes stale.',
             '',
@@ -228,7 +228,7 @@ final class SkillReferences
             ['redirects', 'A list of `{ from, to, status }`.'],
             ['assets', '`{ css: ["theme.css"] }`.'],
             ['inserts', 'Components placed at named insert points: `{ "article.after": ["Subscribe"] }`.'],
-            ['integrations', 'Analytics integrations: GA4, Plausible, Fathom, PostHog or a custom script.'],
+            ['integrations', 'Analytics integrations: GA4, Plausible, Fathom, PostHog or a custom script. Repository sets only; a database set sets them in config/larecipe.php.'],
             ['agents', '`{ llmsTxt: { description, instructions }, skillMd, context7 }`.'],
             ['provenance', 'Show who and what last changed each page (default true).'],
         ];

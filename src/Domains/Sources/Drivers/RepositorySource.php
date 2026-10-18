@@ -24,6 +24,7 @@ use LaRecipe\Domains\Sources\Exceptions\UnsafePath;
 use LaRecipe\Domains\Sources\Services\ContentHashes;
 use LaRecipe\Domains\Sources\Support\MimeTypes;
 use LaRecipe\Domains\Sources\Support\PathGuard;
+use LaRecipe\Domains\Sources\Support\ServableAsset;
 use LaRecipe\Support\Contracts\Clock;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -162,12 +163,23 @@ class RepositorySource implements WritableContentSource
 
     public function asset(string $version, string $path): ?Asset
     {
-        $path = ltrim(str_replace('\\', '/', $path), '/');
+        $path = ServableAsset::path($path);
 
-        foreach ([$this->versionRoot($version), $this->versionRoot($version).'/_assets', $this->root().'/_assets'] as $base) {
+        if ($path === null || ! ServableAsset::isFolder($version)) {
+            return null;
+        }
+
+        $bases = [$this->versionRoot($version), $this->versionRoot($version).'/_assets', $this->root().'/_assets'];
+
+        // A stylesheet listed under assets.css lives next to larecipe.json and serves every version.
+        if ($this->manifest()?->listsStylesheet($path)) {
+            $bases[] = $this->root();
+        }
+
+        foreach ($bases as $base) {
             $file = $base.'/'.$path;
 
-            if (is_file($file) && $this->isInside($file, $this->root()) && ! str_ends_with($file, '.md')) {
+            if (is_file($file) && $this->isInside($file, $this->root())) {
                 return new Asset($path, self::mime($file), $file, null, (int) filesize($file), hash_file('sha256', $file) ?: null);
             }
         }

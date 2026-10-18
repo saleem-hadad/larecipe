@@ -10,6 +10,7 @@ use Illuminate\Cache\Repository;
 use LaRecipe\Domains\Markdown\DTOs\CodeFence;
 use LaRecipe\Domains\Markdown\Services\CodeHighlighter;
 use LaRecipe\Domains\Markdown\Support\PassTheme;
+use LaRecipe\Support\CacheFormat;
 use LaRecipe\Tests\Unit\Markdown\Render;
 
 it('renders a fenced block as a figure with a header and one span per line', function () {
@@ -97,7 +98,7 @@ it('caches highlighted output per code block', function () {
     $keys = array_keys($cache->getStore()->all());
 
     expect($keys)->toHaveCount(1)
-        ->and($keys[0])->toStartWith('larecipe.code.')
+        ->and($keys[0])->toStartWith(CacheFormat::psrPrefix().'code.')
         ->and((new CodeHighlighter($cache))->highlight("echo 'hi';", $fence))->toBe($first);
 
     $cache->put($keys[0], 'from-cache', 60);

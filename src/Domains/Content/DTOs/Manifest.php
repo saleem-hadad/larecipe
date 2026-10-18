@@ -2,6 +2,7 @@
 
 namespace LaRecipe\Domains\Content\DTOs;
 
+use LaRecipe\Domains\Content\Support\SafeHref;
 use LaRecipe\Support\Arr;
 
 /**
@@ -98,16 +99,92 @@ final readonly class Manifest
         return isset($this->raw['favicon']) ? (string) $this->raw['favicon'] : null;
     }
 
-    /** @return array{url: ?string, branch: string, docsPath: string} */
+    /**
+     * The navbar's links and call to action, leaving out links a page may not carry (SafeHref).
+     *
+     * @return array{links?: list<array>, cta?: array}
+     */
+    public function navbar(): array
+    {
+        $navbar = (array) ($this->raw['navbar'] ?? []);
+
+        if (isset($navbar['links'])) {
+            $navbar['links'] = self::safeLinks((array) $navbar['links']);
+        }
+
+        if (isset($navbar['cta']) && self::safeLinks([$navbar['cta']]) === []) {
+            unset($navbar['cta']);
+        }
+
+        return $navbar;
+    }
+
+    /**
+     * The footer's links and text, leaving out links a page may not carry (SafeHref).
+     *
+     * @return array{links?: list<array>, text?: string}
+     */
+    public function footer(): array
+    {
+        $footer = (array) ($this->raw['footer'] ?? []);
+
+        if (isset($footer['links'])) {
+            $footer['links'] = self::safeLinks((array) $footer['links']);
+        }
+
+        return $footer;
+    }
+
+    /** @return list<string> the navbar, footer and repository links that pages leave out */
+    public function refusedLinks(): array
+    {
+        $links = [...(array) ($this->raw['navbar']['links'] ?? []), $this->raw['navbar']['cta'] ?? null, ...(array) ($this->raw['footer']['links'] ?? [])];
+        $refused = [];
+
+        foreach ($links as $link) {
+            if (is_array($link) && isset($link['href']) && SafeHref::of((string) $link['href']) === null) {
+                $refused[] = (string) $link['href'];
+            }
+        }
+
+        $repository = $this->raw['repository']['url'] ?? null;
+
+        if (is_scalar($repository) && ! SafeHref::isWebUrl((string) $repository)) {
+            $refused[] = (string) $repository;
+        }
+
+        return $refused;
+    }
+
+    /** @return array{url: ?string, branch: string, docsPath: string} the url only when it is an http or https URL */
     public function repository(): array
     {
         $repository = (array) ($this->raw['repository'] ?? []);
 
         return [
-            'url' => isset($repository['url']) ? rtrim((string) $repository['url'], '/') : null,
+            'url' => isset($repository['url']) && SafeHref::isWebUrl((string) $repository['url']) ? rtrim(trim((string) $repository['url']), '/') : null,
             'branch' => (string) ($repository['branch'] ?? 'main'),
             'docsPath' => trim((string) ($repository['docsPath'] ?? 'docs'), '/'),
         ];
+    }
+
+    /**
+     * The stylesheets listed under assets.css, as written: files next to
+     * larecipe.json ("theme.css") that load after LaRecipe's own CSS.
+     *
+     * @return list<string>
+     */
+    public function stylesheets(): array
+    {
+        $css = $this->raw['assets']['css'] ?? [];
+
+        return array_values(array_filter(is_array($css) ? $css : [], fn ($file) => is_string($file) && trim($file) !== ''));
+    }
+
+    /** Whether a path inside the docs root is one of the listed stylesheets. */
+    public function listsStylesheet(string $path): bool
+    {
+        return in_array(trim($path, '/'), array_map(fn (string $file) => trim($file, '/'), $this->stylesheets()), true);
     }
 
     /** @return array<string, list<string>> insert point => component names */
@@ -126,6 +203,12 @@ final readonly class Manifest
         ], array_filter((array) ($this->raw['redirects'] ?? []), fn ($r) => is_array($r) && isset($r['from'], $r['to']))));
     }
 
+    /** @return list<array> the links (label and href) whose href a page may carry */
+    private static function safeLinks(array $links): array
+    {
+        return array_values(array_filter($links, fn ($link) => is_array($link) && isset($link['href']) && SafeHref::of((string) $link['href']) !== null));
+    }
+
     public function showsProvenance(): bool
     {
         return (bool) ($this->raw['provenance'] ?? true);
@@ -136,4 +219,3 @@ final readonly class Manifest
         return $this->raw;
     }
 }
-

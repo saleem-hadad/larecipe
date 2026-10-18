@@ -6,34 +6,56 @@ use LaRecipe\Domains\Content\DTOs\DocSet;
 use LaRecipe\LaRecipe;
 
 /**
- * Head tags for the analytics a set configures in larecipe.json
- * (integrations.analytics): GA4, Plausible, Fathom, PostHog or a custom script.
+ * Head tags for a set's analytics (integrations.analytics): GA4, Plausible,
+ * Fathom, PostHog or a custom script.
  *
- * Every value comes from content files, so each one is checked against the
- * shape its provider uses before it reaches the page, and a custom script may
- * only be an https URL: content can never inject inline code. A tiny listener
+ * A script tag runs with every reader's session, so where settings come from
+ * matters. config/larecipe.php (sets.{key}.integrations.analytics) counts for
+ * every set and wins per provider. larecipe.json counts only for a repository
+ * set, whose manifest is reviewed with the code (DocSet::manifestIntegrations()).
+ *
+ * Every value is checked against the shape its provider uses before it reaches
+ * the page, script sources must be https URLs, and nothing can add inline code.
+ * Plausible, Fathom and PostHog load from their official hosts; a self-hosted
+ * host or a proxy is honored only from config/larecipe.php. A tiny listener
  * forwards the reader UI's "larecipe:feedback" DOM event to the configured
  * tools, so page feedback shows up next to the rest of the site's analytics.
  */
 final class AnalyticsTags
 {
+    private const PROVIDERS = ['ga4', 'plausible', 'fathom', 'posthog', 'custom'];
+
+    /** Where each hosted provider serves its script (for PostHog, its API hosts, which serve the loader). */
+    private const OFFICIAL_HOSTS = [
+        'plausible' => ['plausible.io'],
+        'fathom' => ['cdn.usefathom.com'],
+        'posthog' => ['us.i.posthog.com', 'eu.i.posthog.com', 'app.posthog.com', 'eu.posthog.com'],
+    ];
+
     public function __construct(private readonly LaRecipe $larecipe) {}
 
     public function render(DocSet $set): string
     {
-        $analytics = $set->manifest->get('integrations.analytics');
+        $configured = (array) $set->config->setting('integrations.analytics', []);
+        $declared = (array) ($set->manifestIntegrations()['analytics'] ?? []);
+        $tags = [];
 
-        if (! is_array($analytics) || $analytics === []) {
-            return '';
+        foreach (self::PROVIDERS as $provider) {
+            $fromConfig = is_array($configured[$provider] ?? null);
+            $settings = $fromConfig ? $configured[$provider] : ($declared[$provider] ?? null);
+
+            if (is_array($settings)) {
+                $tags[] = match ($provider) {
+                    'ga4' => $this->ga4($settings),
+                    'plausible' => $this->plausible($settings, $fromConfig),
+                    'fathom' => $this->fathom($settings, $fromConfig),
+                    'posthog' => $this->posthog($settings, $fromConfig),
+                    'custom' => $this->custom($settings),
+                };
+            }
         }
 
-        $tags = array_filter([
-            $this->ga4((array) ($analytics['ga4'] ?? [])),
-            $this->plausible((array) ($analytics['plausible'] ?? [])),
-            $this->fathom((array) ($analytics['fathom'] ?? [])),
-            $this->posthog((array) ($analytics['posthog'] ?? [])),
-            $this->custom((array) ($analytics['custom'] ?? [])),
-        ]);
+        $tags = array_filter($tags);
 
         if ($tags === []) {
             return '';
@@ -54,10 +76,10 @@ final class AnalyticsTags
             .$this->script("window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config',".$this->js($id).');');
     }
 
-    private function plausible(array $config): ?string
+    private function plausible(array $config, bool $selfHostable): ?string
     {
         $domain = (string) ($config['domain'] ?? '');
-        $src = $this->httpsUrl($config['src'] ?? 'https://plausible.io/js/script.js');
+        $src = $this->providerUrl('plausible', $config['src'] ?? 'https://plausible.io/js/script.js', $selfHostable);
 
         if (! preg_match('/^[A-Za-z0-9.-]+(,[A-Za-z0-9.-]+)*$/', $domain) || $src === null) {
             return null;
@@ -67,10 +89,10 @@ final class AnalyticsTags
             .$this->script('window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)};');
     }
 
-    private function fathom(array $config): ?string
+    private function fathom(array $config, bool $selfHostable): ?string
     {
         $site = (string) ($config['siteId'] ?? $config['site'] ?? '');
-        $src = $this->httpsUrl($config['src'] ?? 'https://cdn.usefathom.com/script.js');
+        $src = $this->providerUrl('fathom', $config['src'] ?? 'https://cdn.usefathom.com/script.js', $selfHostable);
 
         if (! preg_match('/^[A-Z0-9]{4,20}$/', $site) || $src === null) {
             return null;
@@ -79,10 +101,10 @@ final class AnalyticsTags
         return '<script defer data-site="'.$this->attr($site).'" src="'.$this->attr($src).'"'.$this->nonce().'></script>';
     }
 
-    private function posthog(array $config): ?string
+    private function posthog(array $config, bool $selfHostable): ?string
     {
         $key = (string) ($config['apiKey'] ?? $config['key'] ?? '');
-        $host = $this->httpsUrl($config['host'] ?? 'https://us.i.posthog.com');
+        $host = $this->providerUrl('posthog', $config['host'] ?? 'https://us.i.posthog.com', $selfHostable);
 
         if (! preg_match('/^phc_[A-Za-z0-9]{10,80}$/', $key) || $host === null) {
             return null;
@@ -132,6 +154,18 @@ final class AnalyticsTags
         $nonce = $this->larecipe->cspNonce();
 
         return $nonce === null ? '' : ' nonce="'.$this->attr($nonce).'"';
+    }
+
+    /** An https URL on the provider's official host, or on any host when config/larecipe.php set it. */
+    private function providerUrl(string $provider, mixed $url, bool $selfHostable): ?string
+    {
+        $url = $this->httpsUrl($url);
+
+        if ($url === null) {
+            return null;
+        }
+
+        return $selfHostable || in_array(strtolower((string) parse_url($url, PHP_URL_HOST)), self::OFFICIAL_HOSTS[$provider], true) ? $url : null;
     }
 
     private function httpsUrl(mixed $url): ?string

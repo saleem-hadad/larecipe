@@ -8,6 +8,7 @@ use LaRecipe\Domains\Search\DTOs\SearchIndex;
 use LaRecipe\Domains\Search\Support\SearchCache;
 use LaRecipe\Domains\Sources\Actions\GetPageAction;
 use LaRecipe\Domains\Sources\Contracts\SourceResolver;
+use Throwable;
 
 /**
  * The search index of one version and locale of a set, built from its pages
@@ -55,7 +56,9 @@ final class SearchIndexRepository
     {
         $summary = $this->cache->get($this->summaryKey($set, $version, $locale));
 
-        return is_array($summary) ? $summary : $this->get($set, $version, $locale)->abilities;
+        return is_array($summary) && array_is_list($summary) && array_filter($summary, 'is_string') === $summary
+            ? $summary
+            : $this->get($set, $version, $locale)->abilities;
     }
 
     /** Pushes the records to a custom driver once per content fingerprint. */
@@ -85,7 +88,11 @@ final class SearchIndexRepository
     {
         $cached = $this->cache->get($key);
 
-        return is_array($cached) ? SearchIndex::fromArray($cached) : null;
+        try {
+            return is_array($cached) && is_string($cached['fingerprint'] ?? null) && is_array($cached['records'] ?? null) ? SearchIndex::fromArray($cached) : null;
+        } catch (Throwable) {
+            return null; // An entry in a shape this release does not write: a miss.
+        }
     }
 
     private function build(string $set, string $version, string $locale): SearchIndex

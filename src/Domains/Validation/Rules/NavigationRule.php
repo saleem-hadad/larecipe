@@ -16,6 +16,8 @@ use LaRecipe\Domains\Validation\Services\Suggest;
  * navigation.missing-page: navigation entries without a page.
  * pages.orphan: pages a navigation.json leaves out (and does not hide), which
  * readers can only reach by URL.
+ * links.unsafe: links that are not http, https, mailto or relative, which
+ * pages leave out (SafeHref).
  *
  * Zero-config navigation lists every page by construction, so it has no
  * orphans. A translation falls back to the default language for pages it does
@@ -55,8 +57,13 @@ final class NavigationRule implements SetRule
             $issues[] = ValidationIssue::error('navigation.schema', 'navigation.json '.$error, file: $file, fix: 'See the navigation schema: '.SchemaValidator::NAVIGATION.'.schema.json.');
         }
 
-        $listed = NavigationTree::fromJson($version->navigation)->pagePaths();
+        $tree = NavigationTree::fromJson($version->navigation);
+        $listed = $tree->pagePaths();
         $served = $version->pages + ($original->pages ?? []);
+
+        foreach ($tree->refusedLinks as $href) {
+            $issues[] = ValidationIssue::unsafeLink($href, $file);
+        }
 
         foreach ($listed as $path) {
             if (! isset($served[$path])) {

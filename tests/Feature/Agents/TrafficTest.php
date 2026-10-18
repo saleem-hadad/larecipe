@@ -79,6 +79,23 @@ it('lists public pages in the sitemap, with hreflang alternates', function () {
     expect(simplexml_load_string($this->get('/billing/sitemap.xml')->getContent()))->not->toBeFalse();
 });
 
+it('caches the sitemap for the app\'s own host only, so Host headers cannot fill the cache', function () {
+    $sitemapKeys = fn () => array_filter(array_keys(cache()->getStore()->all(false)), fn (string $key) => str_contains($key, ':sitemap:'));
+
+    $this->get('/billing/sitemap.xml')->assertOk();
+    expect($sitemapKeys())->toHaveCount(1);
+
+    foreach (['evil.example', 'a.evil.example', 'b.evil.example'] as $host) {
+        $xml = $this->get("http://{$host}/billing/sitemap.xml")->assertOk()->getContent();
+
+        // Built for that request, never stored, and the stored one never answers it.
+        expect($xml)->toContain("http://{$host}/billing");
+    }
+
+    expect($sitemapKeys())->toHaveCount(1)
+        ->and($this->get('http://localhost/billing/sitemap.xml')->getContent())->not->toContain('evil.example');
+});
+
 it('keeps private sets out of the sitemap entirely', function () {
     Gate::define('viewLarecipe', fn () => true);
     Sets::withBilling(['access' => ['mode' => 'gate']]);

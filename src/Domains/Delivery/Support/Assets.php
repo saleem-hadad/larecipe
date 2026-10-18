@@ -60,6 +60,25 @@ final class Assets
         $this->extensionManifest = null;
     }
 
+    /**
+     * The host extension's build folder and the URL it is served from, or null
+     * when the host has not built one. The static export copies it whole: an
+     * extension loads chunks of its own that no page names.
+     *
+     * @return array{directory: string, url: string}|null
+     */
+    public function extensionBuild(): ?array
+    {
+        if ($this->extensionManifest() === null) {
+            return null;
+        }
+
+        return [
+            'directory' => $this->extensionPath ?? $this->publicPath.'/'.self::EXTENSION_DIRECTORY,
+            'url' => $this->extensionUrl ?? '/'.self::EXTENSION_DIRECTORY,
+        ];
+    }
+
     public function isDev(): bool
     {
         return $this->devServer !== null && $this->devServer !== '';

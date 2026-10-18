@@ -41,7 +41,12 @@ final class PathGuard
         return self::relative($segment);
     }
 
-    /** True when $path (existing or not) resolves inside $root, following symlinks of what exists. */
+    /**
+     * True when $path (existing or not) resolves inside $root. The part that
+     * exists is resolved by the filesystem, symlinks included; the part that
+     * does not is resolved segment by segment on top of it, so "nope/../../x"
+     * cannot climb out while looking like a path inside.
+     */
     public static function isInside(string $path, string $root): bool
     {
         $realRoot = realpath($root);
@@ -51,10 +56,10 @@ final class PathGuard
         }
 
         $existing = $path;
-        $rest = '';
+        $rest = [];
 
         while (! file_exists($existing)) {
-            $rest = '/'.basename($existing).$rest;
+            array_unshift($rest, basename($existing));
             $parent = dirname($existing);
 
             if ($parent === $existing) {
@@ -64,8 +69,20 @@ final class PathGuard
             $existing = $parent;
         }
 
-        $real = realpath($existing);
+        $resolved = realpath($existing);
 
-        return $real !== false && ($real === $realRoot || str_starts_with($real.$rest, $realRoot.DIRECTORY_SEPARATOR));
+        if ($resolved === false) {
+            return false;
+        }
+
+        foreach ($rest as $segment) {
+            $resolved = match ($segment) {
+                '', '.' => $resolved,
+                '..' => dirname($resolved),
+                default => rtrim($resolved, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$segment,
+            };
+        }
+
+        return $resolved === $realRoot || str_starts_with($resolved, $realRoot.DIRECTORY_SEPARATOR);
     }
 }

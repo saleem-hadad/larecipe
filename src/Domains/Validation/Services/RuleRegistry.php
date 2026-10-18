@@ -21,6 +21,7 @@ use LaRecipe\Domains\Validation\Rules\RedirectsRule;
 use LaRecipe\Domains\Validation\Rules\SearchBudgetRule;
 use LaRecipe\Domains\Validation\Rules\SkillsSpecRule;
 use LaRecipe\Domains\Validation\Rules\SnippetsRule;
+use LaRecipe\Domains\Validation\Rules\StylesheetsRule;
 
 /**
  * Every validation rule, built-in ones first. Other domains add theirs with
@@ -57,6 +58,7 @@ final class RuleRegistry
             new SkillsSpecRule($parser),
             new CacheStoreRule,
             new DocsMigrationConflictsRule,
+            new StylesheetsRule,
         ];
     }
 

@@ -1,0 +1,9 @@
+{
+  "name": "Visibility",
+  "versions": [
+    { "id": "2.x", "default": true },
+    { "id": "3.x" },
+    { "id": "next", "label": "Next (Project Falcon)", "visibility": "Private" }
+  ],
+  "locales": [{ "code": "en", "default": true }, { "code": "ar", "dir": "rtl" }]
+}

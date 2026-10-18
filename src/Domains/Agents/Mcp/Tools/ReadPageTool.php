@@ -23,11 +23,13 @@ use LaRecipe\Domains\Agents\Services\MarkdownSection;
  * (the No-Cloaking Rule), optionally cut down to one section.
  *
  * The page's metadata travels in the Markdown's own YAML header and in the
- * result's _meta, so the text an agent reads is never duplicated.
+ * result's _meta, so the text an agent reads is never duplicated. The one
+ * addition is the page's content hash, in _meta and on the last line: the
+ * based_on the author tools take, so a write never overwrites a newer edit.
  */
 #[Name('read_page')]
 #[Title('Read a docs page')]
-#[Description('Read one docs page as Markdown. Pass the path from search_docs or list_pages (for example "guides/webhooks"), or the page URL. Pass section (a heading or its #anchor) to read only that part of the page.')]
+#[Description('Read one docs page as Markdown. Pass the path from search_docs or list_pages (for example "guides/webhooks"), or the page URL. Pass section (a heading or its #anchor) to read only that part of the page. The result ends with the page\'s content_hash (also in its _meta): pass it as based_on when you write, move or delete the page.')]
 #[IsReadOnly]
 #[IsIdempotent]
 #[IsOpenWorld(false)]
@@ -97,13 +99,23 @@ final class ReadPageTool extends Tool
 
         $this->context->called($set, 'read_page', $request, $ref);
 
-        return Response::make(Response::text($markdown))->withMeta([
+        $meta = [
             'title' => $page->title,
             'path' => $ref->path,
             'version' => $ref->version,
             'locale' => $ref->locale,
             'url' => $this->links->page($set, $ref),
             'markdown_url' => $this->links->page($set, $ref, true),
-        ]);
+            'content_hash' => $page->contentHash,
+        ];
+
+        // Ask AI never writes, so its answers do not need the hash in the text.
+        $text = $this->context->scope()->isAssistant()
+            ? $markdown
+            : rtrim($markdown)."\n\ncontent_hash: {$page->contentHash} (pass it as based_on when you write, move or delete this page)\n";
+
+        // Metadata in _meta, not structuredContent: laravel/ai (Ask AI, larecipe:sync,
+        // larecipe:pull) hands a model the structured content instead of the text.
+        return Response::make(Response::text($text))->withMeta($meta);
     }
 }

@@ -96,18 +96,17 @@ final class SyncServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->app->make(LaRecipe::class)->mcpTool(AffectedPagesTool::class, author: true);
+        $this->app->make(LaRecipe::class)->mcpTool(AffectedPagesTool::class, local: true);
 
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                AffectedCommand::class,
-                SourcesSuggestCommand::class,
-                AgentsCommand::class,
-                AgentsMdCommand::class,
-                HookCommand::class,
-                GitHooksCommand::class,
-                SyncCommand::class,
-            ]);
-        }
+        // Registered outside the console too, so <Artisan> sees them on web requests.
+        $this->commands([
+            AffectedCommand::class,
+            SourcesSuggestCommand::class,
+            AgentsCommand::class,
+            AgentsMdCommand::class,
+            HookCommand::class,
+            GitHooksCommand::class,
+            SyncCommand::class,
+        ]);
     }
 }

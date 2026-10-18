@@ -85,10 +85,16 @@ final class SourceInspector implements DocsInspector
             }
         }
 
+        $stylesheets = [];
+
+        foreach ($docs->manifest->stylesheets() as $file) {
+            $stylesheets[$file] = $source->asset($docs->defaultVersion()->id, $file) !== null;
+        }
+
         // Only a source that keeps revisions (the database) can hold docs-migration conflicts.
         $conflicts = $source instanceof DraftableContentSource ? $this->conflicts->execute($set, $version) : [];
 
-        return new DocsSnapshot($set, $manifest, $versions, $this->settings($docs), $this->skills($source), $error, conflicts: $conflicts);
+        return new DocsSnapshot($set, $manifest, $versions, $this->settings($docs), $this->skills($source), $error, conflicts: $conflicts, stylesheets: $stylesheets);
     }
 
     public function inspect(Page $page): PageSnapshot

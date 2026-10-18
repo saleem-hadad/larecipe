@@ -39,6 +39,18 @@ it('keeps pages with a session token out of shared caches without hiding them fr
         ->toContain('name="_token" value="');
 });
 
+it('never fills the token into author content that names the placeholder', function (array $headers) {
+    $response = $this->get('/contact/leak', $headers)->assertOk();
+    $token = session()->token();
+
+    expect($token)->not->toBe('')
+        ->and($response->getContent())->not->toContain($token)
+        ->and($response->headers->get('Cache-Control'))->toContain('public');
+})->with([
+    'HTML' => [[]],
+    'navigation JSON' => [['Accept' => 'application/vnd.larecipe.page+json']],
+]);
+
 it('still caches ordinary public pages publicly', function () {
     expect($this->get('/docs/installation')->headers->get('Cache-Control'))->toContain('public');
 });

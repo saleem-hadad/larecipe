@@ -15,6 +15,7 @@ final readonly class DocsSnapshot
      * @param  list<VersionSnapshot>  $versions
      * @param  list<SkillSnapshot>  $skills
      * @param  list<Revision>  $conflicts  docs-migration conflicts waiting for a decision (database sets)
+     * @param  array<string, bool>  $stylesheets  each file listed under assets.css => whether the set has it
      */
     public function __construct(
         public string $set,
@@ -25,6 +26,7 @@ final readonly class DocsSnapshot
         public ?string $manifestError = null,
         public string $manifestFile = 'larecipe.json',
         public array $conflicts = [],
+        public array $stylesheets = [],
     ) {}
 
     public function pageCount(): int

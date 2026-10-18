@@ -5,9 +5,13 @@ namespace LaRecipe\Domains\Delivery\Services;
 use Closure;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use LaRecipe\Domains\Content\DTOs\Page;
+use LaRecipe\Domains\Delivery\Events\PageRendered;
 use LaRecipe\Domains\Markdown\DTOs\RenderedPage;
 use LaRecipe\Domains\Markdown\Services\MarkdownEnvironmentFactory;
 use LaRecipe\Domains\References\Actions\ReferencesFingerprintAction;
+use LaRecipe\Support\CacheFormat;
+use LaRecipe\Support\Contracts\Dispatcher;
+use Throwable;
 
 /**
  * Content-addressed cache of rendered articles. A changed page gets a new key,
@@ -34,27 +38,21 @@ final class RenderCache
         private readonly Cache $cache,
         private readonly MarkdownEnvironmentFactory $environment,
         private readonly ReferencesFingerprintAction $references,
+        private readonly Dispatcher $events,
     ) {}
 
     /** @param Closure(): RenderedPage $render */
     public function remember(Page $page, string $variant, Closure $render): RenderedPage
     {
         $key = $this->key($page, $variant);
-        $cached = $this->cache->get($key);
+        $cached = $this->cached($key);
 
-        if (is_array($cached) && isset($cached['references'])) {
-            $cached = $this->cache->get($this->referencesKey($key, (array) $cached['references']));
-        }
-
-        if (is_array($cached) && isset($cached['html'])) {
-            $rendered = RenderedPage::fromArray($cached);
-
-            if (! $rendered->dependenciesChanged()) {
-                return $rendered;
-            }
+        if ($cached !== null && ! $cached->dependenciesChanged()) {
+            return $cached;
         }
 
         $rendered = $render();
+        $this->events->dispatch(new PageRendered($page->ref->set, $page->ref, PageRendered::HTML, $page->contentHash));
 
         if ($rendered->hasErrors()) {
             return $rendered;
@@ -72,7 +70,7 @@ final class RenderCache
 
     public function key(Page $page, string $variant): string
     {
-        return 'larecipe:render:'.hash('sha256', implode('|', [
+        return CacheFormat::prefix().'render:'.hash('sha256', implode('|', [
             self::RENDERER_VERSION,
             $page->ref->key(),
             $page->contentHash,
@@ -85,11 +83,27 @@ final class RenderCache
     {
         $cached = $this->cache->get($key);
 
-        if (is_array($cached) && isset($cached['references'])) {
-            $this->cache->forget($this->referencesKey($key, (array) $cached['references']));
+        if (is_array($cached) && is_array($cached['references'] ?? null)) {
+            $this->cache->forget($this->referencesKey($key, $cached['references']));
         }
 
         $this->cache->forget($key);
+    }
+
+    /** The cached render under a key, or null on a miss or an entry in a shape this release does not write. */
+    private function cached(string $key): ?RenderedPage
+    {
+        try {
+            $cached = $this->cache->get($key);
+
+            if (is_array($cached) && is_array($cached['references'] ?? null)) {
+                $cached = $this->cache->get($this->referencesKey($key, $cached['references']));
+            }
+
+            return is_array($cached) && is_string($cached['html'] ?? null) ? RenderedPage::fromArray($cached) : null;
+        } catch (Throwable) {
+            return null;
+        }
     }
 
     /** @param list<string> $components */
