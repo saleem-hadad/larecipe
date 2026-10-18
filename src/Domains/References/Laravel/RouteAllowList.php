@@ -70,6 +70,11 @@ final class RouteAllowList
         }
 
         try {
+            // route:cache stores closures serialized; Laravel restores them the same way to run them.
+            if (is_string($uses) && str_starts_with($uses, 'O:') && str_contains($uses, 'SerializableClosure')) {
+                $uses = unserialize($uses)->getClosure();
+            }
+
             $file = match (true) {
                 $uses instanceof Closure => (new ReflectionFunction($uses))->getFileName(),
                 is_string($uses) => (new ReflectionClass(Str::before($uses, '@')))->getFileName(),

@@ -91,6 +91,11 @@ it('leaves out routes that packages register, except LaRecipe\'s own, when no li
         ->and($app->resolve('orders.store'))->not->toBeNull()
         ->and($app->resolve('pricing'))->not->toBeNull()
         ->and($app->resolve('telescope.requests'))->toBeNull();
+
+    // php artisan route:cache stores closures serialized; they are still the app's own.
+    app('router')->getRoutes()->getByName('orders.show')->prepareForSerialization();
+
+    expect($app->resolve('orders.show'))->not->toBeNull();
 });
 
 it('snapshots only the routes the list allows', function () {
