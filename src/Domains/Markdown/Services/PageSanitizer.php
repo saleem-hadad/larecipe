@@ -26,9 +26,24 @@ final class PageSanitizer
 
     private ?HtmlSanitizer $sanitizer = null;
 
+    /**
+     * @param  list<string>  $verbatim  markup that must leave the sanitizer byte for byte: the CSRF field
+     *                                  component fallbacks emit, which the response layer finds and fills in
+     */
+    public function __construct(private readonly array $verbatim = []) {}
+
     public function sanitize(string $html): string
     {
-        return ($this->sanitizer ??= new HtmlSanitizer($this->config()))->sanitize($html);
+        // Kept fragments travel through the sanitizer as unguessable text, then come back as written.
+        $tokens = [];
+
+        foreach ($this->verbatim as $fragment) {
+            $tokens[$fragment] = 'lrverbatim'.bin2hex(random_bytes(8));
+        }
+
+        $sanitized = ($this->sanitizer ??= new HtmlSanitizer($this->config()))->sanitize(strtr($html, $tokens));
+
+        return strtr($sanitized, array_flip($tokens));
     }
 
     private function config(): HtmlSanitizerConfig

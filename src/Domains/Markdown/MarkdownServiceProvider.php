@@ -12,7 +12,9 @@ use LaRecipe\Domains\Markdown\Services\AgentMarkdownRenderer;
 use LaRecipe\Domains\Markdown\Services\CodeHighlighter;
 use LaRecipe\Domains\Markdown\Services\MarkdownEnvironmentFactory;
 use LaRecipe\Domains\Markdown\Services\PageRenderer;
+use LaRecipe\Domains\Markdown\Services\PageSanitizer;
 use LaRecipe\Domains\Markdown\Services\SnippetResolver;
+use LaRecipe\LaRecipe;
 
 final class MarkdownServiceProvider extends ServiceProvider
 {
@@ -41,6 +43,9 @@ final class MarkdownServiceProvider extends ServiceProvider
             $app->make(SnippetResolver::class),
             fn (string $set) => $this->htmlInput($app, $set),
         ));
+
+        // The CSRF field must survive sanitizing as written: the response layer fills in its token by exact match.
+        $this->app->singleton(PageSanitizer::class, fn () => new PageSanitizer([LaRecipe::CSRF_FIELD]));
 
         $this->app->scoped(PageRenderer::class);
         $this->app->scoped(AgentMarkdownRenderer::class);

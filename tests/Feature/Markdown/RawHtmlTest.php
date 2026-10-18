@@ -68,3 +68,14 @@ it('sanitizes a database set page, keeping LaRecipe markup and dropping scripts,
 
     expect(renderIn('docs', $body))->toContain('onclick="steal()"');
 });
+
+it('keeps the CSRF field a host component renders on a database set, exactly as the response layer fills it in', function () {
+    useHtmlSets();
+    app(LaRecipe::class)->component('Subscribe')->fallback(fn () => '<form method="post" action="/subscribe">'.app(LaRecipe::class)->csrfField().'<input type="email" name="email" required><button type="submit">Subscribe</button></form>');
+
+    $html = renderIn('kb', "<Subscribe />\n");
+
+    expect($html)->toContain(LaRecipe::CSRF_FIELD)
+        ->toContain('<form method="post" action="/subscribe">')
+        ->toContain('<button type="submit">Subscribe</button>');
+});
