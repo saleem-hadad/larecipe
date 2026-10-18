@@ -10,7 +10,7 @@ test('the header shows the LaRecipe logo and the docs name', async ({ page }) =>
   await expect(brand.locator('.lr-brand-name')).toHaveText('LaRecipe')
 })
 
-test('the switch next to the logo hides the navigation cleanly, widens the article and remembers it', async ({ page }) => {
+test('the switch next to the logo hides the navigation in one smooth motion, widens the article and remembers it', async ({ page }) => {
   await page.goto('/guide/3.x/installation')
   await waitForApp(page)
 
@@ -22,17 +22,19 @@ test('the switch next to the logo hides the navigation cleanly, widens the artic
   await expect(sidebar).toBeVisible()
   const before = await widthOf(article)
 
-  // The sidebar slides out at its full width first, so nothing rewraps while it moves.
+  // Midway: the sidebar slides out at its full width while the article is already widening.
   await toggle.click()
-  await expect(page.locator('html')).toHaveAttribute('data-lr-sidebar', 'hiding')
-  expect(await widthOf(article)).toBe(before)
-  expect(await widthOf(sidebar)).toBeGreaterThan(200)
-
-  // Then the layout changes once: the article widens and the choice is remembered.
   await expect(page.locator('html')).toHaveAttribute('data-lr-sidebar', 'hidden')
-  await expect(toggle).toHaveAttribute('aria-checked', 'false')
+  await page.waitForTimeout(140)
+  const midway = await widthOf(article)
+  expect(midway).toBeGreaterThan(before)
+  expect(midway).toBeLessThan(880)
+  expect(await widthOf(sidebar)).toBe(248)
+
+  // Settled: the article reads at 880px and the choice is remembered.
   await expect(sidebar).toBeHidden()
-  expect(await widthOf(article)).toBe(880)
+  await expect.poll(() => widthOf(article)).toBe(880)
+  await expect(toggle).toHaveAttribute('aria-checked', 'false')
   expect(await page.evaluate(() => localStorage.getItem('larecipe:sidebar'))).toBe('hidden')
 
   // Hidden before first paint on the next load, with no flash of the sidebar.
@@ -43,8 +45,7 @@ test('the switch next to the logo hides the navigation cleanly, widens the artic
 
   await toggle.click()
   await expect(sidebar).toBeVisible()
-  await expect(page.locator('html')).not.toHaveAttribute('data-lr-sidebar', /./)
-  expect(await widthOf(article)).toBe(before)
+  await expect.poll(() => widthOf(article)).toBe(before)
   expect(await page.evaluate(() => localStorage.getItem('larecipe:sidebar'))).toBe('shown')
 })
 
@@ -98,4 +99,45 @@ test('code blocks sit on the slate slab with a soft shadow and no top edge', asy
     expect(await block.evaluate((element) => getComputedStyle(element).boxShadow)).not.toBe('none')
   }
   await expect(page.locator('.lr-code-group figure.lr-code').first()).toHaveCSS('box-shadow', 'none')
+})
+
+test('alerts look like LaRecipe 2: a solid color, white text and a large faded icon', async ({ page }) => {
+  await page.goto('/guide/3.x/components')
+  await waitForApp(page)
+
+  const note = page.locator('.lr-callout[data-type="note"]').first()
+  await expect(note).toHaveCSS('background-color', 'rgb(2, 124, 179)')
+  await expect(note.locator('.lr-callout-body')).toHaveCSS('color', 'rgb(255, 255, 255)')
+  expect(await note.evaluate((element) => getComputedStyle(element, '::before').opacity)).toBe('0.25')
+  // The label is gone from sight but still names the alert for screen readers.
+  await expect(note.locator('.lr-callout-label')).toHaveText('Note')
+  await expect(note.locator('.lr-callout-label')).toHaveCSS('position', 'absolute')
+  await expect(page.locator('.lr-callout[data-type="warning"]').first()).toHaveCSS('background-color', 'rgb(224, 46, 5)')
+})
+
+test('tables sit on a rounded sheet with a bordered grid', async ({ page }) => {
+  await page.goto('/guide/3.x/components')
+  await waitForApp(page)
+
+  const sheet = page.locator('.lr-prose .lr-table').first()
+  await expect(sheet).toHaveCSS('border-top-left-radius', '10px')
+  expect(await sheet.evaluate((element) => getComputedStyle(element).boxShadow)).not.toBe('none')
+  await expect(sheet.locator('tbody td').first()).toHaveCSS('border-bottom-width', '1px')
+  await expect(sheet.locator('thead th').first()).toHaveCSS('font-weight', '600')
+})
+
+test('the line beside On this page steps in for nested headings and lights the sections on screen', async ({ page }) => {
+  await page.goto('/guide/3.x/components')
+  await waitForApp(page)
+
+  const track = page.locator('.lr-toc-track')
+  await expect(track).toBeVisible()
+  // Code groups is an H3: the line steps in for it, then back out.
+  expect(await track.locator('.lr-toc-track-line').getAttribute('d')).toMatch(/L 13 /)
+  const lit = page.locator('.lr-toc-track-lit')
+  const clip = () => lit.evaluate((element) => (element as SVGElement).style.clipPath)
+  const atTop = await clip()
+
+  await page.locator('#tables').scrollIntoViewIfNeeded()
+  await expect.poll(clip).not.toBe(atTop)
 })

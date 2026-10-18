@@ -5,9 +5,24 @@
  *
  * Contrast notes (WCAG 2.2 AA): semantic hues keep DESIGN's hue and chroma but
  * run a touch darker in light mode where they color small label text, code
- * comments sit at 55% instead of 42%, and the focus ring is 75% violet so it
- * clears 3:1 against paper.
+ * comments sit at 72% on the slate code slab, and the focus ring is 75% violet
+ * so it clears 3:1 against paper.
  */
+
+/* Registered so they can animate: the article widens and recenters smoothly
+   when the reader hides the sidebar. */
+@property --lr-prose-width {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 720px;
+}
+
+@property --lr-article-centering {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
 :root {
   --lr-font-sans: var(--lr-font-sans-custom, 'Inter Variable', 'Inter'), var(--lr-font-arabic-custom, 'Thmanyah Sans'), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --lr-font-mono: var(--lr-font-mono-custom, 'JetBrains Mono'), ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -65,6 +80,19 @@
   --lr-space-2xl: 56px;
 
   --lr-shadow-xs: 0 1px 2px rgb(17 16 22 / 0.14);
+  --lr-shadow-table: 0 1px 2px rgb(17 16 22 / 0.05);
+  --lr-shadow-alert: 0 10px 15px -3px rgb(17 16 22 / 0.12), 0 4px 6px -4px rgb(17 16 22 / 0.08);
+  --lr-shadow-alert-hover: 0 1px 3px rgb(17 16 22 / 0.12);
+
+  /* Tables: a white sheet on the paper, as in LaRecipe 2. */
+  --lr-table-bg: #ffffff;
+
+  /* Alerts: LaRecipe 2's hues, deepened just enough to keep white text at AA. */
+  --lr-alert-primary: #6062f4;
+  --lr-alert-info: #027cb3;
+  --lr-alert-success: #188556;
+  --lr-alert-warning: #e02e05;
+  --lr-alert-danger: #e70c37;
   --lr-shadow-float: 0 12px 32px -8px rgb(17 16 22 / 0.22), 0 0 0 1px var(--lr-hairline);
   --lr-shadow-overlay: 0 30px 80px -20px rgb(17 16 22 / 0.35), 0 0 0 1px var(--lr-hairline);
 
@@ -72,6 +100,8 @@
   --lr-duration-hover: 120ms;
   --lr-duration-state: 180ms;
   --lr-duration-panel: 240ms;
+  --lr-duration-sidebar: 320ms;
+  --lr-ease-sidebar: cubic-bezier(0.4, 0, 0.2, 1);
   --lr-duration-swap: 160ms;
 
   --lr-header-height: 60px;
@@ -99,10 +129,20 @@
   }
 }
 
-/* With the sidebar hidden (the switch next to the logo), the article reads wider. */
+/* With the sidebar hidden (the switch next to the logo), the article reads wider
+   and centers; both move with the sidebar's own motion. */
+:root {
+  --lr-article-centering: 0;
+
+  transition:
+    --lr-prose-width var(--lr-duration-sidebar) var(--lr-ease-sidebar),
+    --lr-article-centering var(--lr-duration-sidebar) var(--lr-ease-sidebar);
+}
+
 @media (min-width: 641px) {
   html[data-lr-sidebar='hidden'] {
     --lr-prose-width: 880px;
+    --lr-article-centering: 1;
   }
 }
 
@@ -136,6 +176,10 @@
   --lr-danger: oklch(0.78 0.17 25);
 
   --lr-shadow-xs: 0 1px 2px rgb(0 0 0 / 0.45);
+  --lr-shadow-table: 0 1px 2px rgb(0 0 0 / 0.3);
+  --lr-shadow-alert: 0 10px 15px -3px rgb(0 0 0 / 0.45), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+  --lr-shadow-alert-hover: 0 1px 3px rgb(0 0 0 / 0.45);
+  --lr-table-bg: #1b1a21;
   --lr-shadow-float: 0 12px 32px -8px rgb(0 0 0 / 0.55), 0 0 0 1px var(--lr-hairline);
   --lr-shadow-overlay: 0 30px 80px -20px rgb(0 0 0 / 0.65), 0 0 0 1px var(--lr-hairline-strong);
 
@@ -167,6 +211,10 @@
     --lr-warning: oklch(0.82 0.15 75);
     --lr-danger: oklch(0.78 0.17 25);
     --lr-shadow-xs: 0 1px 2px rgb(0 0 0 / 0.45);
+  --lr-shadow-table: 0 1px 2px rgb(0 0 0 / 0.3);
+  --lr-shadow-alert: 0 10px 15px -3px rgb(0 0 0 / 0.45), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+  --lr-shadow-alert-hover: 0 1px 3px rgb(0 0 0 / 0.45);
+  --lr-table-bg: #1b1a21;
   --lr-shadow-float: 0 12px 32px -8px rgb(0 0 0 / 0.55), 0 0 0 1px var(--lr-hairline);
     --lr-shadow-overlay: 0 30px 80px -20px rgb(0 0 0 / 0.65), 0 0 0 1px var(--lr-hairline-strong);
     color-scheme: dark;
@@ -195,6 +243,7 @@
     --lr-duration-hover: 0ms;
     --lr-duration-state: 0ms;
     --lr-duration-panel: 0ms;
+    --lr-duration-sidebar: 0ms;
     --lr-duration-swap: 0ms;
   }
 }

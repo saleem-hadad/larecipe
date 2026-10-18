@@ -4,6 +4,7 @@ namespace LaRecipe\Domains\Markdown\Components\BuiltIn;
 
 use LaRecipe\Domains\Markdown\Components\ComponentDefinition;
 use LaRecipe\Domains\Markdown\Components\Markup;
+use LaRecipe\Domains\Markdown\Support\ContentIcons;
 
 /**
  * Link blocks and layout: Card, CardGroup and Columns. A card with an href is a
@@ -20,7 +21,7 @@ final class Cards
                 props: [
                     'title' => ['type' => 'string', 'description' => 'The card title (optional: a card can be body only, as v2 cards were)'],
                     'href' => ['type' => 'string', 'description' => 'Where the card links to (a relative .md link works)'],
-                    'icon' => ['type' => 'string', 'description' => 'A Lucide icon name'],
+                    'icon' => ['type' => 'string', 'description' => 'An icon by its Lucide name, from LaRecipe\'s content set: rocket, book-open, refresh-cw, globe, lock, shield-check, code, terminal, and more'],
                 ],
                 fallback: fn (array $props, string $children) => self::card($props, $children),
                 markdown: function (array $props, string $children) {
@@ -62,8 +63,10 @@ final class Cards
         $icon = Markup::string($props, 'icon');
         $href = Markup::string($props, 'href');
         $attributes = $icon !== '' ? ' data-icon="'.Markup::e($icon).'"' : '';
+        $svg = $icon !== '' ? ContentIcons::svg($icon, 18) : null;
         $title = Markup::string($props, 'title');
-        $inner = ($title !== '' ? '<span class="lr-card-title">'.Markup::e($title).'</span>' : '')
+        $inner = ($svg !== null ? '<span class="lr-card-icon">'.$svg.'</span>' : '')
+            .($title !== '' ? '<span class="lr-card-title">'.Markup::e($title).'</span>' : '')
             .'<span class="lr-card-body">'.Markup::unwrapParagraph($children).'</span>';
 
         return $href !== ''

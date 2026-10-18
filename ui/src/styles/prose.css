@@ -296,50 +296,76 @@
     accent-color: var(--lr-accent-current);
   }
 
-  /* ---- Tables --------------------------------------------------------------- */
+  /* ---- Tables: LaRecipe 2's bordered grid on a white sheet, rounded, with a whisper of shadow ---- */
 
-  .lr-prose table {
-    display: block;
-    width: max-content;
-    min-width: 100%;
+  .lr-prose .lr-table {
     max-width: 100%;
     margin: 24px 0;
     overflow-x: auto;
-    border-collapse: collapse;
-    font-size: 14px;
-    line-height: 1.55;
+    border: 1px solid var(--lr-hairline-strong);
+    border-radius: var(--lr-radius-lg);
+    background: var(--lr-table-bg);
+    box-shadow: var(--lr-shadow-table);
     scrollbar-width: thin;
   }
 
-  .lr-prose thead th {
-    padding: 0 14px 10px;
-    border-bottom: 1px solid var(--lr-hairline-strong);
-    font-family: var(--lr-font-mono);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--lr-ink-muted);
-    text-align: start;
-    white-space: nowrap;
+  .lr-prose table {
+    width: 100%;
+    margin: 24px 0;
+    border-collapse: collapse;
+    font-size: 14px;
+    line-height: 1.55;
   }
 
-  html[dir='rtl'] .lr-prose thead th {
-    font-family: var(--lr-font-sans);
-    font-size: 12.5px;
-    letter-spacing: normal;
+  .lr-prose .lr-table > table {
+    margin: 0;
   }
 
+  .lr-prose th,
   .lr-prose td {
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--lr-hairline);
+    padding: 12px 16px;
+    border: 1px solid var(--lr-hairline);
     vertical-align: top;
     text-align: start;
   }
 
-  .lr-prose th:first-child,
-  .lr-prose td:first-child {
-    padding-inline-start: 0;
+  /* Inside the rounded sheet the sheet draws the outer edge; cells draw only the grid. */
+  .lr-prose .lr-table tr > :first-child {
+    border-inline-start: 0;
+  }
+
+  .lr-prose .lr-table tr > :last-child {
+    border-inline-end: 0;
+  }
+
+  .lr-prose .lr-table > table > :first-child > tr:first-child > *,
+  .lr-prose .lr-table > table > caption + * > tr:first-child > * {
+    border-top: 0;
+  }
+
+  .lr-prose .lr-table > table > :last-child > tr:last-child > * {
+    border-bottom: 0;
+  }
+
+  .lr-prose th {
+    font-weight: 600;
+    color: var(--lr-ink);
+    white-space: nowrap;
+  }
+
+  .lr-prose tbody tr {
+    transition: background-color var(--lr-duration-hover) var(--lr-ease);
+  }
+
+  .lr-prose tbody tr:hover {
+    background: var(--lr-surface);
+  }
+
+  .lr-prose table caption {
+    padding: 10px 16px;
+    font-weight: 600;
+    text-align: start;
+    color: var(--lr-ink);
   }
 
   /* ---- Footnotes ------------------------------------------------------------ */
@@ -715,55 +741,62 @@
     display: none;
   }
 
-  /* ---- Callouts: labels, not washes -------------------------------------------- */
+  /* ---- Callouts: LaRecipe 2's alerts ------------------------------------------- */
 
+  /* A solid color, white text and a large faded icon cut off in the corner.
+     The label stays in the markup for screen readers and agents. */
   .lr-callout {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin: 24px 0;
-    padding: 16px 18px;
-    border: 1px solid var(--lr-hairline);
-    border-radius: var(--lr-radius-md);
-    background: var(--lr-surface);
-    --lr-callout-color: var(--lr-accent-current);
-    --lr-callout-icon: var(--lr-icon-info);
+    --lr-callout-bg: var(--lr-alert-info);
+    --lr-callout-icon: var(--lr-alert-icon-info);
+
+    position: relative;
+    margin: 32px 0;
+    padding: 24px 24px 24px 56px;
+    overflow: hidden;
+    border-radius: var(--lr-radius-lg);
+    background: var(--lr-callout-bg);
+    color: #ffffff;
+    box-shadow: var(--lr-shadow-alert);
+    transition: box-shadow var(--lr-duration-state) var(--lr-ease);
+  }
+
+  html[dir='rtl'] .lr-callout {
+    padding: 24px 56px 24px 24px;
+  }
+
+  .lr-callout:hover {
+    box-shadow: var(--lr-shadow-alert-hover);
+  }
+
+  .lr-callout::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    inset-inline-start: -10px;
+    width: 60px;
+    height: 60px;
+    background: #ffffff;
+    opacity: 0.25;
+    -webkit-mask: var(--lr-callout-icon) center / contain no-repeat;
+    mask: var(--lr-callout-icon) center / contain no-repeat;
+    pointer-events: none;
   }
 
   .lr-callout-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--lr-font-mono);
-    font-size: 11px;
-    font-weight: 500;
-    line-height: 1.2;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--lr-callout-color);
-  }
-
-  .lr-callout-label::before {
-    content: '';
-    flex: none;
-    width: 14px;
-    height: 14px;
-    background: currentColor;
-    -webkit-mask: var(--lr-callout-icon) center / 14px no-repeat;
-    mask: var(--lr-callout-icon) center / 14px no-repeat;
-  }
-
-  html[dir='rtl'] .lr-callout-label {
-    font-family: var(--lr-font-sans);
-    font-size: 12.5px;
-    letter-spacing: normal;
-    text-transform: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .lr-callout-body {
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.7;
-    color: var(--lr-ink-muted);
+    color: #ffffff;
   }
 
   .lr-callout-body > :first-child {
@@ -775,37 +808,46 @@
   }
 
   .lr-callout-body strong,
+  .lr-callout-body a,
   .lr-callout-body code {
-    color: var(--lr-ink);
+    color: #ffffff;
+  }
+
+  .lr-callout-body a {
+    text-decoration-color: rgb(255 255 255 / 0.7);
+  }
+
+  .lr-callout :not(pre) > code,
+  .lr-callout-body a:hover,
+  .lr-callout-body a > code {
+    color: #ffffff;
   }
 
   .lr-callout :not(pre) > code {
-    background: var(--lr-surface-2);
+    border-color: transparent;
+    background: rgb(255 255 255 / 0.18);
+  }
+
+  .lr-callout[data-type='important'] {
+    --lr-callout-bg: var(--lr-alert-primary);
+    --lr-callout-icon: var(--lr-alert-icon-primary);
   }
 
   .lr-callout[data-type='tip'],
   .lr-callout[data-type='success'] {
-    --lr-callout-color: var(--lr-success);
-    --lr-callout-icon: var(--lr-icon-lightbulb);
-  }
-
-  .lr-callout[data-type='success'] {
-    --lr-callout-icon: var(--lr-icon-circle-check);
+    --lr-callout-bg: var(--lr-alert-success);
+    --lr-callout-icon: var(--lr-alert-icon-success);
   }
 
   .lr-callout[data-type='warning'] {
-    --lr-callout-color: var(--lr-warning);
-    --lr-callout-icon: var(--lr-icon-triangle-alert);
+    --lr-callout-bg: var(--lr-alert-warning);
+    --lr-callout-icon: var(--lr-alert-icon-warning);
   }
 
   .lr-callout[data-type='danger'],
   .lr-callout[data-type='caution'] {
-    --lr-callout-color: var(--lr-danger);
-    --lr-callout-icon: var(--lr-icon-octagon-alert);
-  }
-
-  .lr-callout[data-type='important'] {
-    --lr-callout-icon: var(--lr-icon-circle-alert);
+    --lr-callout-bg: var(--lr-alert-danger);
+    --lr-callout-icon: var(--lr-alert-icon-danger);
   }
 
   /* ---- Steps: mono numbers, no connecting lines ----------------------------------- */

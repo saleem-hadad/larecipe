@@ -68,3 +68,18 @@ it('keeps undeclared props for host components on a repository set, and drops th
     expect(islandProps('docs', '<Chart title="Sales" series="[1,2,3]" />')[0])->toBe(['title' => 'Sales', 'series' => '[1,2,3]'])
         ->and(islandProps('kb', '<Chart title="Sales" series="[1,2,3]" />')[0])->toBe(['title' => 'Sales']);
 });
+
+function renderedHtml(string $body): string
+{
+    return app(RenderPageAction::class)->execute(Page::make(new PageRef('docs', 'current', 'en', 'page'), new Frontmatter(['title' => 'Page']), $body))->html;
+}
+
+it('draws a card icon from the content set, and nothing for an unknown name', function () {
+    expect(renderedHtml('<Card title="Ship" icon="rocket">Go.</Card>'))->toContain('<span class="lr-card-icon"><svg class="lr-icon"')
+        ->and(renderedHtml('<Card title="Read" icon="BookOpen">Go.</Card>'))->toContain('<span class="lr-card-icon">')
+        ->and(renderedHtml('<Card title="Odd" icon="not-an-icon">Go.</Card>'))->not->toContain('lr-card-icon');
+});
+
+it('wraps Markdown tables in a sheet that scrolls a wide table sideways', function () {
+    expect(renderedHtml("| A | B |\n| - | - |\n| 1 | 2 |"))->toContain('<div class="lr-table"><table>');
+});

@@ -420,71 +420,54 @@
   }
 
   /* Hidden by the switch next to the logo (wide screens only; phones keep the sheet).
-     The sidebar slides out at its full width, then the layout changes once, so
-     nothing rewraps mid-animation (ui/src/app/sidebar.ts sets the states). */
+     One smooth motion: the sidebar column narrows to nothing while the sidebar,
+     at its full width, slides out with it (same duration, same curve), so its
+     content never squeezes. The article widens and recenters along with it
+     (--lr-prose-width and --lr-article-centering animate, tokens.css). */
   @media (min-width: 641px) {
+    .lr-shell {
+      transition: grid-template-columns var(--lr-duration-sidebar) var(--lr-ease-sidebar);
+    }
+
     .lr-sidebar {
+      width: var(--lr-sidebar-width);
       transition:
-        transform var(--lr-duration-panel) var(--lr-ease),
-        opacity var(--lr-duration-panel) var(--lr-ease);
+        transform var(--lr-duration-sidebar) var(--lr-ease-sidebar),
+        opacity var(--lr-duration-sidebar) var(--lr-ease-sidebar),
+        visibility 0s;
     }
 
-    html[data-lr-sidebar='hiding'] .lr-sidebar {
-      transform: translateX(-100%);
-      opacity: 0;
-    }
-
-    html[dir='rtl'][data-lr-sidebar='hiding'] .lr-sidebar {
-      transform: translateX(100%);
-    }
-
-    /* The hidden sidebar leaves the grid, so the columns are written without it. */
+    /* The same number of tracks as the visible layouts, so the grid can animate between them. */
     html[data-lr-sidebar='hidden'] .lr-shell {
-      grid-template-columns: minmax(0, 1fr) var(--lr-rail-width);
+      grid-template-columns: 0px minmax(0, 1fr) var(--lr-rail-width);
     }
 
     html[data-lr-sidebar='hidden'] .lr-root[data-layout='wide'] .lr-shell {
-      grid-template-columns: minmax(0, 1fr);
+      grid-template-columns: 0px minmax(0, 1fr);
     }
 
     html[data-lr-sidebar='hidden'] .lr-sidebar {
-      display: none;
-    }
-
-    html[data-lr-sidebar='showing'] .lr-sidebar {
-      animation: lr-sidebar-in var(--lr-duration-panel) var(--lr-ease);
-    }
-
-    html[dir='rtl'][data-lr-sidebar='showing'] .lr-sidebar {
-      animation-name: lr-sidebar-in-rtl;
-    }
-
-    /* Without the sidebar the article widens (tokens.css) and centers between the edge and the rail. */
-    html[data-lr-sidebar='hidden'] .lr-main {
-      padding-inline: max(var(--lr-article-gutter), calc((100% - var(--lr-prose-width)) / 2));
-    }
-  }
-
-  /* Tablets have no rail, so a hidden sidebar leaves the article alone. */
-  @media (min-width: 641px) and (max-width: 1024px) {
-    html[data-lr-sidebar='hidden'] .lr-shell {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-
-  @keyframes lr-sidebar-in {
-    from {
       transform: translateX(-100%);
       opacity: 0;
+      visibility: hidden;
+      transition:
+        transform var(--lr-duration-sidebar) var(--lr-ease-sidebar),
+        opacity var(--lr-duration-sidebar) var(--lr-ease-sidebar),
+        visibility 0s linear var(--lr-duration-sidebar);
+    }
+
+    html[dir='rtl'][data-lr-sidebar='hidden'] .lr-sidebar {
+      transform: translateX(100%);
     }
   }
 
-  @keyframes lr-sidebar-in-rtl {
-    from {
-      transform: translateX(100%);
-      opacity: 0;
+  /* Tablets have no rail. */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    html[data-lr-sidebar='hidden'] .lr-shell {
+      grid-template-columns: 0px minmax(0, 1fr);
     }
   }
+
 
   .lr-sidebar-head {
     display: none;
@@ -652,12 +635,15 @@
 
   /* ---- Main column and page header ----------------------------------------- */
 
+  /* The gutter, or (with the sidebar hidden) whatever centers the article between
+     the window's edge and the rail. --lr-article-centering moves from 0 to 1. */
   .lr-main {
     position: relative;
     display: flex;
     flex-direction: column;
     min-width: 0;
     padding: 40px var(--lr-article-gutter) 96px;
+    padding-inline: max(var(--lr-article-gutter), calc((100% - var(--lr-prose-width)) / 2 * var(--lr-article-centering)));
   }
 
   .lr-page-header {
@@ -1077,17 +1063,68 @@
     margin: 0 0 6px;
   }
 
+  /* The line beside the list: a straight hairline in the server HTML, then the
+     stepped track React draws (ui/src/regions/Rail.tsx), lit where the reader is. */
+  .lr-toc {
+    position: relative;
+  }
+
   .lr-toc-list {
     display: flex;
     flex-direction: column;
     margin: 0;
     padding: 0;
     list-style: none;
+    background: linear-gradient(var(--lr-hairline-strong), var(--lr-hairline-strong)) left top / 1px 100% no-repeat;
+  }
+
+  html[dir='rtl'] .lr-toc-list {
+    background-position: right top;
+  }
+
+  .lr-toc-list[data-lr-track] {
+    background: none;
+  }
+
+  .lr-toc-track {
+    position: absolute;
+    inset-inline-start: 0;
+    pointer-events: none;
+  }
+
+  .lr-toc-track svg {
+    position: absolute;
+    inset: 0;
+    overflow: visible;
+  }
+
+  html[dir='rtl'] .lr-toc-track svg {
+    transform: scaleX(-1);
+  }
+
+  .lr-toc-track path {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .lr-toc-track-line {
+    stroke: var(--lr-hairline-strong);
+    stroke-width: 1;
+  }
+
+  .lr-toc-track-lit path {
+    stroke: var(--lr-ink-solid);
+    stroke-width: 2;
+  }
+
+  .lr-toc-track-lit {
+    transition: clip-path var(--lr-duration-panel) var(--lr-ease);
   }
 
   .lr-toc-link {
     display: block;
-    padding: 4px 0;
+    padding: 4px 0 4px 14px;
     color: var(--lr-ink-muted);
     font-size: 13px;
     line-height: 1.45;
@@ -1104,12 +1141,16 @@
     font-weight: 500;
   }
 
+  html[dir='rtl'] .lr-toc-link {
+    padding: 4px 14px 4px 0;
+  }
+
   .lr-toc-level-3 > .lr-toc-link {
-    padding-inline-start: 12px;
+    padding-inline-start: 26px;
   }
 
   .lr-toc-level-4 > .lr-toc-link {
-    padding-inline-start: 24px;
+    padding-inline-start: 38px;
   }
 
   .lr-action-list {
@@ -1234,7 +1275,7 @@
     }
 
     .lr-main {
-      padding-inline: 40px;
+      --lr-article-gutter: 40px;
     }
 
     .lr-ask-bar {

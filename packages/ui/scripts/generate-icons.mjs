@@ -8,6 +8,11 @@
  *   packages/ui/src/icons/nodes.ts            used by the Icons namespace in @larecipe/ui
  *   resources/views/partials/icon.blade.php   used by the server-rendered chrome
  *
+ * A third output holds the icons authors may name in content (<Card icon="rocket">),
+ * drawn on the server only:
+ *
+ *   src/Domains/Markdown/Support/ContentIcons.php
+ *
  * Run with `pnpm --filter @larecipe/ui icons` after changing the list below.
  */
 import { readFileSync, writeFileSync } from 'node:fs'
@@ -77,6 +82,19 @@ const ICONS = {
   X: 'x',
   ZoomIn: 'zoom-in',
 }
+
+/** Icons authors may name in content, by their Lucide name. Server-rendered only. */
+const CONTENT_ICONS = [
+  'accessibility', 'activity', 'bell', 'blocks', 'book', 'book-open', 'bot', 'box', 'brain', 'bug', 'calendar',
+  'chart-column', 'circle-check', 'circle-question-mark', 'clipboard-list', 'clock', 'cloud', 'code', 'compass', 'cpu',
+  'credit-card', 'database', 'download', 'eye', 'file-code', 'file-text', 'flag', 'folder', 'gauge', 'gift',
+  'git-branch', 'git-merge', 'git-pull-request', 'globe', 'graduation-cap', 'hammer', 'heart', 'house', 'image',
+  'inbox', 'key', 'languages', 'layers', 'layout-grid', 'life-buoy', 'lightbulb', 'link', 'lock', 'mail', 'map',
+  'megaphone', 'message-circle', 'monitor', 'package', 'palette', 'pen-line', 'plug', 'puzzle', 'refresh-cw',
+  'rocket', 'scale', 'search', 'send', 'server', 'settings', 'shield-check', 'shopping-cart', 'smartphone',
+  'sparkles', 'star', 'terminal', 'timer', 'trophy', 'upload', 'user', 'users', 'wand-sparkles', 'workflow',
+  'wrench', 'zap',
+]
 
 const MIRRORED = new Set(['ArrowLeft', 'ArrowRight', 'ArrowUpRight', 'ChevronLeft', 'ChevronRight', 'CornerDownLeft', 'ExternalLink', 'TextAlignStart'])
 
@@ -149,4 +167,46 @@ const php = [
 
 writeFileSync(resolve(here, '../../../resources/views/partials/icon.blade.php'), php)
 
-console.log(`Generated ${names.length} icons.`)
+const contentNames = [...CONTENT_ICONS].sort()
+const quote = (value) => `'${value.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`
+const contentPhp = [
+  '<?php',
+  '',
+  'namespace LaRecipe\\Domains\\Markdown\\Support;',
+  '',
+  '/**',
+  ' * The icons authors may name in content, such as <Card icon="rocket">, by',
+  ' * their Lucide name. Unknown names draw nothing.',
+  ' *',
+  ` * ${license}`,
+  ' */',
+  'final class ContentIcons',
+  '{',
+  '    /** @var array<string, string> Lucide name => SVG children */',
+  '    public const NODES = [',
+  ...contentNames.map((name) => `        ${quote(name)} => ${quote(svgInner(nodesFor(name)))},`),
+  '    ];',
+  '',
+  '    /** A Lucide name, or its PascalCase export name (BookOpen), as the key in NODES. */',
+  '    public static function normalize(string $name): string',
+  '    {',
+  "        return strtolower((string) preg_replace('/(?<!^)[A-Z]/', '-$0', trim($name)));",
+  '    }',
+  '',
+  '    public static function svg(string $name, int $size = 20, string $class = \'lr-icon\'): ?string',
+  '    {',
+  '        $nodes = self::NODES[self::normalize($name)] ?? null;',
+  '',
+  '        if ($nodes === null) {',
+  '            return null;',
+  '        }',
+  '',
+  '        return \'<svg class="\'.htmlspecialchars($class, ENT_QUOTES).\'" xmlns="http://www.w3.org/2000/svg" width="\'.$size.\'" height="\'.$size.\'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">\'.$nodes.\'</svg>\';',
+  '    }',
+  '}',
+  '',
+].join('\n')
+
+writeFileSync(resolve(here, '../../../src/Domains/Markdown/Support/ContentIcons.php'), contentPhp)
+
+console.log(`Generated ${names.length} chrome icons and ${contentNames.length} content icons.`)

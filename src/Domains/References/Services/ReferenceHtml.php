@@ -21,13 +21,13 @@ final class ReferenceHtml
         }
 
         if ($reference->facts !== []) {
-            $html .= '<table class="lr-reference-facts"><tbody>';
+            $html .= '<div class="lr-table"><table class="lr-reference-facts"><tbody>';
 
             foreach ($reference->facts as [$label, $value]) {
                 $html .= '<tr><th scope="row">'.$this->e($label).'</th><td><code>'.$this->e($value).'</code></td></tr>';
             }
 
-            $html .= '</tbody></table>';
+            $html .= '</tbody></table></div>';
         }
 
         if ($reference->usage !== null) {
@@ -51,7 +51,7 @@ final class ReferenceHtml
 
     private function table(ReferenceTable $table): string
     {
-        $html = '<table class="lr-reference-table"><caption>'.$this->e($table->title).'</caption><thead><tr>';
+        $html = '<div class="lr-table"><table class="lr-reference-table"><caption>'.$this->e($table->title).'</caption><thead><tr>';
 
         foreach ($table->columns as $column) {
             $html .= '<th scope="col">'.$this->e($column).'</th>';
@@ -69,7 +69,7 @@ final class ReferenceHtml
             $html .= '</tr>';
         }
 
-        return $html.'</tbody></table>';
+        return $html.'</tbody></table></div>';
     }
 
     private function e(string $value): string

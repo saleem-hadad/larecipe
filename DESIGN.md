@@ -200,7 +200,7 @@ A near-monochrome paper and ink system with a slight violet cast in the neutrals
 
 **The Violet-Is-State Rule.** Violet means something is active, focused, selected, linked, fresh or the single primary action. If an element is violet and none of those is true, it is wrong. One filled violet button per screen.
 
-**The Labels-Not-Washes Rule.** Callouts, badges and alerts get their meaning from a colored label and icon on a neutral surface. No tinted backgrounds, no colored side stripes.
+**The Labels-Not-Washes Rule.** Badges get their meaning from a colored label on a neutral surface. Callouts are the exception, by the maintainer's call: they keep LaRecipe 2's solid-color alerts (see Callouts).
 
 **The Measured-Ink Rule.** Text uses the fixed alpha ladder (0.92 / 0.66 / 0.44), never pure black or white and never a parallel gray. Information never sits at the faint step.
 
@@ -251,7 +251,7 @@ Flat at rest. Depth comes from the surface step and the hairline. Shadows belong
 
 ### Named Rules
 
-**The Flat-At-Rest Rule.** Cards, callouts, tickets and code blocks have no shadow at rest or on hover. Interactive cards show hover with `hairline-strong`, never a lift.
+**The Flat-At-Rest Rule.** Cards and tickets have no shadow at rest or on hover. Interactive cards show hover with `hairline-strong`, never a lift. The exceptions are small and deliberate: code blocks carry `shadow-xs`, tables a whisper (`0 1px 2px` at 5%), and callouts LaRecipe 2's lifted shadow, which settles on hover.
 
 **The Shared-Canvas Rule.** Header, article and table of contents share the canvas. Boundaries are a single hairline. The sidebar is the one tonal panel: sidebar paper, one step deeper, running to the window's edge.
 
@@ -295,8 +295,8 @@ A 6 px violet dot that means "changed recently" (default: within 7 days). It sit
 - **Reading line:** a 2 px violet line along the top of the header that fills as the page scrolls, on a violet soft track.
 - **Back to top:** a 44 px round violet button in the end corner, shown after 600 px of scrolling; it returns focus to the page title.
 - **Sidebar:** 248 px on sidebar paper, mono section titles in ink at 700 (so they never read as links), 14 px items 30 px tall with a 4 px radius. Active item: the sidebar active tint, violet text, 500 weight, no edge. No icons by default (frontmatter `icon` allows one). Scrolls the active item into view on load.
-- **Hiding the sidebar:** it slides out at its full width (240 ms), then the layout changes once: the article widens to 880 px and centers between the window's edge and the rail, so nothing rewraps mid-animation. Showing reverses it: the layout first, then the sidebar slides in.
-- **Table of contents:** 240 px rail, 13 px links, active link in ink at 500 with scroll-spy. Followed by "For agents" page actions, then the Last change ticket.
+- **Hiding the sidebar:** one smooth motion (320 ms, `cubic-bezier(0.4, 0, 0.2, 1)`): the sidebar column narrows to nothing while the sidebar slides out with it at its full width, so its content never squeezes, and the article widens to 880 px and recenters between the window's edge and the rail in the same stroke (`--lr-prose-width` and `--lr-article-centering` are registered properties, so they animate). Showing runs it in reverse.
+- **Table of contents:** 240 px rail, 13 px links, active link in ink at 500 with scroll-spy. A line runs beside the list in hairline strong and steps in 12 px for each nested level with a short slant; a 2 px ink stretch lights the sections on screen and glides as the reader scrolls. Followed by "For agents" page actions, then the Last change ticket.
 - **Breadcrumb:** mono label above the H1 (`GET STARTED / INSTALLATION`).
 - **Previous and next:** two outline cards at the end of the article with mono direction labels.
 
@@ -309,12 +309,22 @@ Breadcrumb label, H1, lead, then the provenance meta line: fresh dot, "Updated 2
 - Dark slab in both modes, `rounded-md`.
 - Header strip (36 px) with a mono uppercase title or language and a copy button.
 - Tabs for code groups: mono uppercase triggers with a 2 px violet underline on the active one.
-- Highlighted lines: a violet band at 14% alpha with a 2 px violet inline-start marker. Diff lines: success and danger labels in the gutter only.
+- Highlighted lines: a violet band at 14% alpha with a 2 px violet inline-start marker. Diff lines: success and danger labels in the gutter and a faint 10% band; the text keeps full contrast.
 - Line numbers in ink faint, optional.
 
 ### Callouts
 
-Surface background, hairline border, `rounded-md`, 16 px by 18 px padding. A mono label with an icon in the type's color: NOTE (violet), TIP (success), WARNING (warning), DANGER (danger), IMPORTANT (violet). Body in prose at 15 px. No side stripe, no tinted fill.
+LaRecipe 2's alerts: a solid color, white text, `rounded-lg`, 24 px padding with 56 px at the inline start, and a 60 px icon at 25% white cut off in the start corner. A lifted shadow at rest that settles on hover. The type's label stays in the markup for screen readers and agents, visually hidden.
+
+| Type | v2 alert | Color (AA with white text) | Icon |
+| --- | --- | --- | --- |
+| NOTE, INFO | info | `#027CB3` | exclamation in a circle |
+| TIP, SUCCESS | success | `#188556` | check in a circle |
+| IMPORTANT | primary | `#6062F4` | lightbulb |
+| WARNING | warning | `#E02E05` | raised hand |
+| CAUTION, DANGER | danger | `#E70C37` | skull |
+
+The colors are v2's hues, deepened only as far as white text needs to clear 4.5:1.
 
 ### Steps
 
@@ -322,7 +332,11 @@ Mono step numbers (`01`, `02`) in violet, 28 px column, H2 or H3 titles, content
 
 ### Cards
 
-Hairline border, `rounded-md`, 20 px padding, title 15 px / 600, description in ink muted. Linked cards change border to hairline strong on hover and show a trailing arrow. No shadows, no icons in colored circles.
+Hairline border, `rounded-md`, 20 px padding, title 15 px / 600, description in ink muted. Linked cards change border to hairline strong on hover and show a trailing arrow. No shadows. An optional icon (`icon="rocket"`, from the content icon set) sits above the title, violet on violet soft in a 34 px rounded square.
+
+### Tables
+
+LaRecipe 2's bordered grid on a sheet: white (surface in dark), a hairline-strong outer edge with `rounded-lg`, hairline cell borders, 12 px by 16 px cells, header cells at 600 in ink, a surface wash on row hover, and a whisper of shadow. The sheet scrolls a wide table sideways.
 
 ### Video
 
@@ -371,10 +385,10 @@ On LaRecipe's own site, the 404 is "86'd", kitchen slang for an item that is off
 ### Don't
 
 - **Don't** use gradients, glassmorphism, sparkles or neon. The generic AI-docs look is the primary anti-reference.
-- **Don't** tint callouts or add colored side stripes. Labels carry meaning.
+- **Don't** add colored side stripes to callouts; they are solid v2 alerts, not stripes.
 - **Don't** put more than one filled violet button on a screen.
 - **Don't** draw the mark in violet. Ink on paper, paper on night.
-- **Don't** add shadows to cards, callouts, tickets or code blocks.
+- **Don't** add shadows to cards or tickets.
 - **Don't** use pure black or white for text, or information at the faint step.
 - **Don't** float a chat bubble over the content. Ask lives in the header, the palette and the docked bar.
 - **Don't** use kitchen slang on customer docs by default. "Ticket" is a shape there; "fired" and "86'd" belong to LaRecipe's own surfaces.

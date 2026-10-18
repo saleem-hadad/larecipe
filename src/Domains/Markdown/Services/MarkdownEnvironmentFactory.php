@@ -13,6 +13,7 @@ use LaRecipe\Domains\Markdown\Parser\DirectiveStartParser;
 use LaRecipe\Domains\Markdown\Parser\MathStartParser;
 use LaRecipe\Domains\Markdown\Parser\RawHtmlRenderer;
 use LaRecipe\Domains\Markdown\Parser\SnippetIncludeStartParser;
+use LaRecipe\Domains\Markdown\Parser\TableRenderer;
 use LaRecipe\Domains\Markdown\Parser\UndeclaredPropsFilter;
 use LaRecipe\Domains\Markdown\Support\PassTheme;
 use League\CommonMark\Environment\Environment;
@@ -28,6 +29,7 @@ use League\CommonMark\Extension\DescriptionList\DescriptionListExtension;
 use League\CommonMark\Extension\DisallowedRawHtml\DisallowedRawHtmlRenderer;
 use League\CommonMark\Extension\Footnote\FootnoteExtension;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
+use League\CommonMark\Extension\Table\Table;
 
 /**
  * Builds the one commonmark environment every LaRecipe page is parsed with.
@@ -93,6 +95,7 @@ final class MarkdownEnvironmentFactory
         // Ahead of GFM's own raw HTML renderers (50), keeping its filter of <script>, <iframe>, <style> and the like.
         $environment->addRenderer(HtmlBlock::class, new DisallowedRawHtmlRenderer(new RawHtmlRenderer($state)), 100);
         $environment->addRenderer(HtmlInline::class, new DisallowedRawHtmlRenderer(new RawHtmlRenderer($state)), 100);
+        $environment->addRenderer(Table::class, new TableRenderer, 10);
         $environment->addRenderer(FencedCode::class, new CodeBlockRenderer($this->highlighter), 10);
         $environment->addRenderer(IndentedCode::class, new CodeBlockRenderer($this->highlighter), 10);
 

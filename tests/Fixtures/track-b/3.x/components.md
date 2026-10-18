@@ -9,7 +9,7 @@ Components are tags in your Markdown. The server renders each one as HTML that w
 
 ## Callouts
 
-<aside class="lr-callout" data-type="note" role="note"><div class="lr-callout-label">Note</div><div class="lr-callout-body"><p>A callout gets its meaning from the label, never from a tinted background.</p></div></aside>
+<aside class="lr-callout" data-type="note" role="note"><div class="lr-callout-label">Note</div><div class="lr-callout-body"><p>A callout keeps the LaRecipe 2 look: a solid color, white text and a large icon in the corner.</p></div></aside>
 
 <aside class="lr-callout" data-type="tip" role="note"><div class="lr-callout-label">Tip</div><div class="lr-callout-body"><p>Run <code>php artisan larecipe:validate</code> before you push to catch broken links.</p></div></aside>
 
