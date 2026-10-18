@@ -1,5 +1,5 @@
 import { resolve } from 'node:path'
-import { build } from 'vite'
+import { build, version as viteVersion } from 'vite'
 
 /**
  * @larecipe/vite: builds a host app's LaRecipe extension (its custom React
@@ -25,6 +25,20 @@ function isShared(id) {
 }
 
 /**
+ * Vite 8 bundles with Rolldown and transforms with Oxc: it reads
+ * build.rolldownOptions and oxc, and only maps the older rollupOptions and
+ * esbuild keys (deprecated). Vite 6 and 7 read only the older keys.
+ */
+const ROLLDOWN = Number.parseInt(viteVersion, 10) >= 8
+
+/** JSX with the automatic runtime, always the production jsx-runtime (the runtime's own copy). */
+function jsxOptions() {
+  return ROLLDOWN
+    ? { oxc: { jsx: { runtime: 'automatic', development: false } } }
+    : { esbuild: { jsx: 'automatic', jsxDev: false } }
+}
+
+/**
  * Build the extension once (or keep rebuilding it with `watch: true`).
  *
  * @param {import('./index').BuildExtensionOptions} options
@@ -44,11 +58,8 @@ export async function buildExtension(options = {}) {
     define: {
       'process.env.NODE_ENV': JSON.stringify(production ? 'production' : 'development'),
     },
-    esbuild: {
-      jsx: 'automatic',
-      // The runtime's jsx-runtime is the production build; dev mode maps to it too.
-      jsxDev: false,
-    },
+    // The runtime's jsx-runtime is the production build; dev mode maps to it too.
+    ...jsxOptions(),
     build: {
       outDir: resolve(root, options.outDir ?? DEFAULTS.outDir),
       emptyOutDir: true,
@@ -58,7 +69,7 @@ export async function buildExtension(options = {}) {
       sourcemap: !production,
       copyPublicDir: false,
       watch: options.watch ? {} : null,
-      rollupOptions: {
+      [ROLLDOWN ? 'rolldownOptions' : 'rollupOptions']: {
         input: { extension: resolve(root, options.input ?? DEFAULTS.input) },
         external: isShared,
         preserveEntrySignatures: 'allow-extension',
