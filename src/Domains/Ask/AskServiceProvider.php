@@ -17,6 +17,7 @@ use LaRecipe\Domains\Ask\Support\AiFeatures;
 use LaRecipe\Domains\Content\DTOs\DocSet;
 use LaRecipe\Domains\Content\DTOs\SetConfig;
 use LaRecipe\Domains\Delivery\Services\PagePresenter;
+use LaRecipe\Domains\Delivery\Support\SetFromRequest;
 use LaRecipe\LaRecipe;
 
 /**
@@ -55,12 +56,13 @@ final class AskServiceProvider extends ServiceProvider
             $presenter->extend(fn (DocSet $set, array $payload) => $this->payload($set, $payload));
         });
 
+        // One bucket per set and reader, shared by the set's /_ask and /{scope}/_ask routes.
         RateLimiter::for('larecipe-ask', function (Request $request) {
-            $key = (string) ($request->route()?->getName() ?? '');
+            $set = $this->app->make(SetFromRequest::class)->key($request);
             $parts = array_map('intval', explode(',', (string) $this->app['config']->get('larecipe.ai.ask.rate_limit', '10,1')));
 
             return Limit::perMinutes(max(1, $parts[1] ?? 1), max(1, $parts[0] ?: 10))
-                ->by('larecipe-ask|'.$key.'|'.($request->user()?->getAuthIdentifier() ?? $request->ip()));
+                ->by('larecipe-ask|'.$set.'|'.($request->user()?->getAuthIdentifier() ?? $request->ip()));
         });
     }
 

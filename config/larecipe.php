@@ -112,16 +112,22 @@ return [
         // Ask AI. provider is a laravel/ai provider name, or a failover list
         // tried in order when one fails: ['anthropic', 'openai'], or with a
         // model for each: ['anthropic' => '{model}', 'openai' => '{model}'].
-        // model applies to a single provider only.
+        // model applies to a single provider only. Answers run on your provider
+        // key: rate_limit is answers per reader ("10,1": 10 a minute, per set),
+        // daily_budget caps answers per set per day (null for no cap), and the
+        // conversation a browser sends back is limited to max_messages turns,
+        // max_question_length characters per question and max_history_length
+        // characters of earlier turns in all.
         'ask' => [
             'enabled' => env('LARECIPE_ASK', false),
             'provider' => env('LARECIPE_AI_PROVIDER'),
             'model' => env('LARECIPE_AI_MODEL'),
             'max_steps' => 6,
             'rate_limit' => '10,1',
-            'daily_budget' => null,
+            'daily_budget' => 500,
             'max_messages' => 20,
             'max_question_length' => 2000,
+            'max_history_length' => 20000,
         ],
         // php artisan larecipe:sync, the on-demand docs agent (never in CI).
         // timeout is seconds per provider request. remote_token authenticates

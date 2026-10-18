@@ -14,6 +14,7 @@ use LaRecipe\Domains\Agents\Mcp\Tools\ReadPageTool;
 use LaRecipe\Domains\Agents\Mcp\Tools\SearchDocsTool;
 use LaRecipe\Domains\Ask\Laravel\CitingVercelProtocol;
 use LaRecipe\Domains\Ask\Laravel\DocsAssistant;
+use LaRecipe\Domains\Ask\Services\ChatInput;
 use LaRecipe\Domains\Ask\Services\CitationGuard;
 use LaRecipe\Domains\Ask\Services\DailyBudget;
 use LaRecipe\Domains\Ask\Support\AiFeatures;
@@ -30,7 +31,8 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * In order: the set has Ask AI on, the reader may see this version, the
  * askLarecipe gate allows them, the named rate limiter (on the route) and the
- * set's daily budget have room. The assistant then answers from the docs with
+ * set's daily budget have room. The conversation the browser sends is cut down
+ * to bounded text (ChatInput). The assistant then answers from the docs with
  * the same tools as the MCP server, bound to this reader's view of the set.
  */
 final class AskController
@@ -47,6 +49,7 @@ final class AskController
         private readonly ReadPageTool $read,
         private readonly RequestClassifier $classifier,
         private readonly Dispatcher $events,
+        private readonly ChatInput $input,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -69,11 +72,17 @@ final class AskController
 
         $request->validate(['messages' => ['required', 'array', 'min:1', 'max:'.(int) $set->config->setting('ai.ask.max_messages', 20)]]);
 
-        $chat = Vercel::chat($request);
+        $messages = $this->input->textOnly((array) $request->input('messages'));
+        $chat = Vercel::chat($messages);
         $question = trim((string) $chat->message()?->content);
+        $questionLimit = (int) $set->config->setting('ai.ask.max_question_length', 2000);
 
-        if ($question === '' || mb_strlen($question) > (int) $set->config->setting('ai.ask.max_question_length', 2000)) {
-            return new JsonResponse(['message' => 'Ask a question of at most '.(int) $set->config->setting('ai.ask.max_question_length', 2000).' characters.'], 422);
+        if ($question === '' || mb_strlen($question) > $questionLimit) {
+            return new JsonResponse(['message' => "Ask a question of at most {$questionLimit} characters."], 422);
+        }
+
+        if (($tooLong = $this->input->tooLong($messages, $questionLimit, (int) $set->config->setting('ai.ask.max_history_length', 20000))) !== null) {
+            return new JsonResponse(['message' => $tooLong], 422);
         }
 
         if (! $this->budget->take($set)) {
