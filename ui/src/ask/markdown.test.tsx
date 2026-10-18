@@ -21,6 +21,12 @@ describe('the answer renderer', () => {
     const links = Array.from(container.querySelectorAll('a'))
     expect(links.map((link) => link.getAttribute('href'))).toEqual(['/guide/3.x'])
   })
+
+  it('never turns a protocol-relative link into a site link', () => {
+    const { container } = render(<Markdown source={'[a](//evil.example/x) [b](/\\evil.example) [c](/\\/evil.example) [d](/guide/3.x#mcp)'} />)
+    const links = Array.from(container.querySelectorAll('a')).map((link) => link.getAttribute('href'))
+    expect(links).toEqual(['/guide/3.x#mcp'])
+  })
 })
 
 describe('citations', () => {
