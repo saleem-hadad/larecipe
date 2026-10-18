@@ -47,14 +47,10 @@
     border-radius: var(--lr-radius-sm);
   }
 
+  /* The LaRecipe logo keeps its own violet in every theme. */
   .lr-mark {
     display: block;
     flex: none;
-    color: var(--lr-ink-solid);
-  }
-
-  .lr-mark-cut {
-    fill: var(--lr-paper);
   }
 
   .lr-brand-name {
@@ -208,6 +204,147 @@
     display: none;
   }
 
+  /* The navigation switch: on while the sidebar shows. Its look follows the
+     attribute the head script sets, so it is right before React runs. */
+  .lr-sidebar-switch {
+    position: relative;
+    flex: none;
+    width: 34px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: var(--lr-accent-current);
+    cursor: pointer;
+    transition: background-color var(--lr-duration-state) var(--lr-ease);
+  }
+
+  .lr-sidebar-switch:focus-visible {
+    outline: 2px solid var(--lr-accent-ring);
+    outline-offset: 2px;
+  }
+
+  .lr-switch-thumb {
+    position: absolute;
+    top: 2px;
+    inset-inline-start: 16px;
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgb(17 16 22 / 0.3);
+    transition: inset-inline-start var(--lr-duration-state) var(--lr-ease);
+  }
+
+  html[data-lr-sidebar='hidden'] .lr-sidebar-switch {
+    background: var(--lr-hairline-strong);
+  }
+
+  html[data-lr-sidebar='hidden'] .lr-switch-thumb {
+    inset-inline-start: 2px;
+  }
+
+  .lr-root[data-layout='full'] .lr-sidebar-switch {
+    display: none;
+  }
+
+  /* One click between light and dark: the moon offers dark, the sun offers light. */
+  .lr-theme-toggle .lr-theme-to-light,
+  :root[data-theme='dark'] .lr-theme-toggle .lr-theme-to-dark {
+    display: none;
+  }
+
+  :root[data-theme='dark'] .lr-theme-toggle .lr-theme-to-light {
+    display: block;
+  }
+
+  /* The reading line along the top of the header: a violet line that fills as the page scrolls. */
+  .lr-progress {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 2px;
+    overflow: hidden;
+    background: var(--lr-accent-soft);
+    pointer-events: none;
+  }
+
+  .lr-progress-bar {
+    width: 100%;
+    height: 100%;
+    background: var(--lr-accent-current);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  html[dir='rtl'] .lr-progress-bar {
+    transform-origin: right;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .lr-progress-bar {
+      animation: lr-reading-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+
+  @keyframes lr-reading-progress {
+    from {
+      transform: scaleX(0);
+    }
+
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  /* Back to top: a round violet button in the end corner, once the reader is well down a page. */
+  .lr-back-to-top {
+    position: fixed;
+    inset-block-end: 24px;
+    inset-inline-end: 24px;
+    z-index: 25;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: var(--lr-accent-current);
+    color: var(--lr-accent-foreground);
+    box-shadow: var(--lr-shadow-float);
+    cursor: pointer;
+    opacity: 0;
+    transform: scale(0.8);
+    visibility: hidden;
+    transition:
+      opacity var(--lr-duration-state) var(--lr-ease),
+      transform var(--lr-duration-state) var(--lr-ease),
+      visibility 0s linear var(--lr-duration-state),
+      background-color var(--lr-duration-hover) var(--lr-ease);
+  }
+
+  .lr-back-to-top[data-visible] {
+    opacity: 1;
+    transform: scale(1);
+    visibility: visible;
+    transition:
+      opacity var(--lr-duration-state) var(--lr-ease),
+      transform var(--lr-duration-state) var(--lr-ease),
+      visibility 0s,
+      background-color var(--lr-duration-hover) var(--lr-ease);
+  }
+
+  .lr-back-to-top:hover {
+    background: var(--lr-accent-hover);
+  }
+
+  .lr-back-to-top:focus-visible {
+    outline: 2px solid var(--lr-accent-ring);
+    outline-offset: 3px;
+  }
+
   /* The header insert point: small items only. */
   .lr-insert[data-lr-insert='header.actions'] {
     display: flex;
@@ -218,16 +355,19 @@
   /* ---- Shell -------------------------------------------------------------- */
 
   .lr-shell {
+    --lr-sidebar-column: var(--lr-sidebar-width);
+
     display: grid;
     flex: 1;
-    grid-template-columns: var(--lr-sidebar-width) minmax(0, 1fr) var(--lr-rail-width);
+    grid-template-columns: var(--lr-sidebar-column) minmax(0, 1fr) var(--lr-rail-width);
+    transition: grid-template-columns var(--lr-duration-panel) var(--lr-ease);
     width: 100%;
     max-width: 1440px;
     margin-inline: auto;
   }
 
   .lr-root[data-layout='wide'] .lr-shell {
-    grid-template-columns: var(--lr-sidebar-width) minmax(0, 1fr);
+    grid-template-columns: var(--lr-sidebar-column) minmax(0, 1fr);
   }
 
   .lr-root[data-layout='wide'] .lr-rail {
@@ -267,9 +407,37 @@
     height: calc(100dvh - var(--lr-header-height));
     overflow-y: auto;
     overscroll-behavior: contain;
+    min-width: 0;
     padding: 24px 14px 40px;
-    border-inline-end: 1px solid var(--lr-hairline);
+    overflow-x: hidden;
+    background: var(--lr-sidebar-bg);
+    box-shadow: inset -1px 0 0 var(--lr-hairline);
     scrollbar-width: thin;
+    /* Past the 1440px shell, the sidebar's color runs to the edge of the window. */
+    border-image: linear-gradient(var(--lr-sidebar-bg) 0 0) fill 0 / / 0 0 0 100vw;
+    transition: visibility 0s;
+  }
+
+  html[dir='rtl'] .lr-sidebar {
+    box-shadow: inset 1px 0 0 var(--lr-hairline);
+    border-image: linear-gradient(var(--lr-sidebar-bg) 0 0) fill 0 / / 0 100vw 0 0;
+  }
+
+  /* Hidden by the switch next to the logo (wide screens only; phones keep the sheet). */
+  @media (min-width: 641px) {
+    .lr-sidebar > * {
+      min-width: calc(var(--lr-sidebar-width) - 28px);
+    }
+
+    html[data-lr-sidebar='hidden'] .lr-shell {
+      --lr-sidebar-column: 0px;
+    }
+
+    html[data-lr-sidebar='hidden'] .lr-sidebar {
+      padding-inline: 0;
+      visibility: hidden;
+      transition: visibility 0s linear var(--lr-duration-panel);
+    }
   }
 
   .lr-sidebar-head {
@@ -338,7 +506,7 @@
   }
 
   .lr-nav-group .lr-nav-group > details > .lr-nav-summary:hover {
-    background: var(--lr-surface);
+    background: var(--lr-sidebar-hover);
     color: var(--lr-ink);
   }
 
@@ -383,6 +551,7 @@
     gap: 8px;
     min-height: 30px;
     padding: 4px 10px;
+    border-inline-start: 2px solid transparent;
     border-radius: var(--lr-radius-sm);
     color: var(--lr-ink-muted);
     font-size: 14px;
@@ -394,11 +563,15 @@
   }
 
   .lr-nav-link:hover {
-    background: var(--lr-surface);
+    background: var(--lr-sidebar-hover);
     color: var(--lr-ink);
   }
 
+  /* The current page: violet text on violet soft, with a 2px violet edge at the start. */
   .lr-nav-link[aria-current='page'] {
+    border-inline-start-color: var(--lr-accent-current);
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
     background: var(--lr-accent-soft);
     color: var(--lr-accent-current);
     font-weight: 500;
@@ -990,10 +1163,6 @@
     color: var(--lr-ink);
   }
 
-  .lr-credit .lr-mark {
-    color: currentColor;
-  }
-
   .lr-insert[data-lr-insert='footer'] {
     flex-basis: 100%;
   }
@@ -1003,7 +1172,7 @@
   /* Tablet: the rail hides; page actions and the TOC move under the title. */
   @media (max-width: 1024px) {
     .lr-shell {
-      grid-template-columns: var(--lr-sidebar-width) minmax(0, 1fr);
+      grid-template-columns: var(--lr-sidebar-column) minmax(0, 1fr);
     }
 
     .lr-rail {
@@ -1032,6 +1201,16 @@
 
     .lr-menu-button {
       display: inline-grid;
+    }
+
+    /* Phones open the navigation as a sheet, from the menu button. */
+    .lr-sidebar-switch {
+      display: none;
+    }
+
+    .lr-back-to-top {
+      inset-block-end: 16px;
+      inset-inline-end: 16px;
     }
 
     .lr-header-start {
@@ -1103,7 +1282,7 @@
       width: min(320px, 86vw);
       height: 100dvh;
       padding-top: 12px;
-      background: var(--lr-paper);
+      background: var(--lr-sidebar-bg);
       border-inline-end: 1px solid var(--lr-hairline);
       box-shadow: var(--lr-shadow-overlay);
       visibility: hidden;

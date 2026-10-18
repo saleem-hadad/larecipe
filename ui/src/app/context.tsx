@@ -2,6 +2,7 @@ import type { BootPayload, ThemePreference } from '@larecipe/ui'
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import type { Router } from './router'
 import { useStoreState, type AppState, type Store } from './store'
+import { applySidebar } from './sidebar'
 import { applyTheme } from './theme'
 
 /**
@@ -15,6 +16,7 @@ export interface Actions {
   closeAsk(): void
   setShortcuts(open: boolean): void
   setSidebar(open: boolean): void
+  setSidebarHidden(hidden: boolean): void
   setTheme(preference: ThemePreference): void
   copyText(text: string): Promise<boolean>
   copyMarkdown(): Promise<boolean>
@@ -111,6 +113,10 @@ export function createActions(store: Store, live: () => HTMLElement | null): Act
     closeAsk: () => store.set((state) => ({ ask: { ...state.ask, open: false, question: null } })),
     setShortcuts: (open) => store.set({ shortcuts: open }),
     setSidebar: (open) => store.set({ sidebar: open }),
+    setSidebarHidden(hidden) {
+      applySidebar(hidden)
+      store.set({ sidebarHidden: hidden })
+    },
     setTheme(preference) {
       const mode = applyTheme(preference)
       store.set({ theme: { preference, mode } })

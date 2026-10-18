@@ -173,7 +173,7 @@ The bitten edge comes from LaRecipe's original mark, the recipe card with a scal
 1. **A ticket carries real data.** Never a decorative card with a torn edge. If there is no change behind it, it is not a ticket.
 2. **The edge means a change.** Do not put the bitten edge on ordinary cards, images or sections.
 3. **One accent, held.** Tickets are surface and ink; only their action link and fresh dot are violet.
-4. **The mark is never violet,** never animated, never rebuilt out of tickets. Ink on paper, paper on night.
+4. **The mark is LaRecipe's classic violet ticket** (`#787AF6`, white lines), the logo v2 readers know. It is never animated and never recolored per theme.
 
 ## V · The recurring LaRecipe moves
 

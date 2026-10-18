@@ -22,8 +22,8 @@
 <link rel="icon" href="{{ $set->manifest->favicon() }}">
 @endif
 <meta name="color-scheme" content="light dark">
-{{-- Before first paint: the reader's theme (light, dark or system) and the .lr-js flag that shows JavaScript-only controls in their final place. --}}
-<script{!! $larecipe->cspNonce() ? ' nonce="'.e($larecipe->cspNonce()).'"' : '' !!}>(function(){var d=document.documentElement;d.classList.add('lr-js');try{var m=d.getAttribute('data-theme-mode')||'system',s=localStorage.getItem('larecipe:theme');var t=s||m;if(t==='system'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}d.setAttribute('data-theme',t)}catch(e){}})();</script>
+{{-- Before first paint: the reader's theme (light, dark or system), whether they hid the navigation, and the .lr-js flag that shows JavaScript-only controls in their final place. --}}
+<script{!! $larecipe->cspNonce() ? ' nonce="'.e($larecipe->cspNonce()).'"' : '' !!}>(function(){var d=document.documentElement;d.classList.add('lr-js');try{var m=d.getAttribute('data-theme-mode')||'system',s=localStorage.getItem('larecipe:theme');var t=s||m;if(t==='system'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}d.setAttribute('data-theme',t);if(localStorage.getItem('larecipe:sidebar')==='hidden'){d.setAttribute('data-lr-sidebar','hidden')}}catch(e){}})();</script>
 @if (! empty($themeCss))
 <style>{!! $themeCss !!}</style>
 @endif

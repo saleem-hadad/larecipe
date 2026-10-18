@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client'
 import { App } from './App'
 import { createActions } from './context'
 import { createRouter } from './router'
+import { sidebarHidden } from './sidebar'
 import { createStore, initialState } from './store'
 import { readPreference, resolveMode } from './theme'
 
@@ -53,7 +54,7 @@ function boot(): void {
   }
 
   const preference = readPreference((payload.set.theme.mode ?? 'system') as ThemePreference)
-  const store = createStore(initialState(payload, insertsHtml, { preference, mode: resolveMode(preference) }))
+  const store = createStore(initialState(payload, insertsHtml, { preference, mode: resolveMode(preference) }, sidebarHidden()))
   const router = createRouter({ store })
   const actions = createActions(store, () => document.getElementById('lr-live'))
 

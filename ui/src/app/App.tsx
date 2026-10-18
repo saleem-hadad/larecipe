@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Enhancements } from '../islands/Enhancements'
 import { Overlays } from '../overlays/Overlays'
 import { AskBar } from '../regions/AskBar'
+import { BackToTop } from '../regions/BackToTop'
 import { Header } from '../regions/Header'
 import { PageHeader } from '../regions/PageHeader'
 import { Footer, PageFooter } from '../regions/PageFooter'
@@ -94,6 +95,7 @@ export function App({ services, article }: { services: AppServices; article: HTM
           <Rail />
         </div>
         <Slot name="Footer" component={Footer} />
+        <BackToTop />
         <IslandsHost root={articleEl} />
         <Enhancements root={articleEl} />
         <Overlays />

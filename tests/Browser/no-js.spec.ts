@@ -23,7 +23,8 @@ test('a page is complete and readable without JavaScript', async ({ page }) => {
   // Controls that need JavaScript are not shown at all.
   await expect(page.locator('.lr-search-trigger')).toBeHidden()
   await expect(page.locator('.lr-ask-button')).toBeHidden()
-  await expect(page.locator('.lr-theme-menu')).toBeHidden()
+  await expect(page.locator('.lr-theme-toggle')).toBeHidden()
+  await expect(page.locator('.lr-sidebar-switch')).toBeHidden()
   await expect(page.locator('.lr-feedback')).toBeHidden()
 
   // Agent destinations are plain links.

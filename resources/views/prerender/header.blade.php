@@ -6,13 +6,12 @@
     $currentVersion = collect($versions)->firstWhere('id', $boot['version']);
     $versionLabel = $currentVersion['label'] ?? $boot['version'];
     $currentLocale = collect($locales)->firstWhere('code', $boot['locale']['code']);
-    $themeIcon = ['light' => 'Sun', 'dark' => 'Moon'][$set->manifest->theme->mode] ?? 'Monitor';
-    $themePreference = in_array($set->manifest->theme->mode, ['light', 'dark'], true) ? $set->manifest->theme->mode : 'system';
 @endphp
 <header class="lr-header" data-lr-region="Header">
     <div class="lr-header-start">
         <a class="lr-icon-button lr-menu-button" href="#lr-sidebar" aria-controls="lr-sidebar" aria-expanded="false" aria-label="{{ $t('header.menu') }}">@include('larecipe::partials.icon', ['name' => 'Menu', 'iconSize' => 18, 'iconClass' => ''])</a>
         @include('larecipe::partials.brand')
+        <button type="button" role="switch" class="lr-sidebar-switch lr-js-only" aria-checked="true" aria-controls="lr-sidebar" aria-label="{{ $t('header.sidebar') }}"><span class="lr-switch-thumb"></span></button>
         @if (count($versions) > 1)
             <details class="lr-menu lr-version-menu"><summary class="lr-version-button" aria-label="{{ $t('header.version') }} {{ $versionLabel }}"><span class="lr-ltr">{{ $versionLabel }}</span>@include('larecipe::partials.icon', ['name' => 'ChevronDown', 'iconSize' => 12, 'iconClass' => ''])</summary><div class="lr-menu-panel"><p class="lr-label lr-menu-label">{{ $t('header.versions') }}</p><ul class="lr-menu-list">@foreach ($versions as $version)<li><a class="lr-menu-item lr-menu-item-mono" href="{{ $version['url'] }}" @if ($version['id'] === $boot['version']) aria-current="true" @endif><span class="lr-ltr">{{ $version['label'] }}</span>@if (in_array($version['status'], ['deprecated', 'archived'], true))<span class="lr-badge" data-tone="warning">{{ $version['status'] }}</span>@endif</a></li>@endforeach</ul></div></details>
         @endif
@@ -32,6 +31,7 @@
         @if ($boot['set']['repository'])
             <a class="lr-icon-button lr-repo-link" href="{{ $boot['set']['repository'] }}" aria-label="{{ $t('header.repository') }}" rel="noopener">@include('larecipe::partials.icon', ['name' => 'Github', 'iconSize' => 17, 'iconClass' => ''])</a>
         @endif
-        <details class="lr-menu lr-theme-menu lr-js-only"><summary class="lr-icon-button" aria-label="{{ $t('header.theme') }}: {{ $t('header.theme_'.$themePreference) }}">@include('larecipe::partials.icon', ['name' => $themeIcon, 'iconSize' => 17, 'iconClass' => ''])</summary><div class="lr-menu-panel" data-align="end"><p class="lr-label lr-menu-label">{{ $t('header.theme') }}</p><ul class="lr-menu-list">@foreach (['light' => 'Sun', 'dark' => 'Moon', 'system' => 'Monitor'] as $option => $optionIcon)<li><button type="button" class="lr-menu-item" aria-pressed="{{ $option === $themePreference ? 'true' : 'false' }}">@include('larecipe::partials.icon', ['name' => $optionIcon, 'iconSize' => 15, 'iconClass' => '']){{ $t('header.theme_'.$option) }}@if ($option === $themePreference)@include('larecipe::partials.icon', ['name' => 'Check', 'iconSize' => 14, 'iconClass' => 'lr-menu-check'])@endif</button></li>@endforeach</ul></div></details>
+        <button type="button" class="lr-icon-button lr-theme-toggle lr-js-only" aria-label="{{ $t('header.theme_toggle') }}">@include('larecipe::partials.icon', ['name' => 'Moon', 'iconSize' => 17, 'iconClass' => 'lr-theme-to-dark'])@include('larecipe::partials.icon', ['name' => 'Sun', 'iconSize' => 17, 'iconClass' => 'lr-theme-to-light'])</button>
     </div>
+    <div class="lr-progress" aria-hidden="true"><div class="lr-progress-bar"></div></div>
 </header>

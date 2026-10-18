@@ -18,7 +18,10 @@ export interface AppState {
   palette: { open: boolean; query: string }
   ask: { open: boolean; question: string | null; nonce: number }
   shortcuts: boolean
+  /** The phone sheet is open. */
   sidebar: boolean
+  /** The reader hid the navigation on wide screens. */
+  sidebarHidden: boolean
   /** The URL being fetched by a client navigation, if any. */
   navigating: string | null
   /** Set after a client navigation, so arriving tickets can print. */
@@ -64,7 +67,7 @@ export function useStoreState<T>(store: Store, selector: (state: AppState) => T)
 }
 
 /** The initial state from the boot payload and the inserts captured from the prerender. */
-export function initialState(boot: BootPayload, insertsHtml: Record<string, string>, theme: AppState['theme']): AppState {
+export function initialState(boot: BootPayload, insertsHtml: Record<string, string>, theme: AppState['theme'], sidebarHidden = false): AppState {
   return {
     boot,
     page: boot.page,
@@ -75,6 +78,7 @@ export function initialState(boot: BootPayload, insertsHtml: Record<string, stri
     ask: { open: false, question: null, nonce: 0 },
     shortcuts: false,
     sidebar: false,
+    sidebarHidden,
     navigating: null,
     navigated: false,
   }

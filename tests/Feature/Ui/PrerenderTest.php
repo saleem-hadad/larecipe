@@ -44,9 +44,21 @@ it('marks the controls that need JavaScript, and flags JavaScript before first p
     expect($html)
         ->toContain("d.classList.add('lr-js')")
         ->toContain('class="lr-search-trigger lr-js-only"')
-        ->toContain('class="lr-menu lr-theme-menu lr-js-only"')
+        ->toContain('class="lr-icon-button lr-theme-toggle lr-js-only"')
+        ->toContain('<button type="button" role="switch" class="lr-sidebar-switch lr-js-only" aria-checked="true" aria-controls="lr-sidebar"')
+        ->toContain("if(localStorage.getItem('larecipe:sidebar')==='hidden'){d.setAttribute('data-lr-sidebar','hidden')}")
         ->toMatch('#<li\s+class="lr-js-only"\s*><button type="button" class="lr-action">.*?Copy as Markdown#s')
         ->toContain('<span>View as Markdown</span></a>');
+});
+
+it('draws the brand with the LaRecipe logo and the name, and the reading line in the header', function () {
+    $html = guideHtml('/guide/3.x/installation');
+
+    expect($html)
+        ->toMatch('#<a class="lr-brand" href="[^"]+"><svg class="lr-mark" width="26" height="26" viewBox="7 7 46 46"#')
+        ->toContain('fill="#787AF6"')
+        ->toContain('<span class="lr-brand-name">LaRecipe</span></a>')
+        ->toContain('<div class="lr-progress" aria-hidden="true"><div class="lr-progress-bar"></div></div>');
 });
 
 it('opens menus and the phone navigation without JavaScript', function () {

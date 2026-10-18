@@ -17,7 +17,7 @@
             <p class="lr-footer-text">{{ $footerText }}</p>
         @endif
         @if ($credit)
-            <a class="lr-credit" href="https://larecipe.saleem.dev" rel="noopener">@include('larecipe::partials.mark', ['markSize' => 12]){{ $t('footer.credit') }}</a>
+            <a class="lr-credit" href="https://larecipe.saleem.dev" rel="noopener">@include('larecipe::partials.mark', ['markSize' => 14]){{ $t('footer.credit') }}</a>
         @endif
     </div>
 </footer>

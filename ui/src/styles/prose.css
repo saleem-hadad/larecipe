@@ -415,9 +415,11 @@
     background: var(--lr-code);
   }
 
+  /* Every code block wears a thin violet top edge, the way LaRecipe always has. */
   .lr-code {
     margin: 24px 0;
     overflow: hidden;
+    border-top: 2px solid var(--lr-accent-current);
     border-radius: var(--lr-radius-md);
     background: var(--lr-code);
     color: var(--lr-code-foreground);
@@ -628,12 +630,14 @@
   .lr-code-group {
     margin: 24px 0;
     overflow: hidden;
+    border-top: 2px solid var(--lr-accent-current);
     border-radius: var(--lr-radius-md);
     background: var(--lr-code);
   }
 
   .lr-code-group .lr-code {
     margin: 0;
+    border-top: 0;
     border-radius: 0;
   }
 

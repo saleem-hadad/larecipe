@@ -23,6 +23,9 @@ return [
         'theme_light' => 'فاتح',
         'theme_dark' => 'داكن',
         'theme_system' => 'حسب النظام',
+        'theme_toggle' => 'المظهر الداكن',
+        'sidebar' => 'إظهار قائمة التنقل',
+        'back_to_top' => 'العودة إلى الأعلى',
     ],
 
     'search' => [

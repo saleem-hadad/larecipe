@@ -6,8 +6,9 @@ import { waitForApp } from './support/helpers'
 const modifier = process.platform === 'darwin' ? 'Meta' : 'Control'
 
 async function audit(page: Page, include?: string) {
-  // Colors are measured at rest: let entry motion (the ticket print) finish first.
-  await page.waitForFunction(() => document.getAnimations().every((animation) => animation.playState !== 'running'))
+  // Colors are measured at rest: let entry motion (the ticket print) finish first. Scroll-driven
+  // animations (the reading line) never finish, so only time-based ones count.
+  await page.waitForFunction(() => document.getAnimations().every((animation) => animation.playState !== 'running' || animation.timeline !== document.timeline))
   let builder = new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
   if (include) builder = builder.include(include)
   const results = await builder.analyze()

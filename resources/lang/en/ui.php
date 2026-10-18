@@ -26,6 +26,9 @@ return [
         'theme_light' => 'Light',
         'theme_dark' => 'Dark',
         'theme_system' => 'System',
+        'theme_toggle' => 'Dark theme',
+        'sidebar' => 'Show the navigation',
+        'back_to_top' => 'Back to top',
     ],
 
     'search' => [

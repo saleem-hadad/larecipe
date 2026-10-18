@@ -30,6 +30,7 @@ function Providers({ boot, children }: { boot: BootPayload; children: ReactNode 
       closeAsk: () => {},
       setShortcuts: () => {},
       setSidebar: () => {},
+      setSidebarHidden: () => {},
       setTheme: () => {},
       copyText: async () => true,
       copyMarkdown: async () => true,

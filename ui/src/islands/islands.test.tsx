@@ -25,6 +25,7 @@ function Providers({ children }: { children: ReactNode }) {
       closeAsk: () => {},
       setShortcuts: () => {},
       setSidebar: () => {},
+      setSidebarHidden: () => {},
       setTheme: () => {},
       copyText: async () => true,
       copyMarkdown: async () => true,

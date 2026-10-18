@@ -194,7 +194,7 @@ export function Footer() {
         {text && <p className="lr-footer-text">{text}</p>}
         {credit && (
           <a className="lr-credit" href="https://larecipe.saleem.dev" rel="noopener">
-            <Mark size={12} />
+            <Mark size={14} />
             {t('footer.credit')}
           </a>
         )}
