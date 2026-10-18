@@ -62,3 +62,14 @@ it('leaves refused links out of the navbar, the footer and the repository', func
         ->and($manifest->repository()['url'])->toBeNull()
         ->and($manifest->refusedLinks())->toBe(["javascript:alert('navbar')", "javascript:alert('cta')", 'data:text/html,x', "javascript:alert('repo')"]);
 });
+
+it('leaves a navbar link to the repository out, since the header shows the repository as its icon', function () {
+    $manifest = Manifest::fromArray([
+        'navbar' => ['links' => [['label' => 'GitHub', 'href' => 'https://github.com/acme/acme/'], ['label' => 'Changelog', 'href' => '/changelog']]],
+        'repository' => ['url' => 'https://github.com/acme/acme'],
+    ]);
+
+    expect($manifest->navbar())->toBe(['links' => [['label' => 'Changelog', 'href' => '/changelog']]])
+        ->and(Manifest::fromArray(['navbar' => ['links' => [['label' => 'GitHub', 'href' => 'https://github.com/acme/acme']]]])->navbar()['links'])
+        ->toHaveCount(1);
+});

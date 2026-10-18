@@ -100,7 +100,9 @@ final readonly class Manifest
     }
 
     /**
-     * The navbar's links and call to action, leaving out links a page may not carry (SafeHref).
+     * The navbar's links and call to action, leaving out links a page may not
+     * carry (SafeHref) and a link to the repository, which the header already
+     * shows as its icon.
      *
      * @return array{links?: list<array>, cta?: array}
      */
@@ -109,7 +111,12 @@ final readonly class Manifest
         $navbar = (array) ($this->raw['navbar'] ?? []);
 
         if (isset($navbar['links'])) {
-            $navbar['links'] = self::safeLinks((array) $navbar['links']);
+            $repository = $this->repository()['url'];
+
+            $navbar['links'] = array_values(array_filter(
+                self::safeLinks((array) $navbar['links']),
+                fn (array $link) => $repository === null || rtrim(trim((string) $link['href']), '/') !== $repository,
+            ));
         }
 
         if (isset($navbar['cta']) && self::safeLinks([$navbar['cta']]) === []) {
