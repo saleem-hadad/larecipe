@@ -34,7 +34,7 @@ final class MarkdownCheck implements Check
                 return DoctorCheck::fail('markdown', 'Markdown twins', "{$url} does not answer Accept: text/markdown with Markdown.", 'Do not cache docs responses without Vary: Accept in front of the app.');
             }
 
-            $parity = $this->parity($html->body, $markdown->body);
+            $parity = WordParity::measure($html->body, $markdown->body);
 
             if ($parity < $worst) {
                 $worst = $parity;
@@ -49,29 +49,5 @@ final class MarkdownCheck implements Check
             $worst >= 0.8 => DoctorCheck::warn('markdown', 'Markdown twins', "Only {$percent}% of the words on {$worstPage} are in its Markdown.", 'Give custom components a Markdown form (LaRecipe::component(...)->markdown(...)).'),
             default => DoctorCheck::fail('markdown', 'Markdown twins', "Only {$percent}% of the words on {$worstPage} are in its Markdown.", 'Give custom components a Markdown form (LaRecipe::component(...)->markdown(...)).'),
         };
-    }
-
-    /** The share of the article's distinct words that also appear in the Markdown. */
-    private function parity(string $html, string $markdown): float
-    {
-        $article = preg_match('/<article[^>]*data-lr-article[^>]*>(.*?)<\/article>/s', $html, $matches) ? $matches[1] : $html;
-        $articleWords = $this->words(html_entity_decode(strip_tags((string) preg_replace('/<(script|style)\b.*?<\/\1>/s', ' ', $article)), ENT_QUOTES));
-        $markdownWords = array_flip($this->words($markdown));
-
-        if ($articleWords === []) {
-            return 1.0;
-        }
-
-        $found = array_filter($articleWords, fn (string $word) => isset($markdownWords[$word]));
-
-        return count($found) / count($articleWords);
-    }
-
-    /** @return list<string> */
-    private function words(string $text): array
-    {
-        preg_match_all('/[\p{L}\p{N}]{4,}/u', mb_strtolower($text), $matches);
-
-        return array_values(array_unique($matches[0]));
     }
 }
