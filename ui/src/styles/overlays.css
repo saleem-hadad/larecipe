@@ -67,8 +67,11 @@
     }
   }
 
+  /* A fixed row: the palette is a capped flex column, and without flex: none the
+     results squeezed the field as soon as the reader typed. */
   .lr-palette-search {
     display: flex;
+    flex: none;
     align-items: center;
     gap: 12px;
     height: 56px;
@@ -251,6 +254,7 @@
 
   .lr-palette-footer {
     display: flex;
+    flex: none;
     align-items: center;
     gap: 16px;
     height: 40px;

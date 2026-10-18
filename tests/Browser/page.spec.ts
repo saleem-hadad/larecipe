@@ -128,3 +128,18 @@ test('Markdown lists keep their markers', async ({ page }) => {
   const list = page.locator('.lr-prose ul:not([class])').first()
   await expect(list).toHaveCSS('list-style-type', 'disc')
 })
+
+test('a linked card traces its border in violet on hover and unwinds when left', async ({ page }) => {
+  await page.goto('/guide/3.x/guides/authoring')
+  await waitForApp(page)
+
+  const card = page.locator('a.lr-card').first()
+  const sweep = () => card.evaluate((element) => getComputedStyle(element, '::before').getPropertyValue('--lr-card-sweep').trim())
+
+  expect(await sweep()).toBe('0deg')
+  await card.hover()
+  await expect.poll(sweep).toBe('360deg')
+
+  await page.mouse.move(0, 0)
+  await expect.poll(sweep).toBe('0deg')
+})

@@ -17,6 +17,13 @@
   initial-value: 720px;
 }
 
+/* How far a linked card's violet border has swept around it on hover (base.css). */
+@property --lr-card-sweep {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
 @property --lr-article-centering {
   syntax: '<number>';
   inherits: true;
@@ -101,6 +108,7 @@
   --lr-duration-state: 180ms;
   --lr-duration-panel: 240ms;
   --lr-duration-sidebar: 320ms;
+  --lr-duration-card: 600ms;
   --lr-ease-sidebar: cubic-bezier(0.4, 0, 0.2, 1);
   --lr-duration-swap: 160ms;
 
@@ -244,6 +252,7 @@
     --lr-duration-state: 0ms;
     --lr-duration-panel: 0ms;
     --lr-duration-sidebar: 0ms;
+    --lr-duration-card: 0ms;
     --lr-duration-swap: 0ms;
   }
 }

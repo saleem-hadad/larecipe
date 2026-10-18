@@ -81,3 +81,16 @@ test('closing the palette reports the search to the server for analytics', async
 
   expect((await report).postDataJSON()).toEqual({ searches: [{ query: 'zzqxw', results: 0 }] })
 })
+
+test('typing never squeezes the search field or the footer', async ({ page }) => {
+  await page.keyboard.press(`${modifier}+k`)
+  const dialog = page.getByRole('dialog', { name: 'Search' })
+  const input = dialog.getByRole('combobox')
+  const height = (selector: string) => dialog.locator(selector).evaluate((element) => (element as HTMLElement).offsetHeight)
+  const field = await height('.lr-palette-search')
+
+  await input.fill('a')
+  await expect(dialog.getByRole('option').first()).toBeVisible()
+  expect(await height('.lr-palette-search')).toBe(field)
+  expect(await height('.lr-palette-footer')).toBe(40)
+})

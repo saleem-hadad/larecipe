@@ -576,6 +576,31 @@
     border-color: var(--lr-hairline-strong);
   }
 
+  /* On hover a violet border sweeps once around the card, from the top, and
+     stays drawn; it unwinds when the pointer leaves. */
+  a.lr-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    padding: 1.5px;
+    border-radius: inherit;
+    background: conic-gradient(from 0deg, var(--lr-accent-current) var(--lr-card-sweep), transparent var(--lr-card-sweep));
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+    pointer-events: none;
+    transition: --lr-card-sweep var(--lr-duration-card) var(--lr-ease-sidebar);
+  }
+
+  a.lr-card:hover::before,
+  a.lr-card:focus-visible::before {
+    --lr-card-sweep: 360deg;
+  }
+
   /* A content icon (Card icon="rocket"): violet on violet soft, above the title. */
   .lr-card-icon {
     display: grid;
