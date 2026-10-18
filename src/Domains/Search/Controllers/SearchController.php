@@ -2,8 +2,11 @@
 
 namespace LaRecipe\Domains\Search\Controllers;
 
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use LaRecipe\Domains\Delivery\Events\SearchPerformed;
+use LaRecipe\Domains\Delivery\Support\RequestClassifier;
 use LaRecipe\Domains\Delivery\Support\SetFromRequest;
 use LaRecipe\Domains\Search\Contracts\SearchEngine;
 use LaRecipe\Domains\Search\DTOs\SearchHit;
@@ -30,6 +33,8 @@ final class SearchController
         private readonly Reader $reader,
         private readonly SearchEngine $search,
         private readonly SearchUrls $urls,
+        private readonly Dispatcher $events,
+        private readonly RequestClassifier $classifier,
     ) {}
 
     public function __invoke(Request $request): JsonResponse
@@ -45,6 +50,10 @@ final class SearchController
         $query = mb_substr(trim((string) $request->query('q', '')), 0, self::MAX_QUERY);
         $limit = min(self::MAX_LIMIT, max(1, (int) $request->query('limit', 10)));
         $hits = $query === '' ? [] : $this->search->search($this->reader->query($set, $version, $locale, $query, $limit));
+
+        if ($query !== '') {
+            $this->events->dispatch(new SearchPerformed($set->key, $version, $locale, $query, count($hits), 'server', $this->classifier->classify($request)));
+        }
 
         return new JsonResponse([
             'query' => $query,

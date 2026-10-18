@@ -29,6 +29,12 @@ final class SearchUrls
         return $this->path($set, $version, $locale, '_search');
     }
 
+    /** Where the palette reports the searches it answered in the browser. */
+    public function report(DocSet $set, string $version, string $locale): string
+    {
+        return $this->path($set, $version, $locale, '_search/report');
+    }
+
     /** A page section as the reader opens it (domain-relative, for client navigation). */
     public function section(DocSet $set, string $version, string $locale, string $path, ?string $anchor): string
     {

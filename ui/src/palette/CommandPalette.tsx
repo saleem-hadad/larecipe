@@ -2,6 +2,7 @@ import { Icon, Loader, useDelayedFlag, useLaRecipe, type BootPayload, type IconN
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 import { askEnabled, useApp, useAppState } from '../app/context'
 import { Dialog } from '../app/Dialog'
+import { createSearchReporter } from './report'
 import { highlightRuns, prepareSearch, suggestedPages, type SearchHit, type Searcher } from './search'
 
 /** Warm the index after the first interaction, so the palette opens with results ready. */
@@ -47,6 +48,8 @@ export default function CommandPalette() {
   const list = useRef<HTMLDivElement>(null)
   const showLoader = useDelayedFlag(status === 'loading')
   const ask = askEnabled(boot)
+  const reportUrl = boot.search?.report_url ?? null
+  const reporter = useMemo(() => createSearchReporter(reportUrl), [reportUrl])
 
   useEffect(() => {
     if (palette.open) setQuery(palette.query)
@@ -81,14 +84,33 @@ export default function CommandPalette() {
     const timer = window.setTimeout(() => {
       ready
         .search(trimmed, controller.signal)
-        .then((results) => !controller.signal.aborted && setHits(results))
+        .then((results) => {
+          if (controller.signal.aborted) return
+          setHits(results)
+          // The server driver's endpoint reports its own searches.
+          if (ready.mode !== 'server') reporter.record(trimmed, results.length)
+        })
         .catch(() => !controller.signal.aborted && setHits([]))
     }, delay)
     return () => {
       controller.abort()
       window.clearTimeout(timer)
     }
-  }, [query, status])
+  }, [query, status, reporter])
+
+  // A search counts when the reader stops typing; closing the palette or leaving the page settles it.
+  useEffect(() => {
+    if (!palette.open) reporter.flush()
+  }, [palette.open, reporter])
+
+  // The palette unmounts when it closes.
+  useEffect(() => () => reporter.flush(), [reporter])
+
+  useEffect(() => {
+    const flush = () => document.visibilityState === 'hidden' && reporter.flush()
+    document.addEventListener('visibilitychange', flush)
+    return () => document.removeEventListener('visibilitychange', flush)
+  }, [reporter])
 
   const close = useCallback(() => actions.closePalette(), [actions])
 

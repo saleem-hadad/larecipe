@@ -136,6 +136,6 @@ it('points the UI at the endpoint when the set uses the server driver', function
 
     $search = bootSearch($this, '/guide');
 
-    expect($search)->toBe(['driver' => 'server', 'index_url' => null, 'endpoint' => '/guide/_search']);
+    expect($search)->toBe(['driver' => 'server', 'index_url' => null, 'endpoint' => '/guide/_search', 'report_url' => null]);
     $this->get('/guide/_search/abc.def.json')->assertNotFound();
 });
