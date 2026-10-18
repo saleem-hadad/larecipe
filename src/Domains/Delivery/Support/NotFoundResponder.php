@@ -7,11 +7,11 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\View;
+use LaRecipe\Domains\Access\Services\PageAccess;
 use LaRecipe\Domains\Content\DTOs\DocSet;
 use LaRecipe\Domains\Delivery\DTOs\DocsRequest;
 use LaRecipe\Domains\Delivery\Services\DocsUrls;
 use LaRecipe\Domains\Delivery\Services\PageCatalog;
-use LaRecipe\Domains\Access\Services\PageAccess;
 
 /**
  * A real 404 in every representation (no soft 404s). A page that exists but is
@@ -41,7 +41,7 @@ final class NotFoundResponder
         $suggestions = $this->suggestions !== null && $this->access->canEnter($set) ? ($this->suggestions)($set, $docs) : [];
 
         if ($docs->isMarkdown()) {
-            $lines = ["# Page not found", '', "There is no page at `/{$docs->path}` in {$set->manifest->name}."];
+            $lines = ['# Page not found', '', "There is no page at `/{$docs->path}` in {$set->manifest->name}."];
 
             if ($suggestions !== []) {
                 $lines[] = '';
