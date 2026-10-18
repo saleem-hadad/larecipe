@@ -42,20 +42,40 @@ final class SitemapController
             abort(404);
         }
 
-        $fingerprint = implode('|', array_map(fn ($version) => $this->catalog->fingerprint($set, $version->id), $set->versions()));
-        $key = CacheFormat::prefix().$set->key.':sitemap:'.hash('xxh128', $fingerprint.'|'.$this->urls->base($set));
-
-        $xml = $this->cache->get($key);
-
-        if (! is_string($xml) || ! str_starts_with($xml, '<?xml')) {
-            $this->cache->forever($key, $xml = $this->build($set));
-        }
+        $xml = $this->cachedFor($request) ? $this->cached($set) : $this->build($set);
 
         return new Response($xml, 200, [
             'Content-Type' => 'application/xml; charset=UTF-8',
             'Cache-Control' => 'public, max-age=600, s-maxage=3600',
             'X-Content-Type-Options' => 'nosniff',
         ]);
+    }
+
+    /**
+     * The sitemap's URLs follow the request's host, so only the app's own host
+     * (app.url) is cached. A set bound to a domain only ever answers on that
+     * domain. Any other Host header gets a sitemap built for it and never
+     * stored, so arbitrary hosts can neither fill the cache nor poison it.
+     */
+    private function cachedFor(Request $request): bool
+    {
+        $set = $this->current->set($request);
+
+        return $set->config->domain !== null
+            || strcasecmp($request->getHost(), (string) parse_url((string) config('app.url'), PHP_URL_HOST)) === 0;
+    }
+
+    private function cached(DocSet $set): string
+    {
+        $fingerprint = implode('|', array_map(fn ($version) => $this->catalog->fingerprint($set, $version->id), $set->versions()));
+        $key = CacheFormat::prefix().$set->key.':sitemap:'.hash('xxh128', $fingerprint.'|'.$this->urls->base($set));
+        $xml = $this->cache->get($key);
+
+        if (! is_string($xml) || ! str_starts_with($xml, '<?xml')) {
+            $this->cache->forever($key, $xml = $this->build($set));
+        }
+
+        return $xml;
     }
 
     private function build(DocSet $set): string
