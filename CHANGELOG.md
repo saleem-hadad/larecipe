@@ -16,7 +16,10 @@ A new package, `larecipe/larecipe`, rebuilt for docs that agents write and keep 
 - Client-side search with MiniSearch and a `SearchDriver` contract for custom engines.
 - Versions, languages with right-to-left support, gate blocks, private sets, live references to routes, commands, models and events.
 - Custom React components with `@larecipe/ui` and `@larecipe/vite`.
-- Ask AI with citations, analytics events and integrations, static export.
+- Ask AI with citations, answer feedback and provider failover; analytics events (page views, Markdown, MCP, searches, feedback) and integrations; static export.
+- Themes from tokens in larecipe.json, plus a `theme.css` override listed under `assets.css`.
+- Secure by default: raw HTML in Markdown is escaped (repository sets may opt into `html_input: allow`; database sets are always sanitized), gate blocks fail closed, every surface applies the same access rules, live references never print config or environment values, and analytics scripts for database sets come from config only.
+- Works on Laravel 12.62+ and 13, PHP 8.3+.
 
 <a name="2.5.0"></a>
 # [2.5.0](https://github.com/saleem-hadad/larecipe/releases/tag/v2.5.0) (2022-03-26)
