@@ -10,7 +10,7 @@ Every component renders complete, readable HTML without JavaScript. Components m
 </div>
 ```
 
-`data-lr-props` is JSON: the author's props, defaults filled in, plus the derived props listed per component. URL props (`href`, `src`, `poster`) arrive already resolved to reader URLs; unsafe schemes (`javascript:`) arrive as an empty string. Non-island components have no wrapper.
+`data-lr-props` is JSON: the author's props, defaults filled in, plus the derived props listed per component. Props a component does not declare are dropped for built-ins, and for every component on a database set; derived props always come from LaRecipe, never from the author. URL props (`href`, `src`, `poster`) arrive already resolved to reader URLs; unsafe schemes (`javascript:`) arrive as an empty string. Non-island components have no wrapper.
 
 ## Three spellings, one node
 

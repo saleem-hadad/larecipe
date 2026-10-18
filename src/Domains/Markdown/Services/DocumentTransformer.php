@@ -279,6 +279,8 @@ final class DocumentTransformer
 
     private function video(ComponentNode $node): void
     {
+        // The embed URL reaches an iframe, so only LaRecipe derives it (YouTube or Vimeo below).
+        unset($node->props['embed'], $node->props['provider']);
         $src = is_string($node->props['src'] ?? null) ? $node->props['src'] : '';
 
         if ($src === '') {

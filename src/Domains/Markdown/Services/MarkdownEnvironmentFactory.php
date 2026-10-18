@@ -13,6 +13,7 @@ use LaRecipe\Domains\Markdown\Parser\DirectiveStartParser;
 use LaRecipe\Domains\Markdown\Parser\MathStartParser;
 use LaRecipe\Domains\Markdown\Parser\RawHtmlRenderer;
 use LaRecipe\Domains\Markdown\Parser\SnippetIncludeStartParser;
+use LaRecipe\Domains\Markdown\Parser\UndeclaredPropsFilter;
 use LaRecipe\Domains\Markdown\Support\PassTheme;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Environment\EnvironmentBuilderInterface;
@@ -37,7 +38,8 @@ use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
  * they work without ever allowing raw HTML. Directives (`:::`) start at 80, display math
  * (`$$`) at 55 and snippet includes (`<<<`) at 47.
  *
- * After parsing, the document transformer (-40) turns alerts, mermaid fences and
+ * After parsing, the undeclared props filter (200) drops props a component does
+ * not declare, then the document transformer (-40) turns alerts, mermaid fences and
  * includes into their final nodes, then the document processor (-50) assigns
  * heading ids and resolves links. Every renderer reads the result.
  */
@@ -94,6 +96,10 @@ final class MarkdownEnvironmentFactory
         $environment->addRenderer(FencedCode::class, new CodeBlockRenderer($this->highlighter), 10);
         $environment->addRenderer(IndentedCode::class, new CodeBlockRenderer($this->highlighter), 10);
 
+        $environment->addEventListener(DocumentParsedEvent::class, new UndeclaredPropsFilter(
+            $this->components,
+            fn () => $this->htmlInput($state->ref?->set) === HtmlInput::Sanitize,
+        ), UndeclaredPropsFilter::PRIORITY);
         $environment->addEventListener(DocumentParsedEvent::class, new DocumentTransformer($state, $this->snippets), -40);
         $environment->addEventListener(DocumentParsedEvent::class, new DocumentProcessor($state), -50);
 
