@@ -112,6 +112,8 @@ export interface SearchConfig {
   driver?: string
   index_url?: string | null
   endpoint?: string | null
+  /** Where the palette reports searches it answered in the browser; null when the server sees them itself. */
+  report_url?: string | null
 }
 
 export interface AskConfig {

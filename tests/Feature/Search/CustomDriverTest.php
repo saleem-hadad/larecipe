@@ -66,7 +66,7 @@ beforeEach(function () {
 it('sends the UI to the endpoint and serves no client index', function () {
     preg_match('#id="lr-boot">(.*?)</script>#s', $this->get('/guide')->getContent(), $boot);
 
-    expect(json_decode($boot[1], true)['search'])->toBe(['driver' => 'memory', 'index_url' => null, 'endpoint' => '/guide/_search']);
+    expect(json_decode($boot[1], true)['search'])->toBe(['driver' => 'memory', 'index_url' => null, 'endpoint' => '/guide/_search', 'report_url' => null]);
     $this->get('/guide/_search/abc.def.json')->assertNotFound();
 });
 

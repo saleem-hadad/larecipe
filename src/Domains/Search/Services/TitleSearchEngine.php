@@ -2,7 +2,6 @@
 
 namespace LaRecipe\Domains\Search\Services;
 
-use LaRecipe\Domains\Content\DTOs\PageSummary;
 use LaRecipe\Domains\Search\Contracts\SearchEngine;
 use LaRecipe\Domains\Search\DTOs\SearchHit;
 use LaRecipe\Domains\Search\DTOs\SearchQuery;

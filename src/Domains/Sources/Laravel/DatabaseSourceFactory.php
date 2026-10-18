@@ -25,7 +25,7 @@ final class DatabaseSourceFactory
 
     public function make(SetConfig $set): CachedSource
     {
-        $storeName = $set->source['cache'] ?? $set->setting('cache.store');
+        $storeName = $set->cacheStore();
         $cache = $this->app->make('cache')->store($storeName);
         $store = $cache->getStore();
 

@@ -66,3 +66,18 @@ test('a query with no match says so plainly', async ({ page }) => {
   await dialog.getByRole('combobox').fill('zzqxw')
   await expect(dialog.getByText('No pages match “zzqxw”.')).toBeVisible()
 })
+
+test('closing the palette reports the search to the server for analytics', async ({ page }) => {
+  await page.keyboard.press(`${modifier}+k`)
+  const dialog = page.getByRole('dialog', { name: 'Search' })
+  await dialog.getByRole('combobox').fill('zzqxw')
+  await expect(dialog.getByText('No pages match “zzqxw”.')).toBeVisible()
+
+  const report = page.waitForRequest((request) => request.url().includes('/_search/report') && request.method() === 'POST')
+  // In a search field the first Escape clears the text, the second closes the palette.
+  await page.keyboard.press('Escape')
+  await page.keyboard.press('Escape')
+  await expect(dialog).toBeHidden()
+
+  expect((await report).postDataJSON()).toEqual({ searches: [{ query: 'zzqxw', results: 0 }] })
+})

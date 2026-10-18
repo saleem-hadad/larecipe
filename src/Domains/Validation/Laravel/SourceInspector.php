@@ -295,7 +295,7 @@ final class SourceInspector implements DocsInspector
 
     private function settings(?DocSet $set): ValidationSettings
     {
-        $store = $this->config->get('larecipe.cache.store') ?? $this->config->get('cache.default');
+        $store = $set?->config->cacheStore() ?? $this->config->get('larecipe.cache.store') ?? $this->config->get('cache.default');
         $driver = $set?->config->driver ?? 'repository';
         $snippets = $set?->config->setting('snippets.root') ?? $this->config->get('larecipe.snippets.root');
 

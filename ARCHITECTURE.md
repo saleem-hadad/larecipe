@@ -81,7 +81,7 @@ These are the rules every design decision in this document is checked against. W
 | Laravel | `^12.62 \|\| ^13.0` | laravel/ai needs `illuminate/json-schema ^12.62\|^13.15`; laravel/mcp needs 12.41.1+. One floor guarantees that `composer require laravel/ai` never conflicts on a supported install. |
 | Databases | Any Laravel-supported DB for the `database` source. | No database-specific features are required. |
 | Cache | Any persistent cache store for the `database` source. | The database source always runs behind a cache (5.5); `array` and `null` stores are rejected for it outside tests. |
-| Git | `git` on developer machines and in CI, for `larecipe:affected` and provenance. Not required on production servers. | `larecipe:optimize` compiles provenance at build time when git is available, and falls back to file modification times when it is not (Laravel Cloud, Vapor, containers). |
+| Git | `git` on developer machines and in CI, for `larecipe:affected` and provenance. Not required on production servers. | `larecipe:provenance` compiles provenance at build time when git is available; without the compiled index, pages fall back to file modification times (Laravel Cloud, Vapor, containers). |
 
 Laravel 12 is in its security-only window. We support it at launch to avoid blocking upgrades, and drop it in the first minor release after Laravel 14 ships.
 
@@ -369,7 +369,7 @@ final readonly class Provenance
 
 **Identity.** A page is identified by `(set, version, locale, path)`. Paths are lowercase, slash-separated, without extension. `index` is implicit for folders. Most apps have one set (`docs`), so the set key rarely appears in URLs or commands; it is always present in the model so a second set never needs a migration.
 
-**Provenance is metadata, not frontmatter.** It comes from the source: git history for `repository` (commit author, `Co-Authored-By` trailers that name an agent, PR references in commit messages), compiled at build time by `larecipe:optimize`; the revisions table for `database`, where a docs migration records the PR and the agent that wrote it. The UI uses it for "Updated 3 days ago by Claude Code, PR #412". Readers and reviewers deserve to know what an agent wrote; authors should not have to maintain it by hand.
+**Provenance is metadata, not frontmatter.** It comes from the source: git history for `repository` (commit author, `Co-Authored-By` trailers that name an agent, PR references in commit messages), compiled at build time by `larecipe:provenance`; the revisions table for `database`, where a docs migration records the PR and the agent that wrote it. The UI uses it for "Updated 3 days ago by Claude Code, PR #412". Readers and reviewers deserve to know what an agent wrote; authors should not have to maintain it by hand.
 
 ### 4.2 The set manifest: `larecipe.json`
 
@@ -560,7 +560,7 @@ A source instance is bound to one doc set. The `database` driver scopes every qu
 - Reads `docs/` at the app's repo root by default. Root-level `docs/` is what GitHub, agents and humans expect; v2's `resources/docs` keeps working by config. Additional sets point at their own folders (`handbook/`, `docs-api/`).
 - Layout: `docs/larecipe.json`, `docs/{version}/navigation.json` (optional), `docs/{version}/**/*.md`, `docs/{version}/_assets/**`. Single-version sets may omit the version folder.
 - Writable. Writes go to the working tree, so they become part of the developer's next commit and the PR. `WriteMode` has no effect here: review happens in the pull request.
-- Provenance from git history, compiled at build time by `larecipe:optimize` (file mtimes when git is unavailable).
+- Provenance from git history, compiled at build time by `larecipe:provenance` (file mtimes when git is unavailable).
 - Fingerprint: in local env, a cheap mtime scan; in production, the compiled index from `larecipe:optimize` (6.6), so requests never scan the disk.
 
 ### 5.3 `database`
@@ -652,7 +652,7 @@ return new class extends DocsMigration
 - **`larecipe:sync`,** run on demand, writes migrations the same way (13.6).
 - **The skills know it.** `larecipe-write-docs` and `larecipe-update-docs` tell the agent that on a database set it edits through the MCP tools (never by hand-writing SQL or editing rows), and that the migration file is part of the change to commit and push. The `AGENTS.md` instructions and the pre-push hook (14.2, 14.3) apply to database sets the same way: no push without the docs migration.
 
-**Starting from what is live.** A developer's local database can lag behind production. `php artisan larecipe:pull --set=handbook` refreshes a local or CI database set from production, reading through the set's authenticated MCP read tools (or from a bundle made by `larecipe:source:export`), so new migrations record production's hashes. The conflict check covers anything `pull` missed.
+**Starting from what is live.** A developer's local database can lag behind production. `php artisan larecipe:pull --set=handbook --from=handbook.zip` refreshes a local or CI database set from a bundle that `larecipe:source:export` made on production, so new migrations record production's hashes. (Pulling straight through the production MCP endpoint is not in 3.0.) The conflict check covers anything `pull` missed.
 
 **In the host's test suite,** docs migrations run like any other migration (they are small inserts). Teams that prefer to skip their bodies in tests set `larecipe.migrations.skip_in_tests`.
 
@@ -664,7 +664,7 @@ return new class extends DocsMigration
 
 - The set's fingerprint (the highest published revision id) lives in the cache store and is bumped by every publish (admin UI, auto-mode writes, docs migrations), so serving never queries for it.
 - The manifest, the page list, each page, navigation, rendered HTML and Markdown, search index variants, `llms.txt` and `skill.md` are cached per fingerprint, with no TTL.
-- Publishing dispatches `ContentChanged`; a queued listener warms the changed pages and the indexes. `php artisan larecipe:cache:warm --set=handbook` warms everything (deploy scripts call it after `migrate`).
+- Publishing dispatches `ContentChanged`; a queued listener warms the changed pages and the indexes. `php artisan larecipe:cache:warm --set=handbook` warms the source cache: the manifest, and for every version and locale the page list, each page and the navigation (deploy scripts call it after `migrate`). Rendered pages and search indexes fill on first request.
 - A warm request for a cached page runs zero database queries; a test asserts it.
 - The configured cache store must be persistent. `larecipe:validate` and `larecipe:doctor` fail a database set on the `array` or `null` store outside tests.
 
@@ -760,7 +760,7 @@ Built-ins for 3.0: `Callout`, `Steps`/`Step`, `Tabs`/`Tab`, `CodeGroup`, `Card`/
 
 Island markup: `<div data-lr-component="Tabs" data-lr-props='{"default":"composer"}'>…fallback HTML…</div>`. Host apps register their own components on both sides (section 9).
 
-**Validation of component tags.** Props are validated against the component's PHP props schema, on render and by `larecipe:validate`. An unknown component, or one with invalid props, is a validation error and renders as escaped text, never as raw HTML. On `database` sets, whose content may come from the admin UI, only components with a PHP definition (`LaRecipe::component()`) are allowed; a component known only from an extension manifest is rejected there.
+**Validation of component tags.** Props are validated against the component's PHP props schema, on render and by `larecipe:validate`. An unknown component, or one with invalid props, is a validation error and renders as escaped text, never as raw HTML. Every component needs a PHP definition (`LaRecipe::component()`, which declares its props and its no-JavaScript fallback) on every source; a component known only from a host extension's JavaScript is unknown.
 
 **Per-request values in cached HTML.** Rendered articles are cached and shared across readers, so a fallback can never bake in a per-request value. Fallbacks that need one (a CSRF token for a form) call `LaRecipe::csrfField()`, which emits a placeholder that the response layer fills on every request. Static exports leave it empty.
 
@@ -793,14 +793,14 @@ Rules: YAML header with stable keys (never the source frontmatter verbatim); a o
 
 ### 6.5 Blade in Markdown
 
-v2 compiled Blade inside Markdown and evaluated it. v3 does not, by default. It made every content source a code-execution path (fatal for the `database` source), it breaks agent Markdown, and it ties content to one framework. What v2 users used it for is covered by components, includes, placeholders and per-page frontmatter. A `trusted_blade` option exists only for the `repository` source as a migration aid, is off by default, and `larecipe:validate` reports every page that relies on it.
+v2 compiled Blade inside Markdown and evaluated it. v3 does not, by default. It made every content source a code-execution path (fatal for the `database` source), it breaks agent Markdown, and it ties content to one framework. What v2 users used it for is covered by components, includes, placeholders and per-page frontmatter. There is no option to turn it back on: `larecipe:upgrade` reports every Blade construct it finds, and the `larecipe-upgrade-v2` skill replaces each one with a component, an include or a placeholder.
 
 ### 6.6 Caching and invalidation
 
 - **Content-addressed render cache.** Key: `sha256(set, contentHash, rendererVersion, componentsVersion, referencesFingerprint, configHash)`. A changed page gets a new key; nothing is purged by hand. Phiki output is cached per code block hash as well. `referencesFingerprint` is included only for pages that contain live references (6.7).
 - **Fingerprints for indexes.** Navigation, search index variants, `llms.txt`, `skill.md` and the page list are cached per `(set, version, locale, source fingerprint)`.
 - **Audience variants.** Pages with `<Can>` blocks (6.8) cache one rendered variant per distinct combination of abilities that appear on the page, never per user.
-- **`php artisan larecipe:optimize`** compiles manifests, navigation, the page index, provenance, search records and every rendered page of `repository` sets into `bootstrap/cache/larecipe/`, like `route:cache`. It is registered with Laravel's `optimize` and `optimize:clear` commands (`$this->optimizes(...)` in the provider), so existing deploy scripts pick it up.
+- **`php artisan larecipe:optimize`** compiles manifests, navigation, the page index, search records and every rendered page of `repository` sets into `bootstrap/cache/larecipe/`, like `route:cache`. It is registered with Laravel's `optimize` and `optimize:clear` commands (`$this->optimizes(...)` in the provider), so existing deploy scripts pick it up.
 - **Database sets** are always cached (5.5): the fingerprint lives in the cache, publishing bumps it and dispatches `ContentChanged`, a queued listener warms caches.
 - Octane-safe: no request state in static properties.
 
@@ -852,7 +852,7 @@ Ask your workspace owner for access to billing exports.
 - **HTML and `.md`:** unauthorized blocks are removed from the AST before rendering, not hidden with CSS.
 - **Search:** records are split at gate boundaries and each record stores the abilities it requires. Client index variants contain only the records their audience may see (section 10); the server ranker filters the same way.
 - **`llms.txt`, `llms-full.txt`, `skill.md`:** built for the caller, so gated text appears only for authorized requests; public, cacheable variants contain only ungated content.
-- **MCP and Ask AI:** tools resolve pages through the same policy with the authenticated user, so retrieval never sees text the reader could not.
+- **MCP and Ask AI:** tools resolve pages through the same policy with the authenticated user, so retrieval never sees a page the reader could not. Inside pages, `read_page`, `llms-full.txt` and Ask AI retrieval use the guest view of gate blocks in 3.0: they may leave out text a signed-in reader could see, and never include text a guest could not.
 - **Validation:** an unknown ability is a warning; a `<Can>` block on a page that is itself private is reported as redundant.
 
 ### 6.9 OpenAPI pages: integration, not a renderer
@@ -1323,7 +1323,7 @@ sequenceDiagram
 
 - Controller: `Vercel::chat($request)` then `(new DocsAssistant($set, $version))->withMessages($chat->history())->stream($chat)->usingProtocol($chat->protocol())`. The React panel uses `@ai-sdk/react`'s `useChat` in a lazy chunk. (Exact AI SDK major compatibility is *unverified*; pinned in Phase 2.)
 - The assistant answers only from the docs, cites page URLs, and says when the docs do not cover the question. Citations are validated against known pages before they are rendered.
-- History lives in the browser for anonymous readers. Server-side conversation memory (laravel/ai `RemembersConversations`) is opt-in for authenticated readers and requires the AI SDK migrations.
+- History lives in the browser, and the server keeps only the last few text turns a request sends (bounded in size). Server-side conversation memory is not in 3.0.
 - Controls: `askLarecipe` gate, named rate limiter, `max_steps`, provider and model from config (failover arrays supported), per-day budget guard. Answers emit `AskAiAnswered` (with an answered or not-covered flag) and thumbs up or down emit `FeedbackSubmitted`, for the host's analytics; LaRecipe stores nothing.
 - Requires `laravel/ai` and the owner's provider key; the panel is hidden when either is missing or Ask AI is disabled.
 
@@ -1568,7 +1568,7 @@ Database sets get an admin area at `/{prefix}/_admin`, behind `manageLarecipe($u
 
 - `access.mode`: `public`, `auth` (any authenticated user of the configured guard) or `gate`.
 - `access.mode` is per doc set, so a public `/docs` and a staff-only `/handbook` live in one app.
-- Gates: `viewLarecipe($user, Page $page)` (kept from v2, now receives the page, whose ref carries the set), `manageLarecipe($user, string $set)` for drafts, the admin UI and remote author tools, `askLarecipe($user, string $set)` for Ask AI. Version-level `visibility` in the manifest and page-level `visibility` in frontmatter feed the same policy.
+- Gates: `viewLarecipe($user, ?PageSummary $page, string $set)` (kept from v2, now told the page and the set; `$page` is null when a whole set or version is checked), `manageLarecipe($user, string $set)` for drafts, the admin UI and remote author tools, `askLarecipe($user, string $set)` for Ask AI. Version-level `visibility` in the manifest and page-level `visibility` in frontmatter feed the same policy.
 - **Block-level access.** `<Can ability>` and `<Cannot ability>` (6.8) evaluate any host gate or policy ability inside a page, which gives per-plan and per-role content without separate pages. Competitors sell this as adaptive content on their top tiers; here it is the host's own authorization layer.
 - **The Same-Rules Rule in code.** Every surface (HTML, `.md`, JSON, `llms.txt`, `llms-full.txt`, `skill.md`, sitemap, search index variants and the server ranker, MCP tools and resources, Ask AI retrieval) resolves pages through `PageAccess::visible(PageRef, ?User)` and blocks through `PageAccess::allows(ability, ?User)`. A direct hit on a hidden page is a 404, never a 403. A test matrix asserts that a private page and a gated block are absent from all of them for a guest.
 - Signed share links for private pages: `php artisan larecipe:share 3.x/billing/roadmap --expires=7d` issues a temporary signed URL.
@@ -1710,7 +1710,7 @@ The skill then works through the manual items: rewriting custom Vue components a
 | Parsedown Extra | Replace | league/commonmark with GFM and extensions; safer and extensible. |
 | Interchangeable `MarkdownParser` contract | Replace | `LaRecipe::extendMarkdown()` and renderer hooks on one AST. |
 | Alerts `> {type}` with Font Awesome icons | Replace | GitHub alerts and `<Callout>`; portable on GitHub and for agents. |
-| Blade in Markdown | Replace | Components, includes, placeholders; opt-in `trusted_blade` for repository sets only (security and agent Markdown). |
+| Blade in Markdown | Replace | Components, includes, placeholders; no Blade evaluation at all (security and agent Markdown). |
 | `{{version}}` placeholder | Keep | Still supported; relative links preferred. |
 | `{{route}}` placeholder | Replace | Relative `.md` links. |
 | Vue components (card, badge, button, progress) | Replace | React components: Card, Badge, Button kept; Progress dropped (rarely used, no docs value). |
@@ -1756,7 +1756,7 @@ Resolved by the maintainer's review (2026-10-17) and kept here for the record: `
 
 1. **Is laravel/ai a hard dependency?** *Proposed resolution:* optional, detected in one place (`AiFeatures`), offered by the installer when Ask AI or `larecipe:sync` is enabled. The owner's own session is the primary author and needs no key in the app.
 2. **Default docs path.** `docs/` at the repo root (agent and GitHub friendly) versus v2's `resources/docs`. *Proposed resolution:* `docs/` for new installs; the upgrade keeps existing paths unless `--move-to=docs` is passed.
-3. **Trusted Blade compatibility flag.** *Proposed resolution:* keep `trusted_blade` as a migration aid, repository sets only, off by default, reported by `larecipe:validate`.
+3. **Trusted Blade compatibility flag.** *Decided (2026-10-18):* not shipped. Blade in content stays a code-execution path; the upgrade report and skill cover the migration.
 4. **`dist/` in git.** *Proposed resolution:* CI builds and commits `dist/` on release tags; contributors never commit it.
 5. **Laravel 12 support window.** *Proposed resolution:* support at launch, drop in the first minor release after Laravel 14 ships.
 6. **Exposing docs tools inside Boost's MCP server** (`boost.mcp.tools.include`) instead of, or in addition to, a separate `larecipe` server. Side effects are *unverified*. *Build-time verification task.*
