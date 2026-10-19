@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://larecipe.saleem.dev"><img src=".github/assets/screenshot.webp" alt="The LaRecipe docs site in a browser: the sidebar, the Introduction page, and the panel of actions for agents, such as Copy as Markdown and Connect MCP."></a>
+<a href="https://larecipe.saleem.dev"><img src=".github/assets/screenshot.webp" alt="The LaRecipe docs site in a browser: the sidebar, the Introduction page, and the panel of actions for agents, such as Copy as Markdown and Connect MCP. A badge on the window reads 3M+ downloads."></a>
 </p>
 
 <h1 align="center">Docs that keep up with your code</h1>
