@@ -32,7 +32,7 @@ use Throwable;
  */
 final class RenderCache
 {
-    public const RENDERER_VERSION = '3.0.0';
+    public const RENDERER_VERSION = '3.0.1';
 
     public function __construct(
         private readonly Cache $cache,

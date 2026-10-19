@@ -79,8 +79,8 @@ No link here.
 MD;
 
     expect(Render::html($body, [], Render::links())->html)->toBe(
-        '<div class="lr-card-group" data-cols="3"><a class="lr-card" href="/docs/webhooks" data-icon="webhook"><span class="lr-card-title">Webhooks</span><span class="lr-card-body">Receive signed events.</span></a>'."\n"
-        .'<div class="lr-card"><span class="lr-card-title">Plain</span><span class="lr-card-body">No link here.</span></div></div>'."\n"
+        '<div class="lr-card-group" data-cols="3"><a class="lr-card" href="/docs/webhooks" data-icon="webhook"><div class="lr-card-title">Webhooks</div><div class="lr-card-body">Receive signed events.</div></a>'."\n"
+        .'<div class="lr-card"><div class="lr-card-title">Plain</div><div class="lr-card-body">No link here.</div></div></div>'."\n"
     )->and(Render::markdown($body, [], Render::links()))->toBe("- [Webhooks](https://acme.test/docs/webhooks): Receive signed events.\n- **Plain**: No link here.");
 });
 

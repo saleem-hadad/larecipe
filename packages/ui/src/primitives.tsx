@@ -171,8 +171,8 @@ export interface CardProps {
 export function Card({ title, href, children, className }: CardProps) {
   const body = (
     <>
-      <span className="lr-card-title">{title}</span>
-      {children !== undefined && <span className="lr-card-body">{children}</span>}
+      <div className="lr-card-title">{title}</div>
+      {children !== undefined && <div className="lr-card-body">{children}</div>}
     </>
   )
 

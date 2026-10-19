@@ -34,7 +34,7 @@ Directives nest with longer fences (`::::tabs` around `:::tab`); equal fences cl
 | Tabs | `Tabs` | `<div class="lr-tabs">` + one `Tab` per panel + `</div>`. Props: `default?`, `sync?`, derived `labels` (every Tab label, in order) |
 | Tab | no | `<section class="lr-tab" data-label="L"><h4 class="lr-tab-label">L</h4><div class="lr-tab-body">...</div></section>` |
 | CodeGroup | `CodeGroup` | `<div class="lr-code-group">` + one code figure per block + `</div>`. Derived prop `labels` (each block's title, else language) |
-| Card | no | `<a class="lr-card" href="..." [data-icon="name"]><span class="lr-card-title">T</span><span class="lr-card-body">...</span></a>`, or `<div class="lr-card">` without `href`. A one-paragraph body is unwrapped (no `<p>`) |
+| Card | no | `<a class="lr-card" href="..." [data-icon="name"]><div class="lr-card-title">T</div><div class="lr-card-body">...</div></a>`, or `<div class="lr-card">` without `href`. A one-paragraph body is unwrapped (no `<p>`). Title and body are blocks, so text extractors (agents, AFDocs) never fuse them into one line |
 | CardGroup | no | `<div class="lr-card-group" data-cols="2">...</div>` (`cols` defaults to 2) |
 | Columns | no | `<div class="lr-columns" data-cols="2">...</div>` |
 | Accordion | no | `<details class="lr-accordion" [open]><summary>T</summary><div class="lr-accordion-body">...</div></details>` |

@@ -66,8 +66,8 @@ final class Cards
         $svg = $icon !== '' ? ContentIcons::svg($icon, 18) : null;
         $title = Markup::string($props, 'title');
         $inner = ($svg !== null ? '<span class="lr-card-icon">'.$svg.'</span>' : '')
-            .($title !== '' ? '<span class="lr-card-title">'.Markup::e($title).'</span>' : '')
-            .'<span class="lr-card-body">'.Markup::unwrapParagraph($children).'</span>';
+            .($title !== '' ? '<div class="lr-card-title">'.Markup::e($title).'</div>' : '')
+            .'<div class="lr-card-body">'.Markup::unwrapParagraph($children).'</div>';
 
         return $href !== ''
             ? '<a class="lr-card" href="'.Markup::e($href).'"'.$attributes.'>'.$inner.'</a>'
