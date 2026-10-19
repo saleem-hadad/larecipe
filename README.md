@@ -5,8 +5,8 @@
 <h1 align="center">Docs that keep up with your code</h1>
 
 <p align="center">
-LaRecipe is a docs site that lives inside your Laravel app.<br>
-Your coding agent updates it in the same pull request as the code.
+LaRecipe lives inside your Laravel app. Your coding agents write the docs and update them with every change. <br>
+People get a fast, beautiful site; agents get Markdown, llms.txt and MCP.
 </p>
 
 <p align="center">
@@ -56,7 +56,7 @@ show the user the docs diff and wait for approval, then commit and push again.
 
 **For readers**
 
-- A fast site, light and dark, right to left, phone to desktop
+- A fast site, light and dark, right to left, phone to desktop. Just beautiful 💄!
 - Search in the browser, with no service to run
 - Versions, languages and private docs
 - Live references read from your running app
