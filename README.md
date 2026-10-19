@@ -1,14 +1,24 @@
-<h1 align="center">LaRecipe</h1>
+<p align="center">
+<a href="https://larecipe.saleem.dev"><img src=".github/assets/screenshot.webp" alt="The LaRecipe docs site in a browser: the sidebar, the Introduction page, and the panel of actions for agents, such as Copy as Markdown and Connect MCP."></a>
+</p>
 
-<p align="center"><strong>Docs that keep up with your code.</strong></p>
+<h1 align="center">Docs that keep up with your code</h1>
 
 <p align="center">
-LaRecipe lives inside your Laravel app. Your coding agents write the docs and update them with every change.<br>
-People get a fast, beautiful site; agents get Markdown, <code>llms.txt</code> and MCP.
+LaRecipe is a docs site that lives inside your Laravel app.<br>
+Your coding agent writes the pages and updates them in the same pull request as the code,<br>
+so people and agents always read the current answer.
 </p>
 
 <p align="center">
-<a href="https://larecipe.saleem.dev">Read the docs</a> ·
+<a href="https://github.com/saleem-hadad/larecipe/actions/workflows/tests.yml"><img src="https://img.shields.io/github/actions/workflow/status/saleem-hadad/larecipe/tests.yml?branch=main&label=tests" alt="Tests"></a>
+<a href="https://github.com/saleem-hadad/larecipe/releases"><img src="https://img.shields.io/github/v/release/saleem-hadad/larecipe?label=release" alt="Latest release"></a>
+<a href="LICENSE"><img src="https://img.shields.io/github/license/saleem-hadad/larecipe" alt="MIT license"></a>
+</p>
+
+<p align="center">
+<a href="https://larecipe.saleem.dev"><strong>Read the docs</strong></a> ·
+<a href="#get-started">Get started</a> ·
 <a href="#upgrading-from-larecipe-2">Upgrade from v2</a> ·
 <a href="CHANGELOG.md">Changelog</a>
 </p>
@@ -22,34 +32,40 @@ composer require larecipe/larecipe:^3.0
 php artisan larecipe:install
 ```
 
-Open `/docs`. The installer writes a short, real Introduction from your app (its name, its Laravel version, its README), so the first page is never lorem ipsum. It also sets up the coding agents it finds (Claude Code, Codex, Cursor, Gemini, Copilot): instructions in `AGENTS.md`, four skills, the MCP server and a pre-push check.
+Open `/docs`. The first page is a short, real Introduction written from your app (its name, its Laravel version, its README), never lorem ipsum.
 
-Want starter docs for your whole app? Run the installer with `--onboard=product,api` (or `package`, `internal`) and your local coding agent writes them, using the `larecipe-write-docs` skill.
+The installer also sets up the coding agents it finds (Claude Code, Codex, Cursor, Gemini and Copilot): instructions in `AGENTS.md`, four skills, the MCP server and the pre-push hook. There is no Node and no build step in your app: the UI ships prebuilt.
 
-No Node in your app: the UI ships prebuilt.
+Want starter docs for your whole app? Add `--onboard=product,api` (or `package`, `internal`) and your coding agent writes them with the `larecipe-write-docs` skill.
 
-## Push code. The docs follow.
+More in the [installation guide](https://larecipe.saleem.dev/3.x/get-started/installation).
 
-Docs rot because code changes every day. LaRecipe keeps them current in the same pull request as the code:
+## How the docs keep up
 
-- **Pages declare what they describe.** A `sources:` list in the frontmatter ties a page to files, folders or classes.
-- **Agents know the rule.** `AGENTS.md` tells every coding session to update the affected pages just before it pushes.
-- **A pre-push hook catches the moment it forgets.** When a push changes code that a page describes and the page was not updated, the agent is stopped with the exact pages to fix. Never an agent running in CI.
-- **You review, or you choose auto.** Docs changes are commits in the PR (Markdown, or docs migrations for a database source). Owners who trust the loop can switch to `review: auto`.
+Docs rot because code changes every day. LaRecipe moves the docs into the pull request:
 
-Need more power? `php artisan larecipe:sync` runs a docs agent built on `laravel/ai`, on your own provider key, on demand.
+1. **Each page lists the code it describes.** A `sources:` list in its frontmatter ties the page to files, folders or classes.
+2. **Your coding agent updates the pages a change affects**, just before it pushes. `AGENTS.md` tells every session to.
+3. **A hook catches the push it forgets.** It holds the push once and names the pages to update. The second push always goes through, so the agent is never stuck.
+4. **You review docs and code together**, in the same pull request. Trust the loop? Switch the review mode to `auto`.
 
-## For people
+No agent ever runs in your CI. When you want more power, `php artisan larecipe:sync` runs a docs agent inside your app, on your own AI provider key, on demand.
 
-- A fast reading experience with a design of its own, light and dark, right to left, phone to desktop. Server-rendered HTML, then React takes over without moving a pixel.
-- Search in the browser with fuzzy and prefix matching, no Algolia and no account. A `SearchDriver` contract for custom engines.
-- Versions, languages (Arabic and any other), gate blocks that show content per role, private sets behind your app's own auth.
-- Built-in components: `Callout`, `Steps`, `Tabs`, `CodeGroup`, `Card`, `Accordion`, `FileTree`, `Frame`, `Video`, `Mermaid`, `Math` and more.
-- Live references (`<Route>`, `<Artisan>`, `<Model>`, `<Event>`) read facts from your running app, so they cannot drift. No component ever reads config or environment values.
-- Your own React components, built with `@larecipe/vite` and sharing LaRecipe's single copy of React.
-- Ask AI for readers, with citations (needs `laravel/ai`).
+More in [how it works](https://larecipe.saleem.dev/3.x/keeping-current/how-it-works).
 
-## For agents
+## What readers get
+
+See it live: [larecipe.saleem.dev](https://larecipe.saleem.dev) is built with LaRecipe.
+
+- **A fast site with a design of its own.** Light and dark, right to left, phone to desktop. Server-rendered HTML, then React takes over without moving a pixel.
+- **Search with nothing to run.** Fuzzy and prefix matching in the browser, with no search service and no account. A `SearchDriver` contract for custom engines.
+- **Versions, languages and private docs.** Your app's own auth and gates decide who reads, down to one paragraph.
+- **Components in Markdown.** `Callout`, `Steps`, `Tabs`, `CodeGroup`, `Card`, `Accordion`, `FileTree`, `Mermaid`, `Math` and more, plus your own React components built with `@larecipe/vite`.
+- **Live references.** `<Route>`, `<Artisan>`, `<Model>` and `<Event>` read facts from your running app, so they cannot go stale.
+- **Ask AI.** Answers written only from your docs, with the pages they cite.
+- **Static export.** `php artisan larecipe:export` writes your public docs as plain files for any static host.
+
+## What agents get
 
 Every page answers agents too:
 
@@ -57,7 +73,7 @@ Every page answers agents too:
 | --- | --- |
 | Markdown twin of every page | add `.md` to any page URL, or send `Accept: text/markdown` |
 | Docs index and full text | `/docs/llms.txt`, `/docs/llms-full.txt` |
-| An agent skill for your docs | `/docs/skill.md`, `/.well-known/agent-skills/index.json` |
+| A skill for your docs | `/docs/skill.md`, `/.well-known/agent-skills/index.json` |
 | MCP server | `/docs/mcp` over HTTP, `php artisan larecipe:mcp` over stdio |
 
 `php artisan larecipe:doctor` grades how ready your docs are for agents and tells you what to fix.
@@ -71,19 +87,24 @@ Switch at any time with `php artisan larecipe:source:move`.
 
 ## Upgrading from LaRecipe 2
 
-v3 is a new package (`larecipe/larecipe`) with no backward compatibility. Bring your docs over with one command:
+v3 is a new package (`larecipe/larecipe`), rebuilt from scratch with no backward compatibility. Bring your docs over with one command:
 
 ```bash
+composer require larecipe/larecipe:^3.0
 php artisan larecipe:upgrade
 ```
 
-It converts your v2 Markdown, navigation and Vue components, and the `larecipe-upgrade-v2` skill lets your coding agent finish whatever needs judgment.
+It converts your v2 Markdown, navigation and Vue components. It starts as a dry run and writes `larecipe-upgrade-report.md`, so nothing changes until you add `--apply`. Your coding agent finishes the items that need judgment with the `larecipe-upgrade-v2` skill.
+
+The full guide: [Upgrade from v2](https://larecipe.saleem.dev/3.x/upgrade).
 
 ## Requirements
 
-PHP 8.3+, Laravel 12.62+ or 13.
+PHP 8.3+ and Laravel 12.62+ or 13. Ask AI and `larecipe:sync` also need `laravel/ai`.
 
 ## Contributing
+
+Bug reports and pull requests are welcome. To work on LaRecipe itself:
 
 ```bash
 composer install
@@ -98,4 +119,4 @@ pnpm test:browser       # browser tests against the workbench
 
 ## License
 
-LaRecipe is open-source software licensed under the [MIT license](LICENSE).
+LaRecipe is open-source software by [Saleem Hadad](https://github.com/saleem-hadad), licensed under the [MIT license](LICENSE).
