@@ -23,9 +23,11 @@ test('the switch next to the logo hides the navigation in one smooth motion, wid
   const before = await widthOf(article)
 
   // Midway: the sidebar slides out at its full width while the article is already widening.
+  // The motion is slowed to 1.6s here so a busy CI machine still samples it mid-stroke.
+  await page.addStyleTag({ content: ':root { --lr-duration-sidebar: 1600ms !important; }' })
   await toggle.click()
   await expect(page.locator('html')).toHaveAttribute('data-lr-sidebar', 'hidden')
-  await page.waitForTimeout(140)
+  await page.waitForTimeout(400)
   const midway = await widthOf(article)
   expect(midway).toBeGreaterThan(before)
   expect(midway).toBeLessThan(880)

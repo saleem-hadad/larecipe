@@ -101,6 +101,8 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
+          # This job runs npx only; pnpm is not installed here.
+          package-manager-cache: false
 
       - name: Install dependencies
         run: composer update --prefer-dist --no-interaction --no-progress
@@ -131,7 +133,7 @@ jobs:
 
       - name: Server log
         if: failure()
-        run: cat serve.log
+        run: cat serve.log 2>/dev/null || echo "The server never started."
 
   browser:
     name: Browser (Playwright)
