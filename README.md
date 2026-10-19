@@ -29,7 +29,7 @@ People get a fast, beautiful site; agents get Markdown, llms.txt and MCP.
 ## 🚀 Get started
 
 ```bash
-composer require larecipe/larecipe:^3.0
+composer require larecipe/larecipe
 php artisan larecipe:install
 ```
 
@@ -74,7 +74,7 @@ show the user the docs diff and wait for approval, then commit and push again.
 ## ⬆️ Upgrading from LaRecipe 2
 
 ```bash
-composer require larecipe/larecipe:^3.0
+composer require larecipe/larecipe
 php artisan larecipe:upgrade
 ```
 
