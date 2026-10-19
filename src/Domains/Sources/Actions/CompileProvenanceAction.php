@@ -35,7 +35,7 @@ final class CompileProvenanceAction
             return ProvenanceReport::skipped($set, 'Database sets record provenance in their revisions.');
         }
 
-        $resolved = $this->resolver->resolve($source->root(), $source->contentFiles(), $source->manifest()?->repository()['url']);
+        $resolved = $this->resolver->resolve($source->root(), $source->contentFiles(), $source->manifest()?->repository()['docsUrl']);
         $path = $source->provenanceIndexPath();
 
         $this->writer->write($path, $resolved, $this->clock->now());

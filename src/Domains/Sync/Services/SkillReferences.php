@@ -32,11 +32,15 @@ final class SkillReferences
         private readonly string $schemas,
     ) {}
 
-    /** @return array<string, array<string, string>> skill name => [file name => contents] */
-    public function generate(): array
+    /**
+     * @param  bool  $builtInOnly  list only LaRecipe's own components, for the
+     *                             canonical skills that ship inside the package
+     * @return array<string, array<string, string>> skill name => [file name => contents]
+     */
+    public function generate(bool $builtInOnly = false): array
     {
         $files = [
-            'components.md' => $this->components(),
+            'components.md' => $this->components($builtInOnly),
             'frontmatter.md' => $this->frontmatter(),
             'manifest.md' => $this->manifest(),
             'navigation.md' => $this->navigation(),
@@ -53,14 +57,16 @@ final class SkillReferences
         return $generated;
     }
 
-    private function components(): string
+    private function components(bool $builtInOnly): string
     {
         $lines = [
             self::GENERATED_NOTICE,
             '',
             '# Components',
             '',
-            'Every component this app\'s docs can use. Anything else renders as escaped text and fails `php artisan larecipe:validate`.',
+            $builtInOnly
+                ? 'Every component LaRecipe ships. An app may define its own too; anything neither defines renders as escaped text and fails `php artisan larecipe:validate`.'
+                : 'Every component this app\'s docs can use. Anything else renders as escaped text and fails `php artisan larecipe:validate`.',
             '',
             '- Write a component as a PascalCase tag on its own line: `<Callout type="warning">`, content on the next lines, then `</Callout>`. A component without content closes itself: `<Name prop="value" />`.',
             '- `:::callout` directives produce the same component, if you prefer that syntax.',
@@ -70,7 +76,7 @@ final class SkillReferences
         ];
 
         foreach ($this->components->all() as $definition) {
-            if ($definition->chromeOnly) {
+            if ($definition->chromeOnly || ($builtInOnly && $definition->origin !== 'builtin')) {
                 continue;
             }
 
@@ -219,7 +225,7 @@ final class SkillReferences
             ['description', 'One sentence about the product.'],
             ['logo', 'A path, or `{ light, dark }`.'],
             ['favicon', 'A path.'],
-            ['repository', '`{ url, branch, docsPath }` for edit links.'],
+            ['repository', '`{ url, docsUrl?, branch, docsPath }`: `url` for the header icon, `docsUrl` (default `url`) for edit and commit links.'],
             ['theme', '`{ accent, radius, fonts: { sans, mono }, mode }`.'],
             ['versions', 'A list of `{ id, label, status, default, visibility }`. Omit for an unversioned set.'],
             ['locales', 'A list of `{ code, label, dir, default }`.'],

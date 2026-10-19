@@ -21,3 +21,8 @@ Page entries are paths without `.md`, relative to the version root. A group is `
 ```
 
 A single tab may be written as `{ "groups": [...] }`. When you add a page to a set that has a `navigation.json`, add it there too; with zero-config navigation, set `order` in its frontmatter instead.
+
+## Keys
+
+| Key | Type | Meaning |
+| --- | --- | --- |

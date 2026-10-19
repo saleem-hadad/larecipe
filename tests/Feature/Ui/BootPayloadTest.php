@@ -145,3 +145,27 @@ it('sends insert fallbacks with client navigation, honoring a page’s opt-out',
         ->and($installation['inserts_html']['footer'])->toBe('')
         ->and($optedOut['inserts_html']['article.after'])->toBe('');
 });
+
+it('links Edit this page to the docs repository, and the header to the project repository', function () {
+    expect(guideBoot('/guide/3.x/installation')['page']['edit_url'])->toBe('https://github.com/saleem-hadad/larecipe/edit/v3/docs/3.x/installation.md');
+
+    $copy = TrackG::copy(TestCase::fixture('track-b'));
+    $manifest = json_decode((string) file_get_contents("{$copy}/larecipe.json"), true);
+    $manifest['repository']['docsUrl'] = 'https://github.com/acme/handbook';
+    file_put_contents("{$copy}/larecipe.json", json_encode($manifest));
+
+    try {
+        TrackG::useSets(['split' => [
+            'route' => ['prefix' => 'split', 'middleware' => ['web']],
+            'source' => ['driver' => 'repository', 'path' => $copy],
+            'access' => ['mode' => 'public'],
+        ]]);
+
+        $boot = guideBoot('/split/3.x/installation');
+
+        expect($boot['page']['edit_url'])->toBe('https://github.com/acme/handbook/edit/v3/docs/3.x/installation.md')
+            ->and($boot['set']['repository'])->toBe('https://github.com/saleem-hadad/larecipe');
+    } finally {
+        TrackG::remove($copy);
+    }
+});

@@ -8,22 +8,24 @@ Every page should have `title`, `description` and `sources`. `sources` lists the
 
 | Key | Type | Meaning |
 | --- | --- | --- |
-| `title` | string | The page title. Required unless the first `# H1` provides it. |
-| `description` | string | One sentence. Used by llms.txt, search snippets, meta tags and the MCP `list_pages` tool. |
-| `sources` | list of strings | Code this page documents: `app/Billing/**`, `routes/billing.php`, `routes/api.php#billing`. |
-| `order` | integer | Sort order in zero-config navigation (lower first). |
+| `title` | string | Required unless the first # heading gives it. |
+| `description` | string | One sentence. Used in llms.txt, meta tags, search snippets and list_pages. |
+| `order` | number | Position in zero-config navigation. |
 | `icon` | string | A Lucide icon name for navigation. |
-| `tags` | list of strings | Search tags. |
-| `badge` | object | `{ label: "New", tone: "info" }` shown next to the title in navigation. |
-| `since` | string | The version that introduced the feature. |
-| `deprecated` | boolean | Marks the page as deprecated. |
-| `hidden` | boolean | Routable but left out of navigation. |
+| `sources` | string or list of string | Globs of the code this page documents, for drift detection. |
+| `tags` | list of string | Search tags. |
+| `badge` | string or object | A label next to the title in navigation: "New", or { label, tone }. |
+| `since` | string or number | The version that introduced the feature. |
+| `deprecated` | boolean or string | Marks the page as deprecated. |
+| `hidden` | boolean | Routable but not listed in the navigation. |
 | `noindex` | boolean | Asks search engines not to index the page. |
-| `visibility` | public or private | Private pages are checked by the `viewLarecipe` gate on every surface. |
-| `redirect_from` | list of strings | Old URLs that redirect here. |
-| `layout` | default, wide or full | Page layout. |
-| `inserts` | object or false | Opt out of site-wide insert points: `{ article.after: false }`, or `false` for all. |
-| `type` | page or openapi | Page type. |
+| `visibility` | string | private pages need the viewLarecipe gate, on every surface. One of: `public`, `private`. |
+| `redirect_from` | string or list of string | Old URLs that redirect here. |
+| `layout` | string | The page layout. One of: `default`, `wide`, `full`. |
+| `inserts` | any or object | Opt out of site-wide insert points: { article.after: false }, or false for all. |
+| `type` | string | Reserved: openapi pages arrive in a later 3.x release. One of: `page`, `openapi`. |
+| `spec` | string | Reserved for openapi pages. |
+| `meta` | object | Values for your own components, which read them as page.meta. The only frontmatter readers receive beyond the keys above. |
 
 ```yaml
 ---

@@ -1,6 +1,6 @@
 {
   "name": "@larecipe/ui",
-  "version": "3.0.0-dev",
+  "version": "3.0.0",
   "description": "Runtime helpers, design-system primitives and types for LaRecipe extensions.",
   "type": "module",
   "main": "./src/index.ts",

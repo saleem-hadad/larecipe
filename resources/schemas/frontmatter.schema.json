@@ -8,13 +8,14 @@
     "title": { "type": "string", "minLength": 1, "description": "Required unless the first # heading gives it." },
     "description": { "type": "string", "description": "One sentence. Used in llms.txt, meta tags, search snippets and list_pages." },
     "order": { "type": "number", "description": "Position in zero-config navigation." },
-    "icon": { "type": "string" },
+    "icon": { "type": "string", "description": "A Lucide icon name for navigation." },
     "sources": {
       "description": "Globs of the code this page documents, for drift detection.",
       "oneOf": [{ "type": "string" }, { "type": "array", "items": { "type": "string" } }]
     },
-    "tags": { "type": "array", "items": { "type": "string" } },
+    "tags": { "type": "array", "items": { "type": "string" }, "description": "Search tags." },
     "badge": {
+      "description": "A label next to the title in navigation: \"New\", or { label, tone }.",
       "oneOf": [
         { "type": "string" },
         {
@@ -25,23 +26,25 @@
         }
       ]
     },
-    "since": { "type": ["string", "number"] },
-    "deprecated": { "type": ["boolean", "string"] },
+    "since": { "type": ["string", "number"], "description": "The version that introduced the feature." },
+    "deprecated": { "type": ["boolean", "string"], "description": "Marks the page as deprecated." },
     "hidden": { "type": "boolean", "description": "Routable but not listed in the navigation." },
-    "noindex": { "type": "boolean" },
-    "visibility": { "enum": ["public", "private"], "description": "private pages need the viewLarecipe gate." },
+    "noindex": { "type": "boolean", "description": "Asks search engines not to index the page." },
+    "visibility": { "type": "string", "enum": ["public", "private"], "description": "private pages need the viewLarecipe gate, on every surface." },
     "redirect_from": {
+      "description": "Old URLs that redirect here.",
       "oneOf": [{ "type": "string" }, { "type": "array", "items": { "type": "string" } }]
     },
-    "layout": { "enum": ["default", "wide", "full"] },
+    "layout": { "type": "string", "enum": ["default", "wide", "full"], "description": "The page layout." },
     "inserts": {
+      "description": "Opt out of site-wide insert points: { article.after: false }, or false for all.",
       "oneOf": [
         { "const": false },
         { "type": "object", "additionalProperties": { "type": "boolean" } }
       ]
     },
-    "type": { "enum": ["page", "openapi"] },
-    "spec": { "type": "string" },
+    "type": { "type": "string", "enum": ["page", "openapi"], "description": "Reserved: openapi pages arrive in a later 3.x release." },
+    "spec": { "type": "string", "description": "Reserved for openapi pages." },
     "meta": { "type": "object", "description": "Values for your own components, which read them as page.meta. The only frontmatter readers receive beyond the keys above." }
   }
 }

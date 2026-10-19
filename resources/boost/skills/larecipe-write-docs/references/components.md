@@ -2,12 +2,80 @@
 
 # Components
 
-Every component this app's docs can use. Anything else renders as escaped text and fails `php artisan larecipe:validate`.
+Every component LaRecipe ships. An app may define its own too; anything neither defines renders as escaped text and fails `php artisan larecipe:validate`.
 
 - Write a component as a PascalCase tag on its own line: `<Callout type="warning">`, content on the next lines, then `</Callout>`. A component without content closes itself: `<Name prop="value" />`.
 - `:::callout` directives produce the same component, if you prefer that syntax.
 - Props are strings. Write booleans as `prop="true"` or `prop="false"` and lists or objects as JSON strings. There are no JSX expressions.
 - Prefer GitHub alerts (`> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`) for simple callouts: they read well on GitHub too.
+
+## Accordion
+
+A collapsible section. (built in)
+
+| Prop | Type | Required | Default | Allowed values | Description |
+| --- | --- | --- | --- | --- | --- |
+| `title` | string | yes |  |  | The always-visible summary |
+| `open` | boolean | no | `false` |  | Start expanded |
+
+```markdown
+<Accordion title="...">
+Content in Markdown.
+</Accordion>
+```
+
+## AccordionGroup
+
+A stack of accordions. (built in)
+
+```markdown
+<AccordionGroup>
+Content in Markdown.
+</AccordionGroup>
+```
+
+## Artisan
+
+An artisan command: signature, description, arguments and options, read from the app. (built in)
+
+| Prop | Type | Required | Default | Allowed values | Description |
+| --- | --- | --- | --- | --- | --- |
+| `command` | string | yes |  |  | The command name, e.g. orders:prune |
+
+```markdown
+<Artisan command="...">
+Content in Markdown.
+</Artisan>
+```
+
+## Badge
+
+A short status label, written on its own line. (built in)
+
+| Prop | Type | Required | Default | Allowed values | Description |
+| --- | --- | --- | --- | --- | --- |
+| `tone` | string | no | `info` | `neutral`, `info`, `success`, `warning`, `danger` | neutral, info, success, warning or danger |
+
+```markdown
+<Badge tone="info">
+Content in Markdown.
+</Badge>
+```
+
+## Button
+
+A link styled as a button (kept for v2 compatibility). (built in)
+
+| Prop | Type | Required | Default | Allowed values | Description |
+| --- | --- | --- | --- | --- | --- |
+| `href` | string | no |  |  | Where the button links to (without one it renders as a static label, as v2 demo buttons did) |
+| `variant` | string | no | `primary` | `primary`, `secondary`, `outline`, `ghost` | primary, secondary, outline or ghost |
+
+```markdown
+<Button variant="primary">
+Content in Markdown.
+</Button>
+```
 
 ## Callout
 
@@ -15,12 +83,255 @@ A highlighted note, tip or warning. (built in)
 
 | Prop | Type | Required | Default | Allowed values | Description |
 | --- | --- | --- | --- | --- | --- |
-| `type` | string | no | `note` | `note`, `tip`, `important`, `warning`, `danger`, `caution`, `info`, `success` | note, tip, important, warning, danger |
+| `type` | string | no | `note` | `note`, `tip`, `important`, `warning`, `danger`, `caution`, `info`, `success` | note, tip, important, warning, caution or danger |
 | `title` | string | no |  |  | Optional label shown above the content |
 
 ```markdown
 <Callout type="note">
 Content in Markdown.
 </Callout>
+```
+
+## Can
+
+Content shown only to readers the ability allows. Removed for everyone else, on every surface. (built in)
+
+| Prop | Type | Required | Default | Allowed values | Description |
+| --- | --- | --- | --- | --- | --- |
+| `ability` | string | yes |  |  | A gate or policy ability defined by the host app, e.g. view-billing |
+
+```markdown
+<Can ability="...">
+Content in Markdown.
+</Can>
+```
+
+## Cannot
+
+Content shown only to readers the ability does not allow, guests included. (built in)
+
+| Prop | Type | Required | Default | Allowed values | Description |
+| --- | --- | --- | --- | --- | --- |
+| `ability` | string | yes |  |  | A gate or policy ability defined by the host app, e.g. view-billing |
+
+```markdown
+<Cannot ability="...">
+Content in Markdown.
+</Cannot>
+```
+
+## Card
+
+A link block with a title and a short description. (built in)
+
+| Prop | Type | Required | Default | Allowed values | Description |
+| --- | --- | --- | --- | --- | --- |
+| `title` | string | no |  |  | The card title (optional: a card can be body only, as v2 cards were) |
+| `href` | string | no |  |  | Where the card links to (a relative .md link works) |
+| `icon` | string | no |  |  | An icon by its Lucide name, from LaRecipe's content set: rocket, book-open, refresh-cw, globe, lock, shield-check, code, terminal, and more |
+
+```markdown
+<Card>
+Content in Markdown.
+</Card>
+```
+
+## CardGroup
+
+A grid of cards. (built in)
+
+| Prop | Type | Required | Default | Allowed values | Description |
+| --- | --- | --- | --- | --- | --- |
+| `cols` | integer | no | `2` |  | Columns on wide screens |
+
+```markdown
+<CardGroup>
+Content in Markdown.
+</CardGroup>
+```
+
+## CodeGroup
+
+Consecutive code blocks shown as tabs, labelled by each block's title or language. (built in)
+
+```markdown
+<CodeGroup>
+Content in Markdown.
+</CodeGroup>
+```
+
+## Columns
+
+Side-by-side content. (built in)
+
+| Prop | Type | Required | Default | Allowed values | Description |
+| --- | --- | --- | --- | --- | --- |
+| `cols` | integer | no | `2` |  | Columns on wide screens |
+
+```markdown
+<Columns>
+Content in Markdown.
+</Columns>
+```
+
+## Event
+
+An event: its payload and its registered listeners, read from the app. (built in)
+
+| Prop | Type | Required | Default | Allowed values | Description |
+| --- | --- | --- | --- | --- | --- |
+| `name` | string | yes |  |  | The event class, e.g. OrderShipped or App\Events\OrderShipped |
+
+```markdown
+<Event name="...">
+Content in Markdown.
+</Event>
+```
+
+## FileTree
+
+A folder structure, written as a nested Markdown list. (built in)
+
+```markdown
+<FileTree>
+Content in Markdown.
+</FileTree>
+```
+
+## Frame
+
+Captioned, zoomable media. (built in)
+
+| Prop | Type | Required | Default | Allowed values | Description |
+| --- | --- | --- | --- | --- | --- |
+| `caption` | string | no |  |  | Shown under the media |
+
+```markdown
+<Frame>
+Content in Markdown.
+</Frame>
+```
+
+## Math
+
+A TeX formula. A $$ ... $$ block works too. (built in)
+
+| Prop | Type | Required | Default | Allowed values | Description |
+| --- | --- | --- | --- | --- | --- |
+| `display` | string | no | `block` | `block`, `inline` | block or inline |
+
+```markdown
+<Math display="block">
+Content in Markdown.
+</Math>
+```
+
+## Mermaid
+
+A Mermaid diagram. A ```mermaid code block works too. (built in)
+
+```markdown
+<Mermaid>
+Content in Markdown.
+</Mermaid>
+```
+
+## Model
+
+An Eloquent model: table, columns, casts, fillable and relations, read from the app. (built in)
+
+| Prop | Type | Required | Default | Allowed values | Description |
+| --- | --- | --- | --- | --- | --- |
+| `name` | string | yes |  |  | The model class, e.g. Order or App\Models\Order |
+
+```markdown
+<Model name="...">
+Content in Markdown.
+</Model>
+```
+
+## Route
+
+A named route: method, URI, middleware and the form request rules, read from the app. (built in)
+
+| Prop | Type | Required | Default | Allowed values | Description |
+| --- | --- | --- | --- | --- | --- |
+| `name` | string | yes |  |  | The route name, e.g. orders.store |
+
+```markdown
+<Route name="...">
+Content in Markdown.
+</Route>
+```
+
+## Step
+
+One step inside <Steps>. (built in)
+
+| Prop | Type | Required | Default | Allowed values | Description |
+| --- | --- | --- | --- | --- | --- |
+| `title` | string | yes |  |  | What the reader does in this step |
+
+```markdown
+<Step title="...">
+Content in Markdown.
+</Step>
+```
+
+## Steps
+
+A numbered procedure. Put one <Step title="..."> inside for each step. (built in)
+
+```markdown
+<Steps>
+Content in Markdown.
+</Steps>
+```
+
+## Tab
+
+One tab inside <Tabs>. (built in)
+
+| Prop | Type | Required | Default | Allowed values | Description |
+| --- | --- | --- | --- | --- | --- |
+| `label` | string | yes |  |  | The tab label |
+
+```markdown
+<Tab label="...">
+Content in Markdown.
+</Tab>
+```
+
+## Tabs
+
+Tabbed content. Put one <Tab label="..."> inside for each tab. (built in)
+
+| Prop | Type | Required | Default | Allowed values | Description |
+| --- | --- | --- | --- | --- | --- |
+| `default` | string | no |  |  | Label of the tab shown first |
+| `sync` | string | no |  |  | Tabs with the same sync key switch together across the page |
+
+```markdown
+<Tabs>
+Content in Markdown.
+</Tabs>
+```
+
+## Video
+
+A video that loads only when the reader asks. Without src it shows a labelled placeholder. (built in)
+
+| Prop | Type | Required | Default | Allowed values | Description |
+| --- | --- | --- | --- | --- | --- |
+| `src` | string | no |  |  | A video file, or a YouTube, Vimeo or Loom URL |
+| `poster` | string | no |  |  | Image shown before the video plays |
+| `title` | string | no |  |  | What the video shows |
+| `duration` | string | no |  |  | Length, for example 2:40 |
+| `placeholder` | string | no |  |  | Label for the frame shown until src is set |
+
+```markdown
+<Video>
+Content in Markdown.
+</Video>
 ```
 

@@ -400,7 +400,7 @@ final class PagePresenter
         $pages = isset($provenance['pages']) ? (int) $provenance['pages'] : null;
 
         $url = $provenance['url'] ?? null;
-        $repository = $set->manifest->repository()['url'];
+        $repository = $set->manifest->repository()['docsUrl'];
 
         if ($url === null && $isHash && $repository !== null) {
             $url = "{$repository}/commit/{$ref}";
@@ -506,7 +506,7 @@ final class PagePresenter
         $repository = $set->manifest->repository();
         $source = $this->sources->for($set->key);
 
-        if ($repository['url'] === null || ! $source instanceof RepositorySource) {
+        if ($repository['docsUrl'] === null || ! $source instanceof RepositorySource) {
             return null;
         }
 
@@ -519,6 +519,6 @@ final class PagePresenter
 
         $relative = ltrim(substr((string) realpath($file), strlen($root)), '/');
 
-        return "{$repository['url']}/edit/{$repository['branch']}/{$repository['docsPath']}/{$relative}";
+        return "{$repository['docsUrl']}/edit/{$repository['branch']}/{$repository['docsPath']}/{$relative}";
     }
 }

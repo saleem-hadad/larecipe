@@ -1,6 +1,8 @@
 <?php
 
 use LaRecipe\Domains\Sync\Actions\InstallSkillsAction;
+use LaRecipe\Domains\Sync\Services\SkillReferences;
+use LaRecipe\Facades\LaRecipe;
 use Symfony\Component\Yaml\Yaml;
 
 /*
@@ -78,3 +80,20 @@ it('holds the four audience presets in the onboarding reference', function () {
         expect($onboarding)->toContain($preset);
     }
 });
+
+it('lists only built-in components in the canonical skills, never the app\'s own', function () {
+    $references = app(SkillReferences::class);
+    LaRecipe::component('Pricing')->description('A pricing table.');
+
+    expect($references->generate()['larecipe-write-docs']['components.md'])->toContain('## Pricing')
+        ->and($references->generate(builtInOnly: true)['larecipe-write-docs']['components.md'])
+        ->not->toContain('## Pricing')->not->toContain('defined by this app')->toContain('## Callout');
+});
+
+it('ships canonical references with no app-defined component in them', function (string $skill) {
+    $file = skillsRoot()."/{$skill}/references/components.md";
+
+    if (is_file($file)) {
+        expect((string) file_get_contents($file))->not->toContain('defined by this app');
+    }
+})->with('skills');

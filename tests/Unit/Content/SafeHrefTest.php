@@ -73,3 +73,14 @@ it('leaves a navbar link to the repository out, since the header shows the repos
         ->and(Manifest::fromArray(['navbar' => ['links' => [['label' => 'GitHub', 'href' => 'https://github.com/acme/acme']]]])->navbar()['links'])
         ->toHaveCount(1);
 });
+
+it('reads where the docs files live from repository.docsUrl, falling back to the project repository', function () {
+    $same = Manifest::fromArray(['repository' => ['url' => 'https://github.com/acme/app/']]);
+    $split = Manifest::fromArray(['repository' => ['url' => 'https://github.com/acme/app', 'docsUrl' => 'https://github.com/acme/app-docs', 'branch' => 'trunk', 'docsPath' => '/site/docs/']]);
+    $unsafe = Manifest::fromArray(['repository' => ['url' => 'https://github.com/acme/app', 'docsUrl' => 'javascript:alert(1)']]);
+
+    expect($same->repository())->toBe(['url' => 'https://github.com/acme/app', 'docsUrl' => 'https://github.com/acme/app', 'branch' => 'main', 'docsPath' => 'docs'])
+        ->and($split->repository())->toBe(['url' => 'https://github.com/acme/app', 'docsUrl' => 'https://github.com/acme/app-docs', 'branch' => 'trunk', 'docsPath' => 'site/docs'])
+        ->and($unsafe->repository()['docsUrl'])->toBeNull()
+        ->and($unsafe->refusedLinks())->toBe(['javascript:alert(1)']);
+});

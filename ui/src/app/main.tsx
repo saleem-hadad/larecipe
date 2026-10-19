@@ -17,7 +17,7 @@ type MovableElement = HTMLElement & { moveBefore?: (node: Node, child: Node | nu
  * HTML (ARCHITECTURE.md 7.4), so images are not refetched and nothing flashes.
  */
 function boot(): void {
-  installRuntime('3.0.0-dev')
+  installRuntime('3.0.0')
 
   const root = document.getElementById('larecipe')
   const data = document.getElementById('lr-boot')

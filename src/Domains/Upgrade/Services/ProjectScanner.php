@@ -79,7 +79,7 @@ final class ProjectScanner
         }
 
         if (! isset($require['larecipe/larecipe'])) {
-            $commands[] = 'composer require larecipe/larecipe';
+            $commands[] = 'composer require larecipe/larecipe:^3.0';
         }
 
         return $commands;

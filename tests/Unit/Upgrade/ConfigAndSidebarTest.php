@@ -80,7 +80,7 @@ it('finds what it cannot convert outside the docs', function () {
         ->and($manual->pluck('category')->unique()->values()->all())->toBe(['namespace', 'assets', 'gate', 'views', 'themes'])
         ->and($manual->firstWhere('category', 'assets')->file)->toBe('app/Providers/DocsServiceProvider.php')
         ->and($manual->firstWhere('category', 'assets')->line)->toBe(3)
-        ->and($scan['composer'])->toBe(['composer remove binarytorch/larecipe', 'composer remove binarytorch/larecipe-dark-theme', 'composer require larecipe/larecipe']);
+        ->and($scan['composer'])->toBe(['composer remove binarytorch/larecipe', 'composer remove binarytorch/larecipe-dark-theme', 'composer require larecipe/larecipe:^3.0']);
 
     TrackG::remove($base);
 });

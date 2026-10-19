@@ -23,7 +23,8 @@
     "repository": {
       "type": "object",
       "properties": {
-        "url": { "type": "string", "pattern": "^https?://" },
+        "url": { "type": "string", "pattern": "^https?://", "description": "The project's repository. The header's icon links to it." },
+        "docsUrl": { "type": "string", "pattern": "^https?://", "description": "The repository the docs files live in, when it is not url. Edit and commit links use it." },
         "branch": { "type": "string" },
         "docsPath": { "type": "string" }
       },

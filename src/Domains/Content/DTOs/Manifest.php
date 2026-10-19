@@ -154,25 +154,41 @@ final readonly class Manifest
             }
         }
 
-        $repository = $this->raw['repository']['url'] ?? null;
+        foreach (['url', 'docsUrl'] as $key) {
+            $repository = $this->raw['repository'][$key] ?? null;
 
-        if (is_scalar($repository) && ! SafeHref::isWebUrl((string) $repository)) {
-            $refused[] = (string) $repository;
+            if (is_scalar($repository) && ! SafeHref::isWebUrl((string) $repository)) {
+                $refused[] = (string) $repository;
+            }
         }
 
         return $refused;
     }
 
-    /** @return array{url: ?string, branch: string, docsPath: string} the url only when it is an http or https URL */
+    /**
+     * The project's repository (url: the header's icon) and the one the docs
+     * files live in (docsUrl: edit and commit links), which is the same
+     * repository unless docsUrl names another. branch and docsPath describe
+     * the docs repository. URLs only when they are http or https.
+     *
+     * @return array{url: ?string, docsUrl: ?string, branch: string, docsPath: string}
+     */
     public function repository(): array
     {
         $repository = (array) ($this->raw['repository'] ?? []);
+        $url = self::webUrl($repository['url'] ?? null);
 
         return [
-            'url' => isset($repository['url']) && SafeHref::isWebUrl((string) $repository['url']) ? rtrim(trim((string) $repository['url']), '/') : null,
+            'url' => $url,
+            'docsUrl' => array_key_exists('docsUrl', $repository) ? self::webUrl($repository['docsUrl']) : $url,
             'branch' => (string) ($repository['branch'] ?? 'main'),
             'docsPath' => trim((string) ($repository['docsPath'] ?? 'docs'), '/'),
         ];
+    }
+
+    private static function webUrl(mixed $url): ?string
+    {
+        return is_scalar($url) && SafeHref::isWebUrl((string) $url) ? rtrim(trim((string) $url), '/') : null;
     }
 
     /**

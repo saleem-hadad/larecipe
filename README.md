@@ -18,7 +18,7 @@ People get a fast, beautiful site; agents get Markdown, <code>llms.txt</code> an
 ## Get started
 
 ```bash
-composer require larecipe/larecipe
+composer require larecipe/larecipe:^3.0
 php artisan larecipe:install
 ```
 

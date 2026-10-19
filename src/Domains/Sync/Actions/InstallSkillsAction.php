@@ -37,11 +37,12 @@ final class InstallSkillsAction
 
     /**
      * @param  list<string>  $targets  skills folders relative to the workspace root
+     * @param  bool  $canonical  the package's own copies: built-in components only, never the app's
      * @return list<FileChange>
      */
-    public function execute(Workspace $workspace, array $targets, bool $referencesOnly = false): array
+    public function execute(Workspace $workspace, array $targets, bool $referencesOnly = false, bool $canonical = false): array
     {
-        $generated = $this->references->generate();
+        $generated = $this->references->generate(builtInOnly: $canonical);
         $changes = [];
 
         foreach ($targets as $target) {

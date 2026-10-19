@@ -21,7 +21,7 @@ export function bootFixture(overrides: Partial<Boot> = {}): Boot {
       { name: 'Steps', description: 'Numbered steps.', props: {}, island: false, raw: false, origin: 'builtin' },
     ],
     schemas: { frontmatter: frontmatter as JsonSchema, manifest: manifest as JsonSchema, navigation: navigation as JsonSchema },
-    version: '3.0.0-dev',
+    version: '3.0.0',
     ...overrides,
   }
 }

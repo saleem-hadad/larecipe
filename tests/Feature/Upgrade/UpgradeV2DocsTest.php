@@ -48,7 +48,7 @@ it('writes only the report on a dry run', function () {
     expect($report['applied'])->toBeFalse()
         ->and($report['versions'])->toBe(['2.2'])
         ->and($report['summary']['pages'])->toBe(18)
-        ->and($report['composer'])->toBe(['composer remove binarytorch/larecipe', 'composer require larecipe/larecipe'])
+        ->and($report['composer'])->toBe(['composer remove binarytorch/larecipe', 'composer require larecipe/larecipe:^3.0'])
         ->and(collect($report['manual'])->pluck('category')->unique()->values()->all())->toContain('views', 'pages');
 });
 

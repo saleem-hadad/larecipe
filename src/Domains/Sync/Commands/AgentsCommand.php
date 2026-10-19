@@ -49,7 +49,7 @@ final class AgentsCommand extends Command
         $workspace = $workspace->dryRun((bool) $this->option('dry-run'));
 
         if ($this->option('package')) {
-            $skills->execute($workspace->at(Paths::resources('boost/skills')), [''], referencesOnly: false);
+            $skills->execute($workspace->at(Paths::resources('boost/skills')), [''], referencesOnly: false, canonical: true);
 
             return $this->report($workspace->changes(), $workspace->isDryRun());
         }
