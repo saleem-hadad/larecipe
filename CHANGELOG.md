@@ -5,7 +5,7 @@ All notable changes to `larecipe` will be documented in this file
 ---
 
 <a name="3.0.0"></a>
-# 3.0.0 (unreleased)
+# [3.0.0](https://github.com/saleem-hadad/larecipe/releases/tag/v3.0.0) (2026-10-19)
 
 A new package, `larecipe/larecipe`, rebuilt for docs that agents write and keep current. There is no backward compatibility; `php artisan larecipe:upgrade` brings LaRecipe 2 docs over.
 
