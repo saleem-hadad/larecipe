@@ -4,6 +4,23 @@ All notable changes to `larecipe` will be documented in this file
 
 ---
 
+<a name="3.0.0"></a>
+# 3.0.0 (unreleased)
+
+A new package, `larecipe/larecipe`, rebuilt for docs that agents write and keep current. There is no backward compatibility; `php artisan larecipe:upgrade` brings LaRecipe 2 docs over.
+
+- React reading experience in a new design, server-rendered first. Vue is gone.
+- Agent surfaces on every set: Markdown twins, `llms.txt`, `llms-full.txt`, `skill.md`, an MCP server over HTTP and stdio, `larecipe:doctor`.
+- Keeping docs current: `sources:` frontmatter, `larecipe:affected`, `AGENTS.md` instructions, a pre-push hook for coding agents, four skills, review modes, and `larecipe:sync`.
+- Two sources: `repository` (recommended) and `database` with an admin UI, a cache in front and docs migrations for pull requests.
+- Client-side search with MiniSearch and a `SearchDriver` contract for custom engines.
+- Versions, languages with right-to-left support, gate blocks, private sets, live references to routes, commands, models and events.
+- Custom React components with `@larecipe/ui` and `@larecipe/vite`.
+- Ask AI with citations, answer feedback and provider failover; analytics events (page views, Markdown, MCP, searches, feedback) and integrations; static export.
+- Themes from tokens in larecipe.json, plus a `theme.css` override listed under `assets.css`.
+- Secure by default: raw HTML in Markdown is escaped (repository sets may opt into `html_input: allow`; database sets are always sanitized), gate blocks fail closed, every surface applies the same access rules, live references never print config or environment values, and analytics scripts for database sets come from config only.
+- Works on Laravel 12.62+ and 13, PHP 8.3+.
+
 <a name="2.5.0"></a>
 # [2.5.0](https://github.com/saleem-hadad/larecipe/releases/tag/v2.5.0) (2022-03-26)
 

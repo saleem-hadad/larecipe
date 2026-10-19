@@ -1,0 +1,21 @@
+laravel: '@testbench'
+
+providers:
+  - LaRecipe\LaRecipeServiceProvider
+  - Workbench\App\Providers\WorkbenchServiceProvider
+  - Workbench\App\Providers\AdminWorkbenchServiceProvider
+
+env:
+  - APP_ENV=local
+  - APP_DEBUG=true
+  - CACHE_STORE=file
+
+workbench:
+  start: '/docs'
+  install: false
+  discovers:
+    web: false
+    api: false
+    commands: false
+    components: false
+    views: false

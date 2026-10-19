@@ -1,58 +1,42 @@
 <?php
 
-namespace BinaryTorch\LaRecipe\Tests;
+namespace LaRecipe\Tests;
 
-use Illuminate\Support\Facades\Config;
-use BinaryTorch\LaRecipe\Facades\LaRecipe;
-use BinaryTorch\LaRecipe\LaRecipeServiceProvider;
+use LaRecipe\LaRecipeServiceProvider;
+use Orchestra\Testbench\TestCase as Orchestra;
 
-class TestCase extends \Orchestra\Testbench\TestCase
+abstract class TestCase extends Orchestra
 {
-    public function setup(): void
-    {
-        parent::setup();
-        
-        $this->app->setBasePath(__DIR__ . '/../');
-
-        $this->app['router']->get('login', function () { return 'login'; })->name('login');
-    }
-
-    /**
-     * @param \Illuminate\Foundation\Application $app
-     * @return array
-     */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [LaRecipeServiceProvider::class];
     }
 
-    /**
-     * Define environment setup.
-     *
-     * @param \Illuminate\Foundation\Application $app
-     *
-     * @return void
-     */
-    protected function getEnvironmentSetUp($app)
+    protected function defineEnvironment($app): void
     {
-        // Setup default database to use sqlite :memory:
-        $app['config']->set('database.default', 'testbench');
-        $app['config']->set('database.connections.testbench', [
-            'driver'   => 'sqlite',
-            'database' => ':memory:',
-            'prefix'   => '',
+        // Independent of whatever a local `testbench serve` wrote into the skeleton's .env.
+        $app['config']->set('app.url', 'http://localhost');
+
+        // Laravel 13's defaults: cache stores serialize values and unserialize no classes.
+        $app['config']->set('cache.stores.array.serialize', true);
+        $app['config']->set('cache.serializable_classes', false);
+
+        $app['config']->set('larecipe.sets', [
+            'docs' => [
+                'route' => ['prefix' => 'docs', 'middleware' => ['web']],
+                'source' => ['driver' => 'repository', 'path' => self::fixture('docs')],
+                'access' => ['mode' => 'public'],
+            ],
+            'handbook' => [
+                'route' => ['prefix' => 'handbook', 'middleware' => ['web']],
+                'source' => ['driver' => 'repository', 'path' => self::fixture('handbook')],
+                'access' => ['mode' => 'public'],
+            ],
         ]);
     }
 
-    /**
-     * Load package alias
-     * @param  \Illuminate\Foundation\Application $app
-     * @return array
-     */
-    protected function getPackageAliases($app)
+    public static function fixture(string $path = ''): string
     {
-        return [
-            'LaRecipe' => LaRecipe::class,
-        ];
+        return __DIR__.'/Fixtures'.($path === '' ? '' : '/'.$path);
     }
 }

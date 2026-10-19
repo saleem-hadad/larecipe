@@ -1,0 +1,20 @@
+{
+  "name": "larecipe",
+  "owner": {
+    "name": "Saleem Hadad",
+    "url": "https://larecipe.saleem.dev"
+  },
+  "metadata": {
+    "description": "LaRecipe for Claude Code: write and update your Laravel app's docs in the same push as the code.",
+    "version": "3.0.0"
+  },
+  "plugins": [
+    {
+      "name": "larecipe",
+      "source": "./",
+      "description": "LaRecipe's docs skills, the pre-push docs check, the SessionStart docs map and the local docs MCP server.",
+      "category": "documentation",
+      "homepage": "https://larecipe.saleem.dev"
+    }
+  ]
+}

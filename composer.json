@@ -1,15 +1,19 @@
 {
-    "name": "binarytorch/larecipe",
-    "description": "Generate gorgeous recipes for your Laravel applications using MarkDown",
+    "name": "larecipe/larecipe",
+    "description": "Living documentation for Laravel apps. Your coding agents write the docs and keep them current; every reader, human or agent, gets the current answer.",
     "keywords": [
         "laravel",
-        "markdown",
-        "docs",
         "documentation",
-        "api"
+        "docs",
+        "markdown",
+        "mcp",
+        "llms.txt",
+        "agents",
+        "ai"
     ],
     "license": "MIT",
     "type": "library",
+    "homepage": "https://larecipe.saleem.dev",
     "support": {
         "issues": "https://github.com/saleem-hadad/larecipe/issues",
         "source": "https://github.com/saleem-hadad/larecipe"
@@ -21,39 +25,73 @@
         }
     ],
     "require": {
-        "php": "^7.1|^8.0",
-        "illuminate/support": "^5.4|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
-        "illuminate/view": "^5.4|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
-        "erusev/parsedown-extra": "^0.8.1|^0.8|^0.9",
-        "symfony/dom-crawler": "^4.1|^5.0|^6.0|^7.0"
+        "php": "^8.3",
+        "illuminate/console": "^12.62|^13.0",
+        "illuminate/contracts": "^12.62|^13.0",
+        "illuminate/database": "^12.62|^13.0",
+        "illuminate/http": "^12.62|^13.0",
+        "illuminate/routing": "^12.62|^13.0",
+        "illuminate/support": "^12.62|^13.0",
+        "illuminate/view": "^12.62|^13.0",
+        "laravel/mcp": "^1.0",
+        "laravel/prompts": "^0.3",
+        "league/commonmark": "^2.10.3",
+        "opis/json-schema": "^2.4",
+        "phiki/phiki": "^2.2",
+        "symfony/html-sanitizer": "^7.2|^8.0",
+        "symfony/process": "^7.2|^8.0",
+        "symfony/yaml": "^7.2|^8.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.0|^8.0|^9.0|^10.0|^11.5.3|^12.5.12",
-        "laravel/framework": "^5.4|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
-        "orchestra/testbench": "^3.4|^4.0|^5.0|^7.0|^8.0|^9.0|^10.0|^11.0"
+        "laravel/ai": "^1.2",
+        "laravel/pint": "^1.18",
+        "orchestra/testbench": "^10.0|^11.0",
+        "pestphp/pest": "^4.0",
+        "pestphp/pest-plugin-arch": "^4.0",
+        "pestphp/pest-plugin-laravel": "^4.0"
+    },
+    "suggest": {
+        "laravel/ai": "Ask AI for readers and the larecipe:sync docs agent (^1.2)",
+        "nikic/php-parser": "Symbol-level sources (App\\Billing\\Invoice::refund) for drift detection"
     },
     "autoload": {
-        "files": [
-            "src/Helpers/helpers.php"
-        ],
         "psr-4": {
-            "BinaryTorch\\LaRecipe\\": "src/"
+            "LaRecipe\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "BinaryTorch\\LaRecipe\\Tests\\": "tests/"
+            "LaRecipe\\Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/"
         }
     },
-    "minimum-stability": "stable",
+    "bin": [
+        "bin/larecipe-hook"
+    ],
     "extra": {
         "laravel": {
             "providers": [
-                "BinaryTorch\\LaRecipe\\LaRecipeServiceProvider"
+                "LaRecipe\\LaRecipeServiceProvider"
             ],
             "aliases": {
-                "LaRecipe": "BinaryTorch\\LaRecipe\\LaRecipe"
+                "LaRecipe": "LaRecipe\\Facades\\LaRecipe"
             }
         }
-    }
+    },
+    "scripts": {
+        "test": "pest",
+        "lint": "pint",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php vendor/bin/testbench serve --ansi"
+        ]
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

@@ -1,0 +1,12 @@
+
+      # Database doc sets (%%sets%%): apply this pull request's docs migrations to a
+      # throwaway database, so a broken docs migration fails the check.
+      - name: Apply docs migrations
+        run: |
+          mkdir -p database && touch database/database.sqlite
+          php artisan migrate --force --no-interaction
+
+      # To compute stale pages against what is live, refresh the CI database from
+      # production first with a read-only token (optional):
+      # - run: php artisan larecipe:pull --set=%%set%%
+

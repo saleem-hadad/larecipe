@@ -1,0 +1,47 @@
+# LaRecipe docs check (optional, no AI).
+#
+# Written by php artisan larecipe:install. On every pull request it validates
+# the docs and lists pages whose code changed while the page did not. It never
+# writes, commits or pushes, runs no AI agent and needs no secrets for docs in
+# the repository, so it is safe on pull requests from forks. Your coding agent
+# updates the docs before it pushes; this only checks that it did.
+#
+# %%mode_note%%
+
+name: LaRecipe docs check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+permissions:
+  contents: read
+%%permissions%%
+concurrency:
+  group: larecipe-docs-check-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  docs-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '%%php%%'
+          coverage: none
+
+      - run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare the app
+        run: |
+          if [ ! -f .env ] && [ -f .env.example ]; then cp .env.example .env; fi
+          php artisan key:generate --force --no-interaction || true
+%%database%%
+      - name: Validate the docs
+        run: php artisan larecipe:validate --json
+
+%%affected%%

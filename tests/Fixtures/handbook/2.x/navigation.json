@@ -1,0 +1,6 @@
+{
+  "groups": [
+    { "group": "Start", "pages": ["index", "deploys"] },
+    { "label": "Status page", "href": "https://status.example.com" }
+  ]
+}

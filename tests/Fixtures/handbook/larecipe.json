@@ -1,0 +1,6 @@
+{
+  "name": "Handbook",
+  "versions": [{ "id": "2.x", "default": true }, { "id": "1.x", "status": "maintained" }],
+  "locales": [{ "code": "en", "default": true }, { "code": "ar" }],
+  "landing": "index"
+}

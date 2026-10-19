@@ -1,0 +1,72 @@
+<?php
+
+namespace Workbench\App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
+/**
+ * A development stand-in for Ask AI, in exactly its contract (a POST answered
+ * in the AI SDK UI message stream protocol), so the Ask panel can be built and
+ * tested in the workbench without an AI provider key. Wired only for the
+ * showcase doc set; real sets use the Ask domain.
+ */
+class FakeDocsServicesController
+{
+    /**
+     * A scripted answer streamed like the real one: text deltas, then the pages
+     * it cites as source-url parts. Questions about pricing get the honest
+     * "not covered" answer with no sources.
+     */
+    public function ask(Request $request): StreamedResponse
+    {
+        $messages = (array) $request->input('messages', []);
+        $last = end($messages) ?: [];
+        $question = collect($last['parts'] ?? [])->where('type', 'text')->pluck('text')->implode(' ');
+        $locale = (string) $request->input('locale', 'en');
+        $base = $locale === 'en' ? '/guide/3.x' : "/guide/{$locale}/3.x";
+
+        if (preg_match('/pric|cost|billing plan|not covered/i', $question) === 1) {
+            $answer = 'The docs do not cover pricing. LaRecipe is an open-source package, and these pages describe how to install and use it.';
+            $sources = [];
+        } else {
+            $answer = "Add the MCP server to Claude Code with one command, then restart the session:\n\n```bash\nclaude mcp add --transport http larecipe https://larecipe.saleem.dev/docs/mcp\n```\n\nThe installer can do this for you: run `php artisan larecipe:install` and choose **Claude Code** when it asks which agents you use.";
+            $sources = [
+                ['url' => "{$base}/agents#the-mcp-server", 'title' => 'Connect your agents'],
+                ['url' => "{$base}/installation#install-the-package", 'title' => 'Installation'],
+            ];
+        }
+
+        return new StreamedResponse(function () use ($answer, $sources) {
+            $send = function (array $chunk) {
+                echo 'data: '.json_encode($chunk, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)."\n\n";
+                @ob_flush();
+                flush();
+            };
+
+            $send(['type' => 'start', 'messageId' => 'msg_'.bin2hex(random_bytes(4))]);
+            $send(['type' => 'text-start', 'id' => 'text_1']);
+
+            foreach (preg_split('/(?<=\s)/u', $answer) ?: [] as $word) {
+                $send(['type' => 'text-delta', 'id' => 'text_1', 'delta' => $word]);
+                usleep(12000);
+            }
+
+            $send(['type' => 'text-end', 'id' => 'text_1']);
+
+            foreach ($sources as $index => $source) {
+                $send(['type' => 'source-url', 'sourceId' => 'src_'.$index, 'url' => $source['url'], 'title' => $source['title']]);
+            }
+
+            $send(['type' => 'finish']);
+            echo "data: [DONE]\n\n";
+            @ob_flush();
+            flush();
+        }, 200, [
+            'Content-Type' => 'text/event-stream',
+            'Cache-Control' => 'no-cache',
+            'X-Accel-Buffering' => 'no',
+            'x-vercel-ai-ui-message-stream' => 'v1',
+        ]);
+    }
+}

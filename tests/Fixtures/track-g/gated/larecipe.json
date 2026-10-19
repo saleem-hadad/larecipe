@@ -1,0 +1,4 @@
+{
+  "name": "Gated",
+  "versions": [{ "id": "2.x", "default": true }, { "id": "next", "visibility": "private" }]
+}

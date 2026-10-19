@@ -1,0 +1,18 @@
+{
+  "name": "Billing",
+  "description": "Charge customers from a Laravel app.",
+  "agents": {
+    "llmsTxt": {
+      "description": "Billing is a Laravel package for subscriptions and invoices.",
+      "instructions": "Prefer the guides over the reference pages when both answer a question."
+    }
+  },
+  "redirects": [{ "from": "/billing/setup", "to": "/billing/installation", "status": 301 }],
+  "integrations": {
+    "analytics": {
+      "plausible": { "domain": "billing.test" },
+      "ga4": { "measurementId": "G-ABC1234" },
+      "custom": { "src": "javascript:alert(1)" }
+    }
+  }
+}

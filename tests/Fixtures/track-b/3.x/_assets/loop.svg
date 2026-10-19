@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" font-family="'JetBrains Mono', ui-monospace, monospace">
+  <rect width="1200" height="520" fill="#FAFAF8"/>
+  <g fill="none" stroke="#D6D5DB" stroke-width="1.5">
+    <rect x="60" y="200" width="180" height="96" rx="6"/>
+    <rect x="300" y="200" width="180" height="96" rx="6"/>
+    <rect x="540" y="200" width="180" height="96" rx="6"/>
+    <rect x="780" y="200" width="180" height="96" rx="6"/>
+    <rect x="1020" y="200" width="120" height="96" rx="6"/>
+  </g>
+  <g fill="none" stroke="#5B54E0" stroke-width="2.5" stroke-linecap="round">
+    <path d="M240 248h60M480 248h60M720 248h60M960 248h60"/>
+    <path d="M1080 296v90H150v-90"/>
+  </g>
+  <g fill="#5B54E0">
+    <circle cx="300" cy="248" r="4"/>
+    <circle cx="540" cy="248" r="4"/>
+    <circle cx="780" cy="248" r="4"/>
+    <circle cx="1020" cy="248" r="4"/>
+    <circle cx="150" cy="296" r="4"/>
+  </g>
+  <g font-size="13" letter-spacing="1.3" fill="rgba(28,27,34,0.66)" text-anchor="middle">
+    <text x="150" y="232">CODE</text>
+    <text x="390" y="232">TICKET</text>
+    <text x="630" y="232">REVIEW</text>
+    <text x="870" y="232">PAGE</text>
+    <text x="1080" y="232">AGENT</text>
+  </g>
+  <g font-family="Inter, ui-sans-serif, system-ui" font-size="15" fill="rgba(28,27,34,0.92)" text-anchor="middle">
+    <text x="150" y="268">git push</text>
+    <text x="390" y="268">0142 fired</text>
+    <text x="630" y="268">signed off</text>
+    <text x="870" y="268">Updated 2h ago</text>
+    <text x="1080" y="268">reads .md</text>
+  </g>
+  <text x="615" y="412" font-size="12" letter-spacing="1.2" fill="rgba(28,27,34,0.66)" text-anchor="middle">THE NEXT CHANGE FIRES THE NEXT TICKET</text>
+  <text x="60" y="96" font-family="Inter, ui-sans-serif, system-ui" font-size="28" font-weight="600" letter-spacing="-0.8" fill="rgba(28,27,34,0.92)">The loop</text>
+  <text x="60" y="128" font-family="Inter, ui-sans-serif, system-ui" font-size="16" fill="rgba(28,27,34,0.66)">Code changes, the docs follow in the same push, a person signs them off.</text>
+</svg>

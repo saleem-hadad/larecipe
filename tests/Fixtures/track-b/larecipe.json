@@ -1,0 +1,26 @@
+{
+  "name": "LaRecipe",
+  "description": "Living documentation for Laravel apps.",
+  "repository": { "url": "https://github.com/saleem-hadad/larecipe", "branch": "v3", "docsPath": "docs" },
+  "versions": [
+    { "id": "3.x", "default": true },
+    { "id": "2.x", "status": "deprecated" }
+  ],
+  "locales": [
+    { "code": "en", "default": true },
+    { "code": "ar" }
+  ],
+  "landing": "index",
+  "navbar": {
+    "links": [{ "label": "Changelog", "href": "https://github.com/saleem-hadad/larecipe/releases" }]
+  },
+  "footer": {
+    "links": [
+      { "label": "GitHub", "href": "https://github.com/saleem-hadad/larecipe" },
+      { "label": "llms.txt", "href": "/guide/3.x/llms.txt" }
+    ]
+  },
+  "inserts": {
+    "article.after": ["Subscribe"]
+  }
+}

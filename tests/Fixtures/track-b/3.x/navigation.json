@@ -1,0 +1,15 @@
+{
+  "groups": [
+    { "group": "Get started", "pages": ["index", "installation", "configuration"] },
+    {
+      "group": "Writing",
+      "pages": [
+        "components",
+        "guides/webhooks",
+        { "group": "Reference", "pages": ["guides/authoring", "guides/frontmatter", "guides/long-page"] }
+      ]
+    },
+    { "group": "Agents", "pages": ["agents"] },
+    { "label": "Status page", "href": "https://status.example.com" }
+  ]
+}

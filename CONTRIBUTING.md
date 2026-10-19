@@ -22,11 +22,15 @@ Before submitting a pull request:
 
 If the project maintainer has any additional requirements, you will find them listed here.
 
-- **[PSR-2 Coding Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)** - The easiest way to apply the conventions is to install [PHP Code Sniffer](https://pear.php.net/package/PHP_CodeSniffer).
+- **Laravel Pint** - Run `composer lint` before you commit. Pint keeps the code in the project's style.
+
+- **Domains, actions, DTOs** - Read `ARCHITECTURE.md` (section 4) before adding code: each feature belongs to one domain under `src/Domains`, and each action has one public `execute()` method. The architecture tests enforce it.
+
+- **Commit the built UI** - `dist/` ships in the Composer package, so hosts need no Node. After any change under `ui/` or `packages/ui`, run `pnpm build` and commit `dist/` with it. CI fails when they differ.
 
 - **Add tests!** - Your patch won't be accepted if it doesn't have tests.
 
-- **Document any change in behaviour** - Make sure the `README.md` and any other relevant documentation are kept up-to-date.
+- **Document any change in behaviour** - Update the docs in the same pull request, the way LaRecipe asks of its users.
 
 - **Consider our release cycle** - We try to follow [SemVer v2.0.0](https://semver.org/). Randomly breaking public APIs is not an option.
 

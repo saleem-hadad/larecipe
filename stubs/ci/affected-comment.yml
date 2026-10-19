@@ -1,0 +1,17 @@
+      - name: List docs pages this pull request leaves stale
+        id: affected
+        run: php artisan larecipe:affected --base=origin/${{ github.base_ref }} --format=markdown --no-drift > larecipe-docs-check.md
+
+      - name: Comment on the pull request
+        # Pull requests from forks get a read-only token, so the comment is skipped there.
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ steps.affected.outputs.stale }}" != "0" ]; then
+            gh pr comment "${{ github.event.pull_request.number }}" --body-file larecipe-docs-check.md --edit-last \
+              || gh pr comment "${{ github.event.pull_request.number }}" --body-file larecipe-docs-check.md
+          else
+            gh pr comment "${{ github.event.pull_request.number }}" --body-file larecipe-docs-check.md --edit-last || true
+          fi

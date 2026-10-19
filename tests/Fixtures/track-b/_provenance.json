@@ -1,0 +1,14 @@
+{
+  "3.x/en/index": { "updated": "-3 days", "actor": "human", "name": "Saleem Hadad", "ref": "4be81d0", "approved_by": "@saleem", "summary": "Saleem Hadad rewrote the introduction around the loop.", "pages": 1, "additions": 22, "deletions": 9 },
+  "3.x/en/installation": { "updated": "-2 hours", "actor": "agent", "name": "Claude Code", "ref": "9f3a2c1", "approved_by": "@saleem", "ticket": "0142", "summary": "Claude Code updated Connect your agents after the installer gained the agents prompt.", "pages": 2, "additions": 14, "deletions": 3 },
+  "3.x/en/configuration": { "updated": "-24 days", "actor": "human", "name": "Saleem Hadad", "ref": "1c0f7aa", "approved_by": "@saleem" },
+  "3.x/en/components": { "updated": "-26 hours", "actor": "agent", "name": "Codex", "ref": "e71b9c4", "approved_by": "@maria", "ticket": "0139", "summary": "Codex documented the Video placeholder after the component gained it.", "pages": 1, "additions": 31, "deletions": 0 },
+  "3.x/en/agents": { "updated": "-5 hours", "actor": "agent", "name": "Claude Code", "ref": "9f3a2c1", "approved_by": "@saleem", "ticket": "0142", "summary": "Claude Code added the MCP command for Claude Code.", "pages": 2, "additions": 14, "deletions": 3 },
+  "3.x/en/guides/webhooks": { "updated": "-40 days", "actor": "human", "name": "Maria Lopez", "ref": "77d2e18" },
+  "3.x/en/guides/frontmatter": { "updated": "-12 days" },
+  "3.x/en/guides/authoring": { "updated": "-30 days", "actor": "human", "name": "Maria Lopez", "ref": "5d1e0a2" },
+  "3.x/en/guides/long-page": { "updated": "-60 days" },
+  "3.x/ar/index": { "updated": "-1 days", "actor": "human", "name": "سليم حداد", "ref": "4be81d0", "approved_by": "@saleem" },
+  "3.x/ar/installation": { "updated": "-2 hours", "actor": "agent", "name": "Claude Code", "ref": "9f3a2c1", "approved_by": "@saleem", "ticket": "0142", "summary": "حدّث Claude Code قسم «اربط وكلاءك» بعد أن أصبح المُثبّت يسأل عن الوكلاء.", "pages": 2, "additions": 14, "deletions": 3 },
+  "2.x/en/index": { "updated": "-400 days", "actor": "human", "name": "Saleem Hadad", "ref": "a01c5e3" }
+}

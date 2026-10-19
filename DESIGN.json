@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-17T00:00:00Z",
+  "title": "Design System: LaRecipe",
+  "extensions": {
+    "colorMeta": {
+      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "#FAFAF8", "dark": "#111016" },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "rgba(28, 27, 34, 0.92)", "dark": "rgba(244, 243, 248, 0.92)" },
+      "ink-muted": { "role": "neutral", "displayName": "Ink muted", "canonical": "rgba(28, 27, 34, 0.66)", "dark": "rgba(244, 243, 248, 0.64)" },
+      "ink-faint": { "role": "neutral", "displayName": "Ink faint", "canonical": "rgba(28, 27, 34, 0.44)", "dark": "rgba(244, 243, 248, 0.42)" },
+      "surface": { "role": "neutral", "displayName": "Surface", "canonical": "#F2F1F4", "dark": "#1B1A21" },
+      "surface-2": { "role": "neutral", "displayName": "Surface 2", "canonical": "#EAE9ED", "dark": "#24232B" },
+      "hairline": { "role": "neutral", "displayName": "Hairline", "canonical": "#E7E6EA", "dark": "#26252D" },
+      "hairline-strong": { "role": "neutral", "displayName": "Hairline strong", "canonical": "#D6D5DB", "dark": "#34333C" },
+      "violet": {
+        "role": "primary",
+        "displayName": "Violet",
+        "canonical": "oklch(0.55 0.2 279)",
+        "dark": "oklch(0.74 0.14 279)",
+        "heritage": "#787AF6",
+        "tonalRamp": ["oklch(0.30 0.10 279)", "oklch(0.38 0.14 279)", "oklch(0.46 0.18 279)", "oklch(0.55 0.20 279)", "oklch(0.64 0.18 279)", "oklch(0.74 0.14 279)", "oklch(0.85 0.08 279)", "oklch(0.955 0.025 279)"]
+      },
+      "violet-soft": { "role": "primary", "displayName": "Violet soft", "canonical": "oklch(0.955 0.025 279)", "dark": "oklch(0.28 0.06 279)" },
+      "code": { "role": "neutral", "displayName": "Code slab", "canonical": "#17161C", "dark": "#0B0A0F" },
+      "code-foreground": { "role": "neutral", "displayName": "Code text", "canonical": "#E8E7EE" },
+      "syntax": {
+        "role": "code",
+        "displayName": "Syntax",
+        "keyword": "#B4A7FF",
+        "string": "#9FDDB4",
+        "comment": "rgba(232, 231, 238, 0.42)",
+        "function": "#F2C97D",
+        "constant": "#8FD3FF"
+      },
+      "success": { "role": "semantic", "displayName": "Success", "canonical": "oklch(0.56 0.13 155)", "dark": "oklch(0.8 0.14 155)" },
+      "warning": { "role": "semantic", "displayName": "Warning", "canonical": "oklch(0.66 0.15 70)", "dark": "oklch(0.82 0.15 75)" },
+      "danger": { "role": "semantic", "displayName": "Danger", "canonical": "oklch(0.56 0.2 25)", "dark": "oklch(0.78 0.17 25)" }
+    },
+    "typographyMeta": {
+      "families": {
+        "sans": { "stack": "'Inter Variable', 'Inter', 'Thmanyah Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif", "features": "'ss01', 'cv11'", "source": "Inter (OFL), same face and features as nashra.ai" },
+        "arabic": { "stack": "'Thmanyah Sans'", "weights": [400, 500, 700], "source": "Thmanyah Sans (font.thmanyah.com, free for commercial use), self-hosted woff2; same face as nashra.ai Arabic" },
+        "mono": { "stack": "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace", "weights": [400, 500], "source": "JetBrains Mono (OFL)" }
+      },
+      "display": { "displayName": "Display", "purpose": "Marketing heroes on larecipe-docs. Never inside a docs page. 56px / 600 / -0.04em." },
+      "h1": { "displayName": "H1", "purpose": "The page title, one per page. 40px / 600 / -0.035em." },
+      "h2": { "displayName": "H2", "purpose": "Sections; feed the TOC and search records. 24px / 600 / -0.02em." },
+      "h3": { "displayName": "H3", "purpose": "Subsections. 18px / 600 / -0.01em." },
+      "lead": { "displayName": "Lead", "purpose": "Page description under the H1, ink muted, max 640px." },
+      "prose": { "displayName": "Prose", "purpose": "Body text, 16px / 1.75, measure 68 to 72 characters." },
+      "ui": { "displayName": "UI", "purpose": "Navigation, buttons, inputs, menus, 14px." },
+      "label": { "displayName": "Label", "purpose": "JetBrains Mono 11px / 500 / 0.1em uppercase: nav groups, ticket headers, code titles." },
+      "meta": { "displayName": "Meta", "purpose": "JetBrains Mono 11.5px: provenance, paths, hashes, reading time." },
+      "code": { "displayName": "Code", "purpose": "JetBrains Mono 13.5px / 1.7 on the dark slab." }
+    },
+    "shadows": [
+      { "name": "float", "value": "0 12px 32px -8px rgba(17, 16, 22, 0.22), 0 0 0 1px var(--hairline)", "purpose": "Docked Ask bar, popovers, menus." },
+      { "name": "overlay", "value": "0 30px 80px -20px rgba(17, 16, 22, 0.35), 0 0 0 1px var(--hairline)", "purpose": "Command palette, Ask panel, dialogs." },
+      { "name": "ring-focus", "value": "0 0 0 2px var(--paper), 0 0 0 4px color-mix(in oklch, var(--violet) 45%, transparent)", "purpose": "Keyboard focus on every interactive element." }
+    ],
+    "motion": [
+      { "name": "duration-hover", "value": "120ms", "purpose": "Hover color and border changes." },
+      { "name": "duration-state", "value": "180ms", "purpose": "Selection, tabs, toggles, the article swap." },
+      { "name": "duration-panel", "value": "240ms", "purpose": "Palette, Ask panel, menus, the ticket print." },
+      { "name": "ease-pass", "value": "cubic-bezier(0.2, 0, 0, 1)", "purpose": "Default easing: fast start, exact stop, no overshoot." },
+      { "name": "print-step", "value": "160ms", "purpose": "Interval between dots in the printing loader." }
+    ],
+    "layout": [
+      { "name": "header", "value": "60px" },
+      { "name": "sidebar", "value": "248px" },
+      { "name": "toc-rail", "value": "240px" },
+      { "name": "prose-max", "value": "720px" },
+      { "name": "article-gutter", "value": "56px" },
+      { "name": "ask-panel", "value": "420px" },
+      { "name": "palette", "value": "640px" }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px", "purpose": "Phone: sidebar becomes a sheet, TOC becomes a popover, Ask bar becomes a header button." },
+      { "name": "md", "value": "1024px", "purpose": "Tablet: TOC rail hides, page actions move under the H1." },
+      { "name": "lg", "value": "1280px", "purpose": "Desktop: three columns." }
+    ],
+    "themeTokens": {
+      "description": "What a team may override in larecipe.json `theme`. Everything else is structure.",
+      "accent": "Replaces violet. Soft and dark variants are derived in OKLCH; contrast is validated by larecipe:validate.",
+      "fonts": "sans, mono, arabic stacks; Google Fonts or self-hosted files in the docs root.",
+      "radius": "sharp (default: 3/4/6/10) or soft (4/6/10/14).",
+      "logo": "light and dark variants.",
+      "mode": "system (default), light or dark.",
+      "provenance": "true (default) shows updated-by lines and the Last change ticket."
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one primary action per screen (Ask the docs). Violet fill, white text, no shadow.",
+      "html": "<button class=\"lr-btn-primary\">Ask the docs</button>",
+      "css": ".lr-btn-primary { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; border: 0; border-radius: 6px; background: oklch(0.55 0.2 279); color: #fff; font: 500 14px/1 'Inter', sans-serif; font-feature-settings: 'ss01', 'cv11'; cursor: pointer; transition: background 120ms cubic-bezier(0.2, 0, 0, 1); } .lr-btn-primary:hover { background: oklch(0.5 0.2 279); } .lr-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #FAFAF8, 0 0 0 4px oklch(0.55 0.2 279 / 0.45); }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Calm default for non-primary actions. Surface fill.",
+      "html": "<button class=\"lr-btn-secondary\">View as Markdown</button>",
+      "css": ".lr-btn-secondary { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; border: 0; border-radius: 6px; background: #F2F1F4; color: rgba(28, 27, 34, 0.92); font: 500 14px/1 'Inter', sans-serif; cursor: pointer; transition: background 120ms cubic-bezier(0.2, 0, 0, 1); } .lr-btn-secondary:hover { background: #EAE9ED; } .lr-btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 2px #FAFAF8, 0 0 0 4px oklch(0.55 0.2 279 / 0.45); }"
+    },
+    {
+      "name": "Search Trigger",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Header search field that opens the command palette. Surface fill, hairline border, ⌘K keycap.",
+      "html": "<button class=\"lr-search\"><span>Search the docs</span><kbd>⌘K</kbd></button>",
+      "css": ".lr-search { display: flex; align-items: center; justify-content: space-between; width: 420px; height: 36px; padding: 0 8px 0 12px; border: 1px solid #E7E6EA; border-radius: 6px; background: #F2F1F4; color: rgba(28, 27, 34, 0.44); font: 14px 'Inter', sans-serif; cursor: pointer; transition: border-color 120ms; } .lr-search:hover { border-color: #D6D5DB; } .lr-search kbd { font: 10px 'JetBrains Mono', monospace; padding: 3px 6px; border: 1px solid #E7E6EA; border-radius: 3px; color: rgba(28, 27, 34, 0.66); }"
+    },
+    {
+      "name": "Ticket",
+      "kind": "card",
+      "refersTo": "ticket",
+      "description": "The signature: a provenance card with a mono header, a perforated rule and a bitten bottom edge.",
+      "html": "<article class=\"lr-ticket\"><header><span>TICKET 0142</span><span>14:02</span></header><div class=\"lr-perf\"></div><p>Claude Code updated <strong>Connect your agents</strong> after the installer gained the agents prompt.</p><footer>9f3a2c1 · 2 pages · +14 −3</footer></article>",
+      "css": ".lr-ticket { display: flex; flex-direction: column; gap: 10px; padding: 16px 16px 26px; border-radius: 6px 6px 0 0; background: #F2F1F4; -webkit-mask: radial-gradient(circle 5px at 50% 100%, #0000 96%, #000) 50% 100% / 12px 100%; mask: radial-gradient(circle 5px at 50% 100%, #0000 96%, #000) 50% 100% / 12px 100%; } .lr-ticket header, .lr-ticket footer { display: flex; justify-content: space-between; font: 500 10px/1.6 'JetBrains Mono', monospace; letter-spacing: 0.08em; color: rgba(28, 27, 34, 0.66); } .lr-ticket p { margin: 0; font: 13.5px/1.5 'Inter', sans-serif; color: rgba(28, 27, 34, 0.92); } .lr-perf { height: 4px; background: radial-gradient(circle, #E7E6EA 1.3px, transparent 1.7px) 0 50% / 8px 4px repeat-x; }"
+    },
+    {
+      "name": "Callout",
+      "kind": "card",
+      "refersTo": "callout",
+      "description": "Neutral surface, hairline border, colored mono label. No side stripe, no tint.",
+      "html": "<aside class=\"lr-callout\" data-type=\"note\"><div class=\"lr-callout-label\">Note</div><p>Every page is also served as Markdown.</p></aside>",
+      "css": ".lr-callout { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px; border: 1px solid #E7E6EA; border-radius: 6px; background: #F2F1F4; } .lr-callout-label { font: 500 11px/1.2 'JetBrains Mono', monospace; letter-spacing: 0.1em; text-transform: uppercase; color: oklch(0.55 0.2 279); } .lr-callout[data-type=warning] .lr-callout-label { color: oklch(0.6 0.15 70); } .lr-callout[data-type=danger] .lr-callout-label { color: oklch(0.56 0.2 25); } .lr-callout[data-type=tip] .lr-callout-label { color: oklch(0.56 0.13 155); } .lr-callout p { margin: 0; font: 15px/1.7 'Inter', sans-serif; color: rgba(28, 27, 34, 0.66); }"
+    },
+    {
+      "name": "Code Block",
+      "kind": "code",
+      "refersTo": "code-block",
+      "description": "Dark slab in both modes, mono uppercase header, copy button.",
+      "html": "<figure class=\"lr-code\"><figcaption><span>Terminal</span><button aria-label=\"Copy\">Copy</button></figcaption><pre><code>composer require larecipe/larecipe</code></pre></figure>",
+      "css": ".lr-code { margin: 0; border-radius: 6px; overflow: hidden; background: #17161C; color: #E8E7EE; } .lr-code figcaption { display: flex; align-items: center; justify-content: space-between; height: 36px; padding: 0 14px; border-bottom: 1px solid #2A2932; font: 10.5px 'JetBrains Mono', monospace; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(232, 231, 238, 0.5); } .lr-code figcaption button { border: 0; background: none; color: inherit; font: inherit; cursor: pointer; } .lr-code pre { margin: 0; padding: 14px 16px; font: 13.5px/1.7 'JetBrains Mono', monospace; overflow-x: auto; }"
+    },
+    {
+      "name": "Sidebar Item",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "14px item; active is violet soft with violet text. The fresh dot marks pages changed in the last 7 days.",
+      "html": "<nav class=\"lr-nav\"><div class=\"lr-nav-label\">Get started</div><a href=\"#\">Introduction</a><a href=\"#\" aria-current=\"page\">Installation</a><a href=\"#\">Configuration<i class=\"lr-fresh\"></i></a></nav>",
+      "css": ".lr-nav { display: flex; flex-direction: column; gap: 2px; width: 220px; } .lr-nav-label { padding: 0 10px 8px; font: 500 11px 'JetBrains Mono', monospace; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(28, 27, 34, 0.66); } .lr-nav a { display: flex; align-items: center; justify-content: space-between; height: 30px; padding: 0 10px; border-radius: 4px; font: 14px 'Inter', sans-serif; color: rgba(28, 27, 34, 0.66); text-decoration: none; transition: background 120ms, color 120ms; } .lr-nav a:hover { background: #F2F1F4; color: rgba(28, 27, 34, 0.92); } .lr-nav a[aria-current=page] { background: oklch(0.955 0.025 279); color: oklch(0.55 0.2 279); font-weight: 500; } .lr-fresh { width: 6px; height: 6px; border-radius: 50%; background: oklch(0.55 0.2 279); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Pass",
+    "overview": "In a restaurant kitchen, the pass is the counter where every plate is checked before it leaves. LaRecipe is that counter for documentation: code changes fire tickets, agents prepare the docs, a human signs them off, and the reader receives a page that says exactly when and why it changed. Paper and ink, one violet for state, mono for what machines produced, a clean sans for what people read, and the ticket (perforated header, bitten edge) as the signature shape. Light and dark are first-class; Arabic is a peer rendering.",
+    "keyCharacteristics": [
+      "Paper and ink first; violet is a state, never a decoration.",
+      "Mono for what machines produced; sans for what people read.",
+      "The ticket is the signature shape.",
+      "Provenance is designed into the page.",
+      "Corners are small (4 / 6 / 10 px).",
+      "Flat at rest; shadows only on floating surfaces.",
+      "Motion is mechanical and exact (120 / 180 / 240 ms).",
+      "Bilingual and RTL-native."
+    ],
+    "rules": [
+      { "name": "The Violet-Is-State Rule", "body": "Violet means active, focused, selected, linked, fresh or the single primary action. One filled violet button per screen. The mark is never violet.", "section": "colors" },
+      { "name": "The Labels-Not-Washes Rule", "body": "Callouts, badges and alerts get meaning from a colored label and icon on a neutral surface. No tinted fills, no side stripes.", "section": "colors" },
+      { "name": "The Measured-Ink Rule", "body": "Text uses the alpha ladder 0.92 / 0.66 / 0.44. Information never sits at the faint step.", "section": "colors" },
+      { "name": "The Customer-Accent Rule", "body": "A team's accent replaces violet through tokens with derived variants. Structure and signature elements stay; LaRecipe's mark appears only as an optional credit.", "section": "colors" },
+      { "name": "The Firm-Heading Rule", "body": "Docs headings ship at 600 with negative tracking because readers scan docs before they read them.", "section": "typography" },
+      { "name": "The Machine-Is-Mono Rule", "body": "Paths, hashes, commands, timestamps, ticket numbers, shortcuts and version ids are mono. Human writing is sans.", "section": "typography" },
+      { "name": "The Arabic-Breathes Rule", "body": "Arabic never inherits negative tracking, runs prose at 1.8, maps 600 to Thmanyah 700, and turns mono labels into sans 500.", "section": "typography" },
+      { "name": "The Numerals-Stay-LTR Rule", "body": "Inside RTL, numerals, versions, hashes and commands stay left to right.", "section": "typography" },
+      { "name": "The Flat-At-Rest Rule", "body": "Cards, callouts, tickets and code blocks have no shadow at rest or on hover. Hover is a stronger hairline.", "section": "elevation" },
+      { "name": "The Shared-Canvas Rule", "body": "Header, sidebar, article and TOC share the canvas; boundaries are one hairline.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep violet for state: focus, selection, the active page, links, freshness and the one primary action.",
+      "Do set machine-made things in mono and human writing in sans.",
+      "Do show provenance on every page.",
+      "Do carry structure with whitespace, the hairline and the perforation before reaching for a box.",
+      "Do keep corners at 4, 6 or 10 px.",
+      "Do check every surface in light, dark, LTR, RTL and with JavaScript disabled.",
+      "Do keep code and numerals left to right inside RTL.",
+      "Do consume icons through one Icons namespace (Lucide, 1.75 stroke).",
+      "Do let a team's accent, fonts and logo replace LaRecipe's on their docs."
+    ],
+    "donts": [
+      "Don't use gradients, glassmorphism, sparkles or neon.",
+      "Don't tint callouts or add colored side stripes.",
+      "Don't put more than one filled violet button on a screen.",
+      "Don't draw the mark in violet.",
+      "Don't add shadows to cards, callouts, tickets or code blocks.",
+      "Don't use pure black or white for text, or information at the faint step.",
+      "Don't float a chat bubble over the content.",
+      "Don't use kitchen slang on customer docs by default.",
+      "Don't use em dashes in copy.",
+      "Don't add decorative motion."
+    ]
+  }
+}

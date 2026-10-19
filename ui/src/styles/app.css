@@ -1,0 +1,58 @@
+/* Tailwind provides the reset and theme; utilities are generated only for the admin UI, the reader UI uses the semantic lr-* classes the prerender shares. */
+@import 'tailwindcss' source(none);
+@source '../admin';
+@import '@fontsource-variable/inter';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/jetbrains-mono/700.css';
+@import './tokens.css';
+@import './base.css';
+@import './chrome.css';
+@import './prose.css';
+@import './overlays.css';
+
+/* Thmanyah Sans: the Arabic face shared with nashra.ai. Arabic glyphs only, so
+   Latin words, numbers and code inside Arabic text stay in Inter. */
+@font-face {
+  font-family: 'Thmanyah Sans';
+  src: url('../fonts/thmanyah/ThmanyahSans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: 'Thmanyah Sans';
+  src: url('../fonts/thmanyah/ThmanyahSans-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: 'Thmanyah Sans';
+  src: url('../fonts/thmanyah/ThmanyahSans-Bold.woff2') format('woff2');
+  font-weight: 600 700;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@theme {
+  --font-sans: var(--lr-font-sans);
+  --font-mono: var(--lr-font-mono);
+  --color-paper: var(--lr-paper);
+  --color-ink: var(--lr-ink);
+  --color-ink-muted: var(--lr-ink-muted);
+  --color-ink-faint: var(--lr-ink-faint);
+  --color-surface: var(--lr-surface);
+  --color-surface-2: var(--lr-surface-2);
+  --color-hairline: var(--lr-hairline);
+  --color-hairline-strong: var(--lr-hairline-strong);
+  --color-accent: var(--lr-accent-current);
+  --color-accent-soft: var(--lr-accent-soft);
+  --radius-xs: var(--lr-radius-xs);
+  --radius-sm: var(--lr-radius-sm);
+  --radius-md: var(--lr-radius-md);
+  --radius-lg: var(--lr-radius-lg);
+  --ease-pass: var(--lr-ease);
+}

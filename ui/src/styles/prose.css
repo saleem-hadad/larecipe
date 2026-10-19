@@ -1,0 +1,1560 @@
+/*
+ * The article: prose and every built-in component's server HTML.
+ *
+ * Components render as semantic HTML on the server and read fully without
+ * JavaScript. Islands (tabs, code groups, frames, video, diagrams, math)
+ * enhance that HTML in place; where the enhanced layout differs, the
+ * html.lr-js rules below set it before first paint, so nothing jumps when
+ * React arrives.
+ */
+@layer components {
+  .lr-prose {
+    max-width: var(--lr-prose-width);
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--lr-ink);
+    overflow-wrap: break-word;
+  }
+
+  html[dir='rtl'] .lr-prose {
+    line-height: 1.8;
+  }
+
+  .lr-prose > :first-child {
+    margin-top: 0;
+  }
+
+  .lr-prose > :last-child {
+    margin-bottom: 0;
+  }
+
+  /* ---- Headings ---------------------------------------------------------- */
+
+  .lr-prose h2,
+  .lr-prose h3,
+  .lr-prose h4 {
+    position: relative;
+    color: var(--lr-ink);
+    text-wrap: balance;
+  }
+
+  .lr-prose h2 {
+    margin: 52px 0 14px;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  .lr-prose h3 {
+    margin: 36px 0 10px;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+  }
+
+  .lr-prose h4 {
+    margin: 28px 0 8px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  html[dir='rtl'] .lr-prose h2,
+  html[dir='rtl'] .lr-prose h3,
+  html[dir='rtl'] .lr-prose h4 {
+    font-weight: 700;
+    letter-spacing: normal;
+  }
+
+  .lr-prose h2 + h3 {
+    margin-top: 20px;
+  }
+
+  /* Heading anchors sit in the inline-start gutter and never move the text. */
+  .lr-anchor {
+    position: absolute;
+    inset-inline-start: -26px;
+    top: 50%;
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    border-radius: var(--lr-radius-xs);
+    color: var(--lr-ink-faint);
+    opacity: 0;
+    transition:
+      opacity var(--lr-duration-hover) var(--lr-ease),
+      color var(--lr-duration-hover) var(--lr-ease);
+  }
+
+  .lr-prose .lr-anchor {
+    text-decoration: none;
+  }
+
+  .lr-prose h2:hover .lr-anchor,
+  .lr-prose h3:hover .lr-anchor,
+  .lr-prose h4:hover .lr-anchor,
+  .lr-anchor:focus-visible {
+    opacity: 1;
+  }
+
+  .lr-anchor:hover {
+    color: var(--lr-accent-current);
+  }
+
+  @media (max-width: 640px) {
+    .lr-anchor {
+      display: none;
+    }
+  }
+
+  /* ---- Text --------------------------------------------------------------- */
+
+  .lr-prose p,
+  .lr-prose ul,
+  .lr-prose ol,
+  .lr-prose dl {
+    margin: 0 0 18px;
+  }
+
+  .lr-prose p + ul,
+  .lr-prose p + ol {
+    margin-top: -6px;
+  }
+
+  .lr-prose ul,
+  .lr-prose ol {
+    padding-inline-start: 1.5em;
+  }
+
+  .lr-prose li {
+    margin: 6px 0;
+    padding-inline-start: 0.2em;
+  }
+
+  .lr-prose li > ul,
+  .lr-prose li > ol {
+    margin: 6px 0 0;
+  }
+
+  /* Tailwind's preflight removes list markers; Markdown lists (the ones with no
+     class) get them back. Component lists keep their own styles. */
+  .lr-prose ul:not([class]) {
+    list-style: disc;
+  }
+
+  .lr-prose ol:not([class]) {
+    list-style: decimal;
+  }
+
+  .lr-prose li > ul:not([class]) {
+    list-style: circle;
+  }
+
+  .lr-prose ul > li::marker {
+    color: var(--lr-ink-faint);
+  }
+
+  .lr-prose ol > li::marker {
+    font-family: var(--lr-font-mono);
+    font-size: 0.82em;
+    color: var(--lr-ink-muted);
+  }
+
+  .lr-prose strong {
+    font-weight: 600;
+    color: var(--lr-ink);
+  }
+
+  html[dir='rtl'] .lr-prose strong {
+    font-weight: 700;
+  }
+
+  .lr-prose a {
+    color: var(--lr-accent-current);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: color-mix(in oklch, var(--lr-accent-current) 40%, transparent);
+    text-underline-offset: 3px;
+    transition: text-decoration-color var(--lr-duration-hover) var(--lr-ease);
+  }
+
+  .lr-prose a:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .lr-prose :not(pre) > code {
+    padding: 0.15em 0.38em;
+    border-radius: var(--lr-radius-xs);
+    background: var(--lr-surface);
+    color: var(--lr-ink);
+    font-family: var(--lr-font-mono);
+    font-size: 0.86em;
+    font-feature-settings: normal;
+    direction: ltr;
+    unicode-bidi: isolate;
+    overflow-wrap: anywhere;
+  }
+
+  .lr-prose a > code {
+    color: inherit;
+  }
+
+  .lr-prose kbd {
+    display: inline-block;
+    min-width: 1.6em;
+    padding: 0.05em 0.4em;
+    border: 1px solid var(--lr-hairline-strong);
+    border-bottom-width: 2px;
+    border-radius: var(--lr-radius-xs);
+    font-family: var(--lr-font-mono);
+    font-size: 0.78em;
+    line-height: 1.4;
+    text-align: center;
+    color: var(--lr-ink-muted);
+    direction: ltr;
+  }
+
+  .lr-prose mark {
+    padding: 0 0.15em;
+    border-radius: 2px;
+    background: var(--lr-surface-2);
+    color: var(--lr-ink);
+  }
+
+  /* The perforation replaces the solid rule. */
+  .lr-prose hr {
+    height: 4px;
+    margin: 40px 0;
+    border: 0;
+    background: radial-gradient(circle, var(--lr-hairline-strong) 1.3px, transparent 1.7px) 0 50% / 8px 4px repeat-x;
+  }
+
+  /* Quotes: set apart by indent and a hung mark, never a side stripe. */
+  .lr-prose blockquote {
+    position: relative;
+    margin: 24px 0;
+    padding-inline-start: 28px;
+    color: var(--lr-ink-muted);
+  }
+
+  .lr-prose blockquote::before {
+    content: '“';
+    position: absolute;
+    inset-inline-start: 0;
+    top: -0.1em;
+    font-size: 2em;
+    line-height: 1;
+    color: var(--lr-ink-faint);
+  }
+
+  html[dir='rtl'] .lr-prose blockquote::before {
+    content: '”';
+  }
+
+  .lr-prose blockquote > :last-child {
+    margin-bottom: 0;
+  }
+
+  .lr-prose img,
+  .lr-prose video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--lr-radius-md);
+  }
+
+  .lr-prose p > img {
+    margin: 8px 0;
+  }
+
+  .lr-prose dt {
+    font-weight: 600;
+  }
+
+  .lr-prose dd {
+    margin: 2px 0 12px;
+    margin-inline-start: 0;
+    color: var(--lr-ink-muted);
+  }
+
+  /* Task lists */
+  .lr-prose li:has(> input[type='checkbox']) {
+    list-style: none;
+    margin-inline-start: -1.4em;
+  }
+
+  .lr-prose input[type='checkbox'] {
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    margin-inline-end: 8px;
+    vertical-align: -2px;
+    accent-color: var(--lr-accent-current);
+  }
+
+  /* ---- Tables: LaRecipe 2's bordered grid on a white sheet, rounded, with a whisper of shadow ---- */
+
+  .lr-prose .lr-table {
+    max-width: 100%;
+    margin: 24px 0;
+    overflow-x: auto;
+    border: 1px solid var(--lr-hairline-strong);
+    border-radius: var(--lr-radius-lg);
+    background: var(--lr-table-bg);
+    box-shadow: var(--lr-shadow-table);
+    scrollbar-width: thin;
+  }
+
+  .lr-prose table {
+    width: 100%;
+    margin: 24px 0;
+    border-collapse: collapse;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .lr-prose .lr-table > table {
+    margin: 0;
+  }
+
+  .lr-prose th,
+  .lr-prose td {
+    padding: 12px 16px;
+    border: 1px solid var(--lr-hairline);
+    vertical-align: top;
+    text-align: start;
+  }
+
+  /* Inside the rounded sheet the sheet draws the outer edge; cells draw only the grid. */
+  .lr-prose .lr-table tr > :first-child {
+    border-inline-start: 0;
+  }
+
+  .lr-prose .lr-table tr > :last-child {
+    border-inline-end: 0;
+  }
+
+  .lr-prose .lr-table > table > :first-child > tr:first-child > *,
+  .lr-prose .lr-table > table > caption + * > tr:first-child > * {
+    border-top: 0;
+  }
+
+  .lr-prose .lr-table > table > :last-child > tr:last-child > * {
+    border-bottom: 0;
+  }
+
+  .lr-prose th {
+    font-weight: 600;
+    color: var(--lr-ink);
+    white-space: nowrap;
+  }
+
+  .lr-prose tbody tr {
+    transition: background-color var(--lr-duration-hover) var(--lr-ease);
+  }
+
+  .lr-prose tbody tr:hover {
+    background: var(--lr-surface);
+  }
+
+  .lr-prose table caption {
+    padding: 10px 16px;
+    font-weight: 600;
+    text-align: start;
+    color: var(--lr-ink);
+  }
+
+  /* ---- Footnotes ------------------------------------------------------------ */
+
+  .lr-prose .footnotes {
+    margin-top: 48px;
+    padding-top: 24px;
+    font-size: 14px;
+    color: var(--lr-ink-muted);
+    background: radial-gradient(circle, var(--lr-hairline-strong) 1.3px, transparent 1.7px) 0 0 / 8px 4px repeat-x;
+  }
+
+  .lr-prose .footnotes hr {
+    display: none;
+  }
+
+  /* ---- Code blocks: a dark slab in both modes ------------------------------- */
+
+  .lr-prose pre,
+  .lr-code {
+    direction: ltr;
+    text-align: left;
+  }
+
+  /* Code reads exactly as it is typed: no ligatures turning => into an arrow. */
+  .lr-prose pre,
+  .lr-prose code,
+  .lr-code,
+  .lr-ask-answer pre,
+  .lr-ask-answer code {
+    font-variant-ligatures: none;
+    font-feature-settings: 'liga' 0, 'calt' 0;
+  }
+
+  .lr-prose pre {
+    margin: 24px 0;
+    padding: 14px 16px;
+    overflow-x: auto;
+    border-radius: var(--lr-radius-md);
+    background: var(--lr-code);
+    color: var(--lr-code-foreground);
+    font-family: var(--lr-font-mono);
+    font-size: 13.5px;
+    line-height: 1.7;
+    tab-size: 4;
+    scrollbar-width: thin;
+    scrollbar-color: var(--lr-code-line) transparent;
+  }
+
+  .lr-prose pre code {
+    display: block;
+    width: max-content;
+    min-width: 100%;
+    padding: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-feature-settings: normal;
+  }
+
+  .lr-pre-wrap {
+    position: relative;
+    direction: ltr;
+  }
+
+  .lr-code-copy-holder {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
+
+  .lr-code-copy-holder > .lr-code-copy {
+    background: var(--lr-code);
+  }
+
+  /* Code blocks sit on the slate slab with an extra-small shadow. */
+  .lr-code {
+    margin: 24px 0;
+    overflow: hidden;
+    border-radius: var(--lr-radius-md);
+    background: var(--lr-code);
+    color: var(--lr-code-foreground);
+    box-shadow: var(--lr-shadow-xs);
+  }
+
+  .lr-prose .lr-code > pre,
+  .lr-code .lr-pre {
+    margin: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .lr-code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    height: 36px;
+    padding-inline: 14px 6px;
+    border-bottom: 1px solid var(--lr-code-line);
+    color: var(--lr-code-muted);
+    font-family: var(--lr-font-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .lr-code-title {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .lr-code[data-title*='/'] .lr-code-title,
+  .lr-code[data-title*='.'] .lr-code-title {
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+
+  .lr-code-title:empty::before {
+    content: attr(data-language);
+  }
+
+  .lr-code-actions {
+    display: flex;
+    align-items: center;
+    margin-inline-start: auto;
+  }
+
+  .lr-code-copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 26px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: var(--lr-radius-sm);
+    background: transparent;
+    color: var(--lr-code-muted);
+    font: 500 10.5px/1 var(--lr-font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      color var(--lr-duration-hover) var(--lr-ease),
+      background-color var(--lr-duration-hover) var(--lr-ease);
+  }
+
+  .lr-code-copy:hover {
+    color: var(--lr-code-foreground);
+    background: rgb(255 255 255 / 0.06);
+  }
+
+  .lr-code-copy[data-copied] {
+    color: var(--lr-code-foreground);
+  }
+
+  .lr-code-copy[data-copied] .lr-icon {
+    color: var(--lr-code-add);
+  }
+
+  .lr-code-copy:focus-visible {
+    outline-color: var(--lr-code-marker);
+  }
+
+  /* Lines are <span class="lr-line" data-line="n"> inside <code>, joined by newlines. */
+  .lr-code .lr-line,
+  .lr-prose pre .lr-line {
+    display: inline-block;
+    min-width: 100%;
+  }
+
+  /* Highlighted lines: a violet band with a 2 px marker at the inline start. */
+  .lr-prose pre .lr-line[data-highlighted],
+  .lr-code .lr-line[data-highlighted] {
+    min-width: calc(100% + 32px);
+    margin-inline: -16px;
+    padding-inline: 14px 16px;
+    border-inline-start: 2px solid var(--lr-code-marker);
+    background: var(--lr-code-highlight);
+  }
+
+  /* Diff lines: success and danger labels in the gutter, and a faint band (below). */
+  .lr-prose pre .lr-line[data-diff='add'],
+  .lr-prose pre .lr-line[data-diff='remove'],
+  .lr-code .lr-line[data-diff='add'],
+  .lr-code .lr-line[data-diff='remove'] {
+    position: relative;
+    min-width: calc(100% + 32px);
+    margin-inline: -16px;
+    padding-inline: 28px 16px;
+  }
+
+  .lr-prose .lr-pre[data-diff] .lr-line:not([data-diff='add'], [data-diff='remove']) {
+    min-width: calc(100% + 32px);
+    margin-inline: -16px;
+    padding-inline: 28px 16px;
+  }
+
+  .lr-line[data-diff='add']::after,
+  .lr-line[data-diff='remove']::after {
+    position: absolute;
+    top: 0;
+    inset-inline-start: 10px;
+    font-weight: 500;
+  }
+
+  .lr-line[data-diff='add']::after {
+    content: '+';
+    color: var(--lr-code-add);
+  }
+
+  .lr-line[data-diff='remove']::after {
+    content: '−';
+    color: var(--lr-code-remove);
+  }
+
+  /* Added and removed lines carry a faint band; their text keeps full contrast. */
+  .lr-line[data-diff='add'] {
+    background: color-mix(in oklch, var(--lr-code-add) 10%, transparent);
+  }
+
+  .lr-line[data-diff='remove'] {
+    background: color-mix(in oklch, var(--lr-code-remove) 10%, transparent);
+  }
+
+  .lr-prose pre .lr-line[data-highlighted][data-diff] {
+    padding-inline-start: 26px;
+  }
+
+  /* A ```diff block keeps its own +/- markers in the text: no gutter labels. */
+  .lr-code[data-language='diff'] .lr-line[data-diff]::after {
+    content: none;
+  }
+
+  .lr-prose .lr-code[data-language='diff'] .lr-line[data-diff],
+  .lr-prose .lr-code[data-language='diff'] .lr-pre[data-diff] .lr-line {
+    min-width: 100%;
+    margin-inline: 0;
+    padding-inline: 0;
+    opacity: 1;
+  }
+
+  /* Line numbers in ink faint, when the author asked for them. */
+  .lr-pre[data-line-numbers] .lr-line::before {
+    content: attr(data-line);
+    display: inline-block;
+    width: 2.5ch;
+    margin-inline-end: 2ch;
+    color: rgb(232 231 238 / 0.62);
+    text-align: end;
+    user-select: none;
+  }
+
+  .lr-pre:focus-visible {
+    outline-color: var(--lr-code-marker);
+    outline-offset: -2px;
+  }
+
+  /* Pass syntax colors for highlighters that emit classes. */
+  .lr-code .tok-keyword,
+  .lr-prose pre .tok-keyword {
+    color: var(--lr-code-keyword);
+  }
+
+  .lr-code .tok-string,
+  .lr-prose pre .tok-string {
+    color: var(--lr-code-string);
+  }
+
+  .lr-code .tok-comment,
+  .lr-prose pre .tok-comment {
+    color: var(--lr-code-muted);
+  }
+
+  .lr-code .tok-function,
+  .lr-prose pre .tok-function {
+    color: var(--lr-code-function);
+  }
+
+  .lr-code .tok-constant,
+  .lr-code .tok-number,
+  .lr-prose pre .tok-constant,
+  .lr-prose pre .tok-number {
+    color: var(--lr-code-constant);
+  }
+
+  /* ---- Code groups: tabs on the slab ----------------------------------------- */
+
+  .lr-code-group {
+    margin: 24px 0;
+    overflow: hidden;
+    border-radius: var(--lr-radius-md);
+    background: var(--lr-code);
+    box-shadow: var(--lr-shadow-xs);
+  }
+
+  .lr-code-group .lr-code {
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .lr-code-group .lr-code + .lr-code {
+    border-top: 1px solid var(--lr-code-line);
+  }
+
+  .lr-code-tabs {
+    display: flex;
+    align-items: stretch;
+    height: 36px;
+    padding-inline: 14px 6px;
+    border-bottom: 1px solid var(--lr-code-line);
+  }
+
+  .lr-code-tablist {
+    display: flex;
+    gap: 18px;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .lr-code-tab {
+    flex: none;
+    height: 36px;
+    padding: 0 2px;
+    border: 0;
+    background: none;
+    color: var(--lr-code-muted);
+    font: 500 10.5px/1 var(--lr-font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: inset 0 -2px 0 transparent;
+    transition:
+      color var(--lr-duration-state) var(--lr-ease),
+      box-shadow var(--lr-duration-state) var(--lr-ease);
+  }
+
+  .lr-code-tab:hover {
+    color: var(--lr-code-foreground);
+  }
+
+  .lr-code-tab[aria-selected='true'] {
+    color: var(--lr-code-foreground);
+    box-shadow: inset 0 -2px 0 var(--lr-code-marker);
+  }
+
+  .lr-code-tab:focus-visible {
+    outline-color: var(--lr-code-marker);
+    outline-offset: -4px;
+  }
+
+  .lr-code-group[data-enhanced] .lr-code + .lr-code {
+    border-top: 0;
+  }
+
+  .lr-code-group[data-enhanced] .lr-code-header {
+    display: none;
+  }
+
+  .lr-code-group[data-enhanced] .lr-code[hidden] {
+    display: none;
+  }
+
+  /* Before React arrives, readers with JavaScript already see the grouped
+     layout: only the first block shows, so the swap to tabs never jumps. */
+  html.lr-js [data-lr-component='CodeGroup']:not([data-enhanced]) .lr-code ~ .lr-code {
+    display: none;
+  }
+
+  /* ---- Callouts: LaRecipe 2's alerts ------------------------------------------- */
+
+  /* A solid color, white text and a large faded icon cut off in the corner.
+     The label stays in the markup for screen readers and agents. */
+  .lr-callout {
+    --lr-callout-bg: var(--lr-alert-info);
+    --lr-callout-icon: var(--lr-alert-icon-info);
+
+    position: relative;
+    margin: 32px 0;
+    padding: 24px 24px 24px 56px;
+    overflow: hidden;
+    border-radius: var(--lr-radius-lg);
+    background: var(--lr-callout-bg);
+    color: #ffffff;
+    box-shadow: var(--lr-shadow-alert);
+    transition: box-shadow var(--lr-duration-state) var(--lr-ease);
+  }
+
+  html[dir='rtl'] .lr-callout {
+    padding: 24px 56px 24px 24px;
+  }
+
+  .lr-callout:hover {
+    box-shadow: var(--lr-shadow-alert-hover);
+  }
+
+  .lr-callout::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    inset-inline-start: -10px;
+    width: 60px;
+    height: 60px;
+    background: #ffffff;
+    opacity: 0.25;
+    -webkit-mask: var(--lr-callout-icon) center / contain no-repeat;
+    mask: var(--lr-callout-icon) center / contain no-repeat;
+    pointer-events: none;
+  }
+
+  .lr-callout-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .lr-callout-body {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #ffffff;
+  }
+
+  .lr-callout-body > :first-child {
+    margin-top: 0;
+  }
+
+  .lr-callout-body > :last-child {
+    margin-bottom: 0;
+  }
+
+  .lr-callout-body strong,
+  .lr-callout-body a,
+  .lr-callout-body code {
+    color: #ffffff;
+  }
+
+  .lr-callout-body a {
+    text-decoration-color: rgb(255 255 255 / 0.7);
+  }
+
+  .lr-callout :not(pre) > code,
+  .lr-callout-body a:hover,
+  .lr-callout-body a > code {
+    color: #ffffff;
+  }
+
+  .lr-callout :not(pre) > code {
+    border-color: transparent;
+    background: rgb(255 255 255 / 0.18);
+  }
+
+  .lr-callout[data-type='important'] {
+    --lr-callout-bg: var(--lr-alert-primary);
+    --lr-callout-icon: var(--lr-alert-icon-primary);
+  }
+
+  .lr-callout[data-type='tip'],
+  .lr-callout[data-type='success'] {
+    --lr-callout-bg: var(--lr-alert-success);
+    --lr-callout-icon: var(--lr-alert-icon-success);
+  }
+
+  .lr-callout[data-type='warning'] {
+    --lr-callout-bg: var(--lr-alert-warning);
+    --lr-callout-icon: var(--lr-alert-icon-warning);
+  }
+
+  .lr-callout[data-type='danger'],
+  .lr-callout[data-type='caution'] {
+    --lr-callout-bg: var(--lr-alert-danger);
+    --lr-callout-icon: var(--lr-alert-icon-danger);
+  }
+
+  /* ---- Steps: mono numbers, no connecting lines ----------------------------------- */
+
+  .lr-prose .lr-steps {
+    margin: 28px 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: lr-step;
+  }
+
+  .lr-prose .lr-step {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    column-gap: 8px;
+    margin: 0 0 28px;
+    padding: 0;
+    counter-increment: lr-step;
+  }
+
+  .lr-prose .lr-step:last-child {
+    margin-bottom: 0;
+  }
+
+  .lr-prose .lr-step::before {
+    content: counter(lr-step, decimal-leading-zero);
+    grid-row: 1 / span 2;
+    padding-top: 5px;
+    font-family: var(--lr-font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    line-height: 1.5;
+    color: var(--lr-accent-current);
+    direction: ltr;
+  }
+
+  .lr-step-title {
+    grid-column: 2;
+    margin: 0 0 6px;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--lr-ink);
+  }
+
+  html[dir='rtl'] .lr-step-title {
+    font-weight: 700;
+    letter-spacing: normal;
+  }
+
+  .lr-step-title > :is(h2, h3, h4) {
+    margin: 0;
+    font: inherit;
+    letter-spacing: inherit;
+  }
+
+  .lr-step-body {
+    grid-column: 2;
+    min-width: 0;
+  }
+
+  .lr-step-body > :first-child {
+    margin-top: 0;
+  }
+
+  .lr-step-body > :last-child {
+    margin-bottom: 0;
+  }
+
+  /* ---- Tabs ------------------------------------------------------------------- */
+
+  .lr-tabs {
+    margin: 24px 0;
+  }
+
+  .lr-tab-label {
+    margin: 24px 0 8px;
+    font-family: var(--lr-font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--lr-ink-muted);
+  }
+
+  .lr-tab:first-child > .lr-tab-label {
+    margin-top: 0;
+  }
+
+  .lr-tab-body > :first-child {
+    margin-top: 0;
+  }
+
+  .lr-tab-body > :last-child {
+    margin-bottom: 0;
+  }
+
+  .lr-tab-strip,
+  html.lr-js .lr-tabs:not([data-enhanced]) {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  /* With JavaScript, the tab labels line up as a strip before React mounts the
+     real tab list in their place, at the same height. */
+  html.lr-js .lr-tabs:not([data-enhanced]) > .lr-tab {
+    display: contents;
+  }
+
+  /* The hairline runs unbroken under the whole strip; the active tab's 2 px
+     violet underline sits under its label only. */
+  html.lr-js .lr-tabs:not([data-enhanced]) > .lr-tab > .lr-tab-label,
+  .lr-tab-trigger {
+    position: relative;
+    order: 0;
+    display: inline-flex;
+    align-items: center;
+    height: 36px;
+    margin: 0;
+    padding: 0 10px;
+    border: 0;
+    background: none;
+    color: var(--lr-ink-muted);
+    font: 500 11px/1 var(--lr-font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    box-shadow: inset 0 -1px 0 var(--lr-hairline);
+    cursor: pointer;
+    transition: color var(--lr-duration-state) var(--lr-ease);
+  }
+
+  html.lr-js .lr-tabs:not([data-enhanced]) > .lr-tab:first-child > .lr-tab-label,
+  .lr-tab-trigger:first-child {
+    padding-inline-start: 0;
+  }
+
+  html.lr-js .lr-tabs:not([data-enhanced]) > .lr-tab > .lr-tab-label::after,
+  .lr-tab-trigger::after {
+    content: '';
+    position: absolute;
+    inset-inline: 10px;
+    bottom: 0;
+    height: 2px;
+    background: transparent;
+    transition: background-color var(--lr-duration-state) var(--lr-ease);
+  }
+
+  html.lr-js .lr-tabs:not([data-enhanced]) > .lr-tab:first-child > .lr-tab-label::after,
+  .lr-tab-trigger:first-child::after {
+    inset-inline-start: 0;
+  }
+
+  html[dir='rtl'].lr-js .lr-tabs:not([data-enhanced]) > .lr-tab > .lr-tab-label,
+  html[dir='rtl'] .lr-tab-trigger {
+    font-family: var(--lr-font-sans);
+    font-size: 13px;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  html.lr-js .lr-tabs:not([data-enhanced])::after,
+  .lr-tab-strip::after {
+    content: '';
+    order: 0;
+    flex: 1 0 0;
+    height: 36px;
+    box-shadow: inset 0 -1px 0 var(--lr-hairline);
+  }
+
+  html.lr-js .lr-tabs:not([data-enhanced]) > .lr-tab:first-child > .lr-tab-label,
+  .lr-tab-trigger[aria-selected='true'] {
+    color: var(--lr-ink);
+  }
+
+  html.lr-js .lr-tabs:not([data-enhanced]) > .lr-tab:first-child > .lr-tab-label::after,
+  .lr-tab-trigger[aria-selected='true']::after {
+    background: var(--lr-accent-current);
+  }
+
+  .lr-tab-trigger:hover {
+    color: var(--lr-ink);
+  }
+
+  .lr-tab-trigger:focus-visible {
+    outline-offset: -2px;
+  }
+
+  html.lr-js .lr-tabs:not([data-enhanced]) > .lr-tab > .lr-tab-body {
+    order: 1;
+    flex: 0 0 100%;
+    padding-top: 16px;
+  }
+
+  html.lr-js .lr-tabs:not([data-enhanced]) > .lr-tab:not(:first-child) > .lr-tab-body {
+    display: none;
+  }
+
+  .lr-tabs[data-enhanced] > .lr-tab {
+    padding-top: 16px;
+  }
+
+  .lr-tabs[data-enhanced] > .lr-tab > .lr-tab-label {
+    display: none;
+  }
+
+  .lr-tabs[data-enhanced] > .lr-tab[hidden] {
+    display: none;
+  }
+
+  /* ---- Cards and columns ----------------------------------------------------- */
+
+  .lr-prose a.lr-card {
+    color: var(--lr-ink);
+    text-decoration: none;
+  }
+
+  .lr-prose .lr-card {
+    margin: 16px 0;
+  }
+
+  .lr-card-group,
+  .lr-columns {
+    display: grid;
+    grid-template-columns: repeat(var(--lr-cols, 2), minmax(0, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .lr-card-group > .lr-card,
+  .lr-prose .lr-card-group > .lr-card {
+    margin: 0;
+  }
+
+  .lr-columns > * {
+    min-width: 0;
+  }
+
+  .lr-columns > * > :first-child {
+    margin-top: 0;
+  }
+
+  [data-cols='1'] {
+    --lr-cols: 1;
+  }
+
+  [data-cols='3'] {
+    --lr-cols: 3;
+  }
+
+  [data-cols='4'] {
+    --lr-cols: 4;
+  }
+
+  @media (max-width: 760px) {
+    .lr-card-group,
+    .lr-columns {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* ---- Accordion -------------------------------------------------------------- */
+
+  .lr-accordion {
+    margin: 0;
+    border-bottom: 1px solid var(--lr-hairline);
+  }
+
+  .lr-accordion:first-of-type,
+  :not(.lr-accordion) + .lr-accordion {
+    margin-top: 24px;
+    border-top: 1px solid var(--lr-hairline);
+  }
+
+  .lr-accordion > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 48px;
+    padding: 12px 2px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+    list-style: none;
+    cursor: pointer;
+    border-radius: var(--lr-radius-xs);
+  }
+
+  .lr-accordion > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .lr-accordion > summary::after {
+    content: '';
+    flex: none;
+    width: 16px;
+    height: 16px;
+    background: var(--lr-ink-muted);
+    -webkit-mask: var(--lr-icon-chevron-down) center / 16px no-repeat;
+    mask: var(--lr-icon-chevron-down) center / 16px no-repeat;
+    transition: transform var(--lr-duration-state) var(--lr-ease);
+  }
+
+  .lr-accordion[open] > summary::after {
+    transform: rotate(180deg);
+  }
+
+  .lr-accordion > summary:hover::after {
+    background: var(--lr-ink);
+  }
+
+  .lr-accordion-body {
+    padding: 0 2px 16px;
+    color: var(--lr-ink-muted);
+  }
+
+  .lr-accordion-body > :first-child {
+    margin-top: 0;
+  }
+
+  .lr-accordion-body > :last-child {
+    margin-bottom: 0;
+  }
+
+  .lr-accordion:not(:has(+ .lr-accordion)) {
+    margin-bottom: 24px;
+  }
+
+  .lr-accordion-group {
+    margin: 24px 0;
+  }
+
+  .lr-accordion-group > .lr-accordion:first-child {
+    margin-top: 0;
+    border-top: 1px solid var(--lr-hairline);
+  }
+
+  /* ---- File tree ---------------------------------------------------------------- */
+
+  .lr-file-tree {
+    margin: 24px 0;
+    padding: 14px 18px;
+    border: 1px solid var(--lr-hairline);
+    border-radius: var(--lr-radius-md);
+    font-family: var(--lr-font-mono);
+    font-size: 13px;
+    line-height: 1.6;
+    direction: ltr;
+    text-align: left;
+  }
+
+  .lr-prose .lr-file-tree ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .lr-prose .lr-file-tree li {
+    margin: 0;
+    padding: 2px 0;
+  }
+
+  .lr-prose .lr-file-tree li::marker {
+    content: none;
+  }
+
+  .lr-prose .lr-file-tree ul ul {
+    margin-inline-start: 7px;
+    padding-inline-start: 16px;
+    border-inline-start: 1px solid var(--lr-hairline);
+  }
+
+  .lr-file-tree li > :is(span, strong, code):first-child {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .lr-file-tree li > :is(span, strong, code):first-child::before {
+    content: '';
+    flex: none;
+    width: 14px;
+    height: 14px;
+    background: var(--lr-ink-faint);
+    -webkit-mask: var(--lr-icon-file) center / 14px no-repeat;
+    mask: var(--lr-icon-file) center / 14px no-repeat;
+  }
+
+  .lr-file-tree li:has(> ul) > :is(span, strong, code):first-child::before,
+  .lr-file-tree li[data-type='folder'] > :first-child::before {
+    -webkit-mask-image: var(--lr-icon-folder);
+    mask-image: var(--lr-icon-folder);
+  }
+
+  .lr-prose .lr-file-tree code {
+    padding: 0;
+    background: none;
+    font-size: inherit;
+  }
+
+  /* ---- Frame: captioned, zoomable media ------------------------------------------ */
+
+  .lr-frame {
+    position: relative;
+    margin: 28px 0;
+    overflow: hidden;
+    border: 1px solid var(--lr-hairline);
+    border-radius: var(--lr-radius-lg);
+    background: var(--lr-surface);
+  }
+
+  .lr-prose .lr-frame img,
+  .lr-prose .lr-frame video {
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .lr-frame > p {
+    margin: 0;
+  }
+
+  .lr-frame > figcaption {
+    padding: 10px 14px;
+    border-top: 1px solid var(--lr-hairline);
+    background: var(--lr-paper);
+    font-family: var(--lr-font-mono);
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--lr-ink-muted);
+  }
+
+  html[dir='rtl'] .lr-frame > figcaption {
+    font-family: var(--lr-font-sans);
+    font-size: 13px;
+  }
+
+  .lr-frame-zoom {
+    position: absolute;
+    top: 10px;
+    inset-inline-end: 10px;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: var(--lr-radius-md);
+    background: var(--lr-paper);
+    color: var(--lr-ink-muted);
+    box-shadow: var(--lr-shadow-float);
+    cursor: zoom-in;
+    opacity: 0;
+    transition: opacity var(--lr-duration-hover) var(--lr-ease);
+  }
+
+  .lr-frame:hover .lr-frame-zoom,
+  .lr-frame-zoom:focus-visible {
+    opacity: 1;
+  }
+
+  .lr-frame[data-zoomable] img {
+    cursor: zoom-in;
+  }
+
+  @media (hover: none) {
+    .lr-frame-zoom {
+      opacity: 1;
+    }
+  }
+
+  /* ---- Video: click to load ------------------------------------------------------ */
+
+  .lr-video {
+    margin: 28px 0;
+  }
+
+  .lr-video-frame,
+  .lr-video > video,
+  .lr-video > iframe,
+  .lr-video > a:first-child {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border: 1px solid var(--lr-hairline);
+    border-radius: var(--lr-radius-lg);
+    background: var(--lr-surface);
+  }
+
+  .lr-video-frame > video,
+  .lr-video-frame > iframe,
+  .lr-video-frame > img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    object-fit: cover;
+  }
+
+  /* The no-JavaScript fallback for YouTube and Vimeo: the poster, linking out. */
+  .lr-video-link {
+    display: grid;
+    place-items: center;
+    color: var(--lr-ink);
+    text-decoration: none;
+  }
+
+  .lr-prose .lr-video-link {
+    text-decoration: none;
+  }
+
+  .lr-video-link > img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: 0;
+    object-fit: cover;
+  }
+
+  .lr-video-link-label {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 34px;
+    padding: 0 14px;
+    border-radius: var(--lr-radius-md);
+    background: var(--lr-ink-solid);
+    color: var(--lr-paper);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .lr-video-play {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .lr-video-play-icon {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 999px;
+    background: var(--lr-ink-solid);
+    color: var(--lr-paper);
+    transition: transform var(--lr-duration-hover) var(--lr-ease);
+  }
+
+  .lr-video-play:hover .lr-video-play-icon {
+    transform: scale(1.04);
+  }
+
+  .lr-video-play-icon .lr-icon {
+    margin-inline-start: 3px;
+  }
+
+  html[dir='rtl'] .lr-video-play-icon .lr-icon {
+    margin-inline-start: 0;
+    margin-inline-end: 3px;
+  }
+
+  .lr-video > figcaption {
+    margin-top: 10px;
+    font-family: var(--lr-font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--lr-ink-muted);
+  }
+
+  html[dir='rtl'] .lr-video > figcaption {
+    font-family: var(--lr-font-sans);
+    font-size: 13px;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  .lr-video-placeholder .lr-video-frame {
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 14px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .lr-video-placeholder .lr-video-frame::before {
+    content: '';
+    width: 22px;
+    height: 22px;
+    background: var(--lr-ink-faint);
+    -webkit-mask: var(--lr-icon-play) center / 22px no-repeat;
+    mask: var(--lr-icon-play) center / 22px no-repeat;
+  }
+
+  .lr-video-placeholder .lr-video-frame > span {
+    font-size: 14px;
+    color: var(--lr-ink-muted);
+  }
+
+  /* ---- Diagrams and math ------------------------------------------------------------ */
+
+  .lr-mermaid-render {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0 8px;
+    padding: 24px;
+    overflow-x: auto;
+    border: 1px solid var(--lr-hairline);
+    border-radius: var(--lr-radius-md);
+  }
+
+  .lr-mermaid-render svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .lr-mermaid-render svg * {
+    filter: none !important;
+  }
+
+  .lr-mermaid-source {
+    margin: 0 0 24px;
+  }
+
+  .lr-mermaid-source > summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--lr-font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--lr-ink-muted);
+    cursor: pointer;
+    list-style: none;
+    border-radius: var(--lr-radius-xs);
+  }
+
+  .lr-mermaid-source > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .lr-mermaid-source[open] > pre {
+    margin-top: 10px;
+  }
+
+  .lr-math {
+    direction: ltr;
+  }
+
+  .lr-math[data-display] {
+    display: block;
+    margin: 24px 0;
+    overflow-x: auto;
+    text-align: center;
+  }
+
+  .lr-math > code {
+    font-family: var(--lr-font-mono);
+  }
+
+  /* ---- Inline buttons (v2 compatibility) ---------------------------------------- */
+
+  .lr-prose a.lr-button {
+    margin: 4px 0;
+    text-decoration: none;
+  }
+
+  .lr-prose a.lr-button-primary {
+    color: var(--lr-accent-foreground);
+  }
+
+  .lr-prose a.lr-button-secondary,
+  .lr-prose a.lr-button-outline {
+    color: var(--lr-ink);
+  }
+
+  .lr-prose a.lr-button-ghost {
+    color: var(--lr-ink-muted);
+  }
+
+  /* ---- Generic component wrapper ------------------------------------------------- */
+
+  .lr-component > :first-child {
+    margin-top: 0;
+  }
+
+  .lr-component > :last-child {
+    margin-bottom: 0;
+  }
+}

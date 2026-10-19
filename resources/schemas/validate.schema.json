@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://larecipe.saleem.dev/schemas/3.x/validate.json",
+  "title": "larecipe:validate --json output",
+  "description": "The report printed by php artisan larecipe:validate --json and returned by the validate_docs MCP tool. Every issue has a stable rule id and, where possible, a fix an agent can apply.",
+  "type": "object",
+  "required": ["ok", "summary", "issues"],
+  "properties": {
+    "ok": { "type": "boolean", "description": "False when there is at least one error." },
+    "summary": {
+      "type": "object",
+      "required": ["pages", "errors", "warnings"],
+      "properties": {
+        "pages": { "type": "integer", "minimum": 0 },
+        "errors": { "type": "integer", "minimum": 0 },
+        "warnings": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["level", "rule", "message"],
+        "properties": {
+          "level": { "enum": ["error", "warning"] },
+          "rule": {
+            "type": "string",
+            "pattern": "^[a-z]+(\\.[a-z-]+)+$",
+            "description": "A stable id: links.broken, links.unsafe, navigation.missing-page, pages.orphan, manifest.schema, manifest.integrations, navigation.schema, frontmatter.schema, frontmatter.description.missing, components.unknown, components.props, snippets.missing, media.placeholder, pages.duplicate, pages.empty, redirects.loop, links.private-from-public, search.budget, markdown.size, skills.spec, cache.store, assets.missing, references.missing, access.unknown-ability, access.redundant-gate, access.gate-syntax, migrations.conflict."
+          },
+          "set": { "type": "string" },
+          "page": { "type": "string", "description": "The page, as {locale}/{version}/{path} with the default locale and an unversioned set's version left out." },
+          "file": { "type": "string", "description": "The file the issue is in, relative to the set's root." },
+          "line": { "type": "integer", "minimum": 1 },
+          "message": { "type": "string" },
+          "fix": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,16 @@
+{
+  "name": "@larecipe/workbench",
+  "private": true,
+  "type": "module",
+  "description": "The development host app: builds the example LaRecipe extension with @larecipe/vite.",
+  "scripts": {
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@larecipe/ui": "workspace:*",
+    "@larecipe/vite": "workspace:*",
+    "@types/react": "^19.2.0",
+    "react": "^19.2.0",
+    "vite": "^7.1.0"
+  }
+}
