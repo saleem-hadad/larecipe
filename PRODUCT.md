@@ -1,6 +1,6 @@
 # LaRecipe: Brand, Product, and Design Context
 
-> Read this before shaping product, designing interfaces, writing copy, or shipping UI. This is the single source of truth for what LaRecipe v3 is, who it serves, and how it should sound. How it is built lives in `ARCHITECTURE.md`. How it looks lives in `DESIGN.md` and `ART_DIRECTION.md`. Sequencing lives in `ROADMAP.md`. Market evidence lives in `COMPETITIVE_RESEARCH.md`.
+> Read this before shaping product, designing interfaces, writing copy, or shipping UI. This is the single source of truth for what LaRecipe v3 is, who it serves, and how it should sound. How it is built lives in `ARCHITECTURE.md`. How it looks lives in `DESIGN.md` and `ART_DIRECTION.md`. Sequencing lives in `ROADMAP.md`.
 
 Status: draft for maintainer review, 2026-10-17.
 
@@ -12,11 +12,11 @@ Status: draft for maintainer review, 2026-10-17.
 
 **Who it is for, in priority order:**
 
-1. **Laravel product teams.** SaaS companies and product teams whose customers need docs: product guides, API references, integration walkthroughs. They want Mintlify-class docs without a $450 monthly bill, a second stack, or a separate login. Their docs should live in the app they already deploy.
+1. **Laravel product teams.** SaaS companies and product teams whose customers need docs: product guides, API references, integration walkthroughs. They want docs as polished as a hosted platform's without a monthly bill, a second stack, or a separate login. Their docs should live in the app they already deploy.
 2. **Laravel package authors.** Open-source maintainers who need versioned docs for their package. In 2026 a package that agents cannot read is a package agents use wrong. Agent-readable docs are now an adoption feature.
 3. **Internal engineering teams.** Teams documenting their own app: architecture notes, runbooks, onboarding, domain glossaries, behind the app's own auth. These docs double as their coding agents' context through the local MCP server.
 
-**The problem.** Docs rot. Code changes every day, and with coding agents it changes faster than ever, so docs fall behind the moment they ship. Nobody writes docs by hand any more, yet docs tools were built for people typing Markdown into a separate project. Most docs readers are now agents (66% of requests to Mintlify-hosted docs in July 2026), yet most docs tools still optimize for a browser. The tools that do take agents seriously are hosted, metered and outside your app.
+**The problem.** Docs rot. Code changes every day, and with coding agents it changes faster than ever, so docs fall behind the moment they ship. Nobody writes docs by hand any more, yet docs tools were built for people typing Markdown into a separate project. Agents now send a large share of docs traffic, often most of it, yet most docs tools still optimize for a browser. The tools that do take agents seriously are hosted, metered and outside your app.
 
 **The pitch.** LaRecipe is the docs engine that lives inside your Laravel app. Your coding agents write the docs and keep them current with every change. Every reader, human or agent, gets the current answer. You review; LaRecipe does the rest.
 
@@ -203,19 +203,6 @@ Serve every reader (people and agents, same rules)
 Own all of it (open source, your repo or your database, your agent or your keys)
 ```
 
-| | Static generators (Docusaurus, Starlight, Fumadocs) | Hosted platforms (Mintlify, GitBook, documentation.ai) | Laravel packages (LaraDocs, Vellum) | LaRecipe v3 |
-| --- | --- | --- | --- | --- |
-| Lives in your Laravel app | No, separate Node project | No, separate hosted site | Yes | Yes |
-| Agents write and update docs | No | Yes, metered | No | Yes, in your own agent session, before every push |
-| Drift detection from code changes | No | Repo-text only | No | Yes, plus live references from the running app |
-| Agent read surfaces | Plugins | Yes | Partial | Yes, built in |
-| Content sources | Files | Their database | Files | In-repo files or your database with an admin UI, switchable |
-| Search | Client index | Hosted, often metered | Scout | Instant client-side fuzzy search, custom drivers for advanced cases |
-| Private docs | DIY | Enterprise tiers | Yes | Your gates, on every surface |
-| Price | Free | $150 to $500 a month plus credits | Free | Free |
-
-**On LaraDocs.** It launched in June 2026 and reached 37% of LaRecipe's monthly installs in four months, with `llms.txt`, an MCP server and AI chat. It proves the demand and sets the floor. It is Blade-only, file-only, has no authoring loop and no per-page Markdown. We never name it in public copy; we out-ship it. The internal lesson is speed: publish alphas early and often.
-
 ### Product Principles
 
 1. **Agents write, humans approve, unless the owner says otherwise.** By default everything an agent writes is reviewable: commits in the pull request (docs migrations, for the database source), or drafts when an agent works outside a pull request. `auto` mode, opted into by the owner, removes the review step; every change stays revisioned, attributed and reversible.
@@ -343,7 +330,7 @@ Tokens and components live in `DESIGN.md` and `DESIGN.json`. Feel, motion and th
 **Anti-references (whatever the direction):**
 
 - **The generic AI-docs look.** Purple-to-blue gradients, sparkle icons, glassmorphism, a floating chat bubble over the content.
-- **The default docs template.** The Mintlify/Fumadocs layout everyone ships, recognizable at a glance and owned by nobody.
+- **The default docs template.** The stock docs layout everyone ships, recognizable at a glance and owned by nobody.
 - **v2's dated chrome.** Font Awesome icons, heavy shadows, Bootstrap-era cards and progress bars.
 
 ### Design Principles
@@ -434,6 +421,5 @@ When in doubt, defer to:
 2. `ARCHITECTURE.md` for technical decisions and its named rules.
 3. `DESIGN.md` and `DESIGN.json` for tokens and components, and `ART_DIRECTION.md` for feel (once written).
 4. `ROADMAP.md` for sequencing and exit criteria.
-5. `COMPETITIVE_RESEARCH.md` for market evidence.
 
 If a request would break one of these, surface it and ask before proceeding.

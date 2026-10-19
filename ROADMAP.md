@@ -1,6 +1,6 @@
 # LaRecipe v3 · Roadmap
 
-> When each part of v3 ships and what "done" means for it. `ARCHITECTURE.md` defines what we build; this file defines the order, the releases and the exit criteria. Market inputs from `COMPETITIVE_RESEARCH.md` are reconciled in the last section.
+> When each part of v3 ships and what "done" means for it. `ARCHITECTURE.md` defines what we build; this file defines the order, the releases and the exit criteria.
 
 Status: draft, 2026-10-17, revised the same day with the maintainer's review decisions. No calendar dates: each phase ends when its exit criteria pass in CI, not on a deadline.
 
@@ -32,23 +32,10 @@ Status: draft, 2026-10-17, revised the same day with the maintainer's review dec
 
 ---
 
-## Competitive pressure
-
-LaRecipe is no longer the only Laravel docs package with agent features. **LaraDocs** launched on 2 June 2026 and reached 21.8k monthly installs by October (LaRecipe 2.x: 59.3k). It already ships `llms.txt`, an MCP server on `laravel/mcp`, an AI chat on `laravel/ai`, Scout search and visibility rules applied across every surface. Its gaps are LaRecipe v3's headline: Blade only (no React UI, no custom React components), local files only (no database source with an admin UI), no AI authoring or code-to-docs sync, and no per-page `.md`. Meanwhile laravel.com serves Markdown for every page, and Laravel's own Cloud and Forge docs run on Mintlify.
-
-What this changes:
-
-- **Ship `alpha.1` publicly and early.** The reading experience, custom components and agent read surfaces (Phase 1) already beat LaraDocs on `.md`, content negotiation, `skill.md`, doc sets and the React UI. That is enough for a public alpha and a Laravel News post; waiting for 3.0 hands the category to a competitor.
-- **Release often.** Small public tags (`alpha.2`, `alpha.3`, ...) as slices land, each with a changelog and a demo on larecipe-docs.
-- **Keep 3.0 scope.** The database source and auto-sync are the vision's headline items and the clearest difference from LaraDocs, so 3.0 still requires them. Speed comes from releasing the earlier phases publicly, not from cutting the headline.
-
----
-
 ## Phase 0 · Strategy and design (now)
 
 **Deliverables**
 
-- `COMPETITIVE_RESEARCH.md`: landscape, must-haves, nice-to-haves, unique opportunities.
 - `PRODUCT.md`: positioning, audiences, promise, voice, what LaRecipe is not.
 - Brand directions: two or three visual directions as a comparison page; the maintainer picks one.
 - `DESIGN.md` + `DESIGN.json`: tokens, typography, components, named rules (Nashra format), for the chosen direction.
@@ -230,10 +217,9 @@ Outside this repo's control: recording the demo video, publishing to Packagist a
 | --- | --- |
 | laravel/ai and laravel/mcp are young (1.x) and may change APIs | Keep both behind thin adapters (the `Mcp/` and `Laravel/` folders of each domain); pin minor ranges; contract tests on our tool classes. |
 | Article adoption (React taking over server HTML) is a custom technique | Prototype first in Phase 1 with Playwright checks for CLS, scroll and media state before building the rest of the UI. |
-| Scope pressure from SaaS competitors' feature lists | Exit criteria per phase; Nice-to-haves go to Phase 4 or the backlog, not into 3.0. |
+| Scope pressure from long feature wish lists | Exit criteria per phase; Nice-to-haves go to Phase 4 or the backlog, not into 3.0. |
 | Single-maintainer bandwidth | Phases are shippable slices; agents do most implementation with the shipped skills; contract, arch and snapshot tests keep agent-written code honest. |
 | Package rename confuses existing users | Packagist abandonment notice with replacement, upgrade command that prints the swap, clear docs banner. |
-| A competitor (LaraDocs) takes the Laravel category while v3 is in development | Public `alpha.1` with the agent read surfaces, custom components and React UI as early as Phase 1 allows; frequent public tags; lead with what it lacks (database source with admin UI, AI authoring in the PR, per-page `.md`, doc sets). |
 | Live references expose app internals | No `<Config>` or `<Env>` by rule; model introspection limited to allowlisted namespaces; resolvers expose only declared route and command shapes; arch test forbids config and environment reads in resolvers. |
 | Docs migrations clash with production edits | `basedOn` hashes turn clashes into conflict drafts instead of overwrites; `larecipe:pull` starts work from what is live; the admin UI puts conflicts first; deploys never fail on a docs conflict. |
 | Agents ignore the instructions, or the pre-push hook annoys developers | Instructions in `AGENTS.md` plus a hook at the exact moment of the push; the hook blocks at most once per commit, explains itself in two lines, and is off with `LARECIPE_HOOKS=off`; the git hook and the no-AI CI check catch what agents without hooks miss. |
@@ -243,85 +229,9 @@ Outside this repo's control: recording the demo video, publishing to Packagist a
 
 ---
 
-## Competitive inputs
+## Dropped by decision
 
-Reconciled with `COMPETITIVE_RESEARCH.md` (17 October 2026) and updated with the maintainer's review decisions. Status: **Covered** (in `ARCHITECTURE.md`), **Added** (added during reconciliation), **Changed** (shipped differently by decision), **Deferred** (later than the research implies, with the reason), **Dropped** (not shipped, by decision), **Backlog** (not scheduled).
-
-### Must have
-
-| Research item | Category | Phase | Status |
-| --- | --- | --- | --- |
-| Server-rendered HTML, React for interactive parts | Reader experience | 1 | Covered (HTML-First Rule, article adoption) |
-| Cmd+K search with an "Ask AI about..." row | Reader experience | 1 palette, 2 Ask row | Added (Ask row and `⌘I`) |
-| Page actions split button, about six AI options | Reader experience | 1 | Added (split button, cap of six by default) |
-| Navigation that never loses you (active item, scroll spy, same-page version switch) | Reader experience | 1 | Covered; same-page switching made explicit |
-| Modern server-rendered component set | Reader experience | 1 core set, 2 the rest | Covered; `Columns`, `FileTree` and `Video` placeholders added |
-| Ask AI with citations, scoped to the reader | Reader experience | 2 | Covered |
-| Accessibility, dark mode, RTL in core | Reader experience | 1 (RTL authoring in 4) | Covered |
-| Page feedback | Reader experience | 1 | Changed: widget and events forwarded to the host's analytics; no storage |
-| Authoring MCP server, drafts not live | Authoring and AI | 2 local, 3 remote for database sets | Changed: local tools write the working tree or a docs migration (reviewed in the PR); remote tools write drafts or follow `review: auto` |
-| Agent Skill and Boost guideline in the package | Authoring and AI | 2 | Covered (four skills) |
-| Code-to-docs automation, drafts by default | Authoring and AI | 2 (repository), 3 (database sets) | Changed: instructions in `AGENTS.md` and a pre-push agent hook make the developer's own agent update docs before it pushes, in the same PR; no AI agent in CI, no post-merge PRs; database sets ship docs migrations |
-| Review queue with diffs | Authoring and AI | 3 | Covered (admin UI; migration conflicts first) |
-| A CLI agents can drive (`--json` validator) | Authoring and AI | 1 | Covered (`larecipe:validate`, not `check`) |
-| Markdown for every page, content negotiation, Markdown 404s | Agent surfaces | 1 | Covered; Markdown 404s added |
-| llms.txt v2, scoped and capped at 50k | Agent surfaces | 1 | Added (cap and automatic split) |
-| Docs MCP server (read) incl. `submit_feedback`, gate-aware | Agent surfaces | 1 read, 3 auth for private sets | Covered; `submit_feedback` added |
-| `skill.md` and agent-skills discovery | Agent surfaces | 1 | Added (promoted from opt-in extra to core) |
-| Components that render their own Markdown | Agent surfaces | 1 | Covered (dual rendering per component, custom components included) |
-| Discovery hints (blockquote, `Link` headers) | Agent surfaces | 1 | Added |
-| AFDocs grade A as a CI test | Agent surfaces | 1 | Added (Phase 1 exit criterion) |
-| One source contract, three drivers, move between them | Content and sources | 1 repository, 3 database | Changed: two drivers (repository, database); the remote git driver is dropped (below) |
-| Git source with webhook-driven atomic sync, no `git` binary | Content and sources | none | Dropped (below) |
-| Plain Markdown as the canonical format | Content and sources | 1 | Covered (One-Format Rule) |
-| Versioning following Laravel conventions | Content and sources | 1 | Covered |
-| Validated frontmatter and redirects | Content and sources | 1 | Covered |
-| Importers (v2, laravel/docs, Mintlify, Docusaurus, VitePress, Starlight) | Content and sources | 2 (v2 only) | Changed: the v2 upgrade stays; importers from other tools dropped (below) |
-| OpenAPI pages through integration | Content and sources | 4 | Deferred: Scramble, Scribe and Scalar already serve Laravel API references; 3.0 focuses on the vision headliners |
-| Multiple doc sets per app | Content and sources | 1 (model, routing, agent surfaces) | Added (v2 issue #6) |
-| Design tokens on CSS variables, Tailwind v4, shadcn-compatible | Customization | 1 | Covered |
-| Eject instead of forking (per component) | Customization | 2 | Added (per-component eject next to full eject) |
-| No build step, no clash with the host's Inertia | Customization | 1 | Covered (Zero-Node Rule clarified for custom components, no Inertia) |
-| Custom components with three renderers | Customization | 1 | Changed: moved to Phase 1, with insert points and runtime helpers |
-| Driver-based extension points and events | Customization | 1 events, 2 search drivers | Covered |
-| Zero-config search that scales with Scout | Operations | 1 client index, 2 custom drivers | Changed: client-side MiniSearch by default, server ranker for agents, custom `SearchDriver` contract; no Scout or Algolia |
-| Gates everywhere, direct hits on hidden pages return 404 | Operations | 1 pages, 2 blocks | Covered; `<Can>` blocks and 404 behavior added |
-| Analytics that see agents | Operations | 1 integrations, 2 events | Changed: events carry the request kind so hosts forward agent traffic to their own analytics; no built-in store or dashboards (below) |
-| SEO and social (JSON-LD, sitemap, OG images) | Operations | 1 | Covered; OG image generation dropped by decision |
-| i18n structure | Operations | 1 data model, 3 authoring | Covered |
-| HTTP correctness (ETag, Last-Modified, subdirectory, no soft 404s) | Operations | 1 | Covered; `Last-Modified` and no-soft-404 made explicit |
-
-### Nice to have
-
-| Research item | Phase | Status |
-| --- | --- | --- |
-| Visual editor built for review | 3 | Covered by the admin UI (Markdown editor with server-rendered preview and schema forms); rich visual editor in backlog |
-| Comments and suggestions on drafts | Backlog | After the admin review queue proves itself |
-| Self-healing docs from feedback and unanswered questions | none | Dropped (below) |
-| Translation by agent | 3 | With i18n authoring (translation workflow in `larecipe-update-docs`) |
-| `/ask` JSON endpoint | 2 | Added (opt-in) |
-| WebMCP behind a flag | none | Dropped by decision (with the other discovery extras) |
-| Agent readiness panel (`larecipe:doctor`) | 3 | Added |
-| Snippets and variables | 2 | Covered by snippet includes and live references (never config or environment values) |
-| Changelog page type with RSS | Backlog | A natural extra step in the before-you-push instructions (draft an entry per change) |
-| Branch previews | Backlog | Cheap with runtime rendering; needs auth design |
-| Narration, PDF and EPUB export | Backlog | Low priority |
-
-### Where LaRecipe can be unique
-
-| Opportunity | Architecture | Phase |
-| --- | --- | --- |
-| 1. Docs that read the app (`<Route>`, `<Artisan>`, `<Model>`, `<Event>`) | §6.7 live references (advanced; no `<Config>` or `<Env>`) | 2 |
-| 2. A docs agent that runs inside the app | §13.6 `larecipe:sync` with reference resolvers, on the owner's key | 2 (repository), 3 (database) |
-| 3. Gates as the permission model, per-role blocks | §16, §6.8 `<Can>` | 1 pages, 2 blocks, 3 MCP auth with Sanctum |
-| 4. Self-hosted AI with no meters, down to air-gapped | §12, §13.6 on laravel/ai providers; the owner's own session needs no key at all | 2 (local providers depend on laravel/ai support) |
-| 5. Database source for product-generated and per-tenant docs | §5.3 to §5.5, docs migrations, admin UI, doc sets | 3 |
-| 6. Your docs become your coding agent's context | §11.2 local MCP, §13.4 `larecipe:agents-md` | 1 (MCP), 2 (AGENTS.md index) |
-| 7. In-app contextual help | none | Dropped (below) |
-| 8. One command gives any Laravel package a docs site | `larecipe:install` with onboarding (the package users preset, §13.3); the laravel/docs importer is dropped | 2 |
-| 9. Open-source reference implementation of agent-docs standards for PHP | §20 AFDocs gate, §11 surfaces | 1 (grade A); the standalone `larecipe/agent-surface` package is dropped by decision |
-
-### Dropped by decision
+Items considered for v3 and not shipped, with the reason.
 
 | Item | Why |
 | --- | --- |
@@ -333,7 +243,7 @@ Reconciled with `COMPETITIVE_RESEARCH.md` (17 October 2026) and updated with the
 | An AI agent in CI that commits docs to the PR branch | The agent that changed the code has the context; instructions in `AGENTS.md` and a pre-push hook make it update the docs before it pushes. CI may check, never write. |
 | Built-in traffic insight (metrics store, rollups, dashboards, agent-traffic charts, stored feedback) | Teams already have analytics; LaRecipe feeds them through integrations and events with a request kind instead of building a second dashboard. |
 | Self-healing docs | Depended on stored feedback and search data, which LaRecipe no longer keeps. |
-| Importers from other tools (laravel/docs, Mintlify, Docusaurus, VitePress, Starlight) | Focus on new docs and on v2 users; `larecipe:install` onboarding writes real starter docs from the app instead. |
+| Importers from other docs tools (laravel/docs and others) | Focus on new docs and on v2 users; `larecipe:install` onboarding writes real starter docs from the app instead. |
 | In-app contextual help widget (`<x-larecipe::help>`, React widget) | Out of scope for a docs engine in 3.x; custom components and insert points cover site-level needs. |
 | Drafts tagged with a PR ref that publish on merge | Replaced by docs migrations: database changes ride in the PR as standard Laravel migrations and apply on deploy. |
 | A separate marketing homepage for LaRecipe | The docs are the landing page; the Introduction page carries the demo video. |
@@ -368,6 +278,6 @@ Reconciled with `COMPETITIVE_RESEARCH.md` (17 October 2026) and updated with the
 | 2026-10-17 | Developers can add their own React components in Phase 1, inline in Markdown or site-wide at insert points, with runtime helpers to talk to the host app; larecipe.saleem.dev ships a `Subscribe` newsletter component backed by `nashra/sdk`. | Maintainer |
 | 2026-10-17 | Docs updates come from agent instructions in the repo: `larecipe:install` writes an `AGENTS.md` block (or the Boost guideline) telling every AI session to update affected docs before it pushes, reinforced by a pre-push agent hook that blocks once. No AI agent runs in CI; at most an optional no-AI check that never writes. `larecipe:sync` is on demand only. | Maintainer |
 | 2026-10-17 | No built-in traffic insight: no metrics store, rollups or dashboards. Analytics integrations in `larecipe.json` plus Laravel events (with a request kind) that hosts forward to their own tools; feedback is an event, not a table. | Maintainer |
-| 2026-10-17 | No importers from other tools (laravel/docs, Mintlify, Docusaurus, VitePress, Starlight) and no in-app help widget. The v2 upgrade stays. | Maintainer |
+| 2026-10-17 | No importers from other docs tools and no in-app help widget. The v2 upgrade stays. | Maintainer |
 | 2026-10-17 | Cut OG image generation, semantic retrieval for Ask AI, discovery extras (context7.json, MCP server card, WebMCP), the standalone `larecipe/agent-surface` package and MCP Apps. | Maintainer |
 | 2026-10-17 | Multi-language docs move into 3.0. Build all of 3.0 in this session and deliver a fully working v3. | Maintainer |

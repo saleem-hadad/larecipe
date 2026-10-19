@@ -28,7 +28,7 @@ None of them are thinking about LaRecipe. They are thinking about their work. Th
 
 Three working sketches. Not personas; people someone on the team has met.
 
-**The SaaS tech lead.** Twelve engineers, a Laravel API, enterprise customers who want private docs. Their docs are a separate Next.js repo that nobody has touched since the last launch. A Mintlify quote came back at $450 a month plus credits, outside their auth and their deploy. They live in Claude Code all day. They want the docs inside the app, behind their own gates, maintained by the same agents that write the code, and good-looking enough that their head of design does not wince.
+**The SaaS tech lead.** Twelve engineers, a Laravel API, enterprise customers who want private docs. Their docs are a separate Next.js repo that nobody has touched since the last launch. A hosted docs platform quoted $450 a month plus credits, outside their auth and their deploy. They live in Claude Code all day. They want the docs inside the app, behind their own gates, maintained by the same agents that write the code, and good-looking enough that their head of design does not wince.
 
 **The package maintainer.** Two maintainers, a package with real adoption, a `docs/` folder in the repo, and the same five questions in the issues every week. Lately a new kind of bug report: users whose AI agents call the package wrong because the agents never read the docs. They need versioned docs, zero hosting effort, and docs that agents can actually read. They will not maintain a second project.
 

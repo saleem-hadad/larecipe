@@ -1,8 +1,8 @@
 # LaRecipe v3 · Architecture
 
-> The technical RFC for LaRecipe v3. What the system is made of, how a request becomes a page, how agents read and write docs, and what we refuse to build. Sits next to `PRODUCT.md`, `DESIGN.md`, `ART_DIRECTION.md`, `ROADMAP.md` (sequencing) and `COMPETITIVE_RESEARCH.md` (market inputs). This document does not specify visual design; every UI decision here is structural.
+> The technical RFC for LaRecipe v3. What the system is made of, how a request becomes a page, how agents read and write docs, and what we refuse to build. Sits next to `PRODUCT.md`, `DESIGN.md`, `ART_DIRECTION.md` and `ROADMAP.md` (sequencing). This document does not specify visual design; every UI decision here is structural.
 
-Status: RFC draft, 2026-10-17, revised the same day with the maintainer's review decisions (sources, agent workflow, review modes, docs migrations, search, onboarding, domains, custom components; agent instructions and a pre-push hook instead of a CI agent; no built-in traffic insight; no importers or in-app help). Package `larecipe/larecipe`, namespace `LaRecipe\` (confirmed by the maintainer, 2026-10-17). Facts about laravel/mcp, laravel/ai, Boost, Claude Code, Inertia, commonmark and Phiki were verified in `.v3-notes/AI_TOOLING_RESEARCH.md` (vendor source plus official docs). Anything marked *unverified* there stays marked here.
+Status: RFC draft, 2026-10-17, revised the same day with the maintainer's review decisions (sources, agent workflow, review modes, docs migrations, search, onboarding, domains, custom components; agent instructions and a pre-push hook instead of a CI agent; no built-in traffic insight; no importers or in-app help). Package `larecipe/larecipe`, namespace `LaRecipe\` (confirmed by the maintainer, 2026-10-17). Facts about laravel/mcp, laravel/ai, Boost, Claude Code, Inertia, commonmark and Phiki were verified against vendor source and official docs. Anything not verified is marked *unverified*.
 
 ---
 
@@ -991,7 +991,7 @@ Visual language, motion and tone come from `DESIGN.md` and `ART_DIRECTION.md`. T
 - **State.** A small store built on `useSyncExternalStore` (route, page, theme, palette and panel state). No router or state library dependency; the routing surface is tiny.
 - **Tokens.** `larecipe.json` theme values become CSS variables in the Blade head; Tailwind v4 reads them. Light and dark are both first-class. Logical properties everywhere so RTL is a peer rendering, not a variant.
 - **Command palette.** `⌘K` and `/` open search, page actions, version switching and Ask AI from one surface. The search chunk and the index load on first open (and are prefetched when the browser is idle after the first interaction). When Ask AI is enabled, the results list ends with an "Ask AI about '...'" row that hands the query to the panel. `⌘I` opens Ask AI directly. `?` shows all shortcuts. (v2 used `/` for the sidebar and `s` for search; the upgrade notes call this out.)
-- **Page actions.** A split button: "Copy page" (Markdown) as the main action; the menu holds view `.md`, open in Claude, ChatGPT or Cursor with the page URL prefilled, copy the MCP install snippet or install link for this set, edit on GitHub and report an issue. Six AI destinations at most by default, more through config, never Mintlify's eighteen.
+- **Page actions.** A split button: "Copy page" (Markdown) as the main action; the menu holds view `.md`, open in Claude, ChatGPT or Cursor with the page URL prefilled, copy the MCP install snippet or install link for this set, edit on GitHub and report an issue. Six AI destinations at most by default, more through config.
 - **Feedback.** A "Was this page helpful?" control with an optional comment at the end of each article. It posts to `/_feedback`, which dispatches `FeedbackSubmitted` for the host to handle, and fires a matching event in any analytics integration configured in `larecipe.json`. LaRecipe stores nothing (section 18).
 - **Lazy chunks.** Search (MiniSearch and the index), Ask AI, Mermaid, KaTeX and media islands load on demand. The admin UI is a separate entry and never loads on reader pages.
 - **Accessibility.** WCAG 2.2 AA: skip link, focus moved on navigation, visible focus rings, roving focus in the sidebar, reduced-motion support, every island usable by keyboard.
@@ -1286,7 +1286,7 @@ php artisan larecipe:validate --json
 
 Rules: broken internal links and anchors, navigation entries without pages, orphan pages, manifest, navigation and frontmatter schema violations, unknown components or invalid props, missing snippet regions, live references that no longer resolve, unknown gate abilities, duplicate slugs, redirect loops, private pages linked from public ones, placeholder videos, search index over budget, a database set on a non-persistent cache, unresolved docs migration conflicts, pages whose agent Markdown exceeds a size budget. Every issue has a stable `rule` id and, where possible, a `fix` suggestion an agent can apply. The output schema ships in `resources/schemas/validate.schema.json`. For database sets, CI applies pending docs migrations to its database first, so a broken docs migration fails the PR.
 
-The command is `larecipe:validate` everywhere in this document and in the product. Market research and some competitors call the equivalent `check`; LaRecipe does not ship a `larecipe:check` alias, so agents and docs have one name to learn.
+The command is `larecipe:validate` everywhere in this document and in the product. LaRecipe does not ship a `larecipe:check` alias, so agents and docs have one name to learn.
 
 ### 11.4 skill.md and agent-skills discovery
 
@@ -1403,7 +1403,7 @@ The package repo doubles as a marketplace: `.claude-plugin/marketplace.json` lis
 On demand, for extra power: a whole-set audit (`--audit`), a developer without a local agent, or an edit to a production database set outside a PR. It is not a CI default, and the scaffold never runs it in CI.
 
 - `LaRecipe\Domains\Sync\Laravel\DocsMaintainer` (laravel/ai, on the owner's provider key) with tools: `search_docs`, `read_page`, `list_pages`, `affected_pages`, read-only `read_code` and `git_diff` restricted to the repo, read-only app introspection through the live reference resolvers (routes, commands, model schemas, events; never config or environment values), and the author tools, which go through `WritePageAction` and its siblings.
-- It runs inside the booted Laravel app (a developer's machine, a queue worker), so it writes from what the app actually does, not only from repository text. That is the difference from repo-only agents such as Mintlify's or Promptless's. Runs are ordinary queued jobs: testable with fakes, visible in Horizon or Nightwatch, priced at the owner's own provider tokens with no credit meter.
+- It runs inside the booted Laravel app (a developer's machine, a queue worker), so it writes from what the app actually does, not only from repository text. Runs are ordinary queued jobs: testable with fakes, visible in Horizon or Nightwatch, priced at the owner's own provider tokens with no credit meter.
 - Inputs: a diff range (`--base`, `--head`), a list of pages, or `--audit`.
 - Output, by driver: edits in the working tree (`repository`) or a docs migration file (`database`), committed to the current branch with `--commit`. With `--remote=https://acme.dev/handbook/mcp`, it works outside a PR, writing straight to a production database set through the authenticated remote author tools, under the review mode.
 - Budget controls: max steps, max pages per run, model choice, and a dry-run mode that only reports what it would change.
@@ -1521,7 +1521,7 @@ jobs:
 
 - **Two modes:** `fail` (a required check that a `skip-docs` label overrides) or `comment` (posts the list of stale pages and never fails).
 - **Never writes.** It runs no AI agent, pushes nothing, commits nothing, and needs no secrets for a repository set, so it is safe on fork PRs. A database set needs a read-only token for `larecipe:pull` to compute affected pages; without one, the check validates the PR's docs migrations only.
-- **No post-merge docs PRs.** A follow-up PR after merge is the pattern competitors ship; it reaches a reviewer who has moved on, and the docs are wrong in production until someone merges it. LaRecipe does not scaffold it.
+- **No post-merge docs PRs.** A follow-up PR after merge reaches a reviewer who has moved on, and the docs are wrong in production until someone merges it. LaRecipe does not scaffold it.
 
 ### 14.5 Recommended defaults
 
@@ -1569,7 +1569,7 @@ Database sets get an admin area at `/{prefix}/_admin`, behind `manageLarecipe($u
 - `access.mode`: `public`, `auth` (any authenticated user of the configured guard) or `gate`.
 - `access.mode` is per doc set, so a public `/docs` and a staff-only `/handbook` live in one app.
 - Gates: `viewLarecipe($user, ?PageSummary $page, string $set)` (kept from v2, now told the page and the set; `$page` is null when a whole set or version is checked), `manageLarecipe($user, string $set)` for drafts, the admin UI and remote author tools, `askLarecipe($user, string $set)` for Ask AI. Version-level `visibility` in the manifest and page-level `visibility` in frontmatter feed the same policy.
-- **Block-level access.** `<Can ability>` and `<Cannot ability>` (6.8) evaluate any host gate or policy ability inside a page, which gives per-plan and per-role content without separate pages. Competitors sell this as adaptive content on their top tiers; here it is the host's own authorization layer.
+- **Block-level access.** `<Can ability>` and `<Cannot ability>` (6.8) evaluate any host gate or policy ability inside a page, which gives per-plan and per-role content without separate pages. It is the host's own authorization layer.
 - **The Same-Rules Rule in code.** Every surface (HTML, `.md`, JSON, `llms.txt`, `llms-full.txt`, `skill.md`, sitemap, search index variants and the server ranker, MCP tools and resources, Ask AI retrieval) resolves pages through `PageAccess::visible(PageRef, ?User)` and blocks through `PageAccess::allows(ability, ?User)`. A direct hit on a hidden page is a 404, never a 403. A test matrix asserts that a private page and a gated block are absent from all of them for a guest.
 - Signed share links for private pages: `php artisan larecipe:share 3.x/billing/roadmap --expires=7d` issues a temporary signed URL.
 - Private docs responses are `Cache-Control: private, no-store` and carry `X-Robots-Tag: noindex`.
