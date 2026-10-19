@@ -112,6 +112,10 @@ jobs:
           name: dist
           path: dist
 
+      # The workbench's runbooks set lives in a SQLite database that is not committed.
+      - name: Seed the workbench database
+        run: vendor/bin/testbench workbench:seed-runbooks
+
       - name: Validate the workbench docs
         run: vendor/bin/testbench larecipe:validate
 
