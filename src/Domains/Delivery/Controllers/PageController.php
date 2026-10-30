@@ -35,6 +35,7 @@ use LaRecipe\Domains\Delivery\Support\SetFromRequest;
 use LaRecipe\Domains\Markdown\Actions\RenderPageAction;
 use LaRecipe\Domains\Markdown\DTOs\RenderedPage;
 use LaRecipe\Domains\Markdown\Services\AgentMarkdownRenderer;
+use LaRecipe\Domains\References\Actions\ReferencesFingerprintAction;
 use LaRecipe\Domains\Sources\Actions\GetPageAction;
 use LaRecipe\Domains\Sources\Contracts\SourceResolver;
 use LaRecipe\LaRecipe;
@@ -67,6 +68,7 @@ final class PageController
         private readonly ResolveAudienceAction $audiences,
         private readonly FilterGatedSourceAction $gatedSource,
         private readonly VerifyShareLinkAction $shareLinks,
+        private readonly ReferencesFingerprintAction $references,
     ) {}
 
     public function __invoke(Request $request): SymfonyResponse
@@ -147,7 +149,7 @@ final class PageController
         }
 
         return match ($docs->format) {
-            DocsRequest::MARKDOWN => $this->markdownResponse($set, $page, $request, $view),
+            DocsRequest::MARKDOWN => $this->markdownResponse($set, $page, $request, $view, $rendered),
             DocsRequest::JSON => $this->jsonResponse($set, $page, $summaries, $request, $fallbackFrom, $rendered, $view),
             default => $this->htmlResponse($set, $page, $summaries, $request, $fallbackFrom, $rendered, $view),
         };
@@ -169,7 +171,7 @@ final class PageController
         $perRequest = str_contains($html, LaRecipe::CSRF_FIELD);
         $html = $this->withCsrfToken($html);
 
-        return $this->finish(new Response($html, 200, ['Content-Type' => 'text/html; charset=UTF-8']), $set, $page, $request, 'html', $view, $perRequest);
+        return $this->finish(new Response($html, 200, ['Content-Type' => 'text/html; charset=UTF-8']), $set, $page, $request, 'html', $view, $rendered, $perRequest);
     }
 
     private function jsonResponse(DocSet $set, Page $page, array $summaries, Request $request, ?string $fallbackFrom, RenderedPage $rendered, ReaderView $view): SymfonyResponse
@@ -179,10 +181,10 @@ final class PageController
         $perRequest = str_contains($json['page']['html'], LaRecipe::CSRF_FIELD);
         $json['page']['html'] = $this->withCsrfToken($json['page']['html']);
 
-        return $this->finish(new JsonResponse($json, 200, ['Content-Type' => RequestResolver::JSON_TYPE]), $set, $page, $request, 'json', $view, $perRequest);
+        return $this->finish(new JsonResponse($json, 200, ['Content-Type' => RequestResolver::JSON_TYPE]), $set, $page, $request, 'json', $view, $rendered, $perRequest);
     }
 
-    private function markdownResponse(DocSet $set, Page $page, Request $request, ReaderView $view): SymfonyResponse
+    private function markdownResponse(DocSet $set, Page $page, Request $request, ReaderView $view, RenderedPage $rendered): SymfonyResponse
     {
         // Agent Markdown starts from the page source, so it gets the reader's view of
         // the gate blocks, decided by the same AST filter as the HTML.
@@ -201,7 +203,7 @@ final class PageController
 
         event(new PageRendered($set->key, $page->ref, PageRendered::MARKDOWN, $page->contentHash));
 
-        return $this->finish(new Response($body, 200, ['Content-Type' => 'text/markdown; charset=UTF-8']), $set, $page, $request, 'markdown', $view);
+        return $this->finish(new Response($body, 200, ['Content-Type' => 'text/markdown; charset=UTF-8']), $set, $page, $request, 'markdown', $view, $rendered);
     }
 
     /** One cached render per audience variant (the abilities on the page), never per user. */
@@ -221,14 +223,17 @@ final class PageController
      * for one reader is never stored by a shared cache, never answers a conditional
      * request with another variant, and is never indexed.
      */
-    private function finish(SymfonyResponse $response, DocSet $set, Page $page, Request $request, string $format, ReaderView $view, bool $perRequest = false): SymfonyResponse
+    private function finish(SymfonyResponse $response, DocSet $set, Page $page, Request $request, string $format, ReaderView $view, RenderedPage $rendered, bool $perRequest = false): SymfonyResponse
     {
+        // A page reading the app (routes, commands...) changes with it, so its ETag must too.
+        $references = $rendered->hasLiveReferences ? $this->references->execute($rendered->components) : '';
+
         if ($view->isPersonal()) {
             $request->headers->remove('If-None-Match');
             $request->headers->remove('If-Modified-Since');
         }
 
-        $response = $this->headers->apply($response, $set, $page, $request, $format, $perRequest);
+        $response = $this->headers->apply($response, $set, $page, $request, $format, $perRequest, $references);
 
         if ($view->isPersonal()) {
             $response->headers->set('Cache-Control', 'private, no-store');

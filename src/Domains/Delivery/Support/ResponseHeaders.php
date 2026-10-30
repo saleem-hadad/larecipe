@@ -24,8 +24,10 @@ final class ResponseHeaders
     /**
      * @param  bool  $perRequest  the body carries something personal to this session (a CSRF
      *                            token in a component's fallback form), decided before it was filled in
+     * @param  string  $references  the fingerprint of the app surface the page's live references read
+     *                              (routes, commands...): the body changes with it while the source does not
      */
-    public function apply(Response $response, DocSet $set, Page $page, Request $request, string $format, bool $perRequest = false): Response
+    public function apply(Response $response, DocSet $set, Page $page, Request $request, string $format, bool $perRequest = false, string $references = ''): Response
     {
         $links = ['<'.$this->urls->page($set, $page->ref, true).'>; rel="alternate"; type="text/markdown"'];
 
@@ -50,7 +52,7 @@ final class ResponseHeaders
         $response->headers->set('Vary', $perRequest ? 'Accept, Cookie' : 'Accept');
         $response->headers->set('Link', implode(', ', $links));
         $response->headers->set('X-LaRecipe-Build', $this->assets->build());
-        $response->setEtag(substr(hash('xxh128', $page->contentHash.'|'.$this->assets->build().'|'.$format.'|'.$page->ref->key().'|'.$reader), 0, 20));
+        $response->setEtag(substr(hash('xxh128', $page->contentHash.'|'.$this->assets->build().'|'.$format.'|'.$page->ref->key().'|'.$reader.'|'.$references), 0, 20));
 
         if ($page->updatedAt !== null) {
             $response->setLastModified($page->updatedAt);

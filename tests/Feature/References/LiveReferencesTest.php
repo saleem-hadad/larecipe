@@ -1,8 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use LaRecipe\Domains\Content\DTOs\PageRef;
 use LaRecipe\Domains\Markdown\Actions\RenderPageAction;
 use LaRecipe\Domains\Markdown\Components\ComponentRegistry;
+use LaRecipe\Domains\References\Actions\ReferencesFingerprintAction;
 use LaRecipe\Domains\References\Actions\ResolveReferenceAction;
 use LaRecipe\Domains\Sources\Actions\GetPageAction;
 use LaRecipe\Domains\Validation\Actions\ValidateDocsAction;
@@ -149,4 +151,29 @@ it('re-renders a cached page when the app surface it reads changes', function ()
     app('router')->getRoutes()->getByName('orders.show')->setUri('purchases/{purchase}');
 
     $this->get('/shop/routes')->assertOk()->assertSee('<code>GET /purchases/{purchase}</code>', false);
+});
+
+it('re-renders a cached page when only a command option default changes', function () {
+    $this->get('/shop')->assertOk()->assertSee('orders:prune', false);
+    $before = app(ReferencesFingerprintAction::class)->execute(['Artisan']);
+
+    // --days=30 becomes --days=14: the synopsis and description stay the same.
+    Artisan::all()['orders:prune']->getDefinition()->getOption('days')->setDefault('14');
+
+    expect(app(ReferencesFingerprintAction::class)->execute(['Artisan']))->not->toBe($before);
+});
+
+it('gives a page a new ETag when the app surface it reads changes', function () {
+    foreach (['/shop/routes', '/shop/routes.md'] as $url) {
+        $etag = $this->get($url)->assertOk()->headers->get('ETag');
+
+        $this->get($url, ['If-None-Match' => $etag])->assertStatus(304);
+    }
+
+    $etags = [$this->get('/shop/routes')->headers->get('ETag'), $this->get('/shop/routes.md')->headers->get('ETag')];
+
+    app('router')->getRoutes()->getByName('orders.show')->setUri('purchases/{purchase}');
+
+    $this->get('/shop/routes', ['If-None-Match' => $etags[0]])->assertOk()->assertSee('<code>GET /purchases/{purchase}</code>', false);
+    $this->get('/shop/routes.md', ['If-None-Match' => $etags[1]])->assertOk()->assertSee('/purchases/{purchase}', false);
 });
