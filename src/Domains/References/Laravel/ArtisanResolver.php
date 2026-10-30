@@ -94,12 +94,27 @@ final class ArtisanResolver implements ListsReferenceTargets, ReferenceResolver
         return array_values(array_map('strval', $names));
     }
 
+    /**
+     * Every fact the reference shows: the synopsis leaves out input descriptions
+     * and defaults, so a changed --days=30 must move the fingerprint on its own.
+     */
     public function fingerprint(): string
     {
         $shapes = [];
 
         foreach ($this->commands() as $name => $command) {
-            $shapes[] = $name.' '.$command->getSynopsis().' '.$command->getDescription();
+            $definition = $command->getDefinition();
+            $inputs = [];
+
+            foreach ($definition->getArguments() as $argument) {
+                $inputs[] = [$argument->getName(), $argument->isRequired(), $argument->isArray(), $argument->getDescription(), $argument->getDefault()];
+            }
+
+            foreach ($definition->getOptions() as $option) {
+                $inputs[] = [$option->getName(), $option->getShortcut(), $option->acceptValue(), $option->getDescription(), $option->getDefault()];
+            }
+
+            $shapes[] = $name.' '.$command->getSynopsis().' '.$command->getDescription().' '.json_encode($inputs, JSON_PARTIAL_OUTPUT_ON_ERROR);
         }
 
         sort($shapes);
