@@ -4,6 +4,12 @@ All notable changes to `larecipe` will be documented in this file
 
 ---
 
+<a name="3.0.2"></a>
+# [3.0.2](https://github.com/saleem-hadad/larecipe/releases/tag/v3.0.2) (2026-10-30)
+
+- Changing an Artisan command's argument or option default (or description) now re-renders the pages that show it. Before, the cached page kept the old default until the cache was cleared.
+- A page's ETag now changes when the routes or commands it shows change, so browsers fetch the new version instead of getting `304 Not Modified` and showing the old one until a hard refresh.
+
 <a name="3.0.1"></a>
 # [3.0.1](https://github.com/saleem-hadad/larecipe/releases/tag/v3.0.1) (2026-10-19)
 
