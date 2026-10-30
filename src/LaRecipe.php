@@ -25,7 +25,7 @@ use League\CommonMark\Environment\EnvironmentBuilderInterface;
  */
 final class LaRecipe
 {
-    public const VERSION = '3.0.1';
+    public const VERSION = '3.0.2';
 
     /** Stands in for the request's CSRF token inside the field csrfField() emits. */
     public const CSRF_PLACEHOLDER = '__LARECIPE_CSRF_TOKEN__';
